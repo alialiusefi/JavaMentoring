@@ -1,4 +1,7 @@
 package com.java.esm.repository.specfication;
 
-public class Specification {
+import com.java.esm.entity.Entity;
+
+abstract public class Specification<T extends Entity> {
+
 }
