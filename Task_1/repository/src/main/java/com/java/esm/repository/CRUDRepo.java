@@ -13,6 +13,8 @@ public interface CRUDRepo<T extends Entity> {
 
     List query(Specification specification);
 
+    void delete(T entity);
+
     void delete(Specification specification);
 
 }
