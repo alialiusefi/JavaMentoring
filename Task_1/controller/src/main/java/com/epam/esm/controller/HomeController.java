@@ -1,16 +1,15 @@
 package com.epam.esm.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-
-@Controller
-@RequestMapping("/")
+@RestController
 public class HomeController {
 
-    @RequestMapping(value = "/", method = GET)
+    @GetMapping(value = "/", produces = MediaType.TEXT_PLAIN_VALUE)
     public String home() {
         return "home";
     }
+
 }

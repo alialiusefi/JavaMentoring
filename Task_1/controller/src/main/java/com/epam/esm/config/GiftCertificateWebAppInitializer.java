@@ -1,20 +1,27 @@
 package com.epam.esm.config;
 
+import org.springframework.web.WebApplicationInitializer;
+import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-public class GiftCertificateWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
+
+public class GiftCertificateWebAppInitializer
+        implements WebApplicationInitializer {
 
     @Override
-    protected String[] getServletMappings() {
-        return new String[] { "/" };
-    }
-    @Override
-    protected Class<?>[] getRootConfigClasses() {
-        return new Class<?>[] { RootConfig.class };
-    }
-    @Override
-    protected Class<?>[] getServletConfigClasses() {
-        return new Class<?>[] { WebConfig.class };
-    }
+    public void onStartup(ServletContext servletContext) throws ServletException {
 
+        AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
+        applicationContext.setServletContext(servletContext);
+        applicationContext.register(WebConfig.class);
+        applicationContext.refresh();
+        ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", new DispatcherServlet(applicationContext));
+        dispatcher.setLoadOnStartup(1);
+        dispatcher.addMapping("/");
+    }
 }
