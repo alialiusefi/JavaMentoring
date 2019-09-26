@@ -32,7 +32,7 @@ abstract public class Entity {
     }
 
     @Override
-    public String toString() {
+    public String   toString() {
         return "Entity{" +
                 "id=" + id +
                 '}';
