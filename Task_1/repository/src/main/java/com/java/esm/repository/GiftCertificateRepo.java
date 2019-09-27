@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public class GiftCertificateRepo extends CRUDRepo<GiftCertificate> {
 
-    protected GiftCertificateRepo(JdbcTemplate template, RowMapper<GiftCertificate> rowMapper) {
+    public  GiftCertificateRepo(JdbcTemplate template, RowMapper<GiftCertificate> rowMapper) {
         super(template, rowMapper);
     }
 

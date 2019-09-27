@@ -5,8 +5,9 @@ import com.java.esm.entity.Entity;
 public abstract interface Specification<T extends Entity> {
 
     // for in-memory search
-    boolean specified(T entity);
-
+    default boolean specified(T entity){
+        throw new UnsupportedOperationException("Unimplemented method!");
+    }
 
     String toSqlClauses();
 

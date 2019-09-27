@@ -7,16 +7,25 @@ import java.util.List;
 
 public interface ICRUDRepo<T extends Entity> {
 
-    void add(T entity);
+    default void add(T entity) {
+        throw new UnsupportedOperationException("Method not implemented yet!");
+    }
 
-    void update (T entity);
+    default void update(T entity) {
+        throw new UnsupportedOperationException("Method not implemented yet!");
+    }
 
-    List query(Specification specification);
+    default List query(Specification specification) {
+        throw new UnsupportedOperationException("Method not implemented yet!");
+    }
 
-    void delete(T entity);
+    default void delete(T entity) {
+        throw new UnsupportedOperationException("Method not implemented yet!");
+    }
 
-    void delete(Specification specification);
-
+    default void delete(Specification specification) {
+        throw new UnsupportedOperationException("Method not implemented yet!");
+    }
 
 
 }

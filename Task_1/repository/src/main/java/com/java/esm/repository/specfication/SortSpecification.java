@@ -18,6 +18,4 @@ public abstract class SortSpecification<T extends Entity> implements Specificati
         this.comparator = specificationComparator;
     }
 
-    public abstract List<T> sort(List<T> list);
-
 }
