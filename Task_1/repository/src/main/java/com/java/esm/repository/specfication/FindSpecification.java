@@ -4,7 +4,7 @@ import com.java.esm.entity.Entity;
 
 import java.util.List;
 
-abstract public class FindSpecification <T extends Entity> extends Specification<T> {
+public abstract class FindSpecification <T extends Entity> implements Specification<T> {
 
     public abstract List<T> find(List<T> list);
 

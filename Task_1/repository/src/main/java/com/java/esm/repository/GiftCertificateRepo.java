@@ -2,9 +2,11 @@ package com.java.esm.repository;
 
 import com.java.esm.entity.GiftCertificate;
 import com.java.esm.repository.specfication.Specification;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class GiftCertificateRepo implements CRUDRepo<GiftCertificate> {
 
 
@@ -32,4 +34,8 @@ public class GiftCertificateRepo implements CRUDRepo<GiftCertificate> {
     public void delete(Specification specification) {
 
     }
+
+
+
+
 }

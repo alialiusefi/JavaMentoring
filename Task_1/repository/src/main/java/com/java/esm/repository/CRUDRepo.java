@@ -17,4 +17,6 @@ public interface CRUDRepo<T extends Entity> {
 
     void delete(Specification specification);
 
+
+
 }

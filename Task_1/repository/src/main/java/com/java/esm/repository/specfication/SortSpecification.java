@@ -6,7 +6,7 @@ import com.java.esm.entity.Entity;
 import java.util.Comparator;
 import java.util.List;
 
-abstract public class SortSpecification<T extends Entity> extends Specification<T> {
+public abstract class SortSpecification<T extends Entity> implements Specification<T> {
 
     protected Comparator<T> comparator;
 

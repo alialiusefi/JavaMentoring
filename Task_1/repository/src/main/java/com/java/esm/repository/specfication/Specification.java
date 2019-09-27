@@ -2,6 +2,10 @@ package com.java.esm.repository.specfication;
 
 import com.java.esm.entity.Entity;
 
-abstract public class Specification<T extends Entity> {
+public abstract interface Specification<T extends Entity> {
+
+    boolean specified(T entity);
+
+    String toSqlClauses();
 
 }
