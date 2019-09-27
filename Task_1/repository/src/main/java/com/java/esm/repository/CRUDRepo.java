@@ -1,21 +1,19 @@
 package com.java.esm.repository;
 
 import com.java.esm.entity.Entity;
-import com.java.esm.repository.specfication.Specification;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
-import java.util.List;
+public abstract class CRUDRepo<T extends Entity> implements ICRUDRepo<T> {
 
-public interface CRUDRepo<T extends Entity> {
+    protected JdbcTemplate jdbcTemplate;
+    protected RowMapper rowMapper;
 
-    void add(T entity);
-
-    void update (T entity);
-
-    List query(Specification specification);
-
-    void delete(T entity);
-
-    void delete(Specification specification);
+    protected CRUDRepo(JdbcTemplate template, RowMapper<T> rowMapper)
+    {
+        this.jdbcTemplate = template;
+        this.rowMapper = rowMapper;
+    }
 
 
 

@@ -6,6 +6,7 @@ import java.util.Objects;
 
 final public class GiftCertificate extends Entity {
 
+    //todo: double -> big decimal
     private String name;
     private String description;
     private double price;

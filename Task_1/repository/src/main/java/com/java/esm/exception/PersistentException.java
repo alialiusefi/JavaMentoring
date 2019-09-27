@@ -4,7 +4,7 @@ package com.java.esm.exception;
  * Exception is thrown when database errors where detected
  * or unauthorized servlet access.
  */
-public class PersistentException extends Exception {
+public class PersistentException extends RuntimeException {
 
     public PersistentException() { }
 

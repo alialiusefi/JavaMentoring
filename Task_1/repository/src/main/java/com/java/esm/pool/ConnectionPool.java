@@ -3,6 +3,7 @@ package com.java.esm.pool;
 import com.java.esm.exception.PersistentException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.jdbc.datasource.AbstractDataSource;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -12,7 +13,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
-public final class ConnectionPool {
+public final class ConnectionPool extends AbstractDataSource {
 
     private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
     private String URL;
@@ -41,8 +42,11 @@ public final class ConnectionPool {
         return INSTANCE;
     }
 
+    public CustomPooledConnection getConnection(String userName, String password){
+        return getConnection();
+    }
 
-    public CustomPooledConnection getConnection() throws PersistentException {
+    public CustomPooledConnection getConnection()  {
         CustomPooledConnection connection = null;
         while (connection == null) {
             try {
