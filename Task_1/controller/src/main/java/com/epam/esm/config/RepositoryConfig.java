@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
 
 @Configuration
 @ComponentScan(basePackages = "com.epam.esm")
-public class RepositoryConfig {
+public class sRepositoryConfig {
 
     @Bean
     public DataSource getDataSource() {

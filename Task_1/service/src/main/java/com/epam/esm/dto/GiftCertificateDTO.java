@@ -23,6 +23,7 @@ public class GiftCertificateDTO extends DTO {
         this.durationTillExpiry = durationTillExpiry;
     }
 
+
     public String getName() {
         return name;
     }
