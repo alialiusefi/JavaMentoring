@@ -22,7 +22,7 @@ public final class TagRepo extends CRUDRepo<Tag> {
     }
 
     @Override
-    public List query(Specification specification) {
+    public List<Tag> query(Specification specification) {
         return jdbcTemplate.query(specification.toSqlClauses(),rowMapper);
     }
 

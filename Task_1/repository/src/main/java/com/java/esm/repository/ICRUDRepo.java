@@ -15,7 +15,7 @@ public interface ICRUDRepo<T extends Entity> {
         throw new UnsupportedOperationException("Method not implemented yet!");
     }
 
-    default List query(Specification specification) {
+    default List<T> query(Specification specification) {
         throw new UnsupportedOperationException("Method not implemented yet!");
     }
 

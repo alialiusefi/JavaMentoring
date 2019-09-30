@@ -4,14 +4,12 @@ import com.java.esm.entity.GiftCertificate;
 import com.java.esm.repository.specfication.Specification;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public class GiftCertificateRepo extends CRUDRepo<GiftCertificate> {
 
-    public  GiftCertificateRepo(JdbcTemplate template, RowMapper<GiftCertificate> rowMapper) {
+    public GiftCertificateRepo (JdbcTemplate template, RowMapper<GiftCertificate> rowMapper) {
         super(template, rowMapper);
     }
 
@@ -26,7 +24,7 @@ public class GiftCertificateRepo extends CRUDRepo<GiftCertificate> {
     }
 
     @Override
-    public List query(Specification specification) {
+    public List<GiftCertificate> query(Specification specification) {
         return null;
     }
 
