@@ -39,4 +39,6 @@ public abstract class CRUDRepo<T extends Entity> implements ICRUDRepo<T> {
     public void setRowMapper(RowMapper rowMapper) {
         this.rowMapper = rowMapper;
     }
+
+    abstract protected Object[] getFieldsArray(T entity);
 }

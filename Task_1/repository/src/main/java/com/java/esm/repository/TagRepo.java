@@ -18,12 +18,13 @@ public final class TagRepo extends CRUDRepo<Tag> {
 
     @Override
     public void add(Tag entity) {
-        jdbcTemplate.update(SQL_INSERT,entity.getName());
+        jdbcTemplate.update(SQL_INSERT,getFieldsArray(entity));
     }
 
     @Override
     public List<Tag> query(Specification specification) {
-        return jdbcTemplate.query(specification.toSqlClauses(),rowMapper);
+        return jdbcTemplate.query(specification.toSqlClauses(),
+                rowMapper,specification.getParameters());
     }
 
     @Override
@@ -38,4 +39,10 @@ public final class TagRepo extends CRUDRepo<Tag> {
             jdbcTemplate.update(SQL_DELETE,tag.getId());
         }
     }
+
+    @Override
+    protected Object[] getFieldsArray(Tag entity) {
+        return new Object[]{entity.getName()};
+    }
+
 }

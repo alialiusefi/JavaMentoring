@@ -10,4 +10,6 @@ public abstract interface Specification<T extends Entity> {
 
     String toSqlClauses();
 
+    Object[] getParameters();
+
 }
