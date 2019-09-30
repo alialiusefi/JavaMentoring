@@ -3,6 +3,7 @@ package com.java.esm.repository.rowmapper;
 import com.java.esm.entity.GiftCertificate;
 import org.springframework.jdbc.core.RowMapper;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +15,7 @@ public final class GiftCertificateRowMapper implements RowMapper<GiftCertificate
         return new GiftCertificate(resultSet.getInt("id"),
                 resultSet.getNString("name"),
                 resultSet.getNString("description"),
-                resultSet.getDouble("price"),
+                BigDecimal.valueOf(resultSet.getDouble("price")),
                 convertToLocalDateViaSqlDate(resultSet.getDate("date_created")),
                 convertToLocalDateViaSqlDate(resultSet.getDate("date_modified")),
                 resultSet.getInt("duration_till_expiry"));

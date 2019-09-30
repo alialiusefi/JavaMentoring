@@ -6,7 +6,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.jdbc.datasource.AbstractDataSource;
 
-import javax.annotation.PreDestroy;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.LinkedHashSet;
@@ -19,7 +18,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public final class ConnectionPool extends AbstractDataSource {
 
     private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
-    private String URL;
+    private String url;
     private String userName;
     private String password;
     private int timeoutConnectionLimit;
@@ -84,14 +83,14 @@ public final class ConnectionPool extends AbstractDataSource {
         return connection;
     }
 
-
+    //@PostConstruct
     public void initialize(String driverClass, String URL, String userName,
                            String password, int startConnections, int maxConnections,
                            int timeout) throws PersistentException {
         try {
             destroy();
             Class.forName(driverClass);
-            this.URL = URL;
+            this.url = URL;
             this.maxConnections = maxConnections;
             this.userName = userName;
             this.password = password;
@@ -109,7 +108,7 @@ public final class ConnectionPool extends AbstractDataSource {
     private CustomPooledConnection createNewConnection() throws SQLException, PersistentException {
         if ((usedConnections.size() + freeConnections.size()) < maxConnections) {
             return new CustomPooledConnection(DriverManager.
-                    getConnection(this.URL, this.userName, this.password));
+                    getConnection(this.url, this.userName, this.password));
         }
         throw new PersistentException(
                 "Cannot create connections more than max. amount of connections");
@@ -137,7 +136,7 @@ public final class ConnectionPool extends AbstractDataSource {
         }
     }
 
-    @PreDestroy
+    //@PreDestroy
     public void destroy() {
         if(freeConnections !=null && usedConnections !=null)
         {
