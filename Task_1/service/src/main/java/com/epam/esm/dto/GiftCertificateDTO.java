@@ -1,12 +1,10 @@
-package com.java.esm.entity;
+package com.epam.esm.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
-
-public final class GiftCertificate extends Entity {
-
+public class GiftCertificateDTO extends DTO {
     private String name;
     private String description;
     private BigDecimal price;
@@ -14,8 +12,8 @@ public final class GiftCertificate extends Entity {
     private LocalDate dateOfModification;
     private int durationTillExpiry;
 
-    public GiftCertificate(long id, String name, String description, BigDecimal price, LocalDate dateOfCreation,
-                           LocalDate dateOfModification, int durationTillExpiry) {
+    public GiftCertificateDTO(long id, String name, String description, BigDecimal price, LocalDate dateOfCreation,
+                              LocalDate dateOfModification, int durationTillExpiry) {
         super(id);
         this.name = name;
         this.description = description;
@@ -78,7 +76,7 @@ public final class GiftCertificate extends Entity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        GiftCertificate that = (GiftCertificate) o;
+        GiftCertificateDTO that = (GiftCertificateDTO) o;
         return durationTillExpiry == that.durationTillExpiry &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(description, that.description) &&
@@ -94,7 +92,7 @@ public final class GiftCertificate extends Entity {
 
     @Override
     public String toString() {
-        return "GiftCertificate{" +
+        return "GiftCertificateDTO{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +

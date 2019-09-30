@@ -7,12 +7,14 @@
     <groupId>com.epam.esm</groupId>
     <artifactId>gift-certficate-app</artifactId>
     <version>1.0-SNAPSHOT</version>
+
     <modules>
+        <module>controller</module>
         <module>service</module>
         <module>repository</module>
-        <module>controller</module>
     </modules>
     <packaging>pom</packaging>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -80,7 +82,11 @@
             <version>3.1.0</version>
             <scope>provided</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>2.3.2</version>
+        </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
