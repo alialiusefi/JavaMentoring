@@ -28,6 +28,7 @@ public class TagController extends TableController {
     public @ResponseBody Tag getTag(
             @RequestParam(value = "id") long id)
     {
+        System.out.println("Method!");
         return tagService.getTag(id);
     }
 

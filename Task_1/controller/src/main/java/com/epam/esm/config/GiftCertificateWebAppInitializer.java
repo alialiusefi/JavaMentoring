@@ -18,6 +18,7 @@ public class GiftCertificateWebAppInitializer
         applicationContext.setServletContext(servletContext);
         applicationContext.register(WebConfig.class);
         applicationContext.register(RepositoryConfig.class);
+        applicationContext.register(RootConfig.class);
         applicationContext.refresh();
         ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", new DispatcherServlet(applicationContext));
         dispatcher.setLoadOnStartup(1);

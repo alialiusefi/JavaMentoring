@@ -3,14 +3,16 @@ package com.java.esm.repository;
 import com.java.esm.entity.GiftCertificate;
 import com.java.esm.entity.Tag;
 import com.java.esm.repository.specfication.Specification;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 
-@Component
+@Repository("giftCertificateRepo")
 public class GiftCertificateRepo extends CRUDRepo<GiftCertificate> {
 
     private static final String SQL_INSERT = "insert into giftcertificates " +
@@ -24,6 +26,7 @@ public class GiftCertificateRepo extends CRUDRepo<GiftCertificate> {
             "date_created = ? , date_modified = ? , " +
             "duration_till_expiry = ? where id = ?";
 
+    @Autowired
     public GiftCertificateRepo (JdbcTemplate template, RowMapper<GiftCertificate> rowMapper) {
         super(template, rowMapper);
     }

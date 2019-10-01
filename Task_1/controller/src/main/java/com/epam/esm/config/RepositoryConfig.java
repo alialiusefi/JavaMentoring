@@ -1,10 +1,9 @@
 package com.epam.esm.config;
 
 
-import com.java.esm.entity.Entity;
 import com.java.esm.entity.GiftCertificate;
+import com.java.esm.entity.Tag;
 import com.java.esm.pool.ConnectionPool;
-import com.java.esm.repository.CRUDRepo;
 import com.java.esm.repository.GiftCertificateRepo;
 import com.java.esm.repository.TagRepo;
 import com.java.esm.repository.rowmapper.GiftCertificateRowMapper;
@@ -19,7 +18,8 @@ import javax.sql.DataSource;
 import java.util.ResourceBundle;
 
 @Configuration
-@ComponentScan(basePackages = "com.epam.esm")
+@ComponentScan(basePackages = {"com.epam.esm"})
+
 public class RepositoryConfig {
 
     @Bean
@@ -42,13 +42,4 @@ public class RepositoryConfig {
         return new JdbcTemplate(dataSource);
     }
 
-    @Bean
-    public GiftCertificateRepo giftCertificateRepo(JdbcTemplate template) {
-        return new GiftCertificateRepo(template, new GiftCertificateRowMapper());
-    }
-
-    @Bean
-    public TagRepo tagRepo(JdbcTemplate template) {
-        return new TagRepo(template, new TagRowMapper());
-    }
 }

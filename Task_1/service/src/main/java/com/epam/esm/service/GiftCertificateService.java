@@ -1,37 +1,39 @@
 package com.epam.esm.service;
 
-import com.epam.esm.dto.GiftCertificateDTO;
 import com.java.esm.entity.GiftCertificate;
 import com.java.esm.entity.Tag;
 import com.java.esm.repository.GiftCertificateRepo;
 import com.java.esm.repository.TagRepo;
 import com.java.esm.repository.specfication.FindGiftCertificateByID;
-import com.java.esm.repository.specfication.FindTagByID;
 import com.java.esm.repository.specfication.Specification;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
-public class GiftCertificateService extends Service<GiftCertificateRepo> {
+@Service
 
+public class GiftCertificateService extends BaseService {
+
+    @Autowired
+    @Qualifier("giftCertificateRepo")
+    private GiftCertificateRepo giftCertificateRepo;
+
+    @Autowired
     private TagRepo tagRepository;
 
-    public GiftCertificateService(GiftCertificateRepo giftCertificateRepo,
-                                  TagRepo tagRepository) {
-        super(giftCertificateRepo);
-        this.tagRepository = tagRepository;
-    }
 
-    public GiftCertificate getGiftCertificateByID(int id){
-        List<GiftCertificate> giftCertificates = repository.query(
+
+    public GiftCertificate getGiftCertificateByID(int id) {
+        List<GiftCertificate> giftCertificates = giftCertificateRepo.query(
                 new FindGiftCertificateByID(id)
         );
         return giftCertificates.get(0);
     }
 
-    public void addGiftCertificate(GiftCertificate certificate){
-        repository.add(certificate);
+    public void addGiftCertificate(GiftCertificate certificate) {
+        giftCertificateRepo.add(certificate);
     }
 
     public void addGiftCertificate(GiftCertificate certificate, List<Tag> tags) {
@@ -44,18 +46,16 @@ public class GiftCertificateService extends Service<GiftCertificateRepo> {
         }*/
     }
 
-
-
     public void updateGiftCertificate(GiftCertificate certificate) {
-        repository.update(certificate);
+        giftCertificateRepo.update(certificate);
     }
 
     public void deleteGiftCertificate(Specification specification) {
-        repository.delete(specification);
+        giftCertificateRepo.delete(specification);
     }
 
     public void deleteGiftCertificate(GiftCertificate certificate) {
-        repository.delete(certificate);
+        giftCertificateRepo.delete(certificate);
     }
 
 }

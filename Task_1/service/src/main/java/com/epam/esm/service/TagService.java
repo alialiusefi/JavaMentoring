@@ -3,15 +3,19 @@ package com.epam.esm.service;
 import com.java.esm.entity.Tag;
 import com.java.esm.repository.TagRepo;
 import com.java.esm.repository.specfication.FindTagByID;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
-public class TagService extends Service<TagRepo> {
+@Service
+public class TagService extends BaseService {
 
-    protected TagService(TagRepo repository) {
-        super(repository);
+    private TagRepo repository;
+
+    @Autowired
+    public TagService(TagRepo repository) {
+        this.repository = repository;
     }
 
     public Tag getTag(long id){

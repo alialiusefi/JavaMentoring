@@ -12,6 +12,7 @@ import java.time.LocalDate;
 
 @Component
 public final class GiftCertificateRowMapper implements RowMapper<GiftCertificate> {
+
     @Override
     public GiftCertificate mapRow(ResultSet resultSet, int i) throws SQLException {
         return new GiftCertificate(resultSet.getInt("id"),
