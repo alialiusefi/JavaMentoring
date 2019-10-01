@@ -5,9 +5,12 @@ import com.java.esm.entity.Tag;
 import com.java.esm.repository.specfication.Specification;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+
+@Component
 public class GiftCertificateRepo extends CRUDRepo<GiftCertificate> {
 
     private static final String SQL_INSERT = "insert into giftcertificates " +

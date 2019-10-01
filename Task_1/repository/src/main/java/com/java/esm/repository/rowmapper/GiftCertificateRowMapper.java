@@ -2,6 +2,7 @@ package com.java.esm.repository.rowmapper;
 
 import com.java.esm.entity.GiftCertificate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -9,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+@Component
 public final class GiftCertificateRowMapper implements RowMapper<GiftCertificate> {
     @Override
     public GiftCertificate mapRow(ResultSet resultSet, int i) throws SQLException {

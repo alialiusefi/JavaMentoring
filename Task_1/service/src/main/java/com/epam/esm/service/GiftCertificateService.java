@@ -8,10 +8,11 @@ import com.java.esm.repository.TagRepo;
 import com.java.esm.repository.specfication.FindGiftCertificateByID;
 import com.java.esm.repository.specfication.FindTagByID;
 import com.java.esm.repository.specfication.Specification;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-
+@Component
 public class GiftCertificateService extends Service<GiftCertificateRepo> {
 
     private TagRepo tagRepository;

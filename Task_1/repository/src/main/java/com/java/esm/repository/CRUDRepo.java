@@ -4,9 +4,8 @@ import com.java.esm.entity.Entity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
 
-@Component
+
 public abstract class CRUDRepo<T extends Entity> implements ICRUDRepo<T> {
 
     protected JdbcTemplate jdbcTemplate;
@@ -40,5 +39,5 @@ public abstract class CRUDRepo<T extends Entity> implements ICRUDRepo<T> {
         this.rowMapper = rowMapper;
     }
 
-    abstract protected Object[] getFieldsArray(T entity);
+    protected abstract Object[] getFieldsArray(T entity);
 }

@@ -3,9 +3,11 @@ package com.epam.esm.service;
 import com.java.esm.entity.Tag;
 import com.java.esm.repository.TagRepo;
 import com.java.esm.repository.specfication.FindTagByID;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class TagService extends Service<TagRepo> {
 
     protected TagService(TagRepo repository) {

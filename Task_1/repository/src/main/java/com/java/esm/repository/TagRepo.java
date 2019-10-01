@@ -4,9 +4,13 @@ import com.java.esm.entity.Tag;
 import com.java.esm.repository.specfication.Specification;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
+@Component
 public final class TagRepo extends CRUDRepo<Tag> {
 
     private static final String SQL_INSERT = "insert into tag (tag_name) values (?);";
