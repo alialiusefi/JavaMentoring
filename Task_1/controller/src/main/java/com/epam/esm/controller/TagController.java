@@ -1,7 +1,7 @@
 package com.epam.esm.controller;
 
-import com.epam.esm.service.TagService;
 import com.epam.esm.entity.Tag;
+import com.epam.esm.service.TagService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,7 +29,7 @@ public class TagController extends ResourceController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveTag(@RequestBody @Valid Tag tag){
+    public void saveTag(@RequestBody @Valid Tag tag) {
         tagService.addTag(tag);
     }
 

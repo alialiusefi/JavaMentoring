@@ -8,7 +8,7 @@ create table giftcertificates
     date_modified        date,
     duration_till_expiry integer
 );
-/*add constraints*/
+
 create table tag
 (
     id       serial primary key,
