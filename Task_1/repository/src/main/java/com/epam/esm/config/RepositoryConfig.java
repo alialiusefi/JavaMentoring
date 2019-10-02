@@ -16,18 +16,15 @@ import java.util.ResourceBundle;
 public class RepositoryConfig {
 
     @Bean
-    public DataSource getDataSource() {
+    public DataSource dataSource() {
         ResourceBundle bundle = ResourceBundle.getBundle("dbConfig");
-        ConnectionPool.getInstance().initialize(
-                bundle.getString("driver"),
+        return ConnectionPool.getInstance( bundle.getString("driver"),
                 bundle.getString("URL"),
                 bundle.getString("username"),
                 bundle.getString("password"),
                 Integer.parseInt(bundle.getString("initConnections")),
                 Integer.parseInt(bundle.getString("maxConnections")),
-                Integer.parseInt(bundle.getString("timeout"))
-        );
-        return ConnectionPool.getInstance();
+                Integer.parseInt(bundle.getString("timeout")));
     }
 
     @Bean

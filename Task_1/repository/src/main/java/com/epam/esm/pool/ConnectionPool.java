@@ -31,17 +31,47 @@ public final class ConnectionPool extends AbstractDataSource {
 
     private static ConnectionPool INSTANCE = null;
 
-    public static ConnectionPool getInstance() {
+    public ConnectionPool(String driverClass, String URL, String userName,
+                          String password, int startConnections, int maxConnections,
+                          int timeout){
+        try {
+            destroy();
+            Class.forName(driverClass);
+            this.url = URL;
+            this.maxConnections = maxConnections;
+            this.userName = userName;
+            this.password = password;
+            this.timeoutConnectionLimit = timeout;
+            for (int i = 0; i < startConnections; i++) {
+                freeConnections.add(createNewConnection());
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            LOGGER.error("Couldn't create initial available Connections to database!", e);
+            throw new PersistentException(e.getMessage(), e);
+        }
+    }
+
+    public static ConnectionPool getInstance(String driverClass, String URL, String userName,
+                                             String password, int startConnections, int maxConnections,
+                                             int timeout) {
         ReentrantLock reentrantLock = new ReentrantLock();
         if (INSTANCE == null) {
             reentrantLock.lock();
             try {
-                INSTANCE = new ConnectionPool();
+                INSTANCE = new ConnectionPool(driverClass, URL, userName, password,
+                        startConnections, maxConnections, timeout);
             } finally {
                 reentrantLock.unlock();
             }
         }
         return INSTANCE;
+    }
+
+    public static ConnectionPool getInstance(){
+        if(INSTANCE != null){
+            return INSTANCE;
+        }
+        throw new PersistentException("Uninitialized Connection Pool!");
     }
 
     public CustomPooledConnection getConnection(String userName, String password){
@@ -81,28 +111,6 @@ public final class ConnectionPool extends AbstractDataSource {
                 + " Busy Connections: " + usedConnections.size()
         );
         return connection;
-    }
-
-    //@PostConstruct
-    public void initialize(String driverClass, String URL, String userName,
-                           String password, int startConnections, int maxConnections,
-                           int timeout) throws PersistentException {
-        try {
-            destroy();
-            Class.forName(driverClass);
-            this.url = URL;
-            this.maxConnections = maxConnections;
-            this.userName = userName;
-            this.password = password;
-            this.timeoutConnectionLimit = timeout;
-            for (int i = 0; i < startConnections; i++) {
-                freeConnections.add(createNewConnection());
-            }
-        } catch (ClassNotFoundException | SQLException e) {
-            LOGGER.error("Couldn't create initial available Connections to database!", e);
-            throw new PersistentException(e.getMessage(), e);
-        }
-
     }
 
     private CustomPooledConnection createNewConnection() throws SQLException, PersistentException {
