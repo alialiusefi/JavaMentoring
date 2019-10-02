@@ -1,6 +1,7 @@
 package com.epam.esm.service;
 
 import com.epam.esm.entity.Tag;
+import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.TagRepo;
 import com.epam.esm.repository.specfication.FindTagByID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,18 +19,20 @@ public class TagService extends BaseService {
         this.repository = repository;
     }
 
-    public Tag getTag(long id){
+    public Tag getTag(long id) {
         List<Tag> tags = repository.query(
-                new FindTagByID(id)
-        );
+                new FindTagByID(id));
+        if (tags.isEmpty()) {
+            throw new ResourceNotFoundException("Tag with this id is doesn't exist");
+        }
         return tags.get(0);
     }
 
-    public void addTag(Tag tag){
+    public void addTag(Tag tag) {
         repository.add(tag);
     }
 
-    public void deleteTag(Tag tag){
+    public void deleteTag(Tag tag) {
         repository.delete(tag);
     }
 

@@ -2,11 +2,11 @@ package com.epam.esm.service;
 
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
+import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.GiftCertificateRepo;
 import com.epam.esm.repository.TagRepo;
 import com.epam.esm.repository.specfication.FindGiftCertificateByID;
 import com.epam.esm.repository.specfication.Specification;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +26,10 @@ public class GiftCertificateService extends BaseService {
 
     public GiftCertificate getGiftCertificateByID(int id) {
         List<GiftCertificate> giftCertificates = giftCertificateRepo.query(
-                new FindGiftCertificateByID(id)
-        );
+                new FindGiftCertificateByID(id));
+        if (giftCertificates.isEmpty()) {
+            throw new ResourceNotFoundException("Gift Certificate with this id doesn't exist!");
+        }
         return giftCertificates.get(0);
     }
 
