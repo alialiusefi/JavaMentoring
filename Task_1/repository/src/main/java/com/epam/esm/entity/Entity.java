@@ -1,8 +1,10 @@
-package com.java.esm.entity;
+package com.epam.esm.entity;
 
+
+import java.io.Serializable;
 import java.util.Objects;
 
-abstract public class Entity {
+public abstract class Entity implements Serializable {
 
     private long id;
 
@@ -32,7 +34,7 @@ abstract public class Entity {
     }
 
     @Override
-    public String   toString() {
+    public String toString() {
         return "Entity{" +
                 "id=" + id +
                 '}';

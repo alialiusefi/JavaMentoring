@@ -1,6 +1,6 @@
-package com.java.esm.repository.specfication;
+package com.epam.esm.repository.specfication;
 
-import com.java.esm.entity.Tag;
+import com.epam.esm.entity.Tag;
 
 public final class FindTagByID extends FindSpecification<Tag> {
 

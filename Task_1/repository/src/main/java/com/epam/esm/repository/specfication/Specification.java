@@ -1,6 +1,6 @@
-package com.java.esm.repository.specfication;
+package com.epam.esm.repository.specfication;
 
-import com.java.esm.entity.Entity;
+import com.epam.esm.entity.Entity;
 
 public abstract interface Specification<T extends Entity> {
 

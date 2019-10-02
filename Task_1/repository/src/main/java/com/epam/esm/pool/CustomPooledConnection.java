@@ -1,4 +1,4 @@
-package com.java.esm.pool;
+package com.epam.esm.pool;
 
 import java.sql.*;
 import java.util.Map;

@@ -1,6 +1,6 @@
-package com.java.esm.pool;
+package com.epam.esm.pool;
 
-import com.java.esm.exception.PersistentException;
+import com.epam.esm.exception.PersistentException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Lazy;

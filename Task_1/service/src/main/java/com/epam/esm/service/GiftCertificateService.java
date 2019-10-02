@@ -1,29 +1,28 @@
 package com.epam.esm.service;
 
-import com.java.esm.entity.GiftCertificate;
-import com.java.esm.entity.Tag;
-import com.java.esm.repository.GiftCertificateRepo;
-import com.java.esm.repository.TagRepo;
-import com.java.esm.repository.specfication.FindGiftCertificateByID;
-import com.java.esm.repository.specfication.Specification;
+import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.entity.Tag;
+import com.epam.esm.repository.GiftCertificateRepo;
+import com.epam.esm.repository.TagRepo;
+import com.epam.esm.repository.specfication.FindGiftCertificateByID;
+import com.epam.esm.repository.specfication.Specification;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-
 public class GiftCertificateService extends BaseService {
 
-    @Autowired
-    @Qualifier("giftCertificateRepo")
     private GiftCertificateRepo giftCertificateRepo;
-
-    @Autowired
     private TagRepo tagRepository;
 
-
+    @Autowired
+    public GiftCertificateService(GiftCertificateRepo giftCertificateRepo, TagRepo tagRepository) {
+        this.giftCertificateRepo = giftCertificateRepo;
+        this.tagRepository = tagRepository;
+    }
 
     public GiftCertificate getGiftCertificateByID(int id) {
         List<GiftCertificate> giftCertificates = giftCertificateRepo.query(

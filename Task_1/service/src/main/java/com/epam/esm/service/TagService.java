@@ -1,8 +1,8 @@
 package com.epam.esm.service;
 
-import com.java.esm.entity.Tag;
-import com.java.esm.repository.TagRepo;
-import com.java.esm.repository.specfication.FindTagByID;
+import com.epam.esm.entity.Tag;
+import com.epam.esm.repository.TagRepo;
+import com.epam.esm.repository.specfication.FindTagByID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

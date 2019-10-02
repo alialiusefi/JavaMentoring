@@ -1,10 +1,13 @@
 package com.epam.esm.dto;
 
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 public class GiftCertificateDTO extends DTO {
+
     private String name;
     private String description;
     private BigDecimal price;
@@ -12,8 +15,10 @@ public class GiftCertificateDTO extends DTO {
     private LocalDate dateOfModification;
     private int durationTillExpiry;
 
+    private List<TagDTO> tagDTOList;
+
     public GiftCertificateDTO(long id, String name, String description, BigDecimal price, LocalDate dateOfCreation,
-                              LocalDate dateOfModification, int durationTillExpiry) {
+                              LocalDate dateOfModification, int durationTillExpiry, List<TagDTO> tagDTOList) {
         super(id);
         this.name = name;
         this.description = description;
@@ -21,8 +26,8 @@ public class GiftCertificateDTO extends DTO {
         this.dateOfCreation = dateOfCreation;
         this.dateOfModification = dateOfModification;
         this.durationTillExpiry = durationTillExpiry;
+        this.tagDTOList = tagDTOList;
     }
-
 
     public String getName() {
         return name;
@@ -72,34 +77,11 @@ public class GiftCertificateDTO extends DTO {
         this.durationTillExpiry = durationTillExpiry;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        GiftCertificateDTO that = (GiftCertificateDTO) o;
-        return durationTillExpiry == that.durationTillExpiry &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(price, that.price) &&
-                Objects.equals(dateOfCreation, that.dateOfCreation) &&
-                Objects.equals(dateOfModification, that.dateOfModification);
+    public List<TagDTO> getTagDTOList() {
+        return tagDTOList;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), name, description, price, dateOfCreation, dateOfModification, durationTillExpiry);
-    }
-
-    @Override
-    public String toString() {
-        return "GiftCertificateDTO{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", price=" + price +
-                ", dateOfCreation=" + dateOfCreation +
-                ", dateOfModification=" + dateOfModification +
-                ", durationTillExpiry=" + durationTillExpiry +
-                '}';
+    public void setTagDTOList(List<TagDTO> tagDTOList) {
+        this.tagDTOList = tagDTOList;
     }
 }

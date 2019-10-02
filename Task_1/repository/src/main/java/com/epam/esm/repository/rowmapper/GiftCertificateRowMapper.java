@@ -1,6 +1,6 @@
-package com.java.esm.repository.rowmapper;
+package com.epam.esm.repository.rowmapper;
 
-import com.java.esm.entity.GiftCertificate;
+import com.epam.esm.entity.GiftCertificate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +15,8 @@ public final class GiftCertificateRowMapper implements RowMapper<GiftCertificate
 
     @Override
     public GiftCertificate mapRow(ResultSet resultSet, int i) throws SQLException {
-        return new GiftCertificate(resultSet.getInt("id"),
+        return new GiftCertificate(
+                resultSet.getInt("id"),
                 resultSet.getNString("name"),
                 resultSet.getNString("description"),
                 BigDecimal.valueOf(resultSet.getDouble("price")),

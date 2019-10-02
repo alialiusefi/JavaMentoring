@@ -1,4 +1,4 @@
-package com.java.esm.entity;
+package com.epam.esm.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

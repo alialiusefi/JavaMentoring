@@ -1,18 +1,11 @@
 package com.epam.esm.config;
 
 
-import com.java.esm.entity.GiftCertificate;
-import com.java.esm.entity.Tag;
-import com.java.esm.pool.ConnectionPool;
-import com.java.esm.repository.GiftCertificateRepo;
-import com.java.esm.repository.TagRepo;
-import com.java.esm.repository.rowmapper.GiftCertificateRowMapper;
-import com.java.esm.repository.rowmapper.TagRowMapper;
+import com.epam.esm.pool.ConnectionPool;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 
 import javax.sql.DataSource;
 import java.util.ResourceBundle;

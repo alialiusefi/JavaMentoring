@@ -1,6 +1,6 @@
-package com.java.esm.repository.rowmapper;
+package com.epam.esm.repository.rowmapper;
 
-import com.java.esm.entity.Tag;
+import com.epam.esm.entity.Tag;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ public final class TagRowMapper implements RowMapper<Tag> {
     public Tag mapRow(ResultSet resultSet, int i) throws SQLException {
         return new Tag(
                 resultSet.getInt("id"),
-                resultSet.getNString("tag_name"));
+                resultSet.getString("tag_name"));
     }
 
 }

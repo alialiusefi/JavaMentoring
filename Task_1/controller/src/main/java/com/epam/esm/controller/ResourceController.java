@@ -4,11 +4,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public abstract class TableController {
+public abstract class ResourceController {
 
     protected ModelMapper modelMapper;
 
-    protected TableController(ModelMapper modelMapper)
+    protected ResourceController(ModelMapper modelMapper)
     {
         this.modelMapper = modelMapper;
     }

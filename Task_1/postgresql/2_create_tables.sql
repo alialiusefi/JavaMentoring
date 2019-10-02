@@ -1,7 +1,7 @@
 create table giftcertificates
 (
     id                   serial primary key,
-    name                 varchar(16),
+    name                 varchar(50),
     description          text,
     price                float,
     date_created         date,

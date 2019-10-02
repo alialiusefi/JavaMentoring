@@ -1,4 +1,4 @@
-package com.java.esm.exception;
+package com.epam.esm.exception;
 
 /**
  * Exception is thrown when database errors where detected

@@ -1,13 +1,10 @@
-package com.java.esm.repository;
+package com.epam.esm.repository;
 
-import com.java.esm.entity.Tag;
-import com.java.esm.repository.rowmapper.TagRowMapper;
-import com.java.esm.repository.specfication.Specification;
-import com.sun.rowset.internal.Row;
+import com.epam.esm.entity.Tag;
+import com.epam.esm.repository.specfication.Specification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

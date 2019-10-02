@@ -1,7 +1,7 @@
-package com.java.esm.repository;
+package com.epam.esm.repository;
 
-import com.java.esm.entity.Entity;
-import com.java.esm.repository.specfication.Specification;
+import com.epam.esm.entity.Entity;
+import com.epam.esm.repository.specfication.Specification;
 
 import java.util.List;
 
