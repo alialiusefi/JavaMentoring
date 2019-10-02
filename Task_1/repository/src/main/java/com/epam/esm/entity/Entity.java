@@ -1,14 +1,28 @@
 package com.epam.esm.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.io.Serializable;
 import java.util.Objects;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Tag.class, name = "Tag"),
+        @JsonSubTypes.Type(value = GiftCertificate.class, name = "GiftCertificate")
+})
 public abstract class Entity implements Serializable {
 
     private long id;
 
-    public Entity(long id) {
+    protected Entity() {
+    }
+
+    protected Entity(long id) {
         this.id = id;
     }
 

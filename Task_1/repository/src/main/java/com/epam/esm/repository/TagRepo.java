@@ -13,7 +13,7 @@ import java.util.List;
 public final class TagRepo extends CRUDRepo<Tag> {
 
     private static final String SQL_INSERT = "insert into tag (tag_name) values (?);";
-    private static final String SQL_DELETE = "delete from tag where tag_name = ?";
+    private static final String SQL_DELETE = "delete from tag where tag.id = ?";
 
     @Autowired
     public TagRepo(JdbcTemplate template, RowMapper<Tag> mapper) {

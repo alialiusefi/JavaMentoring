@@ -33,4 +33,9 @@ public class TagService extends BaseService {
         repository.delete(tag);
     }
 
+    public void deleteTag(long tagID) {
+        FindTagByID findTagByID = new FindTagByID(tagID);
+        repository.delete(findTagByID);
+    }
+
 }
