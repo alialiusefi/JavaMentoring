@@ -43,7 +43,11 @@ public class GiftCertificateService extends BaseService {
         if (giftCertificates.isEmpty()) {
             throw new ResourceNotFoundException("Gift Certificate with this id doesn't exist!");
         }
-        return giftCertificateConverter.toDTO(giftCertificates.get(0));
+        GiftCertificateDTO giftCertificateDTO = giftCertificateConverter.toDTO(giftCertificates.get(0));
+        giftCertificateDTO.setTagDTOList(
+                tagConverter.toDTOList(tagRepository.query(
+                        new FindTagsByCertificateID(giftCertificateDTO.getId()))));
+        return giftCertificateDTO;
     }
 
     public void addGiftCertificate(GiftCertificateDTO certificateDTO) {
