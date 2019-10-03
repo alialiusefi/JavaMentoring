@@ -40,7 +40,7 @@ public class GiftCertificateRepo extends CRUDRepo<GiftCertificate> {
         jdbcTemplate.update(SQL_INSERT,getFieldsArray(entity));
     }
 
-    public void addRefrence(GiftCertificate entity, Tag tag) {
+    public void addReference(GiftCertificate entity, Tag tag) {
         jdbcTemplate.update(INSERT_REFERENCE_SQL, tag.getId(), entity.getId());
     }
 

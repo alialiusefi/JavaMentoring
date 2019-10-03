@@ -6,6 +6,10 @@ public class TagDTO extends DTO {
 
     private String name;
 
+    public TagDTO() {
+        super();
+    }
+
     public TagDTO(long id, String name) {
         super(id);
         this.name = name;

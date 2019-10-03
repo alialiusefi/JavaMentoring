@@ -11,6 +11,7 @@ import com.epam.esm.repository.GiftCertificateRepo;
 import com.epam.esm.repository.TagRepo;
 import com.epam.esm.repository.specfication.FindGiftCertificateByID;
 import com.epam.esm.repository.specfication.FindTagByID;
+import com.epam.esm.repository.specfication.FindTagsByCertificateID;
 import com.epam.esm.repository.specfication.Specification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,33 +37,39 @@ public class GiftCertificateService extends BaseService {
         this.tagConverter = tagConverter;
     }
 
-    public GiftCertificate getGiftCertificateByID(int id) {
+    public GiftCertificateDTO getGiftCertificateByID(long id) {
         List<GiftCertificate> giftCertificates = giftCertificateRepo.query(
                 new FindGiftCertificateByID(id));
         if (giftCertificates.isEmpty()) {
             throw new ResourceNotFoundException("Gift Certificate with this id doesn't exist!");
         }
-        return giftCertificates.get(0);
+        return giftCertificateConverter.toDTO(giftCertificates.get(0));
     }
 
     public void addGiftCertificate(GiftCertificateDTO certificateDTO) {
         addNewTagsIfTheyDontExist(certificateDTO);
         GiftCertificate certificate = giftCertificateConverter.toEntity(certificateDTO);
         giftCertificateRepo.add(certificate);
-        addRefrences(certificateDTO);
+        addReferences(certificateDTO);
     }
 
-
-    public void updateGiftCertificate(GiftCertificate certificate) {
+    public void updateGiftCertificate(GiftCertificateDTO certificateDTO) {
+        addNewTagsIfTheyDontExist(certificateDTO);
+        GiftCertificate certificate = giftCertificateConverter.toEntity(certificate);
         giftCertificateRepo.update(certificate);
+        updateReferences(certificateDTO);
     }
 
     public void deleteGiftCertificate(Specification specification) {
         giftCertificateRepo.delete(specification);
     }
 
-    public void deleteGiftCertificate(GiftCertificate certificate) {
-        giftCertificateRepo.delete(certificate);
+    public void deleteGiftCertificate(long id) {
+        giftCertificateRepo.delete(new FindGiftCertificateByID(id));
+    }
+
+    public void deleteGiftCertificate(GiftCertificateDTO certificate) {
+        giftCertificateRepo.delete(giftCertificateConverter.toEntity(certificate));
     }
 
     private void addNewTagsIfTheyDontExist(GiftCertificateDTO dto) {
@@ -79,8 +86,7 @@ public class GiftCertificateService extends BaseService {
         }
     }
 
-
-    private void addRefrences(GiftCertificateDTO dto) {
+    private void addReferences(GiftCertificateDTO dto) {
         GiftCertificate certificate = giftCertificateConverter.toEntity(dto);
         List<TagDTO> tagsDTO = dto.getTagDTOList();
         List<Tag> tags = new ArrayList<>();
@@ -88,7 +94,21 @@ public class GiftCertificateService extends BaseService {
             tags.add(tagConverter.toEntity(i));
         }
         for (Tag i : tags) {
-            giftCertificateRepo.addRefrence(certificate, i);
+            giftCertificateRepo.addReference(certificate, i);
+        }
+    }
+
+    private void updateReferences(GiftCertificateDTO dto) {
+        GiftCertificate certificate = giftCertificateConverter.toEntity(dto);
+        List<TagDTO> newTagsDTO = dto.getTagDTOList();
+        List<Tag> newTags = new ArrayList<>();
+        for (TagDTO i : newTagsDTO) {
+            newTags.add(tagConverter.toEntity(i));
+        }
+        List<Tag> oldTags = tagRepository.query(new FindTagsByCertificateID(certificate.getId()));
+        newTags.removeAll(oldTags);
+        for (Tag i : newTags) {
+            giftCertificateRepo.addReference(certificate, i);
         }
     }
 

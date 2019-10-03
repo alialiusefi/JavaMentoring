@@ -1,5 +1,7 @@
 package com.epam.esm.service;
 
+import com.epam.esm.converter.TagConverter;
+import com.epam.esm.dto.TagDTO;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.TagRepo;
@@ -13,27 +15,29 @@ import java.util.List;
 public class TagService extends BaseService {
 
     private TagRepo repository;
+    private TagConverter tagConverter;
 
     @Autowired
-    public TagService(TagRepo repository) {
+    public TagService(TagRepo repository, TagConverter tagConverter) {
         this.repository = repository;
+        this.tagConverter = tagConverter;
     }
 
-    public Tag getTag(long id) {
+    public TagDTO getTag(long id) {
         List<Tag> tags = repository.query(
                 new FindTagByID(id));
         if (tags.isEmpty()) {
             throw new ResourceNotFoundException("Tag with this id is doesn't exist");
         }
-        return tags.get(0);
+        return tagConverter.toDTO(tags.get(0));
     }
 
-    public void addTag(Tag tag) {
-        repository.add(tag);
+    public void addTag(TagDTO tag) {
+        repository.add(tagConverter.toEntity(tag));
     }
 
-    public void deleteTag(Tag tag) {
-        repository.delete(tag);
+    public void deleteTag(TagDTO tag) {
+        repository.delete(tagConverter.toEntity(tag));
     }
 
     public void deleteTag(long tagID) {

@@ -4,7 +4,6 @@ package com.epam.esm.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 public class GiftCertificateDTO extends DTO {
 
@@ -16,6 +15,10 @@ public class GiftCertificateDTO extends DTO {
     private int durationTillExpiry;
 
     private List<TagDTO> tagDTOList;
+
+    public GiftCertificateDTO() {
+        super();
+    }
 
     public GiftCertificateDTO(long id, String name, String description, BigDecimal price, LocalDate dateOfCreation,
                               LocalDate dateOfModification, int durationTillExpiry, List<TagDTO> tagDTOList) {

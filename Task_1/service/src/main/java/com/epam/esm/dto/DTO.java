@@ -1,10 +1,23 @@
 package com.epam.esm.dto;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.util.Objects;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = TagDTO.class, name = "Tag"),
+        @JsonSubTypes.Type(value = GiftCertificateDTO.class, name = "GiftCertificate")
+})
 public abstract class DTO {
 
     protected long id;
+
+    public DTO() {
+    }
 
     public DTO(long id) {
         this.id = id;
