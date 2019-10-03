@@ -1,5 +1,6 @@
 package com.epam.esm.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -15,6 +16,7 @@ import java.util.Objects;
 })
 public abstract class Entity implements Serializable {
 
+    @JsonIgnore
     private long id;
 
     protected Entity() {
