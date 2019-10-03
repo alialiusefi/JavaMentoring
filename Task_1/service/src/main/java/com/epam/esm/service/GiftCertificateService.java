@@ -55,7 +55,7 @@ public class GiftCertificateService extends BaseService {
 
     public void updateGiftCertificate(GiftCertificateDTO certificateDTO) {
         addNewTagsIfTheyDontExist(certificateDTO);
-        GiftCertificate certificate = giftCertificateConverter.toEntity(certificate);
+        GiftCertificate certificate = giftCertificateConverter.toEntity(certificateDTO);
         giftCertificateRepo.update(certificate);
         updateReferences(certificateDTO);
     }
