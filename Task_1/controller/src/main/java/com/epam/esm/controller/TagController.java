@@ -1,8 +1,7 @@
 package com.epam.esm.controller;
 
-import com.epam.esm.entity.Tag;
+import com.epam.esm.dto.TagDTO;
 import com.epam.esm.service.TagService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,25 +16,22 @@ public class TagController extends ResourceController {
     @Autowired
     private TagService tagService;
 
-    protected TagController(ModelMapper modelMapper) {
-        super(modelMapper);
-    }
 
     @GetMapping("/")
     public @ResponseBody
-    Tag getTag() {
+    TagDTO getTag() {
         return tagService.getTag(1);
     }
 
     @GetMapping("/{id}")
-    public @ResponseBody Tag getTag(@PathVariable long id)
-    {
+    public @ResponseBody
+    TagDTO getTag(@PathVariable long id) {
         return tagService.getTag(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveTag(@RequestBody @Valid Tag tag) {
+    public void saveTag(@RequestBody @Valid TagDTO tag) {
         tagService.addTag(tag);
     }
 
