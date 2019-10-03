@@ -18,7 +18,7 @@ create table tag
 create table tagged_giftcertificates
 (
     tag_id              integer references tag (id),
-    gift_certificate_id integer references giftcertificates (id)
+    gift_certificate_id integer references giftcertificates (id) on delete cascade
 );
 
 
