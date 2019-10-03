@@ -8,6 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
+import java.util.List;
 
 @RequestMapping("/giftcertificates")
 @RestController
@@ -28,14 +30,18 @@ public class GiftCertificateController extends ResourceController{
         return giftCertificateService.getGiftCertificateByID(id);
     }
 
-    @GetMapping("")
+    @GetMapping()
     public @ResponseBody
-    GiftCertificateDTO getGiftCertificate(@RequestParam(required = false) String tagName,
-                                          @RequestParam(required = false) String giftCertificateName,
-                                          @RequestParam(required = false) String giftCertificateDesc,
-                                          @RequestParam(required = false) String sortByDate,
-                                          @RequestParam(required = false) String sortByName) {
-        return giftCertificateService.getGiftCertificateByID(1);
+    List<GiftCertificateDTO> getGiftCertificate(@RequestParam(required = false) @Pattern(regexp = "^[0-9]+$") String tagID,
+                                                @RequestParam(required = false) String giftCertificateName,
+                                                @RequestParam(required = false) String giftCertificateDesc,
+                                                @RequestParam(required = false) String sortByDate,
+                                                @RequestParam(required = false) String sortByName) {
+        return giftCertificateService.getGiftCertificate(Long.parseLong(tagID),
+                giftCertificateName,
+                giftCertificateDesc,
+                Integer.parseInt(sortByDate),
+                Integer.parseInt(sortByName));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
