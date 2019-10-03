@@ -83,7 +83,6 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
                 apiError, new HttpHeaders(), apiError.getStatus());
     }
 
-    /*custom exceptions*/
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Object> handleResourceNotFound(RuntimeException ex, WebRequest request) {

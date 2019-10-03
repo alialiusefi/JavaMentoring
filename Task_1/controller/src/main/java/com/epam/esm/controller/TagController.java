@@ -21,6 +21,12 @@ public class TagController extends ResourceController {
         super(modelMapper);
     }
 
+    @GetMapping("/")
+    public @ResponseBody
+    Tag getTag() {
+        return tagService.getTag(1);
+    }
+
     @GetMapping("/{id}")
     public @ResponseBody Tag getTag(@PathVariable long id)
     {
