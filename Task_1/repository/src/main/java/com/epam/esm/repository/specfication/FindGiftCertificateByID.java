@@ -4,10 +4,12 @@ import com.epam.esm.entity.GiftCertificate;
 
 public class FindGiftCertificateByID extends FindSpecification<GiftCertificate> {
 
-    private static final String SQL_CLAUSE = "select (id,name,description,price" +
-            ",date_created,date_modified,duration_till_expiry) " +
-            "from giftcertificates where id = ?";
-
+    private static final String SQL_CLAUSE = "select giftcertificates.id,giftcertificates.name" +
+            ",giftcertificates.description,giftcertificates.price" +
+            ",giftcertificates.date_created,giftcertificates.date_modified," +
+            "giftcertificates.duration_till_expiry " +
+            "from giftcertificates where giftcertificates.id = ?";
+    private static final String CONJ_SQL_CLAUSE = "and where giftcertificates.id = ?";
     private long id;
 
     public FindGiftCertificateByID(long id) {
@@ -15,8 +17,8 @@ public class FindGiftCertificateByID extends FindSpecification<GiftCertificate> 
     }
 
     @Override
-    public String toSqlClauses() {
-        return SQL_CLAUSE;
+    public String toSqlClause(boolean isConjunction) {
+        return isConjunction ? CONJ_SQL_CLAUSE : SQL_CLAUSE;
     }
 
     @Override

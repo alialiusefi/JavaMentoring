@@ -8,7 +8,7 @@ public abstract interface Specification<T extends Entity> {
         throw new UnsupportedOperationException("Unimplemented method!");
     }
 
-    String toSqlClauses();
+    String toSqlClause(boolean isConjunction);
 
     Object[] getParameters();
 
