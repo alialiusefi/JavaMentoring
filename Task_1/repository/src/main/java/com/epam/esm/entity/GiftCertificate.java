@@ -14,6 +14,11 @@ public final class GiftCertificate extends Entity {
     private LocalDate dateOfModification;
     private int durationTillExpiry;
 
+    public GiftCertificate() {
+        super();
+    }
+
+
     public GiftCertificate(long id, String name, String description, BigDecimal price, LocalDate dateOfCreation,
                            LocalDate dateOfModification, int durationTillExpiry) {
         super(id);

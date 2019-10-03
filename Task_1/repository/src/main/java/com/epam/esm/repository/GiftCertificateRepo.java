@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -15,13 +16,13 @@ import java.util.List;
 public class GiftCertificateRepo extends CRUDRepo<GiftCertificate> {
 
     private static final String SQL_INSERT = "insert into giftcertificates " +
-            "(id,name,description,price,date_created,date_modified,duration_till_expiry) values " +
-            "(?,?,?,?,?,?,?)";
+            "(name,description,price,date_created,date_modified,duration_till_expiry) values " +
+            "(?,?,?,?,?,?)";
     private static final String SQL_DELETE = "delete from giftcertificates " +
             "where giftcertificates.id = ?";
 
     private static final String SQL_UPDATE = "update giftcertificates " +
-            "set name = ? ,description = ? ,price = ?, " +
+            "set id = ? , name = ? ,description = ? ,price = ?, " +
             "date_created = ? , date_modified = ? , " +
             "duration_till_expiry = ? where id = ?";
 
@@ -46,12 +47,15 @@ public class GiftCertificateRepo extends CRUDRepo<GiftCertificate> {
 
     @Override
     public void update(GiftCertificate entity) {
-        jdbcTemplate.update(SQL_UPDATE,getFieldsArray(entity),entity.getId());
+        Object[] fieldsArray = getFieldsArray(entity);
+        Object[] fieldsArrayWithParameters = Arrays.copyOf(fieldsArray, fieldsArray.length + 1);
+        fieldsArrayWithParameters[fieldsArrayWithParameters.length - 1] = entity.getId();
+        jdbcTemplate.update(SQL_UPDATE, fieldsArrayWithParameters);
     }
 
     @Override
     public List<GiftCertificate> query(Specification specification) {
-        return jdbcTemplate.query(specification.toSqlClauses(),
+        return jdbcTemplate.query(specification.toSqlClause(),
                 rowMapper,specification.getParameters());
     }
 
@@ -71,6 +75,7 @@ public class GiftCertificateRepo extends CRUDRepo<GiftCertificate> {
     @Override
     protected Object[] getFieldsArray(GiftCertificate entity) {
         return new Object[]{
+                entity.getId(),
                 entity.getName(),
                 entity.getDescription(),
                 entity.getPrice(),

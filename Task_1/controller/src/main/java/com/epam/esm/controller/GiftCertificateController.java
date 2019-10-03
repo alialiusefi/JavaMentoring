@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@RequestMapping("/giftcertificates")
 @RestController
 public class GiftCertificateController extends ResourceController{
 
@@ -25,6 +26,16 @@ public class GiftCertificateController extends ResourceController{
     public @ResponseBody
     GiftCertificateDTO getGiftCertificate(@PathVariable long id) {
         return giftCertificateService.getGiftCertificateByID(id);
+    }
+
+    @GetMapping("")
+    public @ResponseBody
+    GiftCertificateDTO getGiftCertificate(@RequestParam(required = false) String tagName,
+                                          @RequestParam(required = false) String giftCertificateName,
+                                          @RequestParam(required = false) String giftCertificateDesc,
+                                          @RequestParam(required = false) String sortByDate,
+                                          @RequestParam(required = false) String sortByName) {
+        return giftCertificateService.getGiftCertificateByID(1);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

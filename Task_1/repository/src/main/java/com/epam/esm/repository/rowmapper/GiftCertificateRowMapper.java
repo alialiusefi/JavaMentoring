@@ -17,8 +17,8 @@ public final class GiftCertificateRowMapper implements RowMapper<GiftCertificate
     public GiftCertificate mapRow(ResultSet resultSet, int i) throws SQLException {
         return new GiftCertificate(
                 resultSet.getInt("id"),
-                resultSet.getNString("name"),
-                resultSet.getNString("description"),
+                resultSet.getString("name"),
+                resultSet.getString("description"),
                 BigDecimal.valueOf(resultSet.getDouble("price")),
                 convertToLocalDateViaSqlDate(resultSet.getDate("date_created")),
                 convertToLocalDateViaSqlDate(resultSet.getDate("date_modified")),
