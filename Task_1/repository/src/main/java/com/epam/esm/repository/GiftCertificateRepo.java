@@ -55,7 +55,7 @@ public class GiftCertificateRepo extends CRUDRepo<GiftCertificate> {
 
     @Override
     public List<GiftCertificate> query(Specification specification) {
-        return jdbcTemplate.query(specification.toSqlClause(),
+        return jdbcTemplate.query(specification.toSqlClause(false),
                 rowMapper,specification.getParameters());
     }
 
