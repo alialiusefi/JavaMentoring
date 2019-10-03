@@ -1,6 +1,7 @@
 package com.epam.esm.repository;
 
 import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.entity.Tag;
 import com.epam.esm.repository.specfication.Specification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,6 +25,10 @@ public class GiftCertificateRepo extends CRUDRepo<GiftCertificate> {
             "date_created = ? , date_modified = ? , " +
             "duration_till_expiry = ? where id = ?";
 
+    private static final String INSERT_REFERENCE_SQL = "insert into tagged_giftcertificates" +
+            "(tag_id, gift_certificate_id) VALUES (?,?)";
+
+
     @Autowired
     public GiftCertificateRepo (JdbcTemplate template, RowMapper<GiftCertificate> rowMapper) {
         super(template, rowMapper);
@@ -33,6 +38,10 @@ public class GiftCertificateRepo extends CRUDRepo<GiftCertificate> {
     @Override
     public void add(GiftCertificate entity) {
         jdbcTemplate.update(SQL_INSERT,getFieldsArray(entity));
+    }
+
+    public void addRefrence(GiftCertificate entity, Tag tag) {
+        jdbcTemplate.update(INSERT_REFERENCE_SQL, tag.getId(), entity.getId());
     }
 
     @Override
