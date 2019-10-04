@@ -17,20 +17,20 @@ import java.util.Objects;
 public abstract class Entity implements Serializable {
 
     @JsonIgnore
-    private long id;
+    private Long id;
 
     protected Entity() {
     }
 
-    protected Entity(long id) {
+    protected Entity(Long id) {
         this.id = id;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

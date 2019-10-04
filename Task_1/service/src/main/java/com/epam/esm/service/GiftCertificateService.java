@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class GiftCertificateService extends BaseService {
+public class GiftCertificateService {
 
     private GiftCertificateRepo giftCertificateRepo;
     private TagRepo tagRepository;

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TagService extends BaseService {
+public class TagService {
 
     private TagRepo repository;
     private TagConverter tagConverter;

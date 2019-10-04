@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TagSpecificationConjuction implements Specification<Tag> {
+public class TagSpecificationConjunction implements Specification<Tag> {
 
-    public TagSpecificationConjuction(List<Specification<Tag>> specificationList) {
+    public TagSpecificationConjunction(List<Specification<Tag>> specificationList) {
         this.specificationsToJoin = specificationList;
     }
 

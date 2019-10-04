@@ -8,8 +8,8 @@ public class FindTagsByCertificateID implements Specification<Tag> {
     private static final String SQL_CLAUSE = "select tag.id, tag.tag_name " +
             "from tag inner join tagged_giftcertificates " +
             "on tag.id = tagged_giftcertificates.tag_id " +
-            "where gift_certificate_id = ?";
-    private static final String CONJ_SQL_CLAUSE = "and where gift_certificate_id = ?";
+            "where gift_certificate_id = ? ";
+    private static final String CONJ_SQL_CLAUSE = "and where gift_certificate_id = ? ";
 
     public FindTagsByCertificateID(long id) {
         this.id = id;

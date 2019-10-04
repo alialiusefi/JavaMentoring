@@ -39,6 +39,7 @@ public final class CustomPooledConnection implements Connection, Comparable<Cust
         connection.clearWarnings();
     }
 
+
     @Override
     public void close() throws SQLException {
         ConnectionPool.getInstance().freeConnection(this);

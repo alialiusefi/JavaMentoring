@@ -9,10 +9,8 @@ import org.springframework.jdbc.datasource.AbstractDataSource;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Set;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.ArrayBlockingQueue;
 
 @Lazy
 public final class ConnectionPool extends AbstractDataSource {
@@ -22,14 +20,10 @@ public final class ConnectionPool extends AbstractDataSource {
     private String userName;
     private String password;
     private int timeoutConnectionLimit;
-    private Queue<CustomPooledConnection> freeConnections
-            = new LinkedList<>();
+    private ArrayBlockingQueue<CustomPooledConnection> freeConnections;
     private Set<CustomPooledConnection> usedConnections
             = new LinkedHashSet<>();
     private int maxConnections;
-    private ReentrantLock classReentrantLock = new ReentrantLock();
-
-    private static ConnectionPool INSTANCE = null;
 
     public ConnectionPool(String driverClass, String URL, String userName,
                           String password, int startConnections, int maxConnections,
@@ -42,6 +36,7 @@ public final class ConnectionPool extends AbstractDataSource {
             this.userName = userName;
             this.password = password;
             this.timeoutConnectionLimit = timeout;
+            this.freeConnections = new ArrayBlockingQueue<>(startConnections);
             for (int i = 0; i < startConnections; i++) {
                 freeConnections.add(createNewConnection());
             }
@@ -49,29 +44,6 @@ public final class ConnectionPool extends AbstractDataSource {
             LOGGER.error("Couldn't create initial available Connections to database!", e);
             throw new PersistentException(e.getMessage(), e);
         }
-    }
-
-    public static ConnectionPool getInstance(String driverClass, String URL, String userName,
-                                             String password, int startConnections, int maxConnections,
-                                             int timeout) {
-        ReentrantLock reentrantLock = new ReentrantLock();
-        if (INSTANCE == null) {
-            reentrantLock.lock();
-            try {
-                INSTANCE = new ConnectionPool(driverClass, URL, userName, password,
-                        startConnections, maxConnections, timeout);
-            } finally {
-                reentrantLock.unlock();
-            }
-        }
-        return INSTANCE;
-    }
-
-    public static ConnectionPool getInstance(){
-        if(INSTANCE != null){
-            return INSTANCE;
-        }
-        throw new PersistentException("Uninitialized Connection Pool!");
     }
 
     public CustomPooledConnection getConnection(String userName, String password){
@@ -83,9 +55,7 @@ public final class ConnectionPool extends AbstractDataSource {
         while (connection == null) {
             try {
                     if (!freeConnections.isEmpty()) {
-                        classReentrantLock.lock();
                         connection = freeConnections.poll();
-                        classReentrantLock.unlock();
                         if (!connection.isValid(timeoutConnectionLimit)) {
                             try {
                                 connection.getConnection().close();
@@ -127,10 +97,8 @@ public final class ConnectionPool extends AbstractDataSource {
             if (connection.isValid(timeoutConnectionLimit)) {
                 connection.clearWarnings();
                 connection.setAutoCommit(true);
-                classReentrantLock.lock();
                 usedConnections.remove(connection);
                 freeConnections.add(connection);
-                classReentrantLock.unlock();
                 LOGGER.debug("Connection Cleared.");
             }
         } catch (SQLException e) {
@@ -148,10 +116,8 @@ public final class ConnectionPool extends AbstractDataSource {
     public void destroy() {
         if(freeConnections !=null && usedConnections !=null)
         {
-            classReentrantLock.lock();
             usedConnections.addAll(freeConnections);
             freeConnections.clear();
-            classReentrantLock.unlock();
             for (CustomPooledConnection connection : usedConnections) {
                 try {
                     connection.getConnection().close();

@@ -1,28 +1,33 @@
 package com.epam.esm.repository;
 
 import com.epam.esm.entity.Tag;
+import com.epam.esm.repository.rowmapper.TagRowMapper;
 import com.epam.esm.repository.specfication.Specification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository("tagRepo")
+@Repository
 public final class TagRepo extends CRUDRepo<Tag> {
 
     private static final String SQL_INSERT = "insert into tag (tag_name) values (?);";
     private static final String SQL_DELETE = "delete from tag where tag.id = ?";
 
     @Autowired
-    public TagRepo(JdbcTemplate template, RowMapper<Tag> mapper) {
+    public TagRepo(JdbcTemplate template, TagRowMapper mapper) {
         super(template, mapper);
     }
 
     @Override
     public void add(Tag entity) {
         jdbcTemplate.update(SQL_INSERT, getFieldsArray(entity));
+    }
+
+    @Override
+    public void update(Tag entity) {
+        throw new UnsupportedOperationException("Method not implemented yet!");
     }
 
     @Override
@@ -47,6 +52,11 @@ public final class TagRepo extends CRUDRepo<Tag> {
     @Override
     protected Object[] getFieldsArray(Tag entity) {
         return new Object[]{entity.getName()};
+    }
+
+    @Autowired
+    public void setTagRowMapper(TagRowMapper rowMapper) {
+        this.rowMapper = rowMapper;
     }
 
 }

@@ -143,7 +143,7 @@
                     <port>8080</port>
                     <username>script</username>
                     <password>password</password>
-                    <path>/</path>
+                    <path>/api</path>
                 </configuration>
             </plugin>
 

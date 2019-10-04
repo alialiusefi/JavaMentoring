@@ -30,6 +30,7 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
             HttpStatus status,
             WebRequest request) {
         List<String> errors = new ArrayList<String>();
+        errors.add(ex.getMessage());
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
             errors.add(error.getField() + ": " + error.getDefaultMessage());
         }
@@ -38,9 +39,9 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
         }
 
         APIError apiError =
-                new APIError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
+                new APIError(errors);
         return handleExceptionInternal(
-                ex, apiError, headers, apiError.getStatus(), request);
+                ex, apiError, headers, HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
@@ -50,9 +51,9 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
                 ex.getName() + " should be of type " + ex.getRequiredType().getName();
 
         APIError apiError =
-                new APIError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
+                new APIError(error);
         return new ResponseEntity<Object>(
-                apiError, new HttpHeaders(), apiError.getStatus());
+                apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
 
@@ -64,11 +65,11 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
             errors.add(violation.getRootBeanClass().getName() + " " +
                     violation.getPropertyPath() + ": " + violation.getMessage());
         }
-
+        errors.add(ex.getMessage());
         APIError apiError =
-                new APIError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
+                new APIError(errors);
         return new ResponseEntity<Object>(
-                apiError, new HttpHeaders(), apiError.getStatus());
+                apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
     @Override
@@ -78,16 +79,16 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
         String error = ex.getParameterName() + " parameter is missing";
 
         APIError apiError =
-                new APIError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
+                new APIError(error);
         return new ResponseEntity<Object>(
-                apiError, new HttpHeaders(), apiError.getStatus());
+                apiError, new HttpHeaders(), HttpStatus.CONFLICT);
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Object> handleResourceNotFound(RuntimeException ex, WebRequest request) {
         return handleExceptionInternal(ex, ex.getMessage(),
-                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+                new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

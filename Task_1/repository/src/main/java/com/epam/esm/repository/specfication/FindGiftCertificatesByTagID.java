@@ -9,9 +9,9 @@ public class FindGiftCertificatesByTagID extends FindSpecification<GiftCertifica
             ",giftcertificates.date_created,giftcertificates.date_modified," +
             "giftcertificates.duration_till_expiry " +
             "from giftcertificates inner join tagged_giftcertificates on giftcertificates.id = gift_certificate_id " +
+            "where tag_id = ? ";
+    private static final String CONJ_SQL_CLAUSE = "inner join tagged_giftcertificates on giftcertificates.id = gift_certificate_id " +
             "where tag_id = ?";
-    //todo: fix this
-    private static final String CONJ_SQL_CLAUSE = null;
 
     private long tagID;
 
@@ -21,7 +21,7 @@ public class FindGiftCertificatesByTagID extends FindSpecification<GiftCertifica
 
     @Override
     public String toSqlClause(boolean isConjunction) {
-        return isConjunction ? SQL_CLAUSE : CONJ_SQL_CLAUSE;
+        return isConjunction ? CONJ_SQL_CLAUSE : SQL_CLAUSE;
     }
 
     @Override

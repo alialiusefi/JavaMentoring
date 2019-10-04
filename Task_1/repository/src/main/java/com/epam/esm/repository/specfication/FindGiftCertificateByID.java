@@ -8,8 +8,10 @@ public class FindGiftCertificateByID extends FindSpecification<GiftCertificate> 
             ",giftcertificates.description,giftcertificates.price" +
             ",giftcertificates.date_created,giftcertificates.date_modified," +
             "giftcertificates.duration_till_expiry " +
-            "from giftcertificates where giftcertificates.id = ?";
-    private static final String CONJ_SQL_CLAUSE = "and where giftcertificates.id = ?";
+            "from giftcertificates where giftcertificates.id = ? ";
+
+    private static final String CONJ_SQL_CLAUSE = "and where giftcertificates.id = ? ";
+
     private long id;
 
     public FindGiftCertificateByID(long id) {

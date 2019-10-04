@@ -19,23 +19,6 @@ public class TagConverter extends BaseConverter implements IConvert<TagDTO, Tag>
         return modelMapper.map(entity, TagDTO.class);
     }
 
-    /*  @Override
-        public List<GiftCertificate> toEntityList(List<GiftCertificateDTO> dto) {
-            List<GiftCertificate> giftCertificates = new ArrayList<>();
-            for(GiftCertificateDTO i : dto) {
-                giftCertificates.add(toEntity(i));
-            }
-            return giftCertificates;
-        }
-
-        @Override
-        public List<GiftCertificateDTO> toDTOList(List<GiftCertificate> entities) {
-            List<GiftCertificateDTO> giftCertificatesDTO = new ArrayList<>();
-            for(GiftCertificate i : entities) {
-                giftCertificatesDTO.add(toDTO(i));
-            }
-            return giftCertificatesDTO;
-        }*/
     @Override
     public List<Tag> toEntityList(List<TagDTO> dto) {
         List<Tag> tags = new ArrayList<>();

@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 public abstract class CRUDRepo<T extends Entity> implements ICRUDRepo<T> {
 
     protected JdbcTemplate jdbcTemplate;
-    protected RowMapper rowMapper;
+    protected RowMapper<T> rowMapper;
 
     protected CRUDRepo(JdbcTemplate template, RowMapper<T> rowMapper)
     {
@@ -29,11 +29,6 @@ public abstract class CRUDRepo<T extends Entity> implements ICRUDRepo<T> {
     @Autowired
     public RowMapper getRowMapper() {
         return rowMapper;
-    }
-
-    @Autowired
-    public void setRowMapper(RowMapper rowMapper) {
-        this.rowMapper = rowMapper;
     }
 
     protected abstract Object[] getFieldsArray(T entity);

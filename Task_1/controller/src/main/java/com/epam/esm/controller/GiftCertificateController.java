@@ -11,43 +11,49 @@ import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import java.util.List;
 
-@RequestMapping("/giftcertificates")
+@RequestMapping("/v1/giftcertificates")
 @RestController
-public class GiftCertificateController extends ResourceController{
+public class GiftCertificateController {
 
     @Autowired
     private GiftCertificateService giftCertificateService;
 
-    @GetMapping("/")
-    public @ResponseBody
-    GiftCertificateDTO getGiftCertificate() {
-        return giftCertificateService.getGiftCertificateByID(1);
-    }
-
     @GetMapping("/{id}")
-    public @ResponseBody
-    GiftCertificateDTO getGiftCertificate(@PathVariable long id) {
+    public GiftCertificateDTO getGiftCertificate(@PathVariable long id) {
         return giftCertificateService.getGiftCertificateByID(id);
     }
 
     @GetMapping()
-    public @ResponseBody
-    List<GiftCertificateDTO> getGiftCertificate(@RequestParam(required = false) @Pattern(regexp = "^[0-9]+$") String tagID,
-                                                @RequestParam(required = false) String giftCertificateName,
-                                                @RequestParam(required = false) String giftCertificateDesc,
-                                                @RequestParam(required = false) String sortByDate,
-                                                @RequestParam(required = false) String sortByName) {
-        return giftCertificateService.getGiftCertificate(Long.parseLong(tagID),
+    public List<GiftCertificateDTO> getGiftCertificate(@RequestParam(required = false) @Valid @Pattern(regexp = "^[1-9][0-9]+$") String tagID,
+                                                       @RequestParam(required = false) @Valid String giftCertificateName,
+                                                       @RequestParam(required = false) @Valid String giftCertificateDesc,
+                                                       @RequestParam(required = false) @Valid String sortByDate,
+                                                       @RequestParam(required = false) @Valid String sortByName) {
+        int sortByDateOrder = 0;
+        int sortByNameOrder = 0;
+        long tagIDLong = 0L;
+        if (tagID != null) {
+            tagIDLong = Long.parseLong(tagID);
+        }
+        if (sortByDate != null) {
+            sortByDateOrder = Integer.parseInt(sortByDate);
+        }
+        if (sortByName != null) {
+            sortByNameOrder = Integer.parseInt(sortByName);
+        }
+        return giftCertificateService.getGiftCertificate(tagIDLong,
                 giftCertificateName,
                 giftCertificateDesc,
-                Integer.parseInt(sortByDate),
-                Integer.parseInt(sortByName));
+                sortByDateOrder,
+                sortByNameOrder);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveGiftCertificate(@RequestBody @Valid GiftCertificateDTO giftCertificateDTO) {
+    public GiftCertificateDTO saveGiftCertificate(@RequestBody @Valid GiftCertificateDTO giftCertificateDTO) {
         giftCertificateService.addGiftCertificate(giftCertificateDTO);
+        return giftCertificateService.getGiftCertificateByID(
+                giftCertificateDTO.getId());
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

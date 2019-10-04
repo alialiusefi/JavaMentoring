@@ -9,7 +9,7 @@ public class FindGiftCertificatesByName extends FindSpecification<GiftCertificat
             ",giftcertificates.date_created,giftcertificates.date_modified," +
             "giftcertificates.duration_till_expiry " +
             "from giftcertificates inner join tagged_giftcertificates on giftcertificates.id = gift_certificate_id " +
-            "where ? like '%' || giftcertificates.name || '%'";
+            "where ? like '%' || giftcertificates.name || '%' ";
 
     private static final String CONJ_SQL_CLAUSE = "and ? like '%' || giftcertificates.name || '%' ";
 
@@ -21,7 +21,7 @@ public class FindGiftCertificatesByName extends FindSpecification<GiftCertificat
 
     @Override
     public String toSqlClause(boolean isConjunction) {
-        return isConjunction ? SQL_CLAUSE : CONJ_SQL_CLAUSE;
+        return isConjunction ? CONJ_SQL_CLAUSE : SQL_CLAUSE;
     }
 
     @Override

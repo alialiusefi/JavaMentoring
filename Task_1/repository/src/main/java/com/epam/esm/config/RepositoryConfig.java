@@ -18,7 +18,7 @@ public class RepositoryConfig {
     @Bean
     public DataSource dataSource() {
         ResourceBundle bundle = ResourceBundle.getBundle("dbConfig");
-        return ConnectionPool.getInstance( bundle.getString("driver"),
+        return new ConnectionPool(bundle.getString("driver"),
                 bundle.getString("URL"),
                 bundle.getString("username"),
                 bundle.getString("password"),

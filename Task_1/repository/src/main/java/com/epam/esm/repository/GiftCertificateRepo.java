@@ -2,17 +2,17 @@ package com.epam.esm.repository;
 
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
+import com.epam.esm.repository.rowmapper.GiftCertificateRowMapper;
 import com.epam.esm.repository.specfication.Specification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.Arrays;
 import java.util.List;
 
 
-@Repository("giftCertificateRepo")
+@Repository
 public class GiftCertificateRepo extends CRUDRepo<GiftCertificate> {
 
     private static final String SQL_INSERT = "insert into giftcertificates " +
@@ -31,7 +31,7 @@ public class GiftCertificateRepo extends CRUDRepo<GiftCertificate> {
 
 
     @Autowired
-    public GiftCertificateRepo (JdbcTemplate template, RowMapper<GiftCertificate> rowMapper) {
+    public GiftCertificateRepo(JdbcTemplate template, GiftCertificateRowMapper rowMapper) {
         super(template, rowMapper);
     }
 
@@ -83,6 +83,11 @@ public class GiftCertificateRepo extends CRUDRepo<GiftCertificate> {
                 entity.getDateOfModification(),
                 entity.getDurationTillExpiry()
         };
+    }
+
+    @Autowired
+    public void setGiftCertificateRowMapper(GiftCertificateRowMapper rowMapper) {
+        this.rowMapper = rowMapper;
     }
 
 }

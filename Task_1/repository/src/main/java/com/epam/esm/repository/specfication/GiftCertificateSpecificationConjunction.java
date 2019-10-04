@@ -16,7 +16,7 @@ public class GiftCertificateSpecificationConjunction implements Specification<Gi
 
     @Override
     public String toSqlClause(boolean isConjunction) {
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder("");
         stringBuilder.append(specificationsToJoin.get(0).toSqlClause(false));
         for (int i = 1; i < specificationsToJoin.size(); i++) {
             stringBuilder.append(specificationsToJoin.get(i).toSqlClause(true));
