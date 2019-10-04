@@ -1,5 +1,7 @@
 package com.epam.esm.pool;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
@@ -8,6 +10,8 @@ import java.util.concurrent.Executor;
 public final class CustomPooledConnection implements Connection, Comparable<CustomPooledConnection> {
 
     private Connection connection;
+    @Autowired
+    private ConnectionPool connectionPool;
 
     public CustomPooledConnection(Connection connection)
     {
@@ -42,7 +46,7 @@ public final class CustomPooledConnection implements Connection, Comparable<Cust
 
     @Override
     public void close() throws SQLException {
-        ConnectionPool.getInstance().freeConnection(this);
+        connectionPool.freeConnection(this);
     }
 
     @Override

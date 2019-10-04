@@ -73,30 +73,39 @@ public class GiftCertificateService {
         return giftCertificateConverter.toDTOList(giftCertificateRepo.query(conjunction));
     }
 
-    public void addGiftCertificate(GiftCertificateDTO certificateDTO) {
+    public GiftCertificateDTO addGiftCertificate(GiftCertificateDTO certificateDTO) {
         addNewTagsIfTheyDontExist(certificateDTO);
         GiftCertificate certificate = giftCertificateConverter.toEntity(certificateDTO);
         giftCertificateRepo.add(certificate);
         addReferences(certificateDTO);
+        return getGiftCertificateByID(certificateDTO.getId());
     }
 
-    public void updateGiftCertificate(GiftCertificateDTO certificateDTO) {
+    public GiftCertificateDTO updateGiftCertificate(GiftCertificateDTO certificateDTO) {
         addNewTagsIfTheyDontExist(certificateDTO);
         GiftCertificate certificate = giftCertificateConverter.toEntity(certificateDTO);
         giftCertificateRepo.update(certificate);
         updateReferences(certificateDTO);
+        return getGiftCertificateByID(certificateDTO.getId());
     }
 
-    public void deleteGiftCertificate(Specification specification) {
-        giftCertificateRepo.delete(specification);
-    }
 
-    public void deleteGiftCertificate(long id) {
+    public boolean deleteGiftCertificate(long id) {
         giftCertificateRepo.delete(new FindGiftCertificateByID(id));
+        GiftCertificateDTO dto = getGiftCertificateByID(id);
+        if (dto == null) {
+            return true;
+        }
+        return false;
     }
 
-    public void deleteGiftCertificate(GiftCertificateDTO certificate) {
+    public boolean deleteGiftCertificate(GiftCertificateDTO certificate) {
         giftCertificateRepo.delete(giftCertificateConverter.toEntity(certificate));
+        GiftCertificateDTO dto = getGiftCertificateByID(certificate.getId());
+        if (dto == null) {
+            return true;
+        }
+        return false;
     }
 
     private void addNewTagsIfTheyDontExist(GiftCertificateDTO dto) {

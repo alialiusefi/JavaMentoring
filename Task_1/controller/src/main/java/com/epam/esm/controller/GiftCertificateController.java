@@ -51,15 +51,13 @@ public class GiftCertificateController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public GiftCertificateDTO saveGiftCertificate(@RequestBody @Valid GiftCertificateDTO giftCertificateDTO) {
-        giftCertificateService.addGiftCertificate(giftCertificateDTO);
-        return giftCertificateService.getGiftCertificateByID(
-                giftCertificateDTO.getId());
+        return giftCertificateService.addGiftCertificate(giftCertificateDTO);
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public void updateGiftCertificate(@RequestBody @Valid GiftCertificateDTO giftCertificateDTO) {
-        giftCertificateService.updateGiftCertificate(giftCertificateDTO);
+    public GiftCertificateDTO updateGiftCertificate(@RequestBody @Valid GiftCertificateDTO giftCertificateDTO) {
+        return giftCertificateService.updateGiftCertificate(giftCertificateDTO);
     }
 
 

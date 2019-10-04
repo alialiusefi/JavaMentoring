@@ -32,17 +32,22 @@ public class TagService {
         return tagConverter.toDTO(tags.get(0));
     }
 
-    public void addTag(TagDTO tag) {
+    public TagDTO addTag(TagDTO tag) {
         repository.add(tagConverter.toEntity(tag));
+        return getTag(tag.getId());
     }
 
-    public void deleteTag(TagDTO tag) {
+    public boolean deleteTag(TagDTO tag) {
         repository.delete(tagConverter.toEntity(tag));
+        TagDTO dto = getTag(tag.getId());
+        return dto == null;
     }
 
-    public void deleteTag(long tagID) {
+    public boolean deleteTag(long tagID) {
         FindTagByID findTagByID = new FindTagByID(tagID);
         repository.delete(findTagByID);
+        TagDTO dto = getTag(tagID);
+        return dto == null;
     }
 
 }
