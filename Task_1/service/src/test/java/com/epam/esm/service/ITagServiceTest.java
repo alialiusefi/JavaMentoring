@@ -12,10 +12,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TagServiceTest {
+public class ITagServiceTest {
 
     @Mock
-    public TagService tagService;
+    public ITagService ITagService;
 
     @Before
     public void setUp() throws Exception {
@@ -28,29 +28,29 @@ public class TagServiceTest {
     @Test
     public void getTag() {
         TagDTO expected = new TagDTO(1, "Accesories");
-        when(tagService.getTag(expected.getId())).thenReturn(expected);
-        Assert.assertEquals(expected, tagService.getTag(expected.getId()));
+        when(ITagService.getTag(expected.getId())).thenReturn(expected);
+        Assert.assertEquals(expected, ITagService.getTag(expected.getId()));
     }
 
     @Test
     public void addTag() {
         TagDTO expected = new TagDTO(5, "TestTag");
-        when(tagService.addTag(expected)).thenReturn(expected);
-        Assert.assertEquals(expected, tagService.addTag(expected));
+        when(ITagService.addTag(expected)).thenReturn(expected);
+        Assert.assertEquals(expected, ITagService.addTag(expected));
     }
 
     @Test
     public void deleteTag() {
         boolean expected = true;
-        when(tagService.deleteTag(5)).thenReturn(expected);
-        Assert.assertTrue(tagService.deleteTag(5));
+        when(ITagService.deleteTag(5)).thenReturn(expected);
+        Assert.assertTrue(ITagService.deleteTag(5));
     }
 
     @Test
     public void testDeleteTag() {
         boolean expected = true;
         TagDTO tag = new TagDTO(5, "TestTag");
-        when(tagService.deleteTag(tag)).thenReturn(expected);
-        Assert.assertTrue(tagService.deleteTag(tag));
+        when(ITagService.deleteTag(tag)).thenReturn(expected);
+        Assert.assertTrue(ITagService.deleteTag(tag));
     }
 }

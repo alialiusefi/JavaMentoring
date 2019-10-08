@@ -9,6 +9,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 public class GiftCertificateDTO extends DTO {
 
@@ -99,5 +100,40 @@ public class GiftCertificateDTO extends DTO {
 
     public void setTagDTOList(List<TagDTO> tagDTOList) {
         this.tagDTOList = tagDTOList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        GiftCertificateDTO that = (GiftCertificateDTO) o;
+        return getDurationTillExpiry() == that.getDurationTillExpiry() &&
+                Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getDescription(), that.getDescription()) &&
+                Objects.equals(getPrice(), that.getPrice()) &&
+                Objects.equals(getDateOfCreation(), that.getDateOfCreation()) &&
+                Objects.equals(getDateOfModification(), that.getDateOfModification()) &&
+                Objects.equals(getTagDTOList(), that.getTagDTOList());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getName(), getDescription(),
+                getPrice(), getDateOfCreation(), getDateOfModification(), getDurationTillExpiry(), getTagDTOList());
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("GiftCertificateDTO{");
+        sb.append("name='").append(name).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", price=").append(price);
+        sb.append(", dateOfCreation=").append(dateOfCreation);
+        sb.append(", dateOfModification=").append(dateOfModification);
+        sb.append(", durationTillExpiry=").append(durationTillExpiry);
+        sb.append(", tagDTOList=").append(tagDTOList);
+        sb.append('}');
+        return sb.toString();
     }
 }

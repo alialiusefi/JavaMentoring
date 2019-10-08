@@ -7,6 +7,7 @@ import com.epam.esm.dto.TagDTO;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ResourceNotFoundException;
+import com.epam.esm.repository.CRUDRepo;
 import com.epam.esm.repository.GiftCertificateRepo;
 import com.epam.esm.repository.TagRepo;
 import com.epam.esm.repository.specfication.*;
@@ -17,17 +18,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class GiftCertificateService {
+public class IGiftCertificateService {
 
-    private GiftCertificateRepo giftCertificateRepo;
-    private TagRepo tagRepository;
+    private CRUDRepo<GiftCertificate> giftCertificateRepo;
+    private CRUDRepo<Tag> tagRepository;
     private GiftCertificateConverter giftCertificateConverter;
     private TagConverter tagConverter;
 
     @Autowired
-    public GiftCertificateService(GiftCertificateRepo giftCertificateRepo, TagRepo tagRepository,
-                                  GiftCertificateConverter giftCertificateConverter,
-                                  TagConverter tagConverter) {
+    public IGiftCertificateService(GiftCertificateRepo giftCertificateRepo, TagRepo tagRepository,
+                                   GiftCertificateConverter giftCertificateConverter,
+                                   TagConverter tagConverter) {
         this.giftCertificateRepo = giftCertificateRepo;
         this.tagRepository = tagRepository;
         this.giftCertificateConverter = giftCertificateConverter;
@@ -129,8 +130,9 @@ public class GiftCertificateService {
         for (TagDTO i : tagsDTO) {
             tags.add(tagConverter.toEntity(i));
         }
+        GiftCertificateRepo repo = (GiftCertificateRepo) giftCertificateRepo;
         for (Tag i : tags) {
-            giftCertificateRepo.addReference(certificate, i);
+            repo.addReference(certificate, i);
         }
     }
 
@@ -143,8 +145,9 @@ public class GiftCertificateService {
         }
         List<Tag> oldTags = tagRepository.query(new FindTagsByCertificateID(certificate.getId()));
         newTags.removeAll(oldTags);
+        GiftCertificateRepo repo = (GiftCertificateRepo) giftCertificateRepo;
         for (Tag i : newTags) {
-            giftCertificateRepo.addReference(certificate, i);
+            repo.addReference(certificate, i);
         }
     }
 

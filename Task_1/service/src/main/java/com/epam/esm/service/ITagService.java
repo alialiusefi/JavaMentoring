@@ -4,6 +4,7 @@ import com.epam.esm.converter.TagConverter;
 import com.epam.esm.dto.TagDTO;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ResourceNotFoundException;
+import com.epam.esm.repository.CRUDRepo;
 import com.epam.esm.repository.TagRepo;
 import com.epam.esm.repository.specfication.FindTagByID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TagService {
+public class ITagService {
 
-    private TagRepo repository;
+    private CRUDRepo<Tag> repository;
     private TagConverter tagConverter;
 
     @Autowired
-    public TagService(TagRepo repository, TagConverter tagConverter) {
+    public ITagService(TagRepo repository, TagConverter tagConverter) {
         this.repository = repository;
         this.tagConverter = tagConverter;
     }

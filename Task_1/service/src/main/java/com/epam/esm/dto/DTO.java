@@ -23,7 +23,7 @@ public abstract class DTO {
         this.id = id;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

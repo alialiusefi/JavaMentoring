@@ -18,10 +18,10 @@ import java.util.List;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class GiftCertificateServiceTest {
+public class IGiftCertificateServiceTest {
 
     @Mock
-    public GiftCertificateService giftCertificateService;
+    public IGiftCertificateService IGiftCertificateService;
 
     @Before
     public void setUp() {
@@ -33,7 +33,7 @@ public class GiftCertificateServiceTest {
 
     @Test
     public void getGiftCertificateByID() {
-        when(giftCertificateService.getGiftCertificateByID(1)).thenReturn(
+        when(IGiftCertificateService.getGiftCertificateByID(1)).thenReturn(
                 new GiftCertificateDTO(1, "ACME Discount Voucher",
                         "Discount while shopping",
                         BigDecimal.valueOf(20.00),
@@ -44,7 +44,7 @@ public class GiftCertificateServiceTest {
                         new TagDTO(2, "Food")
                 )
                 ));
-        Assert.assertEquals(giftCertificateService.getGiftCertificateByID(1),
+        Assert.assertEquals(IGiftCertificateService.getGiftCertificateByID(1),
                 new GiftCertificateDTO(1, "ACME Discount Voucher",
                         "Discount while shopping",
                         BigDecimal.valueOf(20.00),
@@ -73,8 +73,8 @@ public class GiftCertificateServiceTest {
                 new TagDTO(1, "Accesories"),
                 new TagDTO(2, "Food")
         )));
-        when(giftCertificateService.getGiftCertificate(tagID, name, desc, sortByDate, sortByName)).thenReturn(expected);
-        Assert.assertEquals(expected, giftCertificateService.getGiftCertificate(tagID, name, desc, sortByDate, sortByName));
+        when(IGiftCertificateService.getGiftCertificate(tagID, name, desc, sortByDate, sortByName)).thenReturn(expected);
+        Assert.assertEquals(expected, IGiftCertificateService.getGiftCertificate(tagID, name, desc, sortByDate, sortByName));
     }
 
     @Test
@@ -89,10 +89,10 @@ public class GiftCertificateServiceTest {
                 3,
                 Arrays.asList(new TagDTO(1, "Accesories"))
         );
-        when(giftCertificateService.addGiftCertificate(expected))
+        when(IGiftCertificateService.addGiftCertificate(expected))
                 .thenReturn(expected);
-        giftCertificateService.addGiftCertificate(expected);
-        GiftCertificateDTO actual = giftCertificateService.getGiftCertificateByID(expected.getId());
+        IGiftCertificateService.addGiftCertificate(expected);
+        GiftCertificateDTO actual = IGiftCertificateService.getGiftCertificateByID(expected.getId());
         Assert.assertEquals(expected, actual);
     }
 
@@ -108,19 +108,19 @@ public class GiftCertificateServiceTest {
                 5,
                 Arrays.asList(new TagDTO(1, "Accesories"))
         );
-        when(giftCertificateService.addGiftCertificate(expected))
+        when(IGiftCertificateService.addGiftCertificate(expected))
                 .thenReturn(expected);
-        giftCertificateService.addGiftCertificate(expected);
-        GiftCertificateDTO actual = giftCertificateService.getGiftCertificateByID(expected.getId());
+        IGiftCertificateService.addGiftCertificate(expected);
+        GiftCertificateDTO actual = IGiftCertificateService.getGiftCertificateByID(expected.getId());
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void deleteGiftCertificate() {
         boolean expected = true;
-        when(giftCertificateService.deleteGiftCertificate(2))
+        when(IGiftCertificateService.deleteGiftCertificate(2))
                 .thenReturn(true);
-        boolean actual = giftCertificateService.deleteGiftCertificate(2);
+        boolean actual = IGiftCertificateService.deleteGiftCertificate(2);
         Assert.assertTrue(actual);
     }
 
@@ -137,9 +137,9 @@ public class GiftCertificateServiceTest {
                 5,
                 Arrays.asList(new TagDTO(1, "Accesories"))
         );
-        when(giftCertificateService.deleteGiftCertificate(giftCertificateDTO))
+        when(IGiftCertificateService.deleteGiftCertificate(giftCertificateDTO))
                 .thenReturn(true);
-        boolean actual = giftCertificateService.deleteGiftCertificate(giftCertificateDTO);
+        boolean actual = IGiftCertificateService.deleteGiftCertificate(giftCertificateDTO);
         Assert.assertTrue(actual);
     }
 
