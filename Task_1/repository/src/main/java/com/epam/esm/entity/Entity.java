@@ -7,13 +7,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.io.Serializable;
 import java.util.Objects;
 
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        property = "type")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = Tag.class, name = "Tag"),
-        @JsonSubTypes.Type(value = GiftCertificate.class, name = "GiftCertificate")
-})
 public abstract class Entity implements Serializable {
 
     @JsonIgnore
