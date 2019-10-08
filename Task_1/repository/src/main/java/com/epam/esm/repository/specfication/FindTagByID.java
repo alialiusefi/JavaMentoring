@@ -4,11 +4,11 @@ import com.epam.esm.entity.Tag;
 
 public final class FindTagByID extends FindSpecification<Tag> {
 
-    private long id;
+    private Long id;
     private static final String SQL_QUERY = "select tag.id, tag.tag_name from tag where tag.id = ?";
     private static final String CONJ_SQL_QUERY = "and where tag.id = ?";
 
-    public FindTagByID(long id) {
+    public FindTagByID(Long id) {
         this.id = id;
     }
 

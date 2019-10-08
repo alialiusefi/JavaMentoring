@@ -12,9 +12,9 @@ public class FindGiftCertificateByID extends FindSpecification<GiftCertificate> 
 
     private static final String CONJ_SQL_CLAUSE = "and where giftcertificates.id = ? ";
 
-    private long id;
+    private Long id;
 
-    public FindGiftCertificateByID(long id) {
+    public FindGiftCertificateByID(Long id) {
         this.id = id;
     }
 

@@ -13,9 +13,9 @@ public class FindGiftCertificatesByTagID extends FindSpecification<GiftCertifica
     private static final String CONJ_SQL_CLAUSE = "inner join tagged_giftcertificates on giftcertificates.id = gift_certificate_id " +
             "where tag_id = ?";
 
-    private long tagID;
+    private Long tagID;
 
-    public FindGiftCertificatesByTagID(long id) {
+    public FindGiftCertificatesByTagID(Long id) {
         this.tagID = id;
     }
 
