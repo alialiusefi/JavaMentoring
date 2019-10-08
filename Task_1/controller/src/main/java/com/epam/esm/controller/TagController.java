@@ -1,7 +1,7 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.dto.TagDTO;
-import com.epam.esm.service.TagService;
+import com.epam.esm.service.ITagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,30 +14,30 @@ import javax.validation.Valid;
 public class TagController {
 
     @Autowired
-    private TagService tagService;
+    private ITagService ITagService;
 
 
     @GetMapping("/")
     public TagDTO getTag() {
-        return tagService.getTag(1);
+        return ITagService.getTag(1);
     }
 
     @GetMapping("/{id}")
     public TagDTO getTag(@PathVariable long id) {
-        return tagService.getTag(id);
+        return ITagService.getTag(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public TagDTO saveTag(@RequestBody @Valid TagDTO tag) {
-        tagService.addTag(tag);
-        return tagService.getTag(tag.getId());
+        ITagService.addTag(tag);
+        return ITagService.getTag(tag.getId());
     }
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteTag(@PathVariable long id) {
-        tagService.deleteTag(id);
+        ITagService.deleteTag(id);
     }
 
 }
