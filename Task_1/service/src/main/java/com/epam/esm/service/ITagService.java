@@ -10,8 +10,6 @@ import com.epam.esm.repository.specfication.FindTagByID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class ITagService {
 
@@ -25,12 +23,12 @@ public class ITagService {
     }
 
     public TagDTO getTag(long id) {
-        List<Tag> tags = repository.query(
-                new FindTagByID(id));
-        if (tags.isEmpty()) {
+        Tag tagFound = repository.findByID(
+                id);
+        if (tagFound == null) {
             throw new ResourceNotFoundException("Tag with this id is doesn't exist");
         }
-        return tagConverter.toDTO(tags.get(0));
+        return tagConverter.toDTO(tagFound);
     }
 
     public TagDTO addTag(TagDTO tag) {

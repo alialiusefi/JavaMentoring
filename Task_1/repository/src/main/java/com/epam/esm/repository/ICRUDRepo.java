@@ -11,9 +11,9 @@ public interface ICRUDRepo<T extends Entity> {
 
     void update(T entity);
 
+    T findByID(long id);
+
     List<T> query(Specification specification);
-
-
     void delete(T entity);
 
     void delete(Specification specification);

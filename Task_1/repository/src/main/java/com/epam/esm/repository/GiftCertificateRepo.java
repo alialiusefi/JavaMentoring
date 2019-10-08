@@ -29,6 +29,11 @@ public class GiftCertificateRepo extends CRUDRepo<GiftCertificate> {
     private static final String INSERT_REFERENCE_SQL = "insert into tagged_giftcertificates" +
             "(tag_id, gift_certificate_id) VALUES (?,?)";
 
+    private static final String SQL_SELECT_BY_ID = "select giftcertificates.id,giftcertificates.name" +
+            ",giftcertificates.description,giftcertificates.price" +
+            ",giftcertificates.date_created,giftcertificates.date_modified," +
+            "giftcertificates.duration_till_expiry " +
+            "from giftcertificates where giftcertificates.id = ? ";
 
     @Autowired
     public GiftCertificateRepo(JdbcTemplate template, GiftCertificateRowMapper rowMapper) {
@@ -52,6 +57,11 @@ public class GiftCertificateRepo extends CRUDRepo<GiftCertificate> {
         Object[] fieldsArrayWithParameters = Arrays.copyOf(fieldsArray, fieldsArray.length + 1);
         fieldsArrayWithParameters[fieldsArrayWithParameters.length - 1] = entity.getId();
         jdbcTemplate.update(SQL_UPDATE, fieldsArrayWithParameters);
+    }
+
+    @Override
+    public GiftCertificate findByID(long id) {
+        return jdbcTemplate.queryForObject(SQL_SELECT_BY_ID,rowMapper,id);
     }
 
     @Override

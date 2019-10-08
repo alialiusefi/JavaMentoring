@@ -14,6 +14,8 @@ public final class TagRepo extends CRUDRepo<Tag> {
 
     private static final String SQL_INSERT = "insert into tag (tag_name) values (?);";
     private static final String SQL_DELETE = "delete from tag where tag.id = ?";
+    private static final String SQL_SELECT_BY_ID = "select tag.id, tag.tag_name " +
+            "from tag where tag.id = ?";
 
     @Autowired
     public TagRepo(JdbcTemplate template, TagRowMapper mapper) {
@@ -28,6 +30,11 @@ public final class TagRepo extends CRUDRepo<Tag> {
     @Override
     public void update(Tag entity) {
         throw new UnsupportedOperationException("Method not implemented yet!");
+    }
+
+    @Override
+    public Tag findByID(long id) {
+       return jdbcTemplate.queryForObject(SQL_SELECT_BY_ID, rowMapper, id);
     }
 
     @Override

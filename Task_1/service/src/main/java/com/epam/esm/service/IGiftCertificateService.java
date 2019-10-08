@@ -36,12 +36,12 @@ public class IGiftCertificateService {
     }
 
     public GiftCertificateDTO getGiftCertificateByID(long id) {
-        List<GiftCertificate> giftCertificates = giftCertificateRepo.query(
-                new FindGiftCertificateByID(id));
-        if (giftCertificates.isEmpty()) {
+        GiftCertificate giftCertificate = giftCertificateRepo.findByID(id);
+        if (giftCertificate == null) {
             throw new ResourceNotFoundException("Gift Certificate with this id doesn't exist!");
         }
-        GiftCertificateDTO giftCertificateDTO = giftCertificateConverter.toDTO(giftCertificates.get(0));
+        GiftCertificateDTO giftCertificateDTO = giftCertificateConverter.toDTO(
+                giftCertificate);
         giftCertificateDTO.setTagDTOList(
                 tagConverter.toDTOList(tagRepository.query(
                         new FindTagsByCertificateID(giftCertificateDTO.getId()))));
