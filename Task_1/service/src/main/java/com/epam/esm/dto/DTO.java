@@ -14,12 +14,12 @@ import java.util.Objects;
 })
 public abstract class DTO {
 
-    protected long id;
+    protected Long id;
 
     public DTO() {
     }
 
-    public DTO(long id) {
+    public DTO(Long id) {
         this.id = id;
     }
 
@@ -27,7 +27,7 @@ public abstract class DTO {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

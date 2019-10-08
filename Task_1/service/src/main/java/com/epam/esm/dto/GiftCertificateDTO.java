@@ -24,6 +24,7 @@ public class GiftCertificateDTO extends DTO {
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate dateOfModification;
+
     private int durationTillExpiry;
 
     private List<TagDTO> tagDTOList;
