@@ -5,14 +5,17 @@ import com.epam.esm.service.IGiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @RequestMapping("/v1/giftcertificates")
 @RestController
+@Validated
 public class GiftCertificateController {
 
     @Autowired
@@ -24,12 +27,16 @@ public class GiftCertificateController {
     }
 
     @GetMapping()
-    public List<GiftCertificateDTO> getGiftCertificate(@RequestParam(required = false) @Valid
-                                                       @Pattern(regexp = "^[1-9][0-9]+$") String tagID,
-                                                       @RequestParam(required = false) @Valid String giftCertificateName,
-                                                       @RequestParam(required = false) @Valid String giftCertificateDesc,
-                                                       @RequestParam(required = false) @Valid String sortByDate,
-                                                       @RequestParam(required = false) @Valid String sortByName) {
+    public List<GiftCertificateDTO> getGiftCertificate(@RequestParam(required = false)
+                                                       @Pattern(regexp = "[1-9][0-9]*") String tagID,
+                                                       @RequestParam(required = false)
+                                                       @Size(min = 1, max = 50) String giftCertificateName,
+                                                       @RequestParam(required = false)
+                                                       @Size(min = 1, max = 256) String giftCertificateDesc,
+                                                       @RequestParam(required = false)
+                                                       @Pattern(regexp = "^-1|1$") String sortByDate,
+                                                       @RequestParam(required = false)
+                                                       @Pattern(regexp = "^-1|1$") String sortByName) {
         int sortByDateOrder = 0;
         int sortByNameOrder = 0;
         long tagIDLong = 0L;
@@ -38,9 +45,10 @@ public class GiftCertificateController {
         }
         if (sortByDate != null) {
             sortByDateOrder = Integer.parseInt(sortByDate);
-        }
-        if (sortByName != null) {
-            sortByNameOrder = Integer.parseInt(sortByName);
+        } else {
+            if (sortByName != null) {
+                sortByNameOrder = Integer.parseInt(sortByName);
+            }
         }
         return IGiftCertificateService.getGiftCertificate(tagIDLong,
                 giftCertificateName,

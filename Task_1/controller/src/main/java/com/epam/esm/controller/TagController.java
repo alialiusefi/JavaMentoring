@@ -5,12 +5,14 @@ import com.epam.esm.service.ITagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/v1/tags")
+@Validated
 public class TagController {
 
     @Autowired
@@ -25,8 +27,7 @@ public class TagController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public TagDTO saveTag(@RequestBody @Valid TagDTO tag) {
-        ITagService.addTag(tag);
-        return ITagService.getTag(tag.getId());
+        return ITagService.addTag(tag);
     }
 
     @DeleteMapping(value = "/{id}")
