@@ -9,8 +9,10 @@ import com.epam.esm.repository.TagRepo;
 import com.epam.esm.repository.specfication.FindTagByID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class ITagService {
 
     private CRUDRepo<Tag> repository;

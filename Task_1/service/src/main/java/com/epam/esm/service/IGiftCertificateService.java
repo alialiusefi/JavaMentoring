@@ -13,11 +13,13 @@ import com.epam.esm.repository.TagRepo;
 import com.epam.esm.repository.specfication.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class IGiftCertificateService {
 
     private CRUDRepo<GiftCertificate> giftCertificateRepo;
