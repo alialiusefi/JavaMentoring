@@ -22,7 +22,7 @@ public class GiftCertificateRepo extends CRUDRepo<GiftCertificate> {
             "where giftcertificates.id = ?";
 
     private static final String SQL_UPDATE = "update giftcertificates " +
-            "set id = ? , name = ? ,description = ? ,price = ?, " +
+            "set name = ? ,description = ? ,price = ?, " +
             "date_created = ? , date_modified = ? , " +
             "duration_till_expiry = ? where id = ?";
 
@@ -47,8 +47,8 @@ public class GiftCertificateRepo extends CRUDRepo<GiftCertificate> {
     }
 
 
-    public void addReference(GiftCertificate entity, Tag tag) {
-        jdbcTemplate.update(INSERT_REFERENCE_SQL, tag.getId(), entity.getId());
+    public void addReference(GiftCertificate giftCertificate, Tag tag) {
+        jdbcTemplate.update(INSERT_REFERENCE_SQL, tag.getId(), giftCertificate.getId());
     }
 
     @Override

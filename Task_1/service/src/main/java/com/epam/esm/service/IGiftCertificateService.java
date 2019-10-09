@@ -82,6 +82,7 @@ public class IGiftCertificateService {
         addNewTagsIfTheyDontExist(certificateDTO);
         GiftCertificate certificate = giftCertificateConverter.toEntity(certificateDTO);
         GiftCertificate giftCertificateCreated = giftCertificateRepo.add(certificate);
+        certificateDTO.setId(giftCertificateCreated.getId());
         addReferences(certificateDTO);
         GiftCertificateDTO giftCertificateDTOCreated = giftCertificateConverter.toDTO(giftCertificateCreated);
         List<TagDTO> tagDTOList = tagConverter.toDTOList(tagRepository.query(
@@ -94,6 +95,7 @@ public class IGiftCertificateService {
         addNewTagsIfTheyDontExist(certificateDTO);
         GiftCertificate certificate = giftCertificateConverter.toEntity(certificateDTO);
         giftCertificateRepo.update(certificate);
+        certificateDTO.setId(certificate.getId());
         updateReferences(certificateDTO);
         return getGiftCertificateByID(certificateDTO.getId());
     }
@@ -113,7 +115,7 @@ public class IGiftCertificateService {
         List<TagDTO> tags = dto.getTagDTOList();
         List<Tag> newTags = new ArrayList<>();
         for (TagDTO i : tags) {
-            List<Tag> tagFound = tagRepository.query(new FindTagByID(i.getId()));
+            List<Tag> tagFound = tagRepository.query(new FindTagByName(i.getName()));
             if (tagFound.isEmpty()) {
                 newTags.add(tagConverter.toEntity(i));
             }
@@ -126,10 +128,7 @@ public class IGiftCertificateService {
     private void addReferences(GiftCertificateDTO dto) {
         GiftCertificate certificate = giftCertificateConverter.toEntity(dto);
         List<TagDTO> tagsDTO = dto.getTagDTOList();
-        List<Tag> tags = new ArrayList<>();
-        for (TagDTO i : tagsDTO) {
-            tags.add(tagConverter.toEntity(i));
-        }
+        List<Tag> tags = tagConverter.toEntityList(tagsDTO);
         GiftCertificateRepo repo = (GiftCertificateRepo) giftCertificateRepo;
         for (Tag i : tags) {
             repo.addReference(certificate, i);

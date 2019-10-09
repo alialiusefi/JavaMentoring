@@ -11,7 +11,7 @@ public class FindTagsByCertificateID implements Specification<Tag> {
             "where gift_certificate_id = ? ";
     private static final String CONJ_SQL_CLAUSE = "and where gift_certificate_id = ? ";
 
-    public FindTagsByCertificateID(Long id) {
+    public FindTagsByCertificateID(long id) {
         this.id = id;
     }
 
