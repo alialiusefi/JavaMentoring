@@ -1,3 +1,4 @@
+
 create table giftcertificates
 (
     id                   serial primary key,
@@ -21,4 +22,15 @@ create table tagged_giftcertificates
     gift_certificate_id integer references giftcertificates (id) on delete cascade
 );
 
+CREATE FUNCTION public.consists(IN a text, IN b text)
+    RETURNS boolean
+    LANGUAGE 'plpgsql'
+AS
+$BODY$
+begin
+    return b like '%' || a || '%';
+end;
+$BODY$;
 
+ALTER FUNCTION public.consists(text, text)
+    OWNER TO postgres;

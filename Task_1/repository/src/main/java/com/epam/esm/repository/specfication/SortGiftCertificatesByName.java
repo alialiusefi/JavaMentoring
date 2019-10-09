@@ -8,17 +8,17 @@ public class SortGiftCertificatesByName extends SortSpecification<GiftCertificat
             ",giftcertificates.description,giftcertificates.price" +
             ",giftcertificates.date_created,giftcertificates.date_modified," +
             "giftcertificates.duration_till_expiry " +
-            "from giftcertificates inner join tagged_giftcertificates on giftcertificates.id = gift_certificate_id " +
+            "from giftcertificates " +
             "order by giftcertificates.date_created asc ";
     private static final String SQL_CLAUSE_DESC = "select giftcertificates.id,giftcertificates.name" +
             ",giftcertificates.description,giftcertificates.price" +
             ",giftcertificates.date_created,giftcertificates.date_modified," +
             "giftcertificates.duration_till_expiry " +
-            "from giftcertificates inner join tagged_giftcertificates on giftcertificates.id = gift_certificate_id " +
+            "from giftcertificates " +
             "order by giftcertificates.date_created desc ";
 
-    private static final String CONJ_SQL_CLAUSE_ASC = "giftcertificates.date_created asc ";
-    private static final String CONJ_SQL_CLAUSE_DESC = "giftcertificates.date_created desc ";
+    private static final String CONJ_SQL_CLAUSE_ASC = "order by giftcertificates.date_created asc ";
+    private static final String CONJ_SQL_CLAUSE_DESC = "order by giftcertificates.date_created desc ";
 
     private int sortOrder;
 
@@ -40,6 +40,6 @@ public class SortGiftCertificatesByName extends SortSpecification<GiftCertificat
 
     @Override
     public Object[] getParameters() {
-        return new Object[]{sortOrder};
+        return new Object[]{};
     }
 }

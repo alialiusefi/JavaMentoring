@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
 
 public class RepositoryConfig {
 
-    @Bean
+    @Bean("connectionPool")
     public DataSource dataSource() {
         ResourceBundle bundle = ResourceBundle.getBundle("dbConfig");
         return new ConnectionPool(bundle.getString("driver"),
@@ -36,7 +36,7 @@ public class RepositoryConfig {
     }
 
     @Bean
-    @DependsOn("ConnectionPool")
+    @DependsOn("connectionPool")
     public PlatformTransactionManager transactionManager(DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }

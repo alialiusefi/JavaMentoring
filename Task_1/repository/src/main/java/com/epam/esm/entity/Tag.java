@@ -1,19 +1,12 @@
 package com.epam.esm.entity;
 
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.util.Objects;
 
 
 public class Tag extends Entity {
 
-    @NotNull
-    @Size(min = 1, max = 16)
-    @Pattern(regexp = "^[a-zA-Z]+$")
-    @NotBlank(message = "Tag Name is mandatory")
+
     private String name;
 
     public Tag(long id, String name) {

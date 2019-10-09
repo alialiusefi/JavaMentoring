@@ -8,10 +8,10 @@ public class FindGiftCertificatesByName extends FindSpecification<GiftCertificat
             ",giftcertificates.description,giftcertificates.price" +
             ",giftcertificates.date_created,giftcertificates.date_modified," +
             "giftcertificates.duration_till_expiry " +
-            "from giftcertificates inner join tagged_giftcertificates on giftcertificates.id = gift_certificate_id " +
-            "where ? like '%' || giftcertificates.name || '%' ";
+            "from giftcertificates " +
+            "where public.consists(?,giftcertificates.name)  ";
 
-    private static final String CONJ_SQL_CLAUSE = "and ? like '%' || giftcertificates.name || '%' ";
+    private static final String CONJ_SQL_CLAUSE = "and public.consists(?,giftcertificates.name) ";
 
     private String name;
 

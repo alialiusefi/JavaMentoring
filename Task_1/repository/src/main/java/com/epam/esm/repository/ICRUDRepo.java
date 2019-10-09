@@ -7,13 +7,14 @@ import java.util.List;
 
 public interface ICRUDRepo<T extends Entity> {
 
-    void add(T entity);
+    T add(T entity);
 
     void update(T entity);
 
     T findByID(long id);
 
     List<T> query(Specification specification);
+
     void delete(T entity);
 
     void delete(Specification specification);

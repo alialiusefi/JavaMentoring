@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public final class TagRepo extends CRUDRepo<Tag> {
 
-    private static final String SQL_INSERT = "insert into tag (tag_name) values (?);";
+    private static final String SQL_INSERT = "insert into tag (tag_name) values (?) returning id,tag_name";
     private static final String SQL_DELETE = "delete from tag where tag.id = ?";
     private static final String SQL_SELECT_BY_ID = "select tag.id, tag.tag_name " +
             "from tag where tag.id = ?";
@@ -23,8 +23,8 @@ public final class TagRepo extends CRUDRepo<Tag> {
     }
 
     @Override
-    public void add(Tag entity) {
-        jdbcTemplate.update(SQL_INSERT, getFieldsArray(entity));
+    public Tag add(Tag entity) {
+        return jdbcTemplate.queryForObject(SQL_INSERT, getFieldsArray(entity), rowMapper);
     }
 
     @Override
@@ -34,7 +34,7 @@ public final class TagRepo extends CRUDRepo<Tag> {
 
     @Override
     public Tag findByID(long id) {
-       return jdbcTemplate.queryForObject(SQL_SELECT_BY_ID, rowMapper, id);
+        return jdbcTemplate.queryForObject(SQL_SELECT_BY_ID, rowMapper, id);
     }
 
     @Override
