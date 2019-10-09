@@ -5,19 +5,26 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
+@Validated
 public class GiftCertificateDTO extends DTO {
 
+    @Size(min = 1, max = 50)
     private String name;
+    @Size(min = 1, max = 256)
     private String description;
+    @Positive
     private BigDecimal price;
-
-
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate dateOfCreation;
@@ -28,6 +35,8 @@ public class GiftCertificateDTO extends DTO {
 
     private int durationTillExpiry;
 
+    @NotEmpty
+    @Valid
     private List<TagDTO> tagDTOList;
 
     public GiftCertificateDTO() {

@@ -21,6 +21,7 @@ public class GiftCertificateConverter extends BaseConverter implements IConvert<
         return modelMapper.map(entity, GiftCertificateDTO.class);
     }
 
+
     @Override
     public List<GiftCertificate> toEntityList(List<GiftCertificateDTO> dto) {
         List<GiftCertificate> giftCertificates = new ArrayList<>();

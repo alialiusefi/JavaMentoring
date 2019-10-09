@@ -91,8 +91,7 @@ public class IGiftCertificateServiceTest {
         );
         when(IGiftCertificateService.addGiftCertificate(expected))
                 .thenReturn(expected);
-        IGiftCertificateService.addGiftCertificate(expected);
-        GiftCertificateDTO actual = IGiftCertificateService.getGiftCertificateByID(expected.getId());
+        GiftCertificateDTO actual = IGiftCertificateService.addGiftCertificate(expected);
         Assert.assertEquals(expected, actual);
     }
 
@@ -110,8 +109,7 @@ public class IGiftCertificateServiceTest {
         );
         when(IGiftCertificateService.addGiftCertificate(expected))
                 .thenReturn(expected);
-        IGiftCertificateService.addGiftCertificate(expected);
-        GiftCertificateDTO actual = IGiftCertificateService.getGiftCertificateByID(expected.getId());
+        GiftCertificateDTO actual = IGiftCertificateService.addGiftCertificate(expected);
         Assert.assertEquals(expected, actual);
     }
 

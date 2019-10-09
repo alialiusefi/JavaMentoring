@@ -3,6 +3,8 @@ package com.epam.esm.dto;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.Objects;
 
 @JsonTypeInfo(
@@ -12,8 +14,10 @@ import java.util.Objects;
         @JsonSubTypes.Type(value = TagDTO.class, name = "Tag"),
         @JsonSubTypes.Type(value = GiftCertificateDTO.class, name = "GiftCertificate")
 })
+@Valid
 public abstract class DTO {
 
+    @Positive
     protected Long id;
 
     public DTO() {

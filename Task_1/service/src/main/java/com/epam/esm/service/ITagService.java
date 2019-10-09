@@ -8,6 +8,7 @@ import com.epam.esm.repository.CRUDRepo;
 import com.epam.esm.repository.TagRepo;
 import com.epam.esm.repository.specfication.FindTagByID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,30 +26,27 @@ public class ITagService {
     }
 
     public TagDTO getTag(long id) {
-        Tag tagFound = repository.findByID(
-                id);
-        if (tagFound == null) {
-            throw new ResourceNotFoundException("Tag with this id is doesn't exist");
+        try {
+            Tag tagFound = repository.findByID(id);
+            return tagConverter.toDTO(tagFound);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException("Tag with ID: " + id + " was not found!");
         }
-        return tagConverter.toDTO(tagFound);
     }
 
     public TagDTO addTag(TagDTO tag) {
-        repository.add(tagConverter.toEntity(tag));
-        return getTag(tag.getId());
+        return tagConverter.toDTO(repository.add(tagConverter.toEntity(tag)));
     }
 
     public boolean deleteTag(TagDTO tag) {
         repository.delete(tagConverter.toEntity(tag));
-        TagDTO dto = getTag(tag.getId());
-        return dto == null;
+        return true;
     }
 
     public boolean deleteTag(long tagID) {
         FindTagByID findTagByID = new FindTagByID(tagID);
         repository.delete(findTagByID);
-        TagDTO dto = getTag(tagID);
-        return dto == null;
+        return true;
     }
 
 }

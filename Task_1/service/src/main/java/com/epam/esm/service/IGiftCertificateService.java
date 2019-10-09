@@ -12,6 +12,7 @@ import com.epam.esm.repository.GiftCertificateRepo;
 import com.epam.esm.repository.TagRepo;
 import com.epam.esm.repository.specfication.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,16 +39,17 @@ public class IGiftCertificateService {
     }
 
     public GiftCertificateDTO getGiftCertificateByID(long id) {
-        GiftCertificate giftCertificate = giftCertificateRepo.findByID(id);
-        if (giftCertificate == null) {
-            throw new ResourceNotFoundException("Gift Certificate with this id doesn't exist!");
+        try {
+            GiftCertificate giftCertificate = giftCertificateRepo.findByID(id);
+            GiftCertificateDTO giftCertificateDTO = giftCertificateConverter.toDTO(
+                    giftCertificate);
+            giftCertificateDTO.setTagDTOList(
+                    tagConverter.toDTOList(tagRepository.query(
+                            new FindTagsByCertificateID(giftCertificateDTO.getId()))));
+            return giftCertificateDTO;
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException("Gift Certificate with ID: " + id + " was not found!");
         }
-        GiftCertificateDTO giftCertificateDTO = giftCertificateConverter.toDTO(
-                giftCertificate);
-        giftCertificateDTO.setTagDTOList(
-                tagConverter.toDTOList(tagRepository.query(
-                        new FindTagsByCertificateID(giftCertificateDTO.getId()))));
-        return giftCertificateDTO;
     }
 
     public List<GiftCertificateDTO> getGiftCertificate(long tagID, String name, String desc, int sortByDate, int sortByName) {
@@ -79,9 +81,13 @@ public class IGiftCertificateService {
     public GiftCertificateDTO addGiftCertificate(GiftCertificateDTO certificateDTO) {
         addNewTagsIfTheyDontExist(certificateDTO);
         GiftCertificate certificate = giftCertificateConverter.toEntity(certificateDTO);
-        giftCertificateRepo.add(certificate);
+        GiftCertificate giftCertificateCreated = giftCertificateRepo.add(certificate);
         addReferences(certificateDTO);
-        return getGiftCertificateByID(certificateDTO.getId());
+        GiftCertificateDTO giftCertificateDTOCreated = giftCertificateConverter.toDTO(giftCertificateCreated);
+        List<TagDTO> tagDTOList = tagConverter.toDTOList(tagRepository.query(
+                new FindTagsByCertificateID(giftCertificateDTOCreated.getId())));
+        giftCertificateDTOCreated.setTagDTOList(tagDTOList);
+        return giftCertificateDTOCreated;
     }
 
     public GiftCertificateDTO updateGiftCertificate(GiftCertificateDTO certificateDTO) {
@@ -95,20 +101,12 @@ public class IGiftCertificateService {
 
     public boolean deleteGiftCertificate(long id) {
         giftCertificateRepo.delete(new FindGiftCertificateByID(id));
-        GiftCertificateDTO dto = getGiftCertificateByID(id);
-        if (dto == null) {
-            return true;
-        }
-        return false;
+        return true;
     }
 
     public boolean deleteGiftCertificate(GiftCertificateDTO certificate) {
         giftCertificateRepo.delete(giftCertificateConverter.toEntity(certificate));
-        GiftCertificateDTO dto = getGiftCertificateByID(certificate.getId());
-        if (dto == null) {
-            return true;
-        }
-        return false;
+        return true;
     }
 
     private void addNewTagsIfTheyDontExist(GiftCertificateDTO dto) {
