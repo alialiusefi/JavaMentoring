@@ -24,7 +24,8 @@ public class GiftCertificateController {
     }
 
     @GetMapping()
-    public List<GiftCertificateDTO> getGiftCertificate(@RequestParam(required = false) @Valid @Pattern(regexp = "^[1-9][0-9]+$") String tagID,
+    public List<GiftCertificateDTO> getGiftCertificate(@RequestParam(required = false) @Valid
+                                                       @Pattern(regexp = "^[1-9][0-9]+$") String tagID,
                                                        @RequestParam(required = false) @Valid String giftCertificateName,
                                                        @RequestParam(required = false) @Valid String giftCertificateDesc,
                                                        @RequestParam(required = false) @Valid String sortByDate,

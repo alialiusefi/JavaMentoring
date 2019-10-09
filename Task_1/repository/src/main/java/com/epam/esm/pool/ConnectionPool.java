@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.jdbc.datasource.AbstractDataSource;
 
+import javax.annotation.PreDestroy;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.LinkedHashSet;
@@ -24,6 +25,7 @@ public final class ConnectionPool extends AbstractDataSource {
     private Set<CustomPooledConnection> usedConnections
             = new LinkedHashSet<>();
     private int maxConnections;
+
 
     public ConnectionPool(String driverClass, String URL, String userName,
                           String password, int startConnections, int maxConnections,
@@ -112,7 +114,7 @@ public final class ConnectionPool extends AbstractDataSource {
         }
     }
 
-    //@PreDestroy
+    @PreDestroy
     public void destroy() {
         if(freeConnections !=null && usedConnections !=null)
         {

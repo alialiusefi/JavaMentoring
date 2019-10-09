@@ -17,11 +17,6 @@ public class TagController {
     private ITagService ITagService;
 
 
-    @GetMapping("/")
-    public TagDTO getTag() {
-        return ITagService.getTag(1);
-    }
-
     @GetMapping("/{id}")
     public TagDTO getTag(@PathVariable long id) {
         return ITagService.getTag(id);
