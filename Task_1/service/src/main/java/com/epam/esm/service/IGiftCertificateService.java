@@ -95,12 +95,32 @@ public class IGiftCertificateService implements IService<GiftCertificateDTO> {
 
     @Override
     public GiftCertificateDTO update(GiftCertificateDTO certificateDTO) {
-        addNewTagsIfTheyDontExist(certificateDTO);
+        List<TagDTO> newTagsDTO = addNewTagsIfTheyDontExist(certificateDTO);
         GiftCertificate certificate = giftCertificateConverter.toEntity(certificateDTO);
         giftCertificateRepo.update(certificate);
         certificateDTO.setId(certificate.getId());
+        setNewTagsIDinDTO(certificateDTO, newTagsDTO);
         updateReferences(certificateDTO);
         return getByID(certificateDTO.getId());
+    }
+
+    private void setNewTagsIDinDTO(GiftCertificateDTO certificateDTO, List<TagDTO> newTagsDTO) {
+        List<TagDTO> tagDTOList = certificateDTO.getTagDTOList();
+        List<TagDTO> tagDTOListWithoutNullElements = new ArrayList<>();
+        for (TagDTO i : tagDTOList) {
+            if (i.getId() == null) {
+                for (TagDTO newTag : newTagsDTO) {
+                    if (i.getName().equals(newTag.getName())) {
+                        i.setId(newTag.getId());
+                        tagDTOListWithoutNullElements.add(i);
+                        break;
+                    }
+                }
+            } else {
+                tagDTOListWithoutNullElements.add(i);
+            }
+        }
+        certificateDTO.setTagDTOList(tagDTOListWithoutNullElements);
     }
 
     @Override
@@ -115,9 +135,10 @@ public class IGiftCertificateService implements IService<GiftCertificateDTO> {
         return true;
     }
 
-    private void addNewTagsIfTheyDontExist(GiftCertificateDTO dto) {
+    private List<TagDTO> addNewTagsIfTheyDontExist(GiftCertificateDTO dto) {
         List<TagDTO> tags = dto.getTagDTOList();
         List<Tag> newTags = new ArrayList<>();
+        List<Tag> newTagsWithID = new ArrayList<>();
         for (TagDTO i : tags) {
             List<Tag> tagFound = tagRepository.query(new FindTagByName(i.getName()));
             if (tagFound.isEmpty()) {
@@ -125,8 +146,9 @@ public class IGiftCertificateService implements IService<GiftCertificateDTO> {
             }
         }
         for (Tag i : newTags) {
-            tagRepository.add(i);
+            newTagsWithID.add(tagRepository.add(i));
         }
+        return tagConverter.toDTOList(newTagsWithID);
     }
 
     private void addReferences(GiftCertificateDTO dto) {
@@ -143,10 +165,7 @@ public class IGiftCertificateService implements IService<GiftCertificateDTO> {
     private void updateReferences(GiftCertificateDTO dto) {
         GiftCertificate certificate = giftCertificateConverter.toEntity(dto);
         List<TagDTO> newTagsDTO = dto.getTagDTOList();
-        List<Tag> newTags = new ArrayList<>();
-        for (TagDTO i : newTagsDTO) {
-            newTags.add(tagConverter.toEntity(i));
-        }
+        List<Tag> newTags = tagConverter.toEntityList(newTagsDTO);
         List<Tag> oldTags = tagRepository.query(new FindTagsByCertificateID(certificate.getId()));
         newTags.removeAll(oldTags);
         GiftCertificateRepo repo = (GiftCertificateRepo) giftCertificateRepo;
