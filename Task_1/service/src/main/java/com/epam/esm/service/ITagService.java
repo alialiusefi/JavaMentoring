@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class ITagService {
+public class ITagService implements IService<TagDTO> {
 
     private CRUDRepo<Tag> repository;
     private TagConverter tagConverter;
@@ -25,7 +25,8 @@ public class ITagService {
         this.tagConverter = tagConverter;
     }
 
-    public TagDTO getTag(long id) {
+    @Override
+    public TagDTO getByID(long id) {
         try {
             Tag tagFound = repository.findByID(id);
             return tagConverter.toDTO(tagFound);
@@ -34,19 +35,26 @@ public class ITagService {
         }
     }
 
-    public TagDTO addTag(TagDTO tag) {
+    @Override
+    public TagDTO add(TagDTO tag) {
         return tagConverter.toDTO(repository.add(tagConverter.toEntity(tag)));
     }
 
-    public boolean deleteTag(TagDTO tag) {
+    @Override
+    public boolean delete(TagDTO tag) {
         repository.delete(tagConverter.toEntity(tag));
         return true;
     }
 
-    public boolean deleteTag(long tagID) {
+    public boolean delete(long tagID) {
         FindTagByID findTagByID = new FindTagByID(tagID);
         repository.delete(findTagByID);
         return true;
+    }
+
+    @Override
+    public TagDTO update(TagDTO dto) {
+        throw new UnsupportedOperationException("Update method not implemented yet!");
     }
 
 }

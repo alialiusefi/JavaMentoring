@@ -21,7 +21,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class IGiftCertificateService {
+public class IGiftCertificateService implements IService<GiftCertificateDTO> {
 
     private CRUDRepo<GiftCertificate> giftCertificateRepo;
     private CRUDRepo<Tag> tagRepository;
@@ -38,7 +38,8 @@ public class IGiftCertificateService {
         this.tagConverter = tagConverter;
     }
 
-    public GiftCertificateDTO getGiftCertificateByID(long id) {
+    @Override
+    public GiftCertificateDTO getByID(long id) {
         try {
             GiftCertificate giftCertificate = giftCertificateRepo.findByID(id);
             GiftCertificateDTO giftCertificateDTO = giftCertificateConverter.toDTO(
@@ -78,7 +79,8 @@ public class IGiftCertificateService {
         return giftCertificateConverter.toDTOList(giftCertificateRepo.query(conjunction));
     }
 
-    public GiftCertificateDTO addGiftCertificate(GiftCertificateDTO certificateDTO) {
+    @Override
+    public GiftCertificateDTO add(GiftCertificateDTO certificateDTO) {
         addNewTagsIfTheyDontExist(certificateDTO);
         GiftCertificate certificate = giftCertificateConverter.toEntity(certificateDTO);
         GiftCertificate giftCertificateCreated = giftCertificateRepo.add(certificate);
@@ -91,22 +93,24 @@ public class IGiftCertificateService {
         return giftCertificateDTOCreated;
     }
 
-    public GiftCertificateDTO updateGiftCertificate(GiftCertificateDTO certificateDTO) {
+    @Override
+    public GiftCertificateDTO update(GiftCertificateDTO certificateDTO) {
         addNewTagsIfTheyDontExist(certificateDTO);
         GiftCertificate certificate = giftCertificateConverter.toEntity(certificateDTO);
         giftCertificateRepo.update(certificate);
         certificateDTO.setId(certificate.getId());
         updateReferences(certificateDTO);
-        return getGiftCertificateByID(certificateDTO.getId());
+        return getByID(certificateDTO.getId());
     }
 
-
-    public boolean deleteGiftCertificate(long id) {
+    @Override
+    public boolean delete(long id) {
         giftCertificateRepo.delete(new FindGiftCertificateByID(id));
         return true;
     }
 
-    public boolean deleteGiftCertificate(GiftCertificateDTO certificate) {
+    @Override
+    public boolean delete(GiftCertificateDTO certificate) {
         giftCertificateRepo.delete(giftCertificateConverter.toEntity(certificate));
         return true;
     }
@@ -135,6 +139,7 @@ public class IGiftCertificateService {
         }
     }
 
+    //todo: fix tag.id from null value
     private void updateReferences(GiftCertificateDTO dto) {
         GiftCertificate certificate = giftCertificateConverter.toEntity(dto);
         List<TagDTO> newTagsDTO = dto.getTagDTOList();

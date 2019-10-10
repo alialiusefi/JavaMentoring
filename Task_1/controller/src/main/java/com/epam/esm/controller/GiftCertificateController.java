@@ -23,7 +23,7 @@ public class GiftCertificateController {
 
     @GetMapping("/{id}")
     public GiftCertificateDTO getGiftCertificate(@PathVariable long id) {
-        return IGiftCertificateService.getGiftCertificateByID(id);
+        return IGiftCertificateService.getByID(id);
     }
 
     @GetMapping()
@@ -60,20 +60,20 @@ public class GiftCertificateController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public GiftCertificateDTO saveGiftCertificate(@RequestBody @Valid GiftCertificateDTO giftCertificateDTO) {
-        return IGiftCertificateService.addGiftCertificate(giftCertificateDTO);
+        return IGiftCertificateService.add(giftCertificateDTO);
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public GiftCertificateDTO updateGiftCertificate(@RequestBody @Valid GiftCertificateDTO giftCertificateDTO) {
-        return IGiftCertificateService.updateGiftCertificate(giftCertificateDTO);
+        return IGiftCertificateService.update(giftCertificateDTO);
     }
 
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteGiftCertificate(@PathVariable long id) {
-        IGiftCertificateService.deleteGiftCertificate(id);
+        IGiftCertificateService.delete(id);
     }
 
 

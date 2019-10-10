@@ -28,29 +28,29 @@ public class ITagServiceTest {
     @Test
     public void getTag() {
         TagDTO expected = new TagDTO(1, "Accesories");
-        when(ITagService.getTag(expected.getId())).thenReturn(expected);
-        Assert.assertEquals(expected, ITagService.getTag(expected.getId()));
+        when(ITagService.getByID(expected.getId())).thenReturn(expected);
+        Assert.assertEquals(expected, ITagService.getByID(expected.getId()));
     }
 
     @Test
     public void addTag() {
         TagDTO expected = new TagDTO(5, "TestTag");
-        when(ITagService.addTag(expected)).thenReturn(expected);
-        Assert.assertEquals(expected, ITagService.addTag(expected));
+        when(ITagService.add(expected)).thenReturn(expected);
+        Assert.assertEquals(expected, ITagService.add(expected));
     }
 
     @Test
     public void deleteTag() {
         boolean expected = true;
-        when(ITagService.deleteTag(5)).thenReturn(expected);
-        Assert.assertTrue(ITagService.deleteTag(5));
+        when(ITagService.delete(5)).thenReturn(expected);
+        Assert.assertTrue(ITagService.delete(5));
     }
 
     @Test
     public void testDeleteTag() {
         boolean expected = true;
         TagDTO tag = new TagDTO(5, "TestTag");
-        when(ITagService.deleteTag(tag)).thenReturn(expected);
-        Assert.assertTrue(ITagService.deleteTag(tag));
+        when(ITagService.delete(tag)).thenReturn(expected);
+        Assert.assertTrue(ITagService.delete(tag));
     }
 }

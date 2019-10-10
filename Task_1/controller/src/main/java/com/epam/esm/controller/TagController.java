@@ -21,19 +21,19 @@ public class TagController {
 
     @GetMapping("/{id}")
     public TagDTO getTag(@PathVariable long id) {
-        return ITagService.getTag(id);
+        return ITagService.getByID(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public TagDTO saveTag(@RequestBody @Valid TagDTO tag) {
-        return ITagService.addTag(tag);
+        return ITagService.add(tag);
     }
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteTag(@PathVariable long id) {
-        ITagService.deleteTag(id);
+        ITagService.delete(id);
     }
 
 }
