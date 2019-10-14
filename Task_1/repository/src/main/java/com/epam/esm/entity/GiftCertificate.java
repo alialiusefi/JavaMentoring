@@ -12,7 +12,7 @@ public final class GiftCertificate extends Entity {
     private BigDecimal price;
     private LocalDate dateOfCreation;
     private LocalDate dateOfModification;
-    private int durationTillExpiry;
+    private Integer durationTillExpiry;
 
     public GiftCertificate() {
         super();
@@ -20,7 +20,7 @@ public final class GiftCertificate extends Entity {
 
 
     public GiftCertificate(long id, String name, String description, BigDecimal price, LocalDate dateOfCreation,
-                           LocalDate dateOfModification, int durationTillExpiry) {
+                           LocalDate dateOfModification, Integer durationTillExpiry) {
         super(id);
         this.name = name;
         this.description = description;
