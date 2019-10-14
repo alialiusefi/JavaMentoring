@@ -2,6 +2,8 @@ package com.epam.esm.converter;
 
 import com.epam.esm.dto.GiftCertificateDTO;
 import com.epam.esm.entity.GiftCertificate;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -9,6 +11,11 @@ import java.util.List;
 
 @Component
 public class GiftCertificateConverter extends BaseConverter implements Converter<GiftCertificateDTO, GiftCertificate> {
+
+    @Autowired
+    protected GiftCertificateConverter(ModelMapper modelMapper) {
+        super(modelMapper);
+    }
 
     @Override
     public GiftCertificate toEntity(GiftCertificateDTO giftCertificateDTO) {

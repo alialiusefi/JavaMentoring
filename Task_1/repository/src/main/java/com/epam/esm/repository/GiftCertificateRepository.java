@@ -13,7 +13,7 @@ import java.util.List;
 
 
 @Repository
-public class GiftCertificateRepository extends CRUDRepository<GiftCertificate> {
+public class GiftCertificateRepository extends BaseCRUDRepository<GiftCertificate> {
 
     private static final String SQL_INSERT = "insert into giftcertificates " +
             "(name,description,price,date_created,date_modified,duration_till_expiry) values " +

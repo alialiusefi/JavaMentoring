@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public final class TagRepository extends CRUDRepository<Tag> {
+public final class TagRepository extends BaseCRUDRepository<Tag> {
 
     private static final String SQL_INSERT = "insert into tag (tag_name) values (?) returning id,tag_name";
     private static final String SQL_DELETE = "delete from tag where tag.id = ?";

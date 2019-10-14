@@ -4,7 +4,6 @@ import com.epam.esm.dto.GiftCertificateDTO;
 import com.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,15 +17,19 @@ import java.util.List;
 @Validated
 public class GiftCertificateController {
 
+    private GiftCertificateService giftCertificateBaseService;
+
     @Autowired
-    private GiftCertificateService IGiftCertificateService;
+    public GiftCertificateController(GiftCertificateService giftCertificateService) {
+        this.giftCertificateBaseService = giftCertificateService;
+    }
 
     @GetMapping("/{id}")
     public GiftCertificateDTO getGiftCertificate(@PathVariable long id) {
-        return IGiftCertificateService.getByID(id);
+        return giftCertificateBaseService.getByID(id);
     }
 
-    @GetMapping()
+    @GetMapping
     public List<GiftCertificateDTO> getGiftCertificate(@RequestParam(required = false)
                                                        @Pattern(regexp = "[1-9][0-9]*") String tagID,
                                                        @RequestParam(required = false)
@@ -50,30 +53,29 @@ public class GiftCertificateController {
                 sortByNameOrder = Integer.parseInt(sortByName);
             }
         }
-        return IGiftCertificateService.getGiftCertificate(tagIDLong,
-                giftCertificateName,
+        return giftCertificateBaseService.getGiftCertificate(tagIDLong, giftCertificateName,
                 giftCertificateDesc,
                 sortByDateOrder,
                 sortByNameOrder);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public GiftCertificateDTO saveGiftCertificate(@RequestBody @Valid GiftCertificateDTO giftCertificateDTO) {
-        return IGiftCertificateService.add(giftCertificateDTO);
+        return giftCertificateBaseService.add(giftCertificateDTO);
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping
     @ResponseStatus(HttpStatus.OK)
     public GiftCertificateDTO updateGiftCertificate(@RequestBody @Valid GiftCertificateDTO giftCertificateDTO) {
-        return IGiftCertificateService.update(giftCertificateDTO);
+        return giftCertificateBaseService.update(giftCertificateDTO);
     }
 
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteGiftCertificate(@PathVariable long id) {
-        IGiftCertificateService.delete(id);
+        giftCertificateBaseService.delete(id);
     }
 
 

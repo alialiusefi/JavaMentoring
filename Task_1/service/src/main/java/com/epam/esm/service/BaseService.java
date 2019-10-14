@@ -2,7 +2,7 @@ package com.epam.esm.service;
 
 import com.epam.esm.dto.DTO;
 
-public interface Service<T extends DTO> {
+public interface BaseService<T extends DTO> {
 
     T getByID(long id);
 

@@ -10,30 +10,34 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@RestController
 @RequestMapping("/v1/tags")
+@RestController
 @Validated
 public class TagController {
 
+    private TagService tagService;
+
     @Autowired
-    private TagService ITagService;
+    public TagController(TagService tagService) {
+        this.tagService = tagService;
+    }
 
 
     @GetMapping("/{id}")
     public TagDTO getTag(@PathVariable long id) {
-        return ITagService.getByID(id);
+        return tagService.getByID(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public TagDTO saveTag(@RequestBody @Valid TagDTO tag) {
-        return ITagService.add(tag);
+        return tagService.add(tag);
     }
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteTag(@PathVariable long id) {
-        ITagService.delete(id);
+        tagService.delete(id);
     }
 
 }

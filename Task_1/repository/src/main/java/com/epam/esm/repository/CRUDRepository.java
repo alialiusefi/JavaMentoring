@@ -1,35 +1,23 @@
 package com.epam.esm.repository;
 
 import com.epam.esm.entity.Entity;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import com.epam.esm.repository.specfication.Specification;
 
-public abstract class CRUDRepository<T extends Entity> implements ICRUDRepository<T> {
+import java.util.List;
 
-    protected JdbcTemplate jdbcTemplate;
-    protected RowMapper<T> rowMapper;
+public interface CRUDRepository<T extends Entity> {
 
-    protected CRUDRepository(JdbcTemplate template, RowMapper<T> rowMapper)
-    {
-        this.jdbcTemplate = template;
-        this.rowMapper = rowMapper;
-    }
+    T add(T entity);
 
-    @Autowired
-    public JdbcTemplate getJdbcTemplate() {
-        return jdbcTemplate;
-    }
+    void update(T entity);
 
-    @Autowired
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    T findByID(long id);
 
-    @Autowired
-    public RowMapper getRowMapper() {
-        return rowMapper;
-    }
+    List<T> query(Specification specification);
 
-    protected abstract Object[] getFieldsArray(T entity);
+    void delete(T entity);
+
+    void delete(Specification specification);
+
+
 }
