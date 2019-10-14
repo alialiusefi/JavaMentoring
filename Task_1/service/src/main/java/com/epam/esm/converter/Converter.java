@@ -5,7 +5,7 @@ import com.epam.esm.entity.Entity;
 
 import java.util.List;
 
-public interface IConvert<D extends DTO, E extends Entity> {
+public interface Converter<D extends DTO, E extends Entity> {
 
     E toEntity(D dto);
 

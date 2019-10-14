@@ -5,12 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-public abstract class CRUDRepo<T extends Entity> implements ICRUDRepo<T> {
+public abstract class CRUDRepository<T extends Entity> implements ICRUDRepository<T> {
 
     protected JdbcTemplate jdbcTemplate;
     protected RowMapper<T> rowMapper;
 
-    protected CRUDRepo(JdbcTemplate template, RowMapper<T> rowMapper)
+    protected CRUDRepository(JdbcTemplate template, RowMapper<T> rowMapper)
     {
         this.jdbcTemplate = template;
         this.rowMapper = rowMapper;

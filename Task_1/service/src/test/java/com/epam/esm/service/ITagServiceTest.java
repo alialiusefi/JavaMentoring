@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 public class ITagServiceTest {
 
     @Mock
-    public ITagService ITagService;
+    public TagService ITagService;
 
     @Before
     public void setUp() throws Exception {

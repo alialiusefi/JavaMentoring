@@ -7,31 +7,30 @@ import com.epam.esm.dto.TagDTO;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ResourceNotFoundException;
-import com.epam.esm.repository.CRUDRepo;
-import com.epam.esm.repository.GiftCertificateRepo;
-import com.epam.esm.repository.TagRepo;
+import com.epam.esm.repository.CRUDRepository;
+import com.epam.esm.repository.GiftCertificateRepository;
+import com.epam.esm.repository.TagRepository;
 import com.epam.esm.repository.specfication.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@org.springframework.stereotype.Service
 @Transactional
-public class IGiftCertificateService implements IService<GiftCertificateDTO> {
+public class GiftCertificateService implements Service<GiftCertificateDTO> {
 
-    private CRUDRepo<GiftCertificate> giftCertificateRepo;
-    private CRUDRepo<Tag> tagRepository;
+    private CRUDRepository<GiftCertificate> giftCertificateRepo;
+    private CRUDRepository<Tag> tagRepository;
     private GiftCertificateConverter giftCertificateConverter;
     private TagConverter tagConverter;
 
     @Autowired
-    public IGiftCertificateService(GiftCertificateRepo giftCertificateRepo, TagRepo tagRepository,
-                                   GiftCertificateConverter giftCertificateConverter,
-                                   TagConverter tagConverter) {
+    public GiftCertificateService(GiftCertificateRepository giftCertificateRepo, TagRepository tagRepository,
+                                  GiftCertificateConverter giftCertificateConverter,
+                                  TagConverter tagConverter) {
         this.giftCertificateRepo = giftCertificateRepo;
         this.tagRepository = tagRepository;
         this.giftCertificateConverter = giftCertificateConverter;
@@ -155,7 +154,7 @@ public class IGiftCertificateService implements IService<GiftCertificateDTO> {
         GiftCertificate certificate = giftCertificateConverter.toEntity(dto);
         List<TagDTO> tagsDTO = dto.getTagDTOList();
         List<Tag> tags = tagConverter.toEntityList(tagsDTO);
-        GiftCertificateRepo repo = (GiftCertificateRepo) giftCertificateRepo;
+        GiftCertificateRepository repo = (GiftCertificateRepository) giftCertificateRepo;
         for (Tag i : tags) {
             repo.addReference(certificate, i);
         }
@@ -168,7 +167,7 @@ public class IGiftCertificateService implements IService<GiftCertificateDTO> {
         List<Tag> newTags = tagConverter.toEntityList(newTagsDTO);
         List<Tag> oldTags = tagRepository.query(new FindTagsByCertificateID(certificate.getId()));
         newTags.removeAll(oldTags);
-        GiftCertificateRepo repo = (GiftCertificateRepo) giftCertificateRepo;
+        GiftCertificateRepository repo = (GiftCertificateRepository) giftCertificateRepo;
         for (Tag i : newTags) {
             repo.addReference(certificate, i);
         }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class GiftCertificateConverter extends BaseConverter implements IConvert<GiftCertificateDTO, GiftCertificate> {
+public class GiftCertificateConverter extends BaseConverter implements Converter<GiftCertificateDTO, GiftCertificate> {
 
     @Override
     public GiftCertificate toEntity(GiftCertificateDTO giftCertificateDTO) {

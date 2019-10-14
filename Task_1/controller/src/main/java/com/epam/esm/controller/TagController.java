@@ -1,7 +1,7 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.dto.TagDTO;
-import com.epam.esm.service.ITagService;
+import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,7 +16,7 @@ import javax.validation.Valid;
 public class TagController {
 
     @Autowired
-    private ITagService ITagService;
+    private TagService ITagService;
 
 
     @GetMapping("/{id}")

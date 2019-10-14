@@ -13,7 +13,7 @@ import java.util.List;
 
 
 @Repository
-public class GiftCertificateRepo extends CRUDRepo<GiftCertificate> {
+public class GiftCertificateRepository extends CRUDRepository<GiftCertificate> {
 
     private static final String SQL_INSERT = "insert into giftcertificates " +
             "(name,description,price,date_created,date_modified,duration_till_expiry) values " +
@@ -36,7 +36,7 @@ public class GiftCertificateRepo extends CRUDRepo<GiftCertificate> {
             "from giftcertificates where giftcertificates.id = ? ";
 
     @Autowired
-    public GiftCertificateRepo(JdbcTemplate template, GiftCertificateRowMapper rowMapper) {
+    public GiftCertificateRepository(JdbcTemplate template, GiftCertificateRowMapper rowMapper) {
         super(template, rowMapper);
     }
 

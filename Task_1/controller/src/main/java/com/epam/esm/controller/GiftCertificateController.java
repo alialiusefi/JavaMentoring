@@ -1,7 +1,7 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.dto.GiftCertificateDTO;
-import com.epam.esm.service.IGiftCertificateService;
+import com.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,7 +19,7 @@ import java.util.List;
 public class GiftCertificateController {
 
     @Autowired
-    private IGiftCertificateService IGiftCertificateService;
+    private GiftCertificateService IGiftCertificateService;
 
     @GetMapping("/{id}")
     public GiftCertificateDTO getGiftCertificate(@PathVariable long id) {

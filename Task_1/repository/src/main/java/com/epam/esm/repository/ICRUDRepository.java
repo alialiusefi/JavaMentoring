@@ -5,7 +5,7 @@ import com.epam.esm.repository.specfication.Specification;
 
 import java.util.List;
 
-public interface ICRUDRepo<T extends Entity> {
+public interface ICRUDRepository<T extends Entity> {
 
     T add(T entity);
 

@@ -4,23 +4,22 @@ import com.epam.esm.converter.TagConverter;
 import com.epam.esm.dto.TagDTO;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ResourceNotFoundException;
-import com.epam.esm.repository.CRUDRepo;
-import com.epam.esm.repository.TagRepo;
+import com.epam.esm.repository.CRUDRepository;
+import com.epam.esm.repository.TagRepository;
 import com.epam.esm.repository.specfication.FindTagByID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@org.springframework.stereotype.Service
 @Transactional
-public class ITagService implements IService<TagDTO> {
+public class TagService implements Service<TagDTO> {
 
-    private CRUDRepo<Tag> repository;
+    private CRUDRepository<Tag> repository;
     private TagConverter tagConverter;
 
     @Autowired
-    public ITagService(TagRepo repository, TagConverter tagConverter) {
+    public TagService(TagRepository repository, TagConverter tagConverter) {
         this.repository = repository;
         this.tagConverter = tagConverter;
     }

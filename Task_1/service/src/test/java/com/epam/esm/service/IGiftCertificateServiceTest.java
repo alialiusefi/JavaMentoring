@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 public class IGiftCertificateServiceTest {
 
     @Mock
-    public IGiftCertificateService IGiftCertificateService;
+    public GiftCertificateService IGiftCertificateService;
 
     @Before
     public void setUp() {

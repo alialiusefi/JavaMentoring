@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class TagConverter extends BaseConverter implements IConvert<TagDTO, Tag> {
+public class TagConverter extends BaseConverter implements Converter<TagDTO, Tag> {
     @Override
     public Tag toEntity(TagDTO dto) {
         return modelMapper.map(dto, Tag.class);
