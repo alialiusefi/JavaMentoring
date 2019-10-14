@@ -29,9 +29,8 @@ public final class ConnectionPool extends AbstractDataSource {
 
     public ConnectionPool(String driverClass, String URL, String userName,
                           String password, int startConnections, int maxConnections,
-                          int timeout){
+                          int timeout) {
         try {
-            destroy();
             Class.forName(driverClass);
             this.url = URL;
             this.maxConnections = maxConnections;
@@ -48,31 +47,31 @@ public final class ConnectionPool extends AbstractDataSource {
         }
     }
 
-    public CustomPooledConnection getConnection(String userName, String password){
+    public CustomPooledConnection getConnection(String userName, String password) {
         return getConnection();
     }
 
-    public CustomPooledConnection getConnection()  {
+    public CustomPooledConnection getConnection() {
         CustomPooledConnection connection = null;
         while (connection == null) {
             try {
-                    if (!freeConnections.isEmpty()) {
-                        connection = freeConnections.poll();
-                        if (!connection.isValid(timeoutConnectionLimit)) {
-                            try {
-                                connection.getConnection().close();
-                            } catch (SQLException e) {
-                                LOGGER.warn(e.getMessage(),e);
-                                throw new PersistentException(e.getMessage(),e);
-                            }
-                            connection = null;
+                if (!freeConnections.isEmpty()) {
+                    connection = freeConnections.poll();
+                    if (!connection.isValid(timeoutConnectionLimit)) {
+                        try {
+                            connection.getConnection().close();
+                        } catch (SQLException e) {
+                            LOGGER.warn(e.getMessage(), e);
+                            throw new PersistentException(e.getMessage(), e);
                         }
-                    } else if (usedConnections.size() < maxConnections){
-                        connection = createNewConnection();
-                    } else {
-                     LOGGER.error("The limit of number of database connections is exceeded");
-                     throw new PersistentException();
+                        connection = null;
                     }
+                } else if (usedConnections.size() < maxConnections) {
+                    connection = createNewConnection();
+                } else {
+                    LOGGER.error("The limit of number of database connections is exceeded");
+                    throw new PersistentException();
+                }
             } catch (SQLException e) {
                 LOGGER.error("Cannot connect to database", e);
                 throw new PersistentException(e.getMessage(), e);
@@ -116,8 +115,7 @@ public final class ConnectionPool extends AbstractDataSource {
 
     @PreDestroy
     public void destroy() {
-        if(freeConnections !=null && usedConnections !=null)
-        {
+        if (freeConnections != null && usedConnections != null) {
             usedConnections.addAll(freeConnections);
             freeConnections.clear();
             for (CustomPooledConnection connection : usedConnections) {
