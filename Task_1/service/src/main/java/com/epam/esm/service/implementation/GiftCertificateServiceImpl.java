@@ -10,7 +10,16 @@ import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.BaseCRUDRepository;
 import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.repository.TagRepository;
-import com.epam.esm.repository.specfication.*;
+import com.epam.esm.repository.specfication.FindGiftCertificateByID;
+import com.epam.esm.repository.specfication.FindGiftCertificatesByDescription;
+import com.epam.esm.repository.specfication.FindGiftCertificatesByName;
+import com.epam.esm.repository.specfication.FindGiftCertificatesByTagID;
+import com.epam.esm.repository.specfication.FindTagByName;
+import com.epam.esm.repository.specfication.FindTagsByCertificateID;
+import com.epam.esm.repository.specfication.GiftCertificateSpecificationConjunction;
+import com.epam.esm.repository.specfication.SortGiftCertificatesByDate;
+import com.epam.esm.repository.specfication.SortGiftCertificatesByName;
+import com.epam.esm.repository.specfication.Specification;
 import com.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -21,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional
 public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     private BaseCRUDRepository<GiftCertificate> giftCertificateRepo;
@@ -80,6 +88,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         return giftCertificateConverter.toDTOList(giftCertificateRepo.query(conjunction));
     }
 
+    @Transactional
     @Override
     public GiftCertificateDTO add(GiftCertificateDTO certificateDTO) {
         addNewTagsIfTheyDontExist(certificateDTO);
@@ -94,6 +103,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         return giftCertificateDTOCreated;
     }
 
+    @Transactional
     @Override
     public GiftCertificateDTO update(GiftCertificateDTO certificateDTO) {
         List<TagDTO> newTagsDTO = addNewTagsIfTheyDontExist(certificateDTO);
@@ -124,12 +134,14 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         certificateDTO.setTagDTOList(tagDTOListWithoutNullElements);
     }
 
+    @Transactional
     @Override
     public boolean delete(long id) {
         giftCertificateRepo.delete(new FindGiftCertificateByID(id));
         return true;
     }
 
+    @Transactional
     @Override
     public boolean delete(GiftCertificateDTO certificate) {
         giftCertificateRepo.delete(giftCertificateConverter.toEntity(certificate));

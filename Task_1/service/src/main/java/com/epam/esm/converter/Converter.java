@@ -3,6 +3,7 @@ package com.epam.esm.converter;
 import com.epam.esm.dto.DTO;
 import com.epam.esm.entity.Entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface Converter<D extends DTO, E extends Entity> {
@@ -11,7 +12,19 @@ public interface Converter<D extends DTO, E extends Entity> {
 
     D toDTO(E entity);
 
-    List<E> toEntityList(List<D> dto);
+    default List<E> toEntityList(List<D> dto) {
+        List<E> entities = new ArrayList<>();
+        for (D i : dto) {
+            entities.add(toEntity(i));
+        }
+        return entities;
+    }
 
-    List<D> toDTOList(List<E> entities);
+    default List<D> toDTOList(List<E> entities) {
+        List<D> giftCertificatesDTO = new ArrayList<>();
+        for (E i : entities) {
+            giftCertificatesDTO.add(toDTO(i));
+        }
+        return giftCertificatesDTO;
+    }
 }

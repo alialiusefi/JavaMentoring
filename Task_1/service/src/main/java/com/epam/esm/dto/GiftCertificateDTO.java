@@ -33,7 +33,8 @@ public class GiftCertificateDTO extends DTO {
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate dateOfModification;
 
-    private int durationTillExpiry;
+
+    private Integer durationTillExpiry;
 
     @NotEmpty
     @Valid
@@ -44,7 +45,7 @@ public class GiftCertificateDTO extends DTO {
     }
 
     public GiftCertificateDTO(long id, String name, String description, BigDecimal price, LocalDate dateOfCreation,
-                              LocalDate dateOfModification, int durationTillExpiry, List<TagDTO> tagDTOList) {
+                              LocalDate dateOfModification, Integer durationTillExpiry, List<TagDTO> tagDTOList) {
         super(id);
         this.name = name;
         this.description = description;

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 public class TagServiceImpl implements TagService {
 
     private BaseCRUDRepository<Tag> repository;
@@ -36,17 +35,20 @@ public class TagServiceImpl implements TagService {
         }
     }
 
+    @Transactional
     @Override
     public TagDTO add(TagDTO tag) {
         return tagConverter.toDTO(repository.add(tagConverter.toEntity(tag)));
     }
 
+    @Transactional
     @Override
     public boolean delete(TagDTO tag) {
         repository.delete(tagConverter.toEntity(tag));
         return true;
     }
 
+    @Transactional
     public boolean delete(long tagID) {
         FindTagByID findTagByID = new FindTagByID(tagID);
         repository.delete(findTagByID);
