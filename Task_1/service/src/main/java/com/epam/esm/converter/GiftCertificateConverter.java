@@ -6,8 +6,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class GiftCertificateConverter extends BaseConverter implements Converter<GiftCertificateDTO, GiftCertificate> {
@@ -31,19 +31,13 @@ public class GiftCertificateConverter extends BaseConverter implements Converter
 
     @Override
     public List<GiftCertificate> toEntityList(List<GiftCertificateDTO> dto) {
-        List<GiftCertificate> giftCertificates = new ArrayList<>();
-        for (GiftCertificateDTO i : dto) {
-            giftCertificates.add(toEntity(i));
-        }
-        return giftCertificates;
+        return dto.stream().map(currentDTO -> toEntity(currentDTO))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<GiftCertificateDTO> toDTOList(List<GiftCertificate> entities) {
-        List<GiftCertificateDTO> giftCertificatesDTO = new ArrayList<>();
-        for (GiftCertificate i : entities) {
-            giftCertificatesDTO.add(toDTO(i));
-        }
-        return giftCertificatesDTO;
+        return entities.stream().map(entity -> toDTO(entity))
+                .collect(Collectors.toList());
     }
 }
