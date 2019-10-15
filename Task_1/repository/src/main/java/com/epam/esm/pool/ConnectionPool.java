@@ -6,7 +6,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.jdbc.datasource.AbstractDataSource;
 
-import javax.annotation.PreDestroy;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.LinkedHashSet;
@@ -21,8 +23,8 @@ public final class ConnectionPool extends AbstractDataSource {
     private String userName;
     private String password;
     private int timeoutConnectionLimit;
-    private ArrayBlockingQueue<CustomPooledConnection> freeConnections;
-    private Set<CustomPooledConnection> usedConnections
+    private ArrayBlockingQueue<Connection> freeConnections;
+    private Set<Connection> usedConnections
             = new LinkedHashSet<>();
     private int maxConnections;
 
@@ -47,19 +49,19 @@ public final class ConnectionPool extends AbstractDataSource {
         }
     }
 
-    public CustomPooledConnection getConnection(String userName, String password) {
+    public Connection getConnection(String userName, String password) {
         return getConnection();
     }
 
-    public CustomPooledConnection getConnection() {
-        CustomPooledConnection connection = null;
+    public Connection getConnection() {
+        Connection connection = null;
         while (connection == null) {
             try {
                 if (!freeConnections.isEmpty()) {
                     connection = freeConnections.poll();
                     if (!connection.isValid(timeoutConnectionLimit)) {
                         try {
-                            connection.getConnection().close();
+                            connection.close();
                         } catch (SQLException e) {
                             LOGGER.warn(e.getMessage(), e);
                             throw new PersistentException(e.getMessage(), e);
@@ -84,16 +86,29 @@ public final class ConnectionPool extends AbstractDataSource {
         return connection;
     }
 
-    private CustomPooledConnection createNewConnection() throws SQLException, PersistentException {
+    private Connection createNewConnection() throws SQLException, PersistentException {
         if ((usedConnections.size() + freeConnections.size()) < maxConnections) {
-            return new CustomPooledConnection(DriverManager.
-                    getConnection(this.url, this.userName, this.password));
+            final Connection connection = DriverManager.
+                    getConnection(this.url, this.userName, this.password);
+            Connection proxyConnection = null;
+            Connection finalProxyConnection = proxyConnection;
+            proxyConnection = (Connection) Proxy.newProxyInstance(
+                    connection.getClass().getClassLoader(),
+                    new Class[]{Connection.class}, (InvocationHandler) (proxy, method, args) -> {
+                        if ("close".equals(method.getName())) {
+                            returnConnection(finalProxyConnection);
+                        } else {
+                            return method.invoke(connection, args);
+                        }
+                        return null;
+                    });
+            return proxyConnection;
         }
         throw new PersistentException(
                 "Cannot create connections more than max. amount of connections");
     }
 
-    public void freeConnection(CustomPooledConnection connection) {
+    public void returnConnection(Connection connection) {
         try {
             if (connection.isValid(timeoutConnectionLimit)) {
                 connection.clearWarnings();
@@ -118,9 +133,9 @@ public final class ConnectionPool extends AbstractDataSource {
         if (freeConnections != null && usedConnections != null) {
             usedConnections.addAll(freeConnections);
             freeConnections.clear();
-            for (CustomPooledConnection connection : usedConnections) {
+            for (Connection connection : usedConnections) {
                 try {
-                    connection.getConnection().close();
+                    connection.close();
                 } catch (SQLException e) {
                     LOGGER.warn(e.getMessage(), e);
                 }
@@ -129,9 +144,5 @@ public final class ConnectionPool extends AbstractDataSource {
         }
     }
 
-    @Override
-    protected void finalize() throws Throwable {
-        destroy();
-    }
 
 }

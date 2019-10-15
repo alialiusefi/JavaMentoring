@@ -21,25 +21,26 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <spring.version>5.1.9.RELEASE</spring.version>
+        <maven.test.skip>true</maven.test.skip>
     </properties>
     <dependencies>
         <!--spring-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <version>${spring.version}</version>
+            <version>5.1.9.RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>${spring.version}</version>
+            <version>5.1.9.RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>${spring.version}</version>
+            <version>5.1.9.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>javax.validation</groupId>

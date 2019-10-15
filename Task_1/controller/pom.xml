@@ -11,7 +11,9 @@
     <artifactId>controller</artifactId>
     <packaging>war</packaging>
     <modelVersion>4.0.0</modelVersion>
-
+    <properties>
+        <org.spring.version>5.1.9.RELEASE</org.spring.version>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>com.epam.esm</groupId>
@@ -34,7 +36,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>${spring.version}</version>
+            <version>5.1.9.RELEASE</version>
         </dependency>
     </dependencies>
 

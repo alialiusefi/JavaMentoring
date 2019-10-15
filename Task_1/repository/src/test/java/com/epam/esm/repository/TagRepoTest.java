@@ -1,18 +1,32 @@
 package com.epam.esm.repository;
 
-import org.junit.After;
-import org.junit.Before;
+import com.epam.esm.entity.Tag;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-public class TagRepoTest {
+import javax.transaction.Transactional;
 
-    @Before
-    public void setUp() throws Exception {
+import static org.junit.Assert.assertEquals;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@Transactional
+public class TagRepoTest extends AbstractRepoTest<Tag>{
+
+    @Autowired
+    TagRepository tagRepository;
+
+    public TagRepoTest() {
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @Test
+    public void findByID() {
+        Tag expected = new Tag(1,"Accessories");
+        Tag actual = tagRepository.findByID(1);
+        assertEquals(expected,actual);
     }
+
 
     @Test
     public void add() {
@@ -22,9 +36,6 @@ public class TagRepoTest {
     public void update() {
     }
 
-    @Test
-    public void findByID() {
-    }
 
     @Test
     public void query() {
