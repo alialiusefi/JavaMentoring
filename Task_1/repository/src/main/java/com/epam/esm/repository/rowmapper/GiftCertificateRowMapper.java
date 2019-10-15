@@ -1,5 +1,7 @@
 package com.epam.esm.repository.rowmapper;
 
+import com.epam.esm.builder.GiftCertificateBuilder;
+import com.epam.esm.builder.GiftCertificateBuilderImpl;
 import com.epam.esm.entity.GiftCertificate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -15,14 +17,17 @@ public final class GiftCertificateRowMapper implements RowMapper<GiftCertificate
 
     @Override
     public GiftCertificate mapRow(ResultSet resultSet, int i) throws SQLException {
-        return new GiftCertificate(
-                resultSet.getInt("id"),
-                resultSet.getString("name"),
-                resultSet.getString("description"),
-                BigDecimal.valueOf(resultSet.getDouble("price")),
+        GiftCertificateBuilder giftCertificateBuilder = new GiftCertificateBuilderImpl();
+        giftCertificateBuilder.setID(resultSet.getInt("id"));
+        giftCertificateBuilder.setText(resultSet.getString("name"),
+                resultSet.getString("description"));
+        giftCertificateBuilder.setPrice(BigDecimal.valueOf(resultSet.getDouble("price")));
+        giftCertificateBuilder.setDates(
                 convertToLocalDateViaSqlDate(resultSet.getDate("date_created")),
-                convertToLocalDateViaSqlDate(resultSet.getDate("date_modified")),
-                resultSet.getInt("duration_till_expiry"));
+                convertToLocalDateViaSqlDate(resultSet.getDate("date_modified"))
+        );
+        giftCertificateBuilder.setDuration(resultSet.getInt("duration_till_expiry"));
+        return giftCertificateBuilder.getResult();
     }
 
     private LocalDate convertToLocalDateViaSqlDate(Date dateToConvert) {
