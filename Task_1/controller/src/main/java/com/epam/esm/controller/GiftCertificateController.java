@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -40,15 +39,15 @@ public class GiftCertificateController {
 
     @GetMapping
     public List<GiftCertificateDTO> getGiftCertificate(@RequestParam(required = false)
-                                                       @Pattern(regexp = "[1-9][0-9]*") Long tagID,
+                                                               Long tagID,
                                                        @RequestParam(required = false)
                                                        @Size(min = 1, max = 50) String giftCertificateName,
                                                        @RequestParam(required = false)
                                                        @Size(min = 1, max = 256) String giftCertificateDesc,
                                                        @RequestParam(required = false)
-                                                       @Pattern(regexp = "^-1|1$") Integer sortByDate,
+                                                               Integer sortByDate,
                                                        @RequestParam(required = false)
-                                                       @Pattern(regexp = "^-1|1$") Integer sortByName) {
+                                                               Integer sortByName) {
         return giftCertificateBaseService.getGiftCertificate(tagID, giftCertificateName,
                 giftCertificateDesc,
                 sortByDate,

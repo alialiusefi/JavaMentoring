@@ -31,13 +31,13 @@ public class GiftCertificateConverter extends BaseConverter implements Converter
 
     @Override
     public List<GiftCertificate> toEntityList(List<GiftCertificateDTO> dto) {
-        return dto.stream().map(currentDTO -> toEntity(currentDTO))
+        return dto.stream().map(this::toEntity)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<GiftCertificateDTO> toDTOList(List<GiftCertificate> entities) {
-        return entities.stream().map(entity -> toDTO(entity))
+        return entities.stream().map(this::toDTO)
                 .collect(Collectors.toList());
     }
 }

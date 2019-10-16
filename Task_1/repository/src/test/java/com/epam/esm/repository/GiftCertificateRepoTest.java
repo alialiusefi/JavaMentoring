@@ -47,6 +47,8 @@ public class GiftCertificateRepoTest extends AbstractRepoTest {
         );
         GiftCertificate actual = giftCertificateRepository.add(expected);
         expected.setId(actual.getId());
+        // revert
+        giftCertificateRepository.delete(actual);
         assertEquals(expected, actual);
     }
 

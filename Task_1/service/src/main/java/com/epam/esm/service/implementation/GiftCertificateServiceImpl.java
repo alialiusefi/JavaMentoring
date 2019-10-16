@@ -6,6 +6,7 @@ import com.epam.esm.dto.GiftCertificateDTO;
 import com.epam.esm.dto.TagDTO;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
+import com.epam.esm.exception.BadRequestException;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.BaseCRUDRepository;
 import com.epam.esm.repository.GiftCertificateRepository;
@@ -62,9 +63,12 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         }
     }
 
-    public List<GiftCertificateDTO> getGiftCertificate(long tagID, String name, String desc, int sortByDate, int sortByName) {
+    public List<GiftCertificateDTO> getGiftCertificate(Long tagID, String name, String desc, Integer sortByDate, Integer sortByName) {
         List<Specification<GiftCertificate>> specifications = new ArrayList<>();
-        if (tagID != 0L) {
+        if (tagID != null) {
+            if (tagID < 0) {
+                throw new BadRequestException("TagID should be positive");
+            }
             FindGiftCertificatesByTagID findGiftCertificatesByTagID = new FindGiftCertificatesByTagID(tagID);
             specifications.add(findGiftCertificatesByTagID);
         }
@@ -76,16 +80,30 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             FindGiftCertificatesByDescription findGiftCertificatesByDescription = new FindGiftCertificatesByDescription(desc);
             specifications.add(findGiftCertificatesByDescription);
         }
-        if (sortByDate != 0) {
+        if (sortByDate != null && sortByDate != 0) {
+            if (sortByDate != 1 && sortByDate != -1) {
+                throw new BadRequestException("Sort parameter should accept either 1 or -1");
+            }
             SortGiftCertificatesByDate sortGiftCertificatesByDate = new SortGiftCertificatesByDate(sortByDate);
             specifications.add(sortGiftCertificatesByDate);
         }
-        if (sortByName != 0) {
+        if (sortByName != null && sortByName != 0) {
+            if (sortByName != 1 && sortByName != -1) {
+                throw new BadRequestException("Sort parameter should accept either 1 or -1");
+            }
             SortGiftCertificatesByName sortGiftCertificatesByName = new SortGiftCertificatesByName(sortByName);
             specifications.add(sortGiftCertificatesByName);
         }
         GiftCertificateSpecificationConjunction conjunction = new GiftCertificateSpecificationConjunction(specifications);
-        return giftCertificateConverter.toDTOList(giftCertificateRepo.query(conjunction));
+        List<GiftCertificateDTO> dtoResult = giftCertificateConverter.toDTOList(giftCertificateRepo.query(conjunction));
+        List<GiftCertificateDTO> dtoResultWithTags = new ArrayList<>();
+        for (GiftCertificateDTO i : dtoResult) {
+            List<TagDTO> tags = tagConverter.toDTOList(tagRepository.query(
+                    new FindTagsByCertificateID(i.getId())));
+            i.setTagDTOList(tags);
+            dtoResultWithTags.add(i);
+        }
+        return dtoResultWithTags;
     }
 
     @Transactional
