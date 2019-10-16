@@ -11,10 +11,10 @@ import java.util.Objects;
 @Validated
 public class TagDTO extends DTO {
 
-    @NotNull(message = "Tag Name cannot be null")
+    @NotNull(message = "${tag.tagname.notnull}")
     @Size(min = 1, max = 16)
     @Pattern(regexp = "^[a-zA-Z]+$", message = "Incorrect Tag Name Format")
-    @NotBlank(message = "Tag Name is mandatory")
+    @NotBlank(message = "${tag.tagname.blank}")
     private String name;
 
     public TagDTO() {
