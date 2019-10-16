@@ -4,23 +4,22 @@ import com.epam.esm.repository.rowmapper.GiftCertificateRowMapper;
 import com.epam.esm.repository.rowmapper.TagRowMapper;
 import com.opentable.db.postgres.junit.EmbeddedPostgresRules;
 import com.opentable.db.postgres.junit.SingleInstancePostgresRule;
-import org.junit.Before;
-import org.junit.Rule;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 public abstract class AbstractRepoTest {
 
+    @ClassRule
+    public static SingleInstancePostgresRule pg = EmbeddedPostgresRules.singleInstance();
+    protected static TagRepository tagRepository;
+    protected static GiftCertificateRepository giftCertificateRepository;
+    protected static JdbcTemplate template;
     private static TagRowMapper tagRowMapper = new TagRowMapper();
     private static GiftCertificateRowMapper giftCertificateRowMapper = new GiftCertificateRowMapper();
-    protected TagRepository tagRepository;
-    protected GiftCertificateRepository giftCertificateRepository;
-    protected JdbcTemplate template;
 
-    @Rule
-    public SingleInstancePostgresRule pg = EmbeddedPostgresRules.singleInstance();
-
-    @Before
-    public void setUp() {
+    @BeforeClass
+    public static void setUp() {
         template = new JdbcTemplate(pg.getEmbeddedPostgres().getPostgresDatabase());
         tagRepository = new TagRepository(template, tagRowMapper);
         giftCertificateRepository = new GiftCertificateRepository(template, giftCertificateRowMapper);
@@ -66,11 +65,11 @@ public abstract class AbstractRepoTest {
                 "       ('Travel');");
         template.execute("insert into giftcertificates(name, description, price, date_created, date_modified, duration_till_expiry)\n" +
                 "VALUES ('ACME Discount Voucher', 'Discount while shopping', 20.00, '2012-09-09', '2014-12-01', 5);\n");
+        template.execute("insert into giftcertificates(name, description, price, date_created, date_modified, duration_till_expiry)\n" +
+                "VALUES ('Discount Voucher', 'Ze Discript', 20.00, '2000-09-09', '2000-12-01', 5);\n");
         template.execute("insert into tagged_giftcertificates(tag_id, gift_certificate_id)\n" +
                 "VALUES (1, 1),\n" +
-                "       (2, 1);");
+                "       (2, 1)," +
+                "(1,2);");
     }
-
-
-
 }
