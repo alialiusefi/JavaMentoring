@@ -2,24 +2,25 @@ package com.epam.esm.dto;
 
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Validated
 public class TagDTO extends DTO {
 
-    @NotNull(message = "${tag.tagname.notnull}")
-    @Size(min = 1, max = 16)
-    @Pattern(regexp = "^[a-zA-Z]+$", message = "Incorrect Tag Name Format")
-    @NotBlank(message = "${tag.tagname.blank}")
-    private String name;
-
+    /*
+        @NotNull(message = "${tag.tagname.notnull}")
+    */
     public TagDTO() {
         super();
     }
+
+    @Size(min = 1, max = 16)
+    /*@Pattern(regexp = "^[a-zA-Z]+$", message = "Incorrect Tag Name Format")*/
+/*
+    @NotBlank(message = "${tag.tagname.blank}")
+*/
+    private String name;
 
     public TagDTO(long id, String name) {
         super(id);

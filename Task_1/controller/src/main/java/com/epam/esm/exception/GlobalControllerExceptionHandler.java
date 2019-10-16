@@ -31,7 +31,9 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
             errors.add(violation.getRootBeanClass().getName() + " " +
                     violation.getPropertyPath() + ": " + violation.getMessage());
         }
+/*
         errors.add(ex.getMessage());
+*/
         APIError apiError =
                 new APIError(errors);
         return new ResponseEntity<Object>(
@@ -44,7 +46,9 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
             HttpStatus status,
             WebRequest request) {
         List<String> errors = new ArrayList<String>();
+/*
         errors.add(ex.getMessage());
+*/
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
             errors.add(error.getField() + ": " + error.getDefaultMessage());
         }
@@ -72,14 +76,14 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Object> handleResourceNotFound(RuntimeException ex, WebRequest request) {
-        return handleExceptionInternal(ex, ex.getMessage(),
+        return handleExceptionInternal(ex, new APIError(ex.getMessage()),
                 new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<Object> handleBadRequest(RuntimeException ex, WebRequest request) {
-        return handleExceptionInternal(ex, ex.getMessage(),
+        return handleExceptionInternal(ex, new APIError(ex.getMessage()),
                 new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
