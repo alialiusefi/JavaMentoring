@@ -6,7 +6,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.jdbc.datasource.AbstractDataSource;
 
+import javax.annotation.PreDestroy;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -88,21 +90,10 @@ public final class ConnectionPool extends AbstractDataSource {
 
     private Connection createNewConnection() throws SQLException, PersistentException {
         if ((usedConnections.size() + freeConnections.size()) < maxConnections) {
-            final Connection connection = DriverManager.
-                    getConnection(this.url, this.userName, this.password);
-            Connection proxyConnection = null;
-            Connection finalProxyConnection = proxyConnection;
-            proxyConnection = (Connection) Proxy.newProxyInstance(
-                    connection.getClass().getClassLoader(),
-                    new Class[]{Connection.class}, (InvocationHandler) (proxy, method, args) -> {
-                        if ("close".equals(method.getName())) {
-                            returnConnection(finalProxyConnection);
-                        } else {
-                            return method.invoke(connection, args);
-                        }
-                        return null;
-                    });
-            return proxyConnection;
+            Connection pooledConnection = (Connection) Proxy.newProxyInstance(Connection.class.getClassLoader(), new Class[]{Connection.class},
+                    new ConnectionInvocationHandler(DriverManager.
+                            getConnection(this.url, this.userName, this.password)));
+            return pooledConnection;
         }
         throw new PersistentException(
                 "Cannot create connections more than max. amount of connections");
@@ -112,19 +103,27 @@ public final class ConnectionPool extends AbstractDataSource {
         try {
             if (connection.isValid(timeoutConnectionLimit)) {
                 connection.clearWarnings();
-                connection.setAutoCommit(true);
-                usedConnections.remove(connection);
-                freeConnections.add(connection);
-                LOGGER.debug("Connection Cleared.");
+                if (!connection.getAutoCommit()) {
+                    connection.setAutoCommit(true);
+                }
+                if (connection.isReadOnly()) {
+                    connection.setReadOnly(false);
+                }
+                if (!usedConnections.remove(connection)) {
+                    throw new PersistentException("Cannot remove connection from used connections");
+                }
+                if (!freeConnections.add(connection)) {
+                    throw new PersistentException("Cannot add connection to free connections");
+                }
+                LOGGER.debug("Connection Returned.");
             }
         } catch (SQLException e) {
             LOGGER.error("Couldn't clear connection!", e);
             try {
                 connection.close();
             } catch (SQLException e1) {
-                LOGGER.error("Couldn't clear connection!", e1);
+                LOGGER.error("Couldn't close connection!", e1);
             }
-
         }
     }
 
@@ -134,8 +133,11 @@ public final class ConnectionPool extends AbstractDataSource {
             usedConnections.addAll(freeConnections);
             freeConnections.clear();
             for (Connection connection : usedConnections) {
+                Connection nonPooledConnection =
+                        ((ConnectionInvocationHandler) Proxy.getInvocationHandler(connection))
+                                .getNonPooledConnection();
                 try {
-                    connection.close();
+                    nonPooledConnection.close();
                 } catch (SQLException e) {
                     LOGGER.warn(e.getMessage(), e);
                 }
@@ -144,5 +146,36 @@ public final class ConnectionPool extends AbstractDataSource {
         }
     }
 
+    private class ConnectionInvocationHandler implements InvocationHandler {
+
+        public Connection nonPooledConnection;
+
+        public ConnectionInvocationHandler(Connection nonPooledConnection) {
+            this.nonPooledConnection = nonPooledConnection;
+        }
+
+        public Connection getNonPooledConnection() {
+            return nonPooledConnection;
+        }
+
+        public void setNonPooledConnection(Connection nonPooledConnection) {
+            this.nonPooledConnection = nonPooledConnection;
+        }
+
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            if (method.getName().equals("close")) {
+                Connection proxyConnection = (Connection) proxy;
+                returnConnection(proxyConnection);
+                return null;
+            }
+            if (method.getName().equals("equals")) {
+                if (proxy == args[0]) {
+                    return true;
+                }
+            }
+            return method.invoke(nonPooledConnection, args);
+        }
+    }
 
 }
