@@ -13,7 +13,7 @@ create table giftcertificates
 create table tag
 (
     id       serial primary key,
-    tag_name varchar(16)
+    tag_name varchar(16) unique
 );
 
 create table tagged_giftcertificates

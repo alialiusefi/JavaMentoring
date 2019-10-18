@@ -26,14 +26,22 @@ public class GiftCertificateRepository extends BaseCRUDRepository<GiftCertificat
             "date_created = ? , date_modified = ? , " +
             "duration_till_expiry = ? where id = ?";
 
-    private static final String INSERT_REFERENCE_SQL = "insert into tagged_giftcertificates" +
+    private static final String INSERT_REFERENCE_SQL = "insert into tagged_giftcertificates " +
             "(tag_id, gift_certificate_id) VALUES (?,?)";
+    private static final String DELETE_REFERENCES_SQL = "delete from tagged_giftcertificates " +
+            "where gift_certificate_id = ?";
 
     private static final String SQL_SELECT_BY_ID = "select giftcertificates.id,giftcertificates.name" +
             ",giftcertificates.description,giftcertificates.price" +
             ",giftcertificates.date_created,giftcertificates.date_modified," +
             "giftcertificates.duration_till_expiry " +
             "from giftcertificates where giftcertificates.id = ? ";
+
+    private static final String SQL_SELECT_BY_NAME = "select giftcertificates.id,giftcertificates.name" +
+            ",giftcertificates.description,giftcertificates.price" +
+            ",giftcertificates.date_created,giftcertificates.date_modified," +
+            "giftcertificates.duration_till_expiry " +
+            "from giftcertificates where giftcertificates.name = ? ";
 
     @Autowired
     public GiftCertificateRepository(JdbcTemplate template, GiftCertificateRowMapper rowMapper) {
@@ -51,6 +59,10 @@ public class GiftCertificateRepository extends BaseCRUDRepository<GiftCertificat
         jdbcTemplate.update(INSERT_REFERENCE_SQL, tag.getId(), giftCertificate.getId());
     }
 
+    public void deleteAllReferences(GiftCertificate certificate) {
+        jdbcTemplate.update(DELETE_REFERENCES_SQL, certificate.getId());
+    }
+
     @Override
     public void update(GiftCertificate entity) {
         Object[] fieldsArray = getFieldsArray(entity);
@@ -63,6 +75,12 @@ public class GiftCertificateRepository extends BaseCRUDRepository<GiftCertificat
     public GiftCertificate findByID(long id) {
         return jdbcTemplate.queryForObject(SQL_SELECT_BY_ID, rowMapper, id);
     }
+
+    @Override
+    public GiftCertificate findByName(String name) {
+        return jdbcTemplate.queryForObject(SQL_SELECT_BY_ID, rowMapper, name);
+    }
+
 
     @Override
     public List<GiftCertificate> query(Specification specification) {

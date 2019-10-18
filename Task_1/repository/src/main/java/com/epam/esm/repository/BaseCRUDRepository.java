@@ -31,4 +31,6 @@ public abstract class BaseCRUDRepository<T extends Entity> implements CRUDReposi
     }
 
     protected abstract Object[] getFieldsArray(T entity);
+
+
 }

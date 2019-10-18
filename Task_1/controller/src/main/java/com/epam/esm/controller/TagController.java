@@ -4,7 +4,6 @@ import com.epam.esm.dto.TagDTO;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RequestMapping("/v1/tags")
 @RestController
@@ -29,20 +29,24 @@ public class TagController {
         this.tagService = tagService;
     }
 
+    @GetMapping()
+    public List<TagDTO> getTags() {
+        return tagService.getAllTags();
+    }
 
     @GetMapping("/{id}")
     public TagDTO getTag(@PathVariable long id) {
         return tagService.getByID(id);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TagDTO saveTag(@RequestBody @Valid TagDTO tag) {
         return tagService.add(tag);
     }
 
     @DeleteMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTag(@PathVariable long id) {
         tagService.delete(id);
     }

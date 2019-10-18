@@ -13,6 +13,8 @@ public interface CRUDRepository<T extends Entity> {
 
     T findByID(long id);
 
+    T findByName(String name);
+
     List<T> query(Specification specification);
 
     void delete(T entity);

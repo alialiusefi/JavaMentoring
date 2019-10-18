@@ -37,6 +37,11 @@ public class GiftCertificateController {
         return giftCertificateBaseService.getByID(id);
     }
 
+    @GetMapping("/")
+    public List<GiftCertificateDTO> getAllGiftCertificates() {
+        return giftCertificateBaseService.getAllGiftCertificates();
+    }
+
     @GetMapping
     public List<GiftCertificateDTO> getGiftCertificate(@RequestParam(required = false)
                                                                Long tagID,
@@ -60,15 +65,17 @@ public class GiftCertificateController {
         return giftCertificateBaseService.add(giftCertificateDTO);
     }
 
-    @PutMapping
+    @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public GiftCertificateDTO updateGiftCertificate(@RequestBody @Valid GiftCertificateDTO giftCertificateDTO) {
+    public GiftCertificateDTO updateGiftCertificate(@PathVariable long id,
+                                                    @RequestBody @Valid GiftCertificateDTO giftCertificateDTO) {
+        giftCertificateDTO.setId(id);
         return giftCertificateBaseService.update(giftCertificateDTO);
     }
 
 
     @DeleteMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteGiftCertificate(@PathVariable long id) {
         giftCertificateBaseService.delete(id);
     }

@@ -22,6 +22,11 @@ import java.util.List;
 @ControllerAdvice(annotations = RestController.class)
 public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
+    @ExceptionHandler({RuntimeException.class})
+    public ResponseEntity<Object> handleRunTimeException(RuntimeException e) {
+        return new ResponseEntity<Object>(
+                new APIError(e.getMessage()), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     @ExceptionHandler({ConstraintViolationException.class})
     public ResponseEntity<Object> handleConstraintViolation(
@@ -31,9 +36,6 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
             errors.add(violation.getRootBeanClass().getName() + " " +
                     violation.getPropertyPath() + ": " + violation.getMessage());
         }
-/*
-        errors.add(ex.getMessage());
-*/
         APIError apiError =
                 new APIError(errors);
         return new ResponseEntity<Object>(
@@ -46,9 +48,6 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
             HttpStatus status,
             WebRequest request) {
         List<String> errors = new ArrayList<String>();
-/*
-        errors.add(ex.getMessage());
-*/
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
             errors.add(error.getField() + ": " + error.getDefaultMessage());
         }

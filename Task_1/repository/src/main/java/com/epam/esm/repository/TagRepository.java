@@ -16,6 +16,8 @@ public final class TagRepository extends BaseCRUDRepository<Tag> {
     private static final String SQL_DELETE = "delete from tag where tag.id = ?";
     private static final String SQL_SELECT_BY_ID = "select tag.id, tag.tag_name " +
             "from tag where tag.id = ?";
+    private static final String SQL_SELECT_BY_NAME = "select tag.id, tag.tag_name " +
+            "from tag where tag.tag_name = ?";
 
     @Autowired
     public TagRepository(JdbcTemplate template, TagRowMapper mapper) {
@@ -35,6 +37,11 @@ public final class TagRepository extends BaseCRUDRepository<Tag> {
     @Override
     public Tag findByID(long id) {
         return jdbcTemplate.queryForObject(SQL_SELECT_BY_ID, rowMapper, id);
+    }
+
+    @Override
+    public Tag findByName(String name) {
+        return jdbcTemplate.queryForObject(SQL_SELECT_BY_NAME, rowMapper, name);
     }
 
     @Override
