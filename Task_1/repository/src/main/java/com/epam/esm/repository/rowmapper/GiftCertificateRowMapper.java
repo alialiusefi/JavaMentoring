@@ -31,6 +31,9 @@ public final class GiftCertificateRowMapper implements RowMapper<GiftCertificate
     }
 
     private LocalDate convertToLocalDateViaSqlDate(Date dateToConvert) {
+        if (dateToConvert == null) {
+            return null;
+        }
         return new java.sql.Date(dateToConvert.getTime()).toLocalDate();
     }
 }

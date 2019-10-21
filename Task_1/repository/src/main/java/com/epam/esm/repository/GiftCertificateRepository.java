@@ -16,8 +16,8 @@ import java.util.List;
 public class GiftCertificateRepository extends BaseCRUDRepository<GiftCertificate> {
 
     private static final String SQL_INSERT = "insert into giftcertificates " +
-            "(name,description,price,date_created,date_modified,duration_till_expiry) values " +
-            "(?,?,?,?,?,?) returning id,name,description,price,date_created,date_modified,duration_till_expiry";
+            "(name,description,price,date_created,duration_till_expiry) values " +
+            "(?,?,?,?,?) returning id,name,description,price,date_created,date_modified,duration_till_expiry";
     private static final String SQL_DELETE = "delete from giftcertificates " +
             "where giftcertificates.id = ?";
 
