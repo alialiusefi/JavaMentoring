@@ -1,0 +1,949 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="controller:war exploded" />
+    </artifacts-to-build>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7c482e5e-8ec2-4e70-b212-5491b38e18c8" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageViewManager">
+    <option name="myElementSize" value="260" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="PostgreSQL - @localhost" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="PostgreSQL - @localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="PostgreSQL - @localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="postgres: database" type="162271b6:PgImplModel$Database" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="PostgreSQL - @localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="postgres: database" type="162271b6:PgImplModel$Database" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="PostgreSQL - @localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="postgres: database" type="162271b6:PgImplModel$Database" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="PostgreSQL - @localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="postgres: database" type="162271b6:PgImplModel$Database" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
+        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ErrorTreeViewConfiguration">
+    <option name="autoscrollToSource" value="true" />
+    <option name="hideWarnings" value="true" />
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="true" />
+    <option name="HIDE_WARNINGS" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="Arquillian JUnit Test Class" />
+        <option value="JUnit4 Test Class" />
+        <option value="Kotlin Interface" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="true" />
+    <option name="FILTER_DEBUG" value="true" />
+    <option name="CUSTOM_FILTER" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1RJnF8zHtI4rM4hrQByC7GK3YG9" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="DatabaseDriversLRU" value="postgresql" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.Arquillian JUnit4" value="" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
+    <property name="last.edited.regexp" value="" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/repository/src/test/resources" />
+    <property name="nodejs.protractor.protractor_package" value="" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="debugger.stepping" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.epam.esm.repository" />
+      <recent name="com.epam.esm.service" />
+    </key>
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="com.epam.esm.service" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Ali_Al-Iusefi\Desktop\Git\ESM\Task_1\repository\src\test\resources" />
+      <recent name="C:\Users\Ali_Al-Iusefi\Desktop\Git\ESM\Task_1\repository\src\test\java" />
+      <recent name="C:\Users\Ali_Al-Iusefi\Desktop\Git\ESM\Task_1\service\src\main\resources" />
+      <recent name="C:\Users\Ali_Al-Iusefi\Desktop\Git\ESM\Task_1\service\src\main" />
+      <recent name="C:\Users\Ali_Al-Iusefi\Desktop\Git\ESM\Task_1\postgresql\test" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Ali_Al-Iusefi\Desktop\Git\ESM\Task_1\controller\src\main\resources" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Tomcat Server.Tomcat 9.0.242">
+    <configuration name="All in service" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="service" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BigDecimalTest.testBigDecimal" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.epam.esm.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.epam.esm.service" />
+      <option name="MAIN_CLASS_NAME" value="com.epam.esm.service.BigDecimalTest" />
+      <option name="METHOD_NAME" value="testBigDecimal" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GiftCertificateRepoTest.testFindByTagIDAndDescriptionandSortByName" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="repository" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.epam.esm.repository.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.epam.esm.repository" />
+      <option name="MAIN_CLASS_NAME" value="com.epam.esm.repository.GiftCertificateRepoTest" />
+      <option name="METHOD_NAME" value="testFindByTagIDAndDescriptionandSortByName" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="com.epam.esm.repository in repository" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="repository" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.epam.esm.repository.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.epam.esm.repository" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="com.epam.esm.service in service" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.epam.esm.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.epam.esm.service" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Tomcat 9.0.242" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.242" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
+      <option name="OPEN_IN_BROWSER" value="false" />
+      <option name="UPDATE_ON_FRAME_DEACTIVATION" value="true" />
+      <option name="UPDATE_CLASSES_ON_FRAME_DEACTIVATION" value="true" />
+      <deployment>
+        <artifact name="controller:war exploded">
+          <settings>
+            <option name="CONTEXT_PATH" value="/api" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="Tomcat_9_0_242_gift-certficate-app" />
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="55804" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="controller:war exploded" />
+        </option>
+      </method>
+    </configuration>
+    <configuration default="true" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.242" ALTERNATIVE_JRE_ENABLED="false">
+      <option name="UPDATING_POLICY" value="restart-server" />
+      <deployment>
+        <artifact name="controller:war">
+          <settings>
+            <option name="CONTEXT_PATH" value="/" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="_gift-certficate-app" />
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="55804" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="controller:war exploded" />
+        </option>
+      </method>
+    </configuration>
+    <configuration default="true" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Remote" APPLICATION_SERVER_NAME="Tomcat 9.0.241" ALTERNATIVE_JRE_ENABLED="false">
+      <option name="LOCAL" value="false" />
+      <option name="UPDATING_POLICY" value="hot-swap-classes" />
+      <deployment>
+        <artifact name="gift-certficate-app:war">
+          <settings>
+            <option name="CONTEXT_PATH" value="/" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <data>
+          <option name="targets">
+            <list>
+              <WatchedTargetModelImpl>
+                <option name="name" value="CONTEXT_XML" />
+                <option name="transportStagingTarget">
+                  <TransportTarget>
+                    <option name="id" value="adff2583-8137-44c4-b8e8-c1d9a202f670" />
+                    <id>adff2583-8137-44c4-b8e8-c1d9a202f670</id>
+                  </TransportTarget>
+                </option>
+                <option name="watchedLocalPath" value="" />
+                <watched-path />
+                <name>CONTEXT_XML</name>
+                <transport-target>
+                  <TransportTarget>
+                    <option name="id" value="adff2583-8137-44c4-b8e8-c1d9a202f670" />
+                    <id>adff2583-8137-44c4-b8e8-c1d9a202f670</id>
+                  </TransportTarget>
+                </transport-target>
+              </WatchedTargetModelImpl>
+              <StagingTargetModelImpl>
+                <option name="name" value="STAGING" />
+                <option name="stagingRemotePath" value="" />
+                <option name="transportStagingTarget">
+                  <TransportTarget>
+                    <option name="id" value="44884c25-3b4a-4dca-ae8c-7db85daebc65" />
+                    <id>44884c25-3b4a-4dca-ae8c-7db85daebc65</id>
+                  </TransportTarget>
+                </option>
+                <staging-path />
+                <name>STAGING</name>
+                <transport-target>
+                  <TransportTarget>
+                    <option name="id" value="44884c25-3b4a-4dca-ae8c-7db85daebc65" />
+                    <id>44884c25-3b4a-4dca-ae8c-7db85daebc65</id>
+                  </TransportTarget>
+                </transport-target>
+              </StagingTargetModelImpl>
+            </list>
+          </option>
+          <option name="transportHostId" />
+        </data>
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="TOMCAT_LOCALHOST_LOG_ID" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="55806" />
+        <option name="LOCAL" value="false" />
+      </RunnerSettings>
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="gift-certficate-app:war" />
+        </option>
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.com.epam.esm.repository in repository" />
+      <item itemvalue="JUnit.GiftCertificateRepoTest.testFindByTagIDAndDescriptionandSortByName" />
+      <item itemvalue="JUnit.BigDecimalTest.testBigDecimal" />
+      <item itemvalue="JUnit.All in service" />
+      <item itemvalue="JUnit.com.epam.esm.service in service" />
+      <item itemvalue="Tomcat Server.Tomcat 9.0.242" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.com.epam.esm.repository in repository" />
+        <item itemvalue="JUnit.com.epam.esm.service in service" />
+        <item itemvalue="JUnit.All in service" />
+        <item itemvalue="JUnit.BigDecimalTest.testBigDecimal" />
+        <item itemvalue="JUnit.GiftCertificateRepoTest.testFindByTagIDAndDescriptionandSortByName" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="allServicesViewState">
+      <serviceView>
+        <option name="contentProportion" value="0.15360697" />
+        <treeState>
+          <expand>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@6e2c24db" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+            </path>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@6e2c24db" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@6f1c20fe" type="9fbbdea:ServiceModel$ServiceNode" />
+            </path>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@6e2c24db" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@63aff978" type="9fbbdea:ServiceModel$ServiceNode" />
+            </path>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@6e2c24db" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@5b2fd732" type="9fbbdea:ServiceModel$ServiceNode" />
+            </path>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@6e2c24db" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@61b630f9" type="9fbbdea:ServiceModel$ServiceNode" />
+            </path>
+          </expand>
+          <select />
+        </treeState>
+      </serviceView>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7c482e5e-8ec2-4e70-b212-5491b38e18c8" name="Default Changelist" comment="" />
+      <created>1569393959727</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1569393959727</updated>
+      <workItem from="1569393962730" duration="9972000" />
+      <workItem from="1569507761617" duration="9022000" />
+      <workItem from="1569521354593" duration="10000" />
+      <workItem from="1569566641415" duration="23967000" />
+      <workItem from="1569831640665" duration="5973000" />
+      <workItem from="1569914605595" duration="8228000" />
+      <workItem from="1569922844253" duration="49685000" />
+      <workItem from="1570170816761" duration="8806000" />
+      <workItem from="1570196817777" duration="8251000" />
+      <workItem from="1570434726669" duration="37000" />
+      <workItem from="1570605035470" duration="28749000" />
+      <workItem from="1570693640017" duration="8122000" />
+      <workItem from="1570784628379" duration="2000" />
+      <workItem from="1571042123236" duration="169000" />
+      <workItem from="1571067621961" duration="7884000" />
+      <workItem from="1571206668588" duration="24108000" />
+      <workItem from="1571234619842" duration="854000" />
+      <workItem from="1571235481155" duration="4068000" />
+      <workItem from="1571240123972" duration="420000" />
+      <workItem from="1571294008195" duration="9244000" />
+      <workItem from="1571325118103" duration="1793000" />
+      <workItem from="1571396915824" duration="7442000" />
+      <workItem from="1571655311193" duration="184000" />
+      <workItem from="1571658021002" duration="1256000" />
+      <workItem from="1571724601742" duration="4300000" />
+      <workItem from="1571821640402" duration="624000" />
+    </task>
+    <task id="LOCAL-00024" summary="Added method getFieldArray(), Implemented GiftCertificateRepo">
+      <created>1569828724460</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1569828724460</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Added ModelMapper, DTOs, Fixed parsing property file exception, changed price field to big decimal(not fully)">
+      <created>1569835598332</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1569835598332</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Created Services">
+      <created>1569837431031</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1569837431031</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Rewiring and Added annotations">
+      <created>1569917293632</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1569917293632</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Rewiring and Added annotations">
+      <created>1569922168543</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1569922168543</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Conversion of entity to json, Resolved Dependencies">
+      <created>1570001245609</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1570001245609</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Fixed ConnectionPool from recreating itself for every connection">
+      <created>1570006624677</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1570006624677</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Added CRD Tag Controller Methods, Tag Entity Validation">
+      <created>1570006718300</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1570006718300</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Added Exceptions and Exception Handler">
+      <created>1570009193675</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1570009193675</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Added More Exceptions Handling methods and Error">
+      <created>1570011504851</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1570011504851</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Added Converters To convert entity to dto and vice versa">
+      <created>1570094220561</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1570094220562</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Added default tag resource request">
+      <created>1570094260229</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1570094260229</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Added addCertificateDTO">
+      <created>1570095253507</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1570095253507</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Added controller methods for giftcertificate resource, removed modelmapper from controllers">
+      <created>1570105719455</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1570105719455</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Added Create and Update certificate, Services now work with dtos instead of entity">
+      <created>1570105872731</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1570105872731</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Mistype">
+      <created>1570105939092</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1570105939092</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Added constraint">
+      <created>1570116888638</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1570116888639</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Added Conjunction Specification, Renamed toSqlClause() method">
+      <created>1570117025994</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1570117025994</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Fixed Update repo bugs, and rowmapper">
+      <created>1570117095148</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1570117095148</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Added JSOn Date Serialization/Deserialization, List DTO-Entity converters">
+      <created>1570117825751</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1570117825751</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Added Find/Sort Specifications classes">
+      <created>1570119079210</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1570119079210</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Realized Find/Sort Specifications">
+      <created>1570124178809</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1570124178809</updated>
+    </task>
+    <task id="LOCAL-00046" summary="Removed unneeded classes, annotations, controller methods, &#10;removed locks and changed collection in connectionpool,&#10;changed path to localhost:8080/api/v1/&lt;resource_name&gt;/,&#10;fixed toSqlClause() bug">
+      <created>1570179659345</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1570179659346</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Added Service Tests">
+      <created>1570205821856</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1570205821856</updated>
+    </task>
+    <task id="LOCAL-00048" summary="Code Convenntion, Removed Unneeded Method, added annotations">
+      <created>1570607978322</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1570607978322</updated>
+    </task>
+    <task id="LOCAL-00049" summary="Added transaction manager, added transaction annotations,">
+      <created>1570608669585</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1570608669585</updated>
+    </task>
+    <task id="LOCAL-00050" summary="Added postprocessing bean for correct exception handling and exception messages,&#10;more @Valid and @Validate annotations,&#10;added hibernate annotation validator">
+      <created>1570632015360</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1570632015361</updated>
+    </task>
+    <task id="LOCAL-00051" summary="Created custom function, fixed bugs with multiparam requests,&#10; add operation now returns newly created object">
+      <created>1570632132376</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1570632132377</updated>
+    </task>
+    <task id="LOCAL-00052" summary="Throw correct exception if resource not found,&#10;more annotation constraints">
+      <created>1570632219278</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1570632219278</updated>
+    </task>
+    <task id="LOCAL-00053" summary="Fixed AddReference Bug, update certifcate bug, more table filling">
+      <created>1570634873199</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1570634873199</updated>
+    </task>
+    <task id="LOCAL-00054" summary="Fixed AddReference Bug, update certifcate bug, more table filling">
+      <created>1570636040677</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1570636040677</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Added Service Interface">
+      <created>1570695001066</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1570695001067</updated>
+    </task>
+    <task id="LOCAL-00056" summary="Fixed Update reference bug">
+      <created>1570704817178</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1570704817178</updated>
+    </task>
+    <task id="LOCAL-00057" summary="Renamed Services">
+      <created>1571067818822</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1571067818822</updated>
+    </task>
+    <task id="LOCAL-00058" summary="Created Interfaces for every service class, renamed classes/fields, &#10;@AutoWired are now added into constucters instead of fields">
+      <created>1571070209129</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1571070209129</updated>
+    </task>
+    <task id="LOCAL-00059" summary="Removed starred imports, removed @EnableWebMvc from exception handler">
+      <created>1571074041159</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1571074041159</updated>
+    </task>
+    <task id="LOCAL-00060" summary="Deletes database if exists">
+      <created>1571074052732</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1571074052732</updated>
+    </task>
+    <task id="LOCAL-00061" summary="Changed from primitive to object">
+      <created>1571074083638</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1571074083638</updated>
+    </task>
+    <task id="LOCAL-00062" summary="removed destroy() method call">
+      <created>1571074132031</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1571074132031</updated>
+    </task>
+    <task id="LOCAL-00063" summary="Fixed Connection Pool using dynamic proxy">
+      <created>1571209404351</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1571209404351</updated>
+    </task>
+    <task id="LOCAL-00064" summary="Added messages, added tag constraint">
+      <created>1571210914285</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1571210914285</updated>
+    </task>
+    <task id="LOCAL-00065" summary="Embedded PostgresSQL, New Tag Tests">
+      <created>1571215451563</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1571215451563</updated>
+    </task>
+    <task id="LOCAL-00066" summary="Written all tests for repo layer">
+      <created>1571223469180</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1571223469180</updated>
+    </task>
+    <task id="LOCAL-00067" summary="Fixed null pointers, better tests, &#10;fixed bug where getGiftCertificates with multi parameters was returning&#10;giftcertificates with null tagdto lists">
+      <created>1571230970310</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1571230970310</updated>
+    </task>
+    <task id="LOCAL-00068" summary="Removed Extra Exception Messages">
+      <created>1571240539378</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1571240539378</updated>
+    </task>
+    <task id="LOCAL-00069" summary="Fixed demo bugs, dates are now formatted, removed @Jsonignore on id in dtos, get all method,&#10;date of modification only in update operation ,no tag property = empty tags,&#10;204 no content in delete">
+      <created>1571406304258</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1571406304259</updated>
+    </task>
+    <task id="LOCAL-00070" summary="add giftcertificate to fix...">
+      <created>1571659263516</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1571659263517</updated>
+    </task>
+    <task id="LOCAL-00071" summary="GetAll fixed, fixed addGiftCertificate bug">
+      <created>1571728756886</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1571728756886</updated>
+    </task>
+    <task id="LOCAL-00072" summary="GetAll fixed, fixed addGiftCertificate bug">
+      <created>1571822204355</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1571822204355</updated>
+    </task>
+    <option name="localTasksCounter" value="73" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Removed unneeded classes, annotations, controller methods, &#10;removed locks and changed collection in connectionpool,&#10;changed path to localhost:8080/api/v1/&lt;resource_name&gt;/,&#10;fixed toSqlClause() bug" />
+    <MESSAGE value="Added Service Tests" />
+    <MESSAGE value="Code Convenntion, Removed Unneeded Method, added annotations" />
+    <MESSAGE value="Added transaction manager, added transaction annotations," />
+    <MESSAGE value="Added postprocessing bean for correct exception handling and exception messages,&#10;more @Valid and @Validate annotations,&#10;added hibernate annotation validator" />
+    <MESSAGE value="Created custom function, fixed bugs with multiparam requests,&#10; add operation now returns newly created object" />
+    <MESSAGE value="Throw correct exception if resource not found,&#10;more annotation constraints" />
+    <MESSAGE value="Fixed AddReference Bug, update certifcate bug, more table filling" />
+    <MESSAGE value="Added Service Interface" />
+    <MESSAGE value="Fixed Update reference bug" />
+    <MESSAGE value="Renamed Services" />
+    <MESSAGE value="Created Interfaces for every service class, renamed classes/fields, &#10;@AutoWired are now added into constucters instead of fields" />
+    <MESSAGE value="Removed starred imports, removed @EnableWebMvc from exception handler" />
+    <MESSAGE value="Deletes database if exists" />
+    <MESSAGE value="Changed from primitive to object" />
+    <MESSAGE value="removed destroy() method call" />
+    <MESSAGE value="Fixed Connection Pool using dynamic proxy" />
+    <MESSAGE value="Added messages, added tag constraint" />
+    <MESSAGE value="Embedded PostgresSQL, New Tag Tests" />
+    <MESSAGE value="Written all tests for repo layer" />
+    <MESSAGE value="Fixed null pointers, better tests, &#10;fixed bug where getGiftCertificates with multi parameters was returning&#10;giftcertificates with null tagdto lists" />
+    <MESSAGE value="Removed Extra Exception Messages" />
+    <MESSAGE value="Fixed demo bugs, dates are now formatted, removed @Jsonignore on id in dtos, get all method,&#10;date of modification only in update operation ,no tag property = empty tags,&#10;204 no content in delete" />
+    <MESSAGE value="add giftcertificate to fix..." />
+    <MESSAGE value="GetAll fixed, fixed addGiftCertificate bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="GetAll fixed, fixed addGiftCertificate bug" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/gift_certficate_app$GiftCertificateRepoTest.ic" NAME="GiftCertificateRepoTest Coverage Results" MODIFIED="1571221361957" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.epam.esm.repository.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/gift_certficate_app$GiftCertificateServiceTest.ic" NAME="GiftCertificateServiceTest Coverage Results" MODIFIED="1570204785192" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.epam.esm.service.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/gift_certficate_app$Tomcat_9_0_242.ic" NAME="Tomcat 9.0.242 Coverage Results" MODIFIED="1570696579181" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/gift_certficate_app$com_epam_esm_repository_in_repository.ic" NAME="com.epam.esm.repository in repository Coverage Results" MODIFIED="1571223660585" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.epam.esm.repository.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/gift_certficate_app$GiftCertificateRepoTest_and_1_more.ic" NAME="GiftCertificateRepoTest and 1 more Coverage Results" MODIFIED="1571221399688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/gift_certficate_app$GiftCertificateServiceTest_getGiftCertificate.ic" NAME="GiftCertificateServiceTest.getGiftCertificate Coverage Results" MODIFIED="1570204759132" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.epam.esm.service.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/gift_certficate_app$TagRepoTest.ic" NAME="TagRepoTest Coverage Results" MODIFIED="1571218929623" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.epam.esm.repository.*</FILTER>
+    </SUITE>
+  </component>
+</project>
