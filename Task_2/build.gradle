@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+    id 'application'
+    id "io.spring.dependency-management" version "1.0.6.RELEASE"
+}
+
+subprojects {
+    group = 'com.epam.esm'
+    version = '2.0-SNAPSHOT'
+    sourceCompatibility = 1.8
+
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java-library'
+
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.boot:spring-boot-dependencies:2.1.7.RELEASE")
+        }
+    }
+
+}
+
