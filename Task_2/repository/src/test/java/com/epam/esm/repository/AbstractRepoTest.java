@@ -1,7 +1,5 @@
 package com.epam.esm.repository;
 
-import com.epam.esm.repository.GiftCertificateRepository;
-import com.epam.esm.repository.TagRepository;
 import com.epam.esm.repository.rowmapper.GiftCertificateRowMapper;
 import com.epam.esm.repository.rowmapper.TagRowMapper;
 import com.opentable.db.postgres.junit.EmbeddedPostgresRules;

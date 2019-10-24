@@ -1,16 +1,21 @@
 package com.epam.esm.entity;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class Entity implements Serializable {
+public abstract class AbstractEntity implements Serializable {
 
+    @Id
+    @GeneratedValue
     private Long id;
 
-    protected Entity() {
+    protected AbstractEntity() {
     }
 
-    protected Entity(Long id) {
+    protected AbstractEntity(Long id) {
         this.id = id;
     }
 
@@ -26,8 +31,8 @@ public abstract class Entity implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Entity entity = (Entity) o;
-        return id == entity.id;
+        AbstractEntity abstractEntity = (AbstractEntity) o;
+        return id == abstractEntity.id;
     }
 
     @Override

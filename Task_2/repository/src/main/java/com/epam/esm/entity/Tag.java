@@ -1,12 +1,16 @@
 package com.epam.esm.entity;
 
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Objects;
 
+@Entity(name = "tag")
+@Table
+public class Tag extends AbstractEntity {
 
-public class Tag extends Entity {
-
-
+    @Column(name = "tag_name", nullable = false)
     private String name;
 
     private Tag(TagBuilder tagBuilder) {
