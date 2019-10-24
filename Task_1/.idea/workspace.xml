@@ -6,7 +6,52 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7c482e5e-8ec2-4e70-b212-5491b38e18c8" name="Default Changelist" comment="" />
+    <list default="true" id="7c482e5e-8ec2-4e70-b212-5491b38e18c8" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/builder/EntityBuilder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/builder/EntityBuilderImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/builder/GiftCertificateBuilder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/builder/GiftCertificateBuilderImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/config/RepositoryConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/Entity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/GiftCertificate.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/Tag.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/exception/PersistentException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/pool/ConnectionPool.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/BaseCRUDRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/CRUDRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/GiftCertificateRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/TagRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/rowmapper/GiftCertificateRowMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/rowmapper/TagRowMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/FindAllCertificates.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/FindAllTags.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/FindGiftCertificateByID.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/FindGiftCertificatesByDescription.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/FindGiftCertificatesByName.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/FindGiftCertificatesByTagID.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/FindSpecification.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/FindTagByID.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/FindTagByName.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/FindTagsByCertificateID.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/GiftCertificateSpecificationConjunction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/SortGiftCertificatesByDate.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/SortGiftCertificatesByName.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/SortSpecification.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/Specification.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/TagSpecificationConjunction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/resources/dbConfig.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/test/java/com/epam/esm/repository/AbstractRepoTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/test/java/com/epam/esm/repository/GiftCertificateRepoTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/test/java/com/epam/esm/repository/TagRepoTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/test/resources/postgresql/2_create_tables.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/test/resources/postgresql/test/fill_tables.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/controller/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/controller/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/repository/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/service/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/settings.gradle" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,47 +72,7 @@
     <option name="HIDDEN_KINDS">
       <set />
     </option>
-    <expand>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="PostgreSQL - @localhost" type="feb32156:DbDataSourceImpl" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="PostgreSQL - @localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="PostgreSQL - @localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="postgres: database" type="162271b6:PgImplModel$Database" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="PostgreSQL - @localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="postgres: database" type="162271b6:PgImplModel$Database" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="PostgreSQL - @localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="postgres: database" type="162271b6:PgImplModel$Database" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="PostgreSQL - @localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="postgres: database" type="162271b6:PgImplModel$Database" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
-        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
-      </path>
-    </expand>
+    <expand />
     <select />
   </component>
   <component name="ErrorTreeViewConfiguration">
@@ -106,7 +111,9 @@
     </option>
   </component>
   <component name="ProjectId" id="1RJnF8zHtI4rM4hrQByC7GK3YG9" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
@@ -534,6 +541,9 @@
       <workItem from="1571658021002" duration="1256000" />
       <workItem from="1571724601742" duration="4300000" />
       <workItem from="1571821640402" duration="624000" />
+      <workItem from="1571908320273" duration="845000" />
+      <workItem from="1571909178129" duration="652000" />
+      <workItem from="1571909838326" duration="549000" />
     </task>
     <task id="LOCAL-00024" summary="Added method getFieldArray(), Implemented GiftCertificateRepo">
       <created>1569828724460</created>
