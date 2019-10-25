@@ -1,4 +1,4 @@
-package com.epam.esm.repository.specfication;
+package com.epam.esm.repository.specification;
 
 import com.epam.esm.entity.GiftCertificate;
 

@@ -1,20 +1,11 @@
 package com.epam.esm.repository;
 
-import com.epam.esm.entity.Tag;
-import com.epam.esm.repository.specfication.FindTagByName;
-import com.epam.esm.repository.specfication.FindTagsByCertificateID;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 @RunWith(JUnit4.class)
 public class TagRepoTest extends AbstractRepoTest {
+/*
 
     @Test
     public void findByID() {
@@ -59,5 +50,6 @@ public class TagRepoTest extends AbstractRepoTest {
         tagRepository.delete(new FindTagByName("deleteme2"));
         assertTrue(tagRepository.query(new FindTagByName("deleteme2")).isEmpty());
     }
+*/
 
 }

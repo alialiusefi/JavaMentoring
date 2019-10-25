@@ -1,4 +1,4 @@
-package com.epam.esm.repository.specfication;
+package com.epam.esm.repository.specification;
 
 import com.epam.esm.entity.GiftCertificate;
 
@@ -8,11 +8,11 @@ import java.util.List;
 
 public class GiftCertificateSpecificationConjunction implements Specification<GiftCertificate> {
 
+    List<Specification<GiftCertificate>> specificationsToJoin;
+
     public GiftCertificateSpecificationConjunction(List<Specification<GiftCertificate>> specificationList) {
         this.specificationsToJoin = specificationList;
     }
-
-    List<Specification<GiftCertificate>> specificationsToJoin;
 
     @Override
     public String toSqlClause(boolean isConjunction) {

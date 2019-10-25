@@ -1,11 +1,12 @@
-package com.epam.esm.repository.specfication;
+package com.epam.esm.repository.specification;
 
 
-import com.epam.esm.entity.Entity;
+
+import com.epam.esm.entity.AbstractEntity;
 
 import java.util.Comparator;
 
-public abstract class SortSpecification<T extends Entity> implements Specification<T> {
+public abstract class SortSpecification<T extends AbstractEntity> implements Specification<T> {
 
     protected Comparator<T> comparator;
 

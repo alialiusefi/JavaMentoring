@@ -1,30 +1,13 @@
 package com.epam.esm.repository;
 
-import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.repository.specfication.FindGiftCertificatesByDescription;
-import com.epam.esm.repository.specfication.FindGiftCertificatesByName;
-import com.epam.esm.repository.specfication.FindGiftCertificatesByTagID;
-import com.epam.esm.repository.specfication.GiftCertificateSpecificationConjunction;
-import com.epam.esm.repository.specfication.SortGiftCertificatesByDate;
-import com.epam.esm.repository.specfication.SortGiftCertificatesByName;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.springframework.dao.EmptyResultDataAccessException;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(JUnit4.class)
 public class GiftCertificateRepoTest extends AbstractRepoTest {
 
 
-    @Test
+  /*  @Test
     public void findByID() {
         GiftCertificate expected = new GiftCertificate.GiftCertificateBuilder(1, "ACME Discount Voucher",
                 "Discount while shopping",
@@ -174,5 +157,5 @@ public class GiftCertificateRepoTest extends AbstractRepoTest {
         List<GiftCertificate> actual = giftCertificateRepository.query(con);
         assertEquals(expected, actual);
     }
-
+*/
 }

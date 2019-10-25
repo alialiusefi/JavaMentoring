@@ -7,7 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -25,7 +24,9 @@ import java.util.ResourceBundle;
 @Configuration
 @ComponentScan(basePackages = {"com.epam.esm"})
 @EnableTransactionManagement
+/*
 @EnableJpaRepositories(basePackages = {"com.epam.esm.repository"})
+*/
 public class RepositoryConfig {
 
     @Bean("connectionPool")

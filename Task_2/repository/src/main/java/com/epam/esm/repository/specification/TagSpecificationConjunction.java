@@ -1,4 +1,4 @@
-package com.epam.esm.repository.specfication;
+package com.epam.esm.repository.specification;
 
 import com.epam.esm.entity.Tag;
 
@@ -8,11 +8,11 @@ import java.util.List;
 
 public class TagSpecificationConjunction implements Specification<Tag> {
 
+    List<Specification<Tag>> specificationsToJoin;
+
     public TagSpecificationConjunction(List<Specification<Tag>> specificationList) {
         this.specificationsToJoin = specificationList;
     }
-
-    List<Specification<Tag>> specificationsToJoin;
 
     @Override
     public String toSqlClause(boolean isConjunction) {

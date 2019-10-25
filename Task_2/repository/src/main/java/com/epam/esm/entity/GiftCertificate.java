@@ -2,9 +2,6 @@ package com.epam.esm.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -22,13 +19,15 @@ public final class GiftCertificate extends AbstractEntity {
     @Column(name = "price", nullable = false)
     private BigDecimal price;
     @Column(name = "date_created", nullable = false)
+    /*@CreatedDate*/
     private LocalDate dateOfCreation;
     @Column(name = "date_modified", nullable = false)
+    /*@LastModifiedDate*/
     private LocalDate dateOfModification;
     @Column(name = "duration_till_expiry", nullable = false)
     private Integer durationTillExpiry;
 
-    @OneToMany(mappedBy = "tagged_certificates", targetEntity = Tag.class)
+
     private List<Tag> tags;
 
     public GiftCertificate() {

@@ -6,7 +6,8 @@ package com.epam.esm.exception;
  */
 public class PersistentException extends RuntimeException {
 
-    public PersistentException() { }
+    public PersistentException() {
+    }
 
     public PersistentException(Throwable cause) {
         super(cause);

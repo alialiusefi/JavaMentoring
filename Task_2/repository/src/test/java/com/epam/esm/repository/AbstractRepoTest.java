@@ -20,7 +20,7 @@ public abstract class AbstractRepoTest {
 
     @BeforeClass
     public static void setUp() {
-        template = new JdbcTemplate(pg.getEmbeddedPostgres().getPostgresDatabase());
+     /*   template = new JdbcTemplate(pg.getEmbeddedPostgres().getPostgresDatabase());
         tagRepository = new TagRepository(template, tagRowMapper);
         giftCertificateRepository = new GiftCertificateRepository(template, giftCertificateRowMapper);
         template.execute("" +
@@ -70,6 +70,6 @@ public abstract class AbstractRepoTest {
         template.execute("insert into tagged_giftcertificates(tag_id, gift_certificate_id)\n" +
                 "VALUES (1, 1),\n" +
                 "       (2, 1)," +
-                "(1,2);");
+                "(1,2);");*/
     }
 }

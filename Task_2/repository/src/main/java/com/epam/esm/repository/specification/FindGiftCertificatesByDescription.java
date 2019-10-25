@@ -1,22 +1,22 @@
-package com.epam.esm.repository.specfication;
+package com.epam.esm.repository.specification;
 
 import com.epam.esm.entity.GiftCertificate;
 
-public class FindGiftCertificatesByName extends FindSpecification<GiftCertificate> {
+public class FindGiftCertificatesByDescription extends FindSpecification<GiftCertificate> {
 
     private static final String SQL_CLAUSE = "select giftcertificates.id,giftcertificates.name" +
             ",giftcertificates.description,giftcertificates.price" +
             ",giftcertificates.date_created,giftcertificates.date_modified," +
             "giftcertificates.duration_till_expiry " +
             "from giftcertificates " +
-            "where public.consists(?,giftcertificates.name)  ";
+            "where public.consists(?,giftcertificates.description) ";
 
-    private static final String CONJ_SQL_CLAUSE = "and public.consists(?,giftcertificates.name) ";
+    private static final String CONJ_SQL_CLAUSE = "and public.consists(?,giftcertificates.description) ";
 
-    private String name;
+    private String description;
 
-    public FindGiftCertificatesByName(String name) {
-        this.name = name;
+    public FindGiftCertificatesByDescription(String description) {
+        this.description = description;
     }
 
     @Override
@@ -26,6 +26,6 @@ public class FindGiftCertificatesByName extends FindSpecification<GiftCertificat
 
     @Override
     public Object[] getParameters() {
-        return new Object[]{name};
+        return new Object[]{description};
     }
 }
