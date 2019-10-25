@@ -7,32 +7,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7c482e5e-8ec2-4e70-b212-5491b38e18c8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/BaseCRUDRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/CRUDRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Task_2/repository/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/config/RepositoryConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/config/RepositoryConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/AbstractEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/AbstractEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/GiftCertificate.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/GiftCertificate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/exception/PersistentException.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/exception/PersistentException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/BaseCRUDRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/BaseCRUDRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/CRUDRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/CRUDRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/GiftCertificateRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/GiftCertificateRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/TagRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/TagRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/FindAllCertificates.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindAllCertificates.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/FindAllTags.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindAllTags.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/FindGiftCertificateByID.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindGiftCertificateByID.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/FindGiftCertificatesByDescription.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindGiftCertificatesByDescription.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/FindGiftCertificatesByName.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindGiftCertificatesByName.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/FindGiftCertificatesByTagID.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindGiftCertificatesByTagID.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/FindSpecification.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindSpecification.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/FindTagByID.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindTagByID.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/FindTagByName.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindTagByName.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/FindTagsByCertificateID.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindTagsByCertificateID.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/GiftCertificateSpecificationConjunction.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/GiftCertificateSpecificationConjunction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/SortGiftCertificatesByDate.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/SortGiftCertificatesByDate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/SortGiftCertificatesByName.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/SortGiftCertificatesByName.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/SortSpecification.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/SortSpecification.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/Specification.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/Specification.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specfication/TagSpecificationConjunction.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/TagSpecificationConjunction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/resources/dbConfig.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/resources/dbConfig.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindAllCertificates.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindAllTags.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindGiftCertificateByID.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindGiftCertificatesByDescription.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindGiftCertificatesByName.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindGiftCertificatesByTagID.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindTagByID.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindTagByID.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindTagByName.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindTagsByCertificateID.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/GiftCertificateSpecificationConjunction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/SortGiftCertificatesByDate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/SortGiftCertificatesByName.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/Specification.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/Specification.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/TagSpecificationConjunction.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/test/java/com/epam/esm/repository/AbstractRepoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/test/java/com/epam/esm/repository/AbstractRepoTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/test/java/com/epam/esm/repository/GiftCertificateRepoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/test/java/com/epam/esm/repository/GiftCertificateRepoTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/test/java/com/epam/esm/repository/TagRepoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/test/java/com/epam/esm/repository/TagRepoTest.java" afterDir="false" />
@@ -529,7 +523,8 @@
       <workItem from="1571908320273" duration="845000" />
       <workItem from="1571909178129" duration="652000" />
       <workItem from="1571909838326" duration="549000" />
-      <workItem from="1571985317348" duration="284000" />
+      <workItem from="1571985317348" duration="2725000" />
+      <workItem from="1571992293243" duration="109000" />
     </task>
     <task id="LOCAL-00024" summary="Added method getFieldArray(), Implemented GiftCertificateRepo">
       <created>1569828724460</created>

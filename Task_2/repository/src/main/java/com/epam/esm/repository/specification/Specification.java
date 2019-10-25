@@ -3,14 +3,13 @@ package com.epam.esm.repository.specification;
 
 import com.epam.esm.entity.AbstractEntity;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+
 public abstract interface Specification<T extends AbstractEntity> {
 
-    default boolean specified(T entity) {
-        throw new UnsupportedOperationException("Unimplemented method!");
-    }
+    CriteriaQuery<T> getCriteriaQuery(CriteriaBuilder criteriaBuilder);
 
-    String toSqlClause(boolean isConjunction);
-
-    Object[] getParameters();
+    /*Object[] getParameters();*/
 
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @Repository
 public class GiftCertificateRepository extends BaseCRUDRepository<GiftCertificate> {
 
+/*
     private static final String SQL_INSERT = "insert into giftcertificates " +
             "(name,description,price,date_created,duration_till_expiry) values " +
             "(?,?,?,?,?) returning id,name,description,price,date_created,date_modified,duration_till_expiry";
@@ -42,14 +44,16 @@ public class GiftCertificateRepository extends BaseCRUDRepository<GiftCertificat
             ",giftcertificates.date_created,giftcertificates.date_modified," +
             "giftcertificates.duration_till_expiry " +
             "from giftcertificates where giftcertificates.name = ? ";
+*/
 
     @Autowired
-    public GiftCertificateRepository(JdbcTemplate template, GiftCertificateRowMapper rowMapper) {
-        super(template, rowMapper);
+    public GiftCertificateRepository(/*JdbcTemplate template, GiftCertificateRowMapper rowMapper,*/
+                                     EntityManager entityManager) {
+        super(/*template, rowMapper,*/entityManager);
     }
 
 
-    @Override
+  /*  @Override
     public GiftCertificate add(GiftCertificate entity) {
         return jdbcTemplate.queryForObject(SQL_INSERT, getFieldsArray(entity), rowMapper);
     }
@@ -72,30 +76,13 @@ public class GiftCertificateRepository extends BaseCRUDRepository<GiftCertificat
     }
 
     @Override
-    public GiftCertificate findByID(long id) {
-        return jdbcTemplate.queryForObject(SQL_SELECT_BY_ID, rowMapper, id);
-    }
-
-    @Override
-    public GiftCertificate findByName(String name) {
-        return jdbcTemplate.queryForObject(SQL_SELECT_BY_ID, rowMapper, name);
-    }
-
-
-    @Override
-    public List<GiftCertificate> query(Specification specification) {
-        return jdbcTemplate.query(specification.toSqlClause(false),
-                rowMapper, specification.getParameters());
-    }
-
-    @Override
     public void delete(GiftCertificate entity) {
         jdbcTemplate.update(SQL_DELETE, entity.getId());
     }
 
     @Override
     public void delete(Specification specification) {
-        List<GiftCertificate> certificatesToDelete = query(specification);
+        List<GiftCertificate> certificatesToDelete = queryList(specification);
         for (GiftCertificate certificate : certificatesToDelete) {
             jdbcTemplate.update(SQL_DELETE, certificate.getId());
         }
@@ -116,6 +103,6 @@ public class GiftCertificateRepository extends BaseCRUDRepository<GiftCertificat
     @Autowired
     public void setGiftCertificateRowMapper(GiftCertificateRowMapper rowMapper) {
         this.rowMapper = rowMapper;
-    }
+    }*/
 
 }
