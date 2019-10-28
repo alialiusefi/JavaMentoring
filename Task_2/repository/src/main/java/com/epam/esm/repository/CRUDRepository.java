@@ -4,22 +4,21 @@ import com.epam.esm.entity.AbstractEntity;
 import com.epam.esm.repository.specification.Specification;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CRUDRepository<T extends AbstractEntity> {
 
-  /*  T add(T entity);
+
+    T add(T entity);
+
+    List<T> queryList(Specification<T> specification, Integer pageNumber, Integer pageSize);
+
+    Optional<T> queryEntity(Specification<T> specification);
 
     void update(T entity);
-*/
-    List<T> queryList(Specification<T> specification, int pageNumber, int pageSize);
-
-    T queryEntity(Specification<T> specification);
-/*
-
-    void delete(T entity);
 
     void delete(Specification specification);
-*/
 
+    void delete(T entity);
 
 }

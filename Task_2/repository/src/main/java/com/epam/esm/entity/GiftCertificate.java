@@ -1,7 +1,11 @@
 package com.epam.esm.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -27,7 +31,10 @@ public final class GiftCertificate extends AbstractEntity {
     @Column(name = "duration_till_expiry", nullable = false)
     private Integer durationTillExpiry;
 
-
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "tagged_giftcertificates", joinColumns =
+            {@JoinColumn(name = "tag_id")},
+            inverseJoinColumns = {@JoinColumn(name = "gift_certificate_id")})
     private List<Tag> tags;
 
     public GiftCertificate() {
@@ -42,6 +49,7 @@ public final class GiftCertificate extends AbstractEntity {
         this.dateOfCreation = giftCertificateBuilder.dateOfCreation;
         this.dateOfModification = giftCertificateBuilder.dateOfModification;
         this.durationTillExpiry = giftCertificateBuilder.durationTillExpiry;
+        this.tags = giftCertificateBuilder.tags;
     }
 
     public String getName() {
@@ -92,6 +100,14 @@ public final class GiftCertificate extends AbstractEntity {
         this.durationTillExpiry = durationTillExpiry;
     }
 
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -130,10 +146,12 @@ public final class GiftCertificate extends AbstractEntity {
         private final String description;
         private final BigDecimal price;
         private final Integer durationTillExpiry;
+        private List<Tag> tags;
         private LocalDate dateOfCreation;
         private LocalDate dateOfModification;
 
-        public GiftCertificateBuilder(long id, String name, String description, BigDecimal price, Integer durationTillExpiry) {
+        public GiftCertificateBuilder(long id, String name, String description, BigDecimal price,
+                                      Integer durationTillExpiry) {
             this.id = id;
             this.name = name;
             this.description = description;
@@ -148,6 +166,11 @@ public final class GiftCertificate extends AbstractEntity {
 
         public GiftCertificateBuilder setDateOfModification(LocalDate dateOfModification) {
             this.dateOfModification = dateOfModification;
+            return this;
+        }
+
+        public GiftCertificateBuilder setTags(List<Tag> tags) {
+            this.tags = tags;
             return this;
         }
 
