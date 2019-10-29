@@ -21,6 +21,7 @@ create table tagged_giftcertificates
     gift_certificate_id integer references giftcertificates (id) on delete cascade
 );
 
+
 CREATE FUNCTION public.consists(IN a text, IN b text)
     RETURNS boolean
     LANGUAGE 'plpgsql'

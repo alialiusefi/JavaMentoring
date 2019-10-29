@@ -1,11 +1,17 @@
 package com.epam.esm.entity;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -16,6 +22,11 @@ import java.util.Objects;
 @Table
 public final class GiftCertificate extends AbstractEntity {
 
+    @Id
+    @SequenceGenerator(name="giftcertificatesSequence",sequenceName="giftcertificates_id_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "giftcertificatesSequence")
+    private Long id;
+
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "description")
@@ -25,16 +36,16 @@ public final class GiftCertificate extends AbstractEntity {
     @Column(name = "date_created", nullable = false)
     /*@CreatedDate*/
     private LocalDate dateOfCreation;
-    @Column(name = "date_modified", nullable = false)
+    @Column(name = "date_modified")
     /*@LastModifiedDate*/
     private LocalDate dateOfModification;
     @Column(name = "duration_till_expiry", nullable = false)
     private Integer durationTillExpiry;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "tagged_giftcertificates", joinColumns =
+    @ManyToMany/*(cascade = {CascadeType.MERGE})*/
+    @JoinTable(name = "tagged_giftcertificates", inverseJoinColumns =
             {@JoinColumn(name = "tag_id")},
-            inverseJoinColumns = {@JoinColumn(name = "gift_certificate_id")})
+            joinColumns = {@JoinColumn(name = "gift_certificate_id")})
     private List<Tag> tags;
 
     public GiftCertificate() {
@@ -42,7 +53,7 @@ public final class GiftCertificate extends AbstractEntity {
     }
 
     private GiftCertificate(GiftCertificateBuilder giftCertificateBuilder) {
-        super(giftCertificateBuilder.id);
+        this.id = giftCertificateBuilder.id;
         this.name = giftCertificateBuilder.name;
         this.description = giftCertificateBuilder.description;
         this.price = giftCertificateBuilder.price;
@@ -50,6 +61,14 @@ public final class GiftCertificate extends AbstractEntity {
         this.dateOfModification = giftCertificateBuilder.dateOfModification;
         this.durationTillExpiry = giftCertificateBuilder.durationTillExpiry;
         this.tags = giftCertificateBuilder.tags;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

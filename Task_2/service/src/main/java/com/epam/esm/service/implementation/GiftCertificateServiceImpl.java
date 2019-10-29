@@ -44,13 +44,10 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     public GiftCertificateDTO getByID(long id) {
-        try {
             GiftCertificate giftCertificate = giftCertificateRepo.queryEntity(
-                    new FindGiftCertificateByID(id)).orElseThrow(ResourceNotFoundException::new);
+                    new FindGiftCertificateByID(id)).orElseThrow(() ->
+                    new ResourceNotFoundException("Certificate with this id doesn't exist!"));
             return giftCertificateConverter.toDTO(giftCertificate);
-        } catch (EmptyResultDataAccessException e) {
-            throw new ResourceNotFoundException("Gift Certificate with ID: " + id + " was not found!");
-        }
     }
 
     @Override
@@ -70,15 +67,20 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         GiftCertificate certificate = giftCertificateConverter.toEntity(certificateDTO);
         certificate.setDateOfCreation(LocalDate.now());
         certificate.setDateOfModification(null);
+        List<Tag> tagsWithID = getTagsWithID(certificate.getTags());
+        certificate.setTags(tagsWithID);
         certificate = giftCertificateRepo.add(certificate);
-        //addReferences(certificateDTO);
         GiftCertificateDTO giftCertificateDTOCreated = giftCertificateConverter.toDTO(certificate);
-        /*List<TagDTO> tagDTOList = tagConverter.toDTOList(tagRepository.query(
-                new FindTagsByCertificateID(giftCertificateDTOCreated.getId())));
-        if (tagDTOList != null) {
-            giftCertificateDTOCreated.setTags(tagDTOList);
-        }*/
         return giftCertificateDTOCreated;
+    }
+
+    private List<Tag> getTagsWithID(List<Tag> tags) {
+        List<Tag> tagsWithID = new ArrayList<>();
+        for(Tag i :tags){
+            Optional<Tag> tagwithID = tagRepository.queryEntity(new FindTagByName(i.getName()));
+            tagsWithID.add(tagwithID.get());
+        }
+        return tagsWithID;
     }
 
     @Transactional
@@ -125,7 +127,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         return null;
     }
 
-    private List<TagDTO> addNewTagsIfTheyDontExist(GiftCertificateDTO dto) {
+    private List<Tag> addNewTagsIfTheyDontExist(GiftCertificateDTO dto) {
         List<Tag> newTagsWithID = new ArrayList<>();
         if (dto.getTags() != null) {
             List<TagDTO> tags = dto.getTags();
@@ -140,7 +142,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                 newTagsWithID.add(tagRepository.add(i));
             }
         }
-        return tagConverter.toDTOList(newTagsWithID);
+        return newTagsWithID;
     }
 
 /*
@@ -208,20 +210,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }*//*
 
 
-
-    private void addReferences(GiftCertificateDTO dto) {
-        if (dto.getTags() != null) {
-            GiftCertificate certificate = giftCertificateConverter.toEntity(dto);
-            List<TagDTO> tagsDTO = dto.getTags();
-            List<Tag> tags = tagConverter.toEntityList(tagsDTO);
-            GiftCertificateRepository repo = (GiftCertificateRepository) giftCertificateRepo;
-            for (Tag i : tags) {
-                i.setId(tagRepository.findByName(i.getName()).getId());
-                repo.addReference(certificate, i);
-            }
-        }
-
-    }
 
     private void updateReferences(GiftCertificateDTO dto) {
         if (dto.getTags() != null) {

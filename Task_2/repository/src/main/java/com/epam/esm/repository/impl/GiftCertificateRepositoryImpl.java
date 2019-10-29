@@ -47,6 +47,7 @@ public class GiftCertificateRepositoryImpl extends BaseCRUDRepository<GiftCertif
     @Override
     public GiftCertificate add(GiftCertificate entity) {
         entityManager.persist(entity);
+        entityManager.merge(entity);
         return entity;
     }
 

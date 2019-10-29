@@ -52,7 +52,7 @@ public class TagServiceImpl implements TagService {
         try {
             TagDTO dto = getByName(tag.getName());
             throw new BadRequestException("Tag with this name already exists!");
-        } catch (EmptyResultDataAccessException e) {
+        } catch (ResourceNotFoundException e) {
             return tagConverter.toDTO(repository.add(tagConverter.toEntity(tag)));
         }
     }
