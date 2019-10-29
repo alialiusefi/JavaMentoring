@@ -1,12 +1,18 @@
 package com.epam.esm.entity;
 
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.List;
 import java.util.Objects;
@@ -15,23 +21,36 @@ import java.util.Objects;
 @Table
 public class Tag extends AbstractEntity {
 
+    @Id
+    @SequenceGenerator(name="tagSequence",sequenceName="tag_id_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tagSequence")
+    private Long id;
+
     @Column(name = "tag_name", nullable = false)
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany/*(cascade = CascadeType.MERGE)*/
     @JoinTable(name = "tagged_giftcertificates", joinColumns =
             {@JoinColumn(name = "tag_id")},
             inverseJoinColumns = {@JoinColumn(name = "gift_certificate_id")})
     private List<GiftCertificate> certificateList;
 
     private Tag(TagBuilder tagBuilder) {
-        super(tagBuilder.id);
+        this.id = tagBuilder.id;
         this.name = tagBuilder.name;
         this.certificateList = tagBuilder.certificates;
     }
 
     public Tag() {
         super();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

@@ -3,15 +3,12 @@ package com.epam.esm.repository.impl;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.repository.BaseCRUDRepository;
 import com.epam.esm.repository.TagRepository;
-import com.epam.esm.repository.specification.FindTagByName;
 import com.epam.esm.repository.specification.Specification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.swing.text.html.Option;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class TagRepositoryImpl extends BaseCRUDRepository<Tag>
