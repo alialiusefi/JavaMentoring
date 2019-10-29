@@ -15,7 +15,7 @@ public interface CRUDRepository<T extends AbstractEntity> {
 
     Optional<T> queryEntity(Specification<T> specification);
 
-    void update(T entity);
+    T update(T entity);
 
     void delete(Specification specification);
 
