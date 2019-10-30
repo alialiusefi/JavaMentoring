@@ -37,12 +37,6 @@ public class GiftCertificateController {
         return giftCertificateBaseService.getByID(id);
     }
 
-    @GetMapping()
-    public List<GiftCertificateDTO> getAllGiftCertificates(@RequestParam(defaultValue = "1") int page,
-                                                           @RequestParam(defaultValue = "5") int size) {
-        return giftCertificateBaseService.getAll(page, size);
-    }
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public GiftCertificateDTO saveGiftCertificate(@RequestBody @Valid GiftCertificateDTO giftCertificateDTO) {
@@ -65,27 +59,29 @@ public class GiftCertificateController {
 
 
     @GetMapping
-    public List<GiftCertificateDTO> getGiftCertificate(@RequestParam(required = false)
-                                                       @Size(min = 1, max = 5) Long[] tagID,
-                                                       @RequestParam(required = false)
-                                                       @Size(min = 1, max = 50) String giftCertificateName,
-                                                       @RequestParam(required = false)
-                                                       @Size(min = 1, max = 256) String giftCertificateDesc,
-                                                       @RequestParam(required = false) Integer sortByDate,
-                                                       @RequestParam(required = false) Integer sortByName,
-                                                       @RequestParam(defaultValue = "1") int page,
-                                                       @RequestParam(defaultValue = "5") int size) {
+    public List<GiftCertificateDTO> getGiftCertificates(@RequestParam(required = false)
+                                                        @Size(min = 1, max = 5) Long[] tagID,
+                                                        @RequestParam(required = false)
+                                                        @Size(min = 1, max = 50) String giftCertificateName,
+                                                        @RequestParam(required = false)
+                                                        @Size(min = 1, max = 256) String giftCertificateDesc,
+                                                        @RequestParam(required = false) Integer sortByDate,
+                                                        @RequestParam(required = false) Integer sortByName,
+                                                        @RequestParam(defaultValue = "1") int page,
+                                                        @RequestParam(defaultValue = "5") int size) {
+        if (tagID == null &&
+                giftCertificateName == null &&
+                giftCertificateDesc == null &&
+                sortByDate == null &&
+                sortByName == null) {
+            return giftCertificateBaseService.getAll(page, size);
+        }
         return giftCertificateBaseService.getGiftCertificates(tagID, giftCertificateName,
                 giftCertificateDesc,
                 sortByDate,
-                sortByName);
+                sortByName,
+                page,size);
     }
-
-
-
-
-
-
 
 
 }
