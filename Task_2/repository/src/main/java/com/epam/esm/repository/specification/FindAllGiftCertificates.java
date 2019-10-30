@@ -10,7 +10,7 @@ public class FindAllGiftCertificates extends FindSpecification<GiftCertificate> 
 
 
     @Override
-    public void setPredicatesIntoQuery(CriteriaQuery<GiftCertificate> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+    public void setPredicatesIntoQuery(CriteriaQuery<GiftCertificate> criteriaQuery, CriteriaBuilder builder) {
         Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
         criteriaQuery.select(root);
     }

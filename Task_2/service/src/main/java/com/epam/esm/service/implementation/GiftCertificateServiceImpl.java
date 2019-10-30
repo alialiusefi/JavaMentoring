@@ -152,8 +152,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     public List<GiftCertificateDTO> getGiftCertificates(Long[] tagID, String name,
                                                         String desc, Integer sortByDate, Integer sortByName,
-                                                        Integer pageNumber, Integer pageSize
-    ) {
+                                                        Integer pageNumber, Integer pageSize) {
         Deque<Specification<GiftCertificate>> specifications = new ArrayDeque<>();
         if (tagID != null) {
             /*List<GiftCertificate> giftCertificates = new ArrayList<>();
@@ -167,11 +166,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             specifications.add(new FindGiftCertificatesByTagID(tagID));
         }
         if (name != null) {
-            FindGiftCertificatesByName findGiftCertificatesByName = new FindGiftCertificatesByName(name);
             specifications.add(new FindGiftCertificatesByName(name));
         }
         if (desc != null) {
-            FindGiftCertificatesByDescription findGiftCertificatesByDescription = new FindGiftCertificatesByDescription(desc);
             specifications.add(new FindGiftCertificatesByDescription(desc));
         }
         if (sortByDate != null && sortByDate != 0) {
@@ -185,7 +182,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                 if (sortByName != 1 && sortByName != -1) {
                     throw new BadRequestException("Sort parameter should accept either 1 or -1");
                 }
-                SortGiftCertificatesByName sortGiftCertificatesByName = new SortGiftCertificatesByName(sortByName);
                 specifications.add(new SortGiftCertificatesByName(sortByName));
             }
         }

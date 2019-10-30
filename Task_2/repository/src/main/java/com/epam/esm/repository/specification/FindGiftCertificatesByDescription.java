@@ -25,7 +25,7 @@ public class FindGiftCertificatesByDescription extends FindSpecification<GiftCer
 
 
     @Override
-    public void setPredicatesIntoQuery(CriteriaQuery<GiftCertificate> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+    public void setPredicatesIntoQuery(CriteriaQuery<GiftCertificate> criteriaQuery, CriteriaBuilder builder) {
         Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
 
     }

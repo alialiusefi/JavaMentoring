@@ -30,7 +30,7 @@ public class SortGiftCertificatesByDate extends SortSpecification<GiftCertificat
     }
 
     @Override
-    public void setPredicatesIntoQuery(CriteriaQuery<GiftCertificate> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+    public void setPredicatesIntoQuery(CriteriaQuery<GiftCertificate> criteriaQuery, CriteriaBuilder builder) {
         return;
     }
 }

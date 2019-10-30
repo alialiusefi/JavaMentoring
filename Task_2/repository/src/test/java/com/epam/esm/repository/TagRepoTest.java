@@ -1,23 +1,14 @@
 package com.epam.esm.repository;
 
-import com.epam.esm.entity.Tag;
-import com.epam.esm.repository.specification.FindTagByID;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
-import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.junit.Assert.assertEquals;
-
-@RunWith(MockitoJUnitRunner.class)
 public class TagRepoTest extends AbstractRepoTest {
-
+/*
     @Test
     public void findByID() {
         Tag expected = new Tag.TagBuilder(1, "Accesories").getResult();
-        assertEquals(expected, tagRepository.queryEntity(new FindTagByID(1L)));
+        assertEquals(expected, tagRepositoryImpl.queryEntity(new FindTagByID(1L)));
     }
-/*
+
     @Test
     public void findAllByName() {
         List<Tag> expectedTags = Arrays.asList(new Tag.TagBuilder(1, "Accesories").getResult());

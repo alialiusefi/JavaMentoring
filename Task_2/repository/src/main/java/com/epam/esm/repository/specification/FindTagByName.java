@@ -15,8 +15,8 @@ public class FindTagByName extends FindSpecification<Tag> {
     }
 
     @Override
-    public void setPredicatesIntoQuery(CriteriaQuery<Tag> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+    public void setPredicatesIntoQuery(CriteriaQuery<Tag> criteriaQuery, CriteriaBuilder builder) {
         Root<Tag> root = criteriaQuery.from(Tag.class);
-        criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("name"),this.name));
+        criteriaQuery.select(root).where(builder.equal(root.get("name"), this.name));
     }
 }

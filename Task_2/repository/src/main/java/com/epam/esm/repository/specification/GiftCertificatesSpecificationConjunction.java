@@ -16,8 +16,8 @@ public class GiftCertificatesSpecificationConjunction implements Specification<G
     }
 
     @Override
-    public void setPredicatesIntoQuery(CriteriaQuery<GiftCertificate> query, CriteriaBuilder criteriaBuilder) {
-        recursiveCriteriaQuery(query, criteriaBuilder, this.specifications);
+    public void setPredicatesIntoQuery(CriteriaQuery<GiftCertificate> query, CriteriaBuilder builder) {
+        recursiveCriteriaQuery(query, builder, this.specifications);
     }
 
     public void recursiveCriteriaQuery(CriteriaQuery<GiftCertificate> originalQuery, CriteriaBuilder builder,

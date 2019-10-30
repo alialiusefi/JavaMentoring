@@ -8,7 +8,7 @@ import javax.persistence.criteria.CriteriaQuery;
 
 public interface Specification<T extends AbstractEntity> {
 
-    void setPredicatesIntoQuery(CriteriaQuery<T> criteriaQuery, CriteriaBuilder criteriaBuilder);
+    void setPredicatesIntoQuery(CriteriaQuery<T> criteriaQuery, CriteriaBuilder builder);
 
 
 }

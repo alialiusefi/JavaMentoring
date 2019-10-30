@@ -11,6 +11,7 @@ import javax.persistence.criteria.Root;
 
 public class FindGiftCertificatesByTagID extends FindSpecification<GiftCertificate> {
 
+/*
     private static final String SQL_CLAUSE = "select giftcertificates.id,giftcertificates.name" +
             ",giftcertificates.description,giftcertificates.price" +
             ",giftcertificates.date_created,giftcertificates.date_modified," +
@@ -19,13 +20,15 @@ public class FindGiftCertificatesByTagID extends FindSpecification<GiftCertifica
             "where tag_id = ? ";
     private static final String CONJ_SQL_CLAUSE = "inner join tagged_giftcertificates on giftcertificates.id = gift_certificate_id " +
             "where tag_id = ?";
+*/
 
-    private Long[] tagID;
+    //https://stackoverflow.com/questions/8135612/jpa-criteria-for-many-to-many-relationship
 
     public FindGiftCertificatesByTagID(Long[] id) {
         this.tagID = id;
     }
 
+    private Long[] tagID;
 
     @Override
     public void setPredicatesIntoQuery(CriteriaQuery<GiftCertificate> criteriaQuery, CriteriaBuilder builder) {
@@ -37,5 +40,6 @@ public class FindGiftCertificatesByTagID extends FindSpecification<GiftCertifica
         criteriaQuery.where(builder.or(predicates));
         Join<Tag, GiftCertificate> tags = tagRoot.join("certificateList");
         criteriaQuery.select(tags);
+
     }
 }
