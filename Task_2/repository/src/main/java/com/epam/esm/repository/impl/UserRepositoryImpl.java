@@ -16,16 +16,4 @@ public class UserRepositoryImpl extends BaseCRUDRepository<User> implements User
         super(entityManager);
     }
 
-    @Override
-    public User add(User entity) {
-        this.entityManager.persist(entity);
-        return entity;
-    }
-
-
-    @Override
-    public void delete(User entity) {
-        User managedOrder = this.entityManager.merge(entity);
-        this.entityManager.remove(managedOrder);
-    }
 }

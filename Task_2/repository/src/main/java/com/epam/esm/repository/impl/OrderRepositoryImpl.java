@@ -16,16 +16,4 @@ public class OrderRepositoryImpl extends BaseCRUDRepository<Order> implements Or
         super(entityManager);
     }
 
-    @Override
-    public Order add(Order entity) {
-        this.entityManager.persist(entity);
-        return entity;
-    }
-
-
-    @Override
-    public void delete(Order entity) {
-        Order managedOrder = this.entityManager.merge(entity);
-        this.entityManager.remove(managedOrder);
-    }
 }

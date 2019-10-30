@@ -23,6 +23,13 @@ public abstract class BaseCRUDRepository<T extends AbstractEntity> implements CR
     }
 
     @Override
+    public T add(T entity) {
+        entityManager.persist(entity);
+        entityManager.merge(entity);
+        return entity;
+    }
+
+    @Override
     public Optional<T> queryEntity(Specification<T> specification) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> criteriaQuery = getCriteriaQuery(builder);
@@ -46,6 +53,26 @@ public abstract class BaseCRUDRepository<T extends AbstractEntity> implements CR
             query.setMaxResults(pageSize);
         }
         return (List<T>) query.getResultList();
+    }
+
+    @Override
+    public T update(T entity) {
+        entityManager.merge(entity);
+        return entity;
+    }
+
+    @Override
+    public void delete(T entity) {
+        T managedEntity = entityManager.merge(entity);
+        entityManager.remove(managedEntity);
+    }
+
+    @Override
+    public void delete(Specification specification) {
+        List<T> certificatesToDelete = queryList(specification, null, null);
+        for (T i : certificatesToDelete) {
+            delete(i);
+        }
     }
 
     private CriteriaQuery<T> getCriteriaQuery(CriteriaBuilder builder) {
