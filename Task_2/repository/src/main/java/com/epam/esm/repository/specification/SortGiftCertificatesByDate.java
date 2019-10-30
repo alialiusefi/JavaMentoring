@@ -29,9 +29,8 @@ public class SortGiftCertificatesByDate extends SortSpecification<GiftCertificat
         this.sortOrder = sortOrder;
     }
 
-
     @Override
-    public CriteriaQuery<GiftCertificate> getCriteriaQuery(CriteriaBuilder criteriaBuilder) {
-        return null;
+    public void setPredicatesIntoQuery(CriteriaQuery<GiftCertificate> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+        return;
     }
 }

@@ -6,10 +6,9 @@ import com.epam.esm.entity.AbstractEntity;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
-public abstract interface Specification<T extends AbstractEntity> {
+public interface Specification<T extends AbstractEntity> {
 
-    CriteriaQuery<T> getCriteriaQuery(CriteriaBuilder criteriaBuilder);
+    void setPredicatesIntoQuery(CriteriaQuery<T> criteriaQuery, CriteriaBuilder criteriaBuilder);
 
-    /*Object[] getParameters();*/
 
 }

@@ -24,7 +24,7 @@ public class FindGiftCertificatesByName extends FindSpecification<GiftCertificat
 
 
     @Override
-    public CriteriaQuery<GiftCertificate> getCriteriaQuery(CriteriaBuilder criteriaBuilder) {
-        return null;
+    public void setPredicatesIntoQuery(CriteriaQuery<GiftCertificate> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+
     }
 }

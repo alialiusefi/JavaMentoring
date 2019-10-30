@@ -4,6 +4,7 @@ import com.epam.esm.entity.GiftCertificate;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 public class FindGiftCertificatesByDescription extends FindSpecification<GiftCertificate> {
 
@@ -24,7 +25,8 @@ public class FindGiftCertificatesByDescription extends FindSpecification<GiftCer
 
 
     @Override
-    public CriteriaQuery<GiftCertificate> getCriteriaQuery(CriteriaBuilder criteriaBuilder) {
-        return null;
+    public void setPredicatesIntoQuery(CriteriaQuery<GiftCertificate> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+        Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
+
     }
 }
