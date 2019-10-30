@@ -8,12 +8,10 @@ import javax.persistence.criteria.Root;
 
 public class FindAllGiftCertificates extends FindSpecification<GiftCertificate> {
 
+
     @Override
-    public CriteriaQuery<GiftCertificate> getCriteriaQuery(CriteriaBuilder criteriaBuilder) {
-        CriteriaQuery<GiftCertificate> criteriaQuery = criteriaBuilder.createQuery(GiftCertificate.class);
+    public void setPredicatesIntoQuery(CriteriaQuery<GiftCertificate> criteriaQuery, CriteriaBuilder builder) {
         Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
         criteriaQuery.select(root);
-        return criteriaQuery;
     }
-
 }

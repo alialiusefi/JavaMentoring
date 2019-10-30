@@ -1,10 +1,7 @@
 package com.epam.esm.repository;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 public class GiftCertificateRepoTest extends AbstractRepoTest {
-
 
   /*  @Test
     public void findByID() {

@@ -9,7 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.swing.text.html.Option;
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,9 +23,17 @@ public abstract class BaseCRUDRepository<T extends AbstractEntity> implements CR
     }
 
     @Override
+    public T add(T entity) {
+        entityManager.persist(entity);
+        entityManager.merge(entity);
+        return entity;
+    }
+
+    @Override
     public Optional<T> queryEntity(Specification<T> specification) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<T> criteriaQuery = specification.getCriteriaQuery(builder);
+        CriteriaQuery<T> criteriaQuery = getCriteriaQuery(builder);
+        specification.setPredicatesIntoQuery(criteriaQuery, builder);
         Query query = entityManager.createQuery(criteriaQuery);
         try {
             return Optional.of((T) query.getSingleResult());
@@ -37,7 +45,8 @@ public abstract class BaseCRUDRepository<T extends AbstractEntity> implements CR
     @Override
     public List<T> queryList(Specification<T> specification, Integer pageNumber, Integer pageSize) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<T> criteriaQuery = specification.getCriteriaQuery(builder);
+        CriteriaQuery<T> criteriaQuery = getCriteriaQuery(builder);
+        specification.setPredicatesIntoQuery(criteriaQuery, builder);
         Query query = entityManager.createQuery(criteriaQuery);
         if (pageNumber != null && pageSize != null) {
             query.setFirstResult((pageNumber - 1) * pageSize);
@@ -46,4 +55,29 @@ public abstract class BaseCRUDRepository<T extends AbstractEntity> implements CR
         return (List<T>) query.getResultList();
     }
 
+    @Override
+    public T update(T entity) {
+        entityManager.merge(entity);
+        return entity;
+    }
+
+    @Override
+    public void delete(T entity) {
+        T managedEntity = entityManager.merge(entity);
+        entityManager.remove(managedEntity);
+    }
+
+    @Override
+    public void delete(Specification specification) {
+        List<T> certificatesToDelete = queryList(specification, null, null);
+        for (T i : certificatesToDelete) {
+            delete(i);
+        }
+    }
+
+    private CriteriaQuery<T> getCriteriaQuery(CriteriaBuilder builder) {
+        Class<T> clazz = (Class<T>) ((ParameterizedType) getClass()
+                .getGenericSuperclass()).getActualTypeArguments()[0];
+        return builder.createQuery(clazz);
+    }
 }

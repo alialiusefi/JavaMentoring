@@ -16,6 +16,7 @@ import com.epam.esm.repository.specification.FindGiftCertificatesByDescription;
 import com.epam.esm.repository.specification.FindGiftCertificatesByName;
 import com.epam.esm.repository.specification.FindGiftCertificatesByTagID;
 import com.epam.esm.repository.specification.FindTagByName;
+import com.epam.esm.repository.specification.GiftCertificatesSpecificationConjunction;
 import com.epam.esm.repository.specification.SortGiftCertificatesByDate;
 import com.epam.esm.repository.specification.SortGiftCertificatesByName;
 import com.epam.esm.repository.specification.Specification;
@@ -26,7 +27,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
 
@@ -145,41 +148,44 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         }
         return newTagsWithID;
     }
+
     @Override
     public List<GiftCertificateDTO> getGiftCertificates(Long[] tagID, String name,
-                                                        String desc, Integer sortByDate, Integer sortByName) {
+                                                        String desc, Integer sortByDate, Integer sortByName,
+                                                        Integer pageNumber, Integer pageSize) {
+        Deque<Specification<GiftCertificate>> specifications = new ArrayDeque<>();
         if (tagID != null) {
-            //FindGiftCertificatesByTagID findGiftCertificatesByTagID = new FindGiftCertificatesByTagID(tagID);
+            /*List<GiftCertificate> giftCertificates = new ArrayList<>();
+            for(Long i : tagID){
+                FindTagByID findTagByID = new FindTagByID(i);
+                Optional<Tag> tag = tagRepository.queryEntity(findTagByID);
+                if(!tag.isPresent()){
+                    throw new ResourceNotFoundException("Couldn't find certificates with tag id:" + i);
+                }
+            }*/
+            specifications.add(new FindGiftCertificatesByTagID(tagID));
         }
         if (name != null) {
-            FindGiftCertificatesByName findGiftCertificatesByName = new FindGiftCertificatesByName(name);
+            specifications.add(new FindGiftCertificatesByName(name));
         }
         if (desc != null) {
-            FindGiftCertificatesByDescription findGiftCertificatesByDescription = new FindGiftCertificatesByDescription(desc);
+            specifications.add(new FindGiftCertificatesByDescription(desc));
         }
         if (sortByDate != null && sortByDate != 0) {
             if (sortByDate != 1 && sortByDate != -1) {
                 throw new BadRequestException("Sort parameter should accept either 1 or -1");
             }
-            SortGiftCertificatesByDate sortGiftCertificatesByDate = new SortGiftCertificatesByDate(sortByDate);
-        }
-        if (sortByName != null && sortByName != 0) {
-            if (sortByName != 1 && sortByName != -1) {
-                throw new BadRequestException("Sort parameter should accept either 1 or -1");
+            specifications.add(new SortGiftCertificatesByDate(sortByDate));
+
+        } else {
+            if (sortByName != null && sortByName != 0) {
+                if (sortByName != 1 && sortByName != -1) {
+                    throw new BadRequestException("Sort parameter should accept either 1 or -1");
+                }
+                specifications.add(new SortGiftCertificatesByName(sortByName));
             }
-            SortGiftCertificatesByName sortGiftCertificatesByName = new SortGiftCertificatesByName(sortByName);
         }
-      /*  GiftCertificateSpecificationConjunction conjunction = new GiftCertificateSpecificationConjunction(specifications);*/
-        //List<GiftCertificateDTO> dtoResult = giftCertificateConverter.toDTOList(giftCertificateRepo.query(conjunction));
-        List<GiftCertificateDTO> dtoResultWithTags = new ArrayList<>();
-        /*for (GiftCertificateDTO i : dtoResult) {
-            List<TagDTO> tags = tagConverter.toDTOList(tagRepository.query(
-                    new FindTagsByCertificateID(i.getId())));
-            i.setTags(tags);
-            dtoResultWithTags.add(i);
-        }*/
-        return dtoResultWithTags;
+        GiftCertificatesSpecificationConjunction conjunction = new GiftCertificatesSpecificationConjunction(specifications);
+        return giftCertificateConverter.toDTOList(giftCertificateRepo.queryList(conjunction, pageNumber, pageSize));
     }
-
-
 }

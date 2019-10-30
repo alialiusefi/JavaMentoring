@@ -15,10 +15,8 @@ public class FindGiftCertificateByID extends FindSpecification<GiftCertificate> 
     }
 
     @Override
-    public CriteriaQuery<GiftCertificate> getCriteriaQuery(CriteriaBuilder criteriaBuilder) {
-        CriteriaQuery<GiftCertificate> criteriaQuery = criteriaBuilder.createQuery(GiftCertificate.class);
+    public void setPredicatesIntoQuery(CriteriaQuery<GiftCertificate> criteriaQuery, CriteriaBuilder builder) {
         Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
-        criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("id"), this.id));
-        return criteriaQuery;
+        criteriaQuery.select(root).where(builder.equal(root.get("id"), this.id));
     }
 }

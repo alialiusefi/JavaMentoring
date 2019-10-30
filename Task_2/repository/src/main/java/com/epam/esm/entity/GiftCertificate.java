@@ -42,7 +42,7 @@ public final class GiftCertificate extends AbstractEntity {
     @Column(name = "duration_till_expiry", nullable = false)
     private Integer durationTillExpiry;
 
-    @ManyToMany/*(cascade = {CascadeType.MERGE})*/
+    @ManyToMany
     @JoinTable(name = "tagged_giftcertificates", inverseJoinColumns =
             {@JoinColumn(name = "tag_id")},
             joinColumns = {@JoinColumn(name = "gift_certificate_id")})
