@@ -28,22 +28,30 @@ create table users
     enabled  boolean     not null
 );
 
+CREATE TYPE userstatus AS ENUM ('Administrator', 'Guest', 'User');
+
 create table authorities
 (
-    username  varchar(50) not null,
-    authority integer not null,
+    username   varchar(50) not null,
+    userstatus userstatus  not null,
     constraint fk_authorities_users foreign key (username) references users (username)
 );
-create unique index ix_auth_username on authorities (username, authority);
+create unique index ix_auth_username on authorities (username, userstatus);
 
 create table orders
 (
     id        serial primary key,
-    username           varchar(50) not null,
-    giftcertificate_id integer     not null,
-    ordercost float     not null,
-    timestamp timestamp not null,
-    constraint fk_orders_users foreign key (username) references users (username),
+    username  varchar(50) not null,
+    ordercost float       not null,
+    timestamp timestamp   not null,
+    constraint fk_orders_users foreign key (username) references users (username)
+);
+
+create table order_giftcertificate
+(
+    order_id           integer not null,
+    giftcertificate_id integer not null,
+    constraint fk_orders_id foreign key (order_id) references orders (id),
     constraint fk_orders_giftcertificates foreign key (giftcertificate_id) references giftcertificates (id)
 );
 
