@@ -1,11 +1,10 @@
 package com.epam.esm.dto;
 
-import com.epam.esm.entity.GiftCertificate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -31,21 +30,25 @@ public class OrderDTO extends DTO {
 
     @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime timestamp;
 
     @Valid
-    private List<GiftCertificate> giftCertificateList;
+    private List<GiftCertificateDTO> giftCertificatesOrdered;
 
     public OrderDTO(Long id, @NotBlank @Size(min = 4, max = 50) String username,
                     @NotNull @Positive BigDecimal orderCost, @NotNull LocalDateTime timestamp,
-                    @Valid List<GiftCertificate> giftCertificateList) {
+                    @Valid List<GiftCertificateDTO> giftCertificatesOrdered) {
         super(id);
         this.username = username;
         this.orderCost = orderCost;
         this.timestamp = timestamp;
-        this.giftCertificateList = giftCertificateList;
+        this.giftCertificatesOrdered = giftCertificatesOrdered;
+    }
+
+    public OrderDTO() {
+        super();
     }
 
     public String getUsername() {
@@ -72,12 +75,12 @@ public class OrderDTO extends DTO {
         this.timestamp = timestamp;
     }
 
-    public List<GiftCertificate> getGiftCertificateList() {
-        return giftCertificateList;
+    public List<GiftCertificateDTO> getGiftCertificatesOrdered() {
+        return giftCertificatesOrdered;
     }
 
-    public void setGiftCertificateList(List<GiftCertificate> giftCertificateList) {
-        this.giftCertificateList = giftCertificateList;
+    public void setGiftCertificatesOrdered(List<GiftCertificateDTO> giftCertificatesOrdered) {
+        this.giftCertificatesOrdered = giftCertificatesOrdered;
     }
 
     @Override
@@ -89,12 +92,12 @@ public class OrderDTO extends DTO {
         return Objects.equals(username, orderDTO.username) &&
                 Objects.equals(orderCost, orderDTO.orderCost) &&
                 Objects.equals(timestamp, orderDTO.timestamp) &&
-                Objects.equals(giftCertificateList, orderDTO.giftCertificateList);
+                Objects.equals(giftCertificatesOrdered, orderDTO.giftCertificatesOrdered);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), username, orderCost, timestamp, giftCertificateList);
+        return Objects.hash(super.hashCode(), username, orderCost, timestamp, giftCertificatesOrdered);
     }
 
     @Override
@@ -103,7 +106,7 @@ public class OrderDTO extends DTO {
                 "username='" + username + '\'' +
                 ", orderCost=" + orderCost +
                 ", timestamp=" + timestamp +
-                ", giftCertificateList=" + giftCertificateList +
+                ", giftCertificateList=" + giftCertificatesOrdered +
                 ", id=" + id +
                 '}';
     }

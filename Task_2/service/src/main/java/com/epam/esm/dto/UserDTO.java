@@ -29,6 +29,9 @@ public class UserDTO extends DTO {
         this.enabled = enabled;
     }
 
+    public UserDTO() {
+    }
+
     public String getUsername() {
         return username;
     }

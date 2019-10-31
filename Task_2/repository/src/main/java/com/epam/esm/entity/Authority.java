@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Objects;
 
-@Entity
+@Entity(name = "authorities")
 @Table
 public class Authority extends AbstractEntity {
 
@@ -23,6 +23,10 @@ public class Authority extends AbstractEntity {
     private Authority(AuthorityBuilder builder) {
         this.username = builder.username;
         this.userStatus = builder.userStatus;
+    }
+
+    public Authority() {
+        super();
     }
 
     public String getUsername() {

@@ -33,6 +33,10 @@ public class User extends AbstractEntity {
         this.authorityList = userBuilder.authorityList;
     }
 
+    public User() {
+        super();
+    }
+
     public String getUsername() {
         return username;
     }
