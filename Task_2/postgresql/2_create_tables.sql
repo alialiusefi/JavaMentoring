@@ -23,7 +23,8 @@ create table tagged_giftcertificates
 
 create table users
 (
-    username varchar(50) not null primary key,
+    id       serial primary key,
+    username varchar(50) not null,
     password varchar(50) not null,
     enabled  boolean     not null
 );
@@ -32,19 +33,26 @@ CREATE TYPE userstatus AS ENUM ('Administrator', 'Guest', 'User');
 
 create table authorities
 (
-    username   varchar(50) not null,
-    userstatus userstatus  not null,
-    constraint fk_authorities_users foreign key (username) references users (username)
+    user_id    integer    not null,
+    userstatus userstatus not null,
+    constraint fk_authorities_users foreign key (user_id) references users (id)
 );
-create unique index ix_auth_username on authorities (username, userstatus);
+create unique index ix_auth_username on authorities (user_id, userstatus);
 
 create table orders
 (
     id        serial primary key,
-    username  varchar(50) not null,
     ordercost float       not null,
     timestamp timestamp   not null,
-    constraint fk_orders_users foreign key (username) references users (username)
+);
+
+create table order_user
+(
+    order_id integer not null,
+    user_id  integer not null,
+    constraint fk_users foreign key (user_id) references users (id),
+    constraint fk_orders foreign key (order_id) references orders (id)
+
 );
 
 create table order_giftcertificate
