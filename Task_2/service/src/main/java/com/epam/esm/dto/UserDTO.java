@@ -1,9 +1,11 @@
 package com.epam.esm.dto;
 
+import com.epam.esm.entity.Order;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 import java.util.Objects;
 
 @Validated
@@ -18,15 +20,18 @@ public class UserDTO extends DTO {
 
     private boolean enabled;
 
+    private List<Order> orders;
+
     //todo: should i add this list?
     /*private List<Authority> authorityList;*/
 
     public UserDTO(Long id, @NotBlank @Size(min = 6, max = 50) String username,
-                   @NotBlank @Size(min = 6, max = 50) String password, boolean enabled) {
+                   @NotBlank @Size(min = 6, max = 50) String password, boolean enabled, List<Order> orders) {
         super(id);
         this.username = username;
         this.password = password;
         this.enabled = enabled;
+        this.orders = orders;
     }
 
     public UserDTO() {
@@ -56,30 +61,38 @@ public class UserDTO extends DTO {
         this.enabled = enabled;
     }
 
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         UserDTO userDTO = (UserDTO) o;
-        return isEnabled() == userDTO.isEnabled() &&
-                Objects.equals(getUsername(), userDTO.getUsername()) &&
-                Objects.equals(getPassword(), userDTO.getPassword());
+        return enabled == userDTO.enabled &&
+                Objects.equals(username, userDTO.username) &&
+                Objects.equals(password, userDTO.password) &&
+                Objects.equals(orders, userDTO.orders);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getUsername(), getPassword(), isEnabled());
+        return Objects.hash(super.hashCode(), username, password, enabled, orders);
     }
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("UserDTO{");
-        sb.append("username='").append(username).append('\'');
-        sb.append(", password='").append(password).append('\'');
-        sb.append(", enabled=").append(enabled);
-        sb.append(", id=").append(id);
-        sb.append('}');
-        return sb.toString();
+        return "UserDTO{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", enabled=" + enabled +
+                ", orders=" + orders +
+                '}';
     }
 }

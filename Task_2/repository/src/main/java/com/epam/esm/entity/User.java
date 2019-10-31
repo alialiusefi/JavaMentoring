@@ -2,10 +2,13 @@ package com.epam.esm.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.List;
 import java.util.Objects;
@@ -15,6 +18,10 @@ import java.util.Objects;
 public class User extends AbstractEntity {
 
     @Id
+    @SequenceGenerator(name = "usersSequence", sequenceName = "users_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usersSequence")
+    private Long id;
+    @Column(name = "username", nullable = false)
     private String username;
     @Column(name = "password", nullable = false)
     private String password;
@@ -26,11 +33,20 @@ public class User extends AbstractEntity {
             inverseJoinColumns = {@JoinColumn(name = "authority")})
     private List<Authority> authorityList;
 
+    @ManyToMany
+    @JoinTable(name = "order_user", joinColumns =
+            {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "order_id")})
+    private List<Order> orderList;
+
+
+
     private User(UserBuilder userBuilder) {
         this.username = userBuilder.username;
         this.password = userBuilder.password;
         this.enabled = userBuilder.enabled;
         this.authorityList = userBuilder.authorityList;
+        this.orderList = userBuilder.orderList;
     }
 
     public User() {
@@ -69,6 +85,14 @@ public class User extends AbstractEntity {
         this.authorityList = authorityList;
     }
 
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -102,11 +126,16 @@ public class User extends AbstractEntity {
         private final String password;
         private final boolean enabled;
         private List<Authority> authorityList;
+        private List<Order> orderList;
 
         public UserBuilder(String username, String password, boolean enabled) {
             this.username = username;
             this.password = password;
             this.enabled = enabled;
+        }
+
+        public void setOrderList(List<Order> orderList) {
+            this.orderList = orderList;
         }
 
         public UserBuilder setAuthorityList1(List<Authority> authorityList) {

@@ -6,11 +6,16 @@ import com.epam.esm.entity.Order;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.OrderRepository;
 import com.epam.esm.repository.specification.FindOrderByID;
+import com.epam.esm.repository.specification.FindOrderByUserID;
 import com.epam.esm.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -42,6 +47,15 @@ public class OrderServiceImpl implements OrderService {
         return null;
     }
 
+    public List<OrderDTO> getOrdersByUserID(Long userID, int pageNumber, int pageSize) {
+        try {
+            return orderConverter.toDTOList(
+                    orderRepository.queryList(new FindOrderByUserID(userID), pageNumber, pageSize));
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException("Didn't find orders");
+        }
+    }
+
     @Override
     public OrderDTO add(OrderDTO dto) {
         return null;
@@ -60,5 +74,19 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDTO update(OrderDTO dto) {
         return null;
+    }
+
+    @Override
+    public OrderDTO patch(Map<Object, Object> fields, long id) {
+        OrderDTO oldOrder = getByID(id);
+        if (oldOrder == null) {
+            throw new ResourceNotFoundException("Gift Certificate with ID: "
+                    + id + " was not found!");
+        }
+        fields.forEach((k, v) -> {
+            Field field = ReflectionUtils.findField(OrderDTO.class, (String) k);
+            ReflectionUtils.setField(field, oldOrder, v);
+        });
+        return update(oldOrder);
     }
 }

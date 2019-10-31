@@ -31,6 +31,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -96,6 +97,29 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         List<Tag> tagsWithID = getTagsWithID(certificate.getTags());
         certificate.setTags(tagsWithID);
         return giftCertificateConverter.toDTO(giftCertificateRepo.update(certificate));
+    }
+
+    @Override
+    public GiftCertificateDTO patch(Map<Object, Object> fields, long id) {
+        GiftCertificateDTO oldGiftCertificate = getByID(id);
+        if (oldGiftCertificate == null) {
+            throw new ResourceNotFoundException("Gift Certificate with ID: "
+                    + id + " was not found!");
+        }
+        //todo: invoke set method of the object
+        /*ields.forEach((k,v) -> {
+            Field field = ReflectionUtils.findField(GiftCertificateDTO.class,(String)k);
+            field.setAccessible(true);
+            try {
+                String s1 = field.getName().substring(0, 1).toUpperCase();
+                String nameCapitalized = s1 + field.getName().substring(1);
+                Method method = ReflectionUtils.get
+            } catch (Exception e) {
+                throw new BadRequestException("Incorrect Field Name");
+            }
+            field.setAccessible(false);
+        });*/
+        return update(oldGiftCertificate);
     }
 
     private List<Tag> getTagsWithID(List<Tag> tags) {

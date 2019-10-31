@@ -1,21 +1,21 @@
 package com.epam.esm.controller;
 
-import com.epam.esm.service.OrderService;
+import com.epam.esm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/v2/orders")
+@RequestMapping("/v2/users")
 @RestController
 @Validated
-public class OrderController {
+public class UserController {
 
-    private OrderService orderService;
+    private UserService service;
 
     @Autowired
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
+    public UserController(UserService service) {
+        this.service = service;
     }
 
 

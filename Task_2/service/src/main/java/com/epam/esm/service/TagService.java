@@ -3,6 +3,8 @@ package com.epam.esm.service;
 
 import com.epam.esm.dto.TagDTO;
 
+import java.util.Map;
+
 
 public interface TagService extends BaseService<TagDTO> {
 
@@ -10,6 +12,11 @@ public interface TagService extends BaseService<TagDTO> {
 
     @Override
     default TagDTO update(TagDTO dto) {
+        throw new UnsupportedOperationException("Update method not implemented yet!");
+    }
+
+    @Override
+    default TagDTO patch(Map<Object, Object> fields, long id) {
         throw new UnsupportedOperationException("Update method not implemented yet!");
     }
 

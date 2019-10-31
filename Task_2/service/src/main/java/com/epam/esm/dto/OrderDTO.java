@@ -8,21 +8,18 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 @Validated
 public class OrderDTO extends DTO {
 
-    @NotBlank
-    @Size(min = 4, max = 50)
-    private String username;
+    @NotNull
+    @Positive
+    private Long userID;
 
     @NotNull
     @Positive
@@ -37,11 +34,10 @@ public class OrderDTO extends DTO {
     @Valid
     private List<GiftCertificateDTO> giftCertificatesOrdered;
 
-    public OrderDTO(Long id, @NotBlank @Size(min = 4, max = 50) String username,
-                    @NotNull @Positive BigDecimal orderCost, @NotNull LocalDateTime timestamp,
-                    @Valid List<GiftCertificateDTO> giftCertificatesOrdered) {
+    public OrderDTO(Long id, @NotNull @Positive Long userID, @NotNull @Positive BigDecimal orderCost,
+                    @NotNull LocalDateTime timestamp, @Valid List<GiftCertificateDTO> giftCertificatesOrdered) {
         super(id);
-        this.username = username;
+        this.userID = userID;
         this.orderCost = orderCost;
         this.timestamp = timestamp;
         this.giftCertificatesOrdered = giftCertificatesOrdered;
@@ -51,12 +47,12 @@ public class OrderDTO extends DTO {
         super();
     }
 
-    public String getUsername() {
-        return username;
+    public Long getUserID() {
+        return userID;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserID(Long userID) {
+        this.userID = userID;
     }
 
     public BigDecimal getOrderCost() {
@@ -84,30 +80,12 @@ public class OrderDTO extends DTO {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        OrderDTO orderDTO = (OrderDTO) o;
-        return Objects.equals(username, orderDTO.username) &&
-                Objects.equals(orderCost, orderDTO.orderCost) &&
-                Objects.equals(timestamp, orderDTO.timestamp) &&
-                Objects.equals(giftCertificatesOrdered, orderDTO.giftCertificatesOrdered);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), username, orderCost, timestamp, giftCertificatesOrdered);
-    }
-
-    @Override
     public String toString() {
         return "OrderDTO{" +
-                "username='" + username + '\'' +
+                "userID=" + userID +
                 ", orderCost=" + orderCost +
                 ", timestamp=" + timestamp +
-                ", giftCertificateList=" + giftCertificatesOrdered +
-                ", id=" + id +
+                ", giftCertificatesOrdered=" + giftCertificatesOrdered +
                 '}';
     }
 }

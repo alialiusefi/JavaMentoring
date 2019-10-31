@@ -24,8 +24,8 @@ public class Order extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tagSequence")
     private Long id;
 
-    @Column(name = "username", nullable = false)
-    private String username;
+    @Column(name = "user_id", nullable = false)
+    private Long userID;
 
     @Column(name = "ordercost", nullable = false)
     private BigDecimal orderCost;
@@ -41,7 +41,7 @@ public class Order extends AbstractEntity {
 
     private Order(OrderBuilder builder) {
         this.id = builder.id;
-        this.username = builder.username;
+        this.userID = builder.userID;
         this.orderCost = builder.orderCost;
         this.timestamp = builder.timestamp;
         this.giftCertificateList = builder.giftCertificateList;
@@ -59,12 +59,12 @@ public class Order extends AbstractEntity {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public Long getUserID() {
+        return userID;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserID(Long userID) {
+        this.userID = userID;
     }
 
     public BigDecimal getOrderCost() {
@@ -97,7 +97,7 @@ public class Order extends AbstractEntity {
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
         return Objects.equals(id, order.id) &&
-                Objects.equals(username, order.username) &&
+                Objects.equals(userID, order.userID) &&
                 Objects.equals(orderCost, order.orderCost) &&
                 Objects.equals(timestamp, order.timestamp) &&
                 Objects.equals(giftCertificateList, order.giftCertificateList);
@@ -105,32 +105,21 @@ public class Order extends AbstractEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, orderCost, timestamp, giftCertificateList);
-    }
-
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", orderCost=" + orderCost +
-                ", timestamp=" + timestamp +
-                ", giftCertificateList=" + giftCertificateList +
-                '}';
+        return Objects.hash(id, userID, orderCost, timestamp, giftCertificateList);
     }
 
     public static class OrderBuilder {
 
         private final Long id;
-        private final String username;
+        private final Long userID;
         private final BigDecimal orderCost;
         private final LocalDateTime timestamp;
         private final List<GiftCertificate> giftCertificateList;
 
-        public OrderBuilder(Long id, String username, BigDecimal orderCost,
+        public OrderBuilder(Long id, Long userID, BigDecimal orderCost,
                             LocalDateTime timestamp, List<GiftCertificate> giftCertificateList) {
             this.id = id;
-            this.username = username;
+            this.userID = userID;
             this.orderCost = orderCost;
             this.timestamp = timestamp;
             this.giftCertificateList = giftCertificateList;
