@@ -28,7 +28,4 @@ public interface Converter<D extends DTO, E extends AbstractEntity> {
         return dtos;
     }
 
-    default Class getGenericClass() {
-
-    }
 }

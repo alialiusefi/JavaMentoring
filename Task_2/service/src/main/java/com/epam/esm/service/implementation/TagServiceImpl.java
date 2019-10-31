@@ -6,6 +6,7 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.BadRequestException;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.TagRepository;
+import com.epam.esm.repository.specification.FindAllTags;
 import com.epam.esm.repository.specification.FindTagByID;
 import com.epam.esm.repository.specification.FindTagByName;
 import com.epam.esm.service.TagService;

@@ -1,12 +1,11 @@
 package com.epam.esm.service.implementation;
 
+import com.epam.esm.converter.OrderConverter;
 import com.epam.esm.dto.OrderDTO;
 import com.epam.esm.entity.Order;
-import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.OrderRepository;
 import com.epam.esm.repository.specification.FindOrderByID;
-import com.epam.esm.repository.specification.FindTagByID;
 import com.epam.esm.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,11 +28,17 @@ public class OrderServiceImpl implements OrderService {
     public OrderDTO getByID(long id) {
         Order orderFound = orderRepository.queryEntity(new FindOrderByID(id)).orElseThrow(() ->
                 new ResourceNotFoundException("Order with this id doesn't exist!"));
-        return tagConverter.toDTO(orderFound);
+        return orderConverter.toDTO(orderFound);
     }
 
     @Override
     public List<OrderDTO> getAll(int pageNumber, int size) {
+        /*try {
+            List<Order> orderList = orderRepository.queryList(new FindAllOrders(), pageNumber, size);
+            return orderConverter.toDTOList(orderList);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException("Didn't find Orders");
+        }*/
         return null;
     }
 
