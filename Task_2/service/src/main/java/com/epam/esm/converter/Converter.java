@@ -21,10 +21,14 @@ public interface Converter<D extends DTO, E extends AbstractEntity> {
     }
 
     default List<D> toDTOList(List<E> entities) {
-        List<D> giftCertificatesDTO = new ArrayList<>();
+        List<D> dtos = new ArrayList<>();
         for (E i : entities) {
-            giftCertificatesDTO.add(toDTO(i));
+            dtos.add(toDTO(i));
         }
-        return giftCertificatesDTO;
+        return dtos;
+    }
+
+    default Class getGenericClass() {
+
     }
 }
