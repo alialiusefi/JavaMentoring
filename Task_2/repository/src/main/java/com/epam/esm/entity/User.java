@@ -2,12 +2,13 @@ package com.epam.esm.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.List;
@@ -27,19 +28,18 @@ public class User extends AbstractEntity {
     private String password;
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
-    @ManyToMany
-    @JoinTable(name = "authorities", joinColumns =
-            {@JoinColumn(name = "username")},
-            inverseJoinColumns = {@JoinColumn(name = "authority")})
+
+    @OneToMany
+    @JoinTable(name = "authorities", joinColumns = {
+            @JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "userstatus")})
     private List<Authority> authorityList;
 
-    @ManyToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "order_user", joinColumns =
             {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "order_id")})
     private List<Order> orderList;
-
-
 
     private User(UserBuilder userBuilder) {
         this.username = userBuilder.username;
@@ -51,6 +51,14 @@ public class User extends AbstractEntity {
 
     public User() {
         super();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -109,15 +117,17 @@ public class User extends AbstractEntity {
         return Objects.hash(getUsername(), getPassword(), isEnabled(), getAuthorityList());
     }
 
+
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("User{");
-        sb.append("username='").append(username).append('\'');
-        sb.append(", password='").append(password).append('\'');
-        sb.append(", enabled=").append(enabled);
-        sb.append(", authorityList=").append(authorityList);
-        sb.append('}');
-        return sb.toString();
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", enabled=" + enabled +
+                ", authorityList=" + authorityList +
+                ", orderList=" + orderList +
+                '}';
     }
 
     public static class UserBuilder {

@@ -6,17 +6,17 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-public class FindUserByUserName extends FindSpecification<User> {
+public class FindUserByUserID extends FindSpecification<User> {
 
-    private String username;
+    private Long id;
 
-    public FindUserByUserName(String username) {
-        this.username = username;
+    public FindUserByUserID(Long id) {
+        this.id = id;
     }
 
     @Override
     public void setPredicatesIntoQuery(CriteriaQuery<User> criteriaQuery, CriteriaBuilder builder) {
         Root<User> root = criteriaQuery.from(User.class);
-        criteriaQuery.where(builder.equal(root.get("username"),this.username));
+        criteriaQuery.where(builder.equal(root.get("id"), this.id));
     }
 }

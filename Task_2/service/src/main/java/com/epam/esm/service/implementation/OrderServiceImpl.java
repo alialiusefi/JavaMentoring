@@ -1,7 +1,6 @@
 package com.epam.esm.service.implementation;
 
 import com.epam.esm.converter.OrderConverter;
-import com.epam.esm.dto.OrderDTO;
 import com.epam.esm.entity.Order;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.OrderRepository;
@@ -30,14 +29,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDTO getByID(long id) {
+    public com.epam.esm.dto.OrderDTO getByID(long id) {
         Order orderFound = orderRepository.queryEntity(new FindOrderByID(id)).orElseThrow(() ->
                 new ResourceNotFoundException("Order with this id doesn't exist!"));
         return orderConverter.toDTO(orderFound);
     }
 
     @Override
-    public List<OrderDTO> getAll(int pageNumber, int size) {
+    public List<com.epam.esm.dto.OrderDTO> getAll(int pageNumber, int size) {
         /*try {
             List<Order> orderList = orderRepository.queryList(new FindAllOrders(), pageNumber, size);
             return orderConverter.toDTOList(orderList);
@@ -47,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
         return null;
     }
 
-    public List<OrderDTO> getOrdersByUserID(Long userID, int pageNumber, int pageSize) {
+    public List<com.epam.esm.dto.OrderDTO> getOrdersByUserID(Long userID, int pageNumber, int pageSize) {
         try {
             return orderConverter.toDTOList(
                     orderRepository.queryList(new FindOrderByUserID(userID), pageNumber, pageSize));
@@ -57,12 +56,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDTO add(OrderDTO dto) {
+    public com.epam.esm.dto.OrderDTO add(com.epam.esm.dto.OrderDTO dto) {
         return null;
     }
 
     @Override
-    public boolean delete(OrderDTO dto) {
+    public boolean delete(com.epam.esm.dto.OrderDTO dto) {
         return false;
     }
 
@@ -72,19 +71,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDTO update(OrderDTO dto) {
+    public com.epam.esm.dto.OrderDTO update(com.epam.esm.dto.OrderDTO dto) {
         return null;
     }
 
     @Override
-    public OrderDTO patch(Map<Object, Object> fields, long id) {
-        OrderDTO oldOrder = getByID(id);
+    public com.epam.esm.dto.OrderDTO patch(Map<Object, Object> fields, long id) {
+        com.epam.esm.dto.OrderDTO oldOrder = getByID(id);
         if (oldOrder == null) {
             throw new ResourceNotFoundException("Gift Certificate with ID: "
                     + id + " was not found!");
         }
         fields.forEach((k, v) -> {
-            Field field = ReflectionUtils.findField(OrderDTO.class, (String) k);
+            Field field = ReflectionUtils.findField(com.epam.esm.dto.OrderDTO.class, (String) k);
             ReflectionUtils.setField(field, oldOrder, v);
         });
         return update(oldOrder);

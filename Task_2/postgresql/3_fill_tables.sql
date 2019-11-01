@@ -25,8 +25,11 @@ VALUES (1, 1),
 insert into users(username, password, enabled) VALUES
 ('admin','admin',true);
 
-insert into orders(user_id, ordercost, timestamp)
-values (1, 20.00, '2016-06-22 19:10:25-07');
+insert into authorities(user_id, userstatus)
+VALUES (1, 1);
+
+insert into orders(ordercost, timestamp)
+values (20.00, '2016-06-22 19:10:25-07');
 
 insert into order_giftcertificate(order_id, giftcertificate_id) VALUES 
 (1,1);

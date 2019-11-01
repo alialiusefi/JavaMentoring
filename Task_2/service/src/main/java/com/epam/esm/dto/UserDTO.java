@@ -1,8 +1,8 @@
 package com.epam.esm.dto;
 
-import com.epam.esm.entity.Order;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -20,13 +20,12 @@ public class UserDTO extends DTO {
 
     private boolean enabled;
 
-    private List<Order> orders;
-
-    //todo: should i add this list?
-    /*private List<Authority> authorityList;*/
+    @Valid
+    private List<OrderDTO> orders;
 
     public UserDTO(Long id, @NotBlank @Size(min = 6, max = 50) String username,
-                   @NotBlank @Size(min = 6, max = 50) String password, boolean enabled, List<Order> orders) {
+                   @NotBlank @Size(min = 6, max = 50) String password,
+                   boolean enabled, List<OrderDTO> orders) {
         super(id);
         this.username = username;
         this.password = password;
@@ -61,11 +60,11 @@ public class UserDTO extends DTO {
         this.enabled = enabled;
     }
 
-    public List<Order> getOrders() {
+    public List<OrderDTO> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
+    public void setOrders(List<OrderDTO> orders) {
         this.orders = orders;
     }
 

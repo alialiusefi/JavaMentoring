@@ -29,12 +29,13 @@ create table users
     enabled  boolean     not null
 );
 
-CREATE TYPE userstatus AS ENUM ('Administrator', 'Guest', 'User');
+/*CREATE TYPE userstatus AS ENUM ('Administrator', 'Guest', 'User');*/
 
 create table authorities
 (
-    user_id    integer    not null,
-    userstatus userstatus not null,
+    id         serial primary key,
+    user_id    integer not null,
+    userstatus integer not null,
     constraint fk_authorities_users foreign key (user_id) references users (id)
 );
 create unique index ix_auth_username on authorities (user_id, userstatus);
@@ -42,8 +43,8 @@ create unique index ix_auth_username on authorities (user_id, userstatus);
 create table orders
 (
     id        serial primary key,
-    ordercost float       not null,
-    timestamp timestamp   not null,
+    ordercost float     not null,
+    timestamp timestamp not null
 );
 
 create table order_user

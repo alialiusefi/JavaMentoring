@@ -4,7 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.Objects;
 
@@ -13,15 +16,19 @@ import java.util.Objects;
 public class Authority extends AbstractEntity {
 
     @Id
-    @Column(name = "username", nullable = false)
-    private String username;
+    @SequenceGenerator(name = "authoritySequence", sequenceName = "authoritires_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "authoritySequence")
+    private Long id;
 
-    @Enumerated(EnumType.STRING)
+    @Column(name = "user_id", nullable = false)
+    private Integer userID;
+
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "userstatus", nullable = false)
     private UserStatus userStatus;
 
     private Authority(AuthorityBuilder builder) {
-        this.username = builder.username;
+        this.userID = builder.userID;
         this.userStatus = builder.userStatus;
     }
 
@@ -29,12 +36,20 @@ public class Authority extends AbstractEntity {
         super();
     }
 
-    public String getUsername() {
-        return username;
+    public Long getId() {
+        return id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getUserID() {
+        return userID;
+    }
+
+    public void setUserID(Integer userID) {
+        this.userID = userID;
     }
 
     public UserStatus getUserStatus() {
@@ -50,30 +65,32 @@ public class Authority extends AbstractEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Authority authority = (Authority) o;
-        return Objects.equals(username, authority.username) &&
+        return Objects.equals(id, authority.id) &&
+                Objects.equals(userID, authority.userID) &&
                 userStatus == authority.userStatus;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, userStatus);
+        return Objects.hash(id, userID, userStatus);
     }
 
     @Override
     public String toString() {
         return "Authority{" +
-                "username='" + username + '\'' +
+                "id=" + id +
+                ", userID=" + userID +
                 ", userStatus=" + userStatus +
                 '}';
     }
 
     public static class AuthorityBuilder {
 
-        private final String username;
+        private final Integer userID;
         private final UserStatus userStatus;
 
-        public AuthorityBuilder(String username, UserStatus status) {
-            this.username = username;
+        public AuthorityBuilder(Integer userID, UserStatus status) {
+            this.userID = userID;
             this.userStatus = status;
         }
 

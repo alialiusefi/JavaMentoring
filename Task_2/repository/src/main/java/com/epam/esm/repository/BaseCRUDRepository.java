@@ -36,7 +36,8 @@ public abstract class BaseCRUDRepository<T extends AbstractEntity> implements CR
         specification.setPredicatesIntoQuery(criteriaQuery, builder);
         Query query = entityManager.createQuery(criteriaQuery);
         try {
-            return Optional.of((T) query.getSingleResult());
+            T entity = (T) query.getSingleResult();
+            return Optional.of(entity);
         } catch (NoResultException e) {
             return Optional.empty();
         }
