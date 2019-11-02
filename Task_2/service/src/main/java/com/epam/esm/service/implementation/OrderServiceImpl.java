@@ -87,14 +87,26 @@ public class OrderServiceImpl implements OrderService {
         return orderConverter.toDTO(orderAdded);
     }
 
+    @Transactional
     @Override
     public boolean delete(OrderDTO dto) {
-        return false;
+        if (getByID(dto.getId()) == null) {
+            throw new ResourceNotFoundException("Order with ID: "
+                    + dto.getId() + " was not found!");
+        }
+        orderRepository.delete(orderConverter.toEntity(dto));
+        return true;
     }
 
+    @Transactional
     @Override
     public boolean delete(long id) {
-        return false;
+        if (getByID(id) == null) {
+            throw new ResourceNotFoundException("Order with ID: "
+                    + id + " was not found!");
+        }
+        orderRepository.delete(new FindOrderByID(id));
+        return true;
     }
 
     @Override
