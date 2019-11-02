@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getByID(long id) {
+    public UserDTO getByID(Long id) {
         return userConverter.toDTO(userRepository.queryEntity(new FindUserByUserID(id))
                 .orElseThrow(() -> new ResourceNotFoundException("User with this id was not found!")));
     }
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO patch(Map<Object, Object> fields, long id) {
+    public UserDTO patch(Map<Object, Object> fields, Long id) {
         throw new UnsupportedOperationException("Unimplemented Method");
     }
 }

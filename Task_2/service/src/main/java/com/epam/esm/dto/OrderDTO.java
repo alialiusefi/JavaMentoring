@@ -18,41 +18,28 @@ import java.util.Objects;
 @Validated
 public class OrderDTO extends DTO {
 
-    @Valid
-    private UserDTO userDTO;
-
     @NotNull
     @Positive
     private BigDecimal orderCost;
 
-    @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime timestamp;
 
     @Valid
-    private List<GiftCertificateDTO> giftCertificatesOrdered;
+    private List<GiftCertificateDTO> giftCertificates;
 
     public OrderDTO() {
         super();
     }
 
-    public OrderDTO(Long id, @Valid UserDTO userDTO, @NotNull @Positive BigDecimal orderCost,
+    public OrderDTO(Long id, @NotNull @Positive BigDecimal orderCost,
                     @NotNull LocalDateTime timestamp, @Valid List<GiftCertificateDTO> giftCertificatesOrdered) {
         super(id);
-        this.userDTO = userDTO;
         this.orderCost = orderCost;
         this.timestamp = timestamp;
-        this.giftCertificatesOrdered = giftCertificatesOrdered;
-    }
-
-    public UserDTO getUserDTO() {
-        return userDTO;
-    }
-
-    public void setUserDTO(UserDTO userDTO) {
-        this.userDTO = userDTO;
+        this.giftCertificates = giftCertificatesOrdered;
     }
 
     public BigDecimal getOrderCost() {
@@ -71,12 +58,12 @@ public class OrderDTO extends DTO {
         this.timestamp = timestamp;
     }
 
-    public List<GiftCertificateDTO> getGiftCertificatesOrdered() {
-        return giftCertificatesOrdered;
+    public List<GiftCertificateDTO> getGiftCertificates() {
+        return giftCertificates;
     }
 
-    public void setGiftCertificatesOrdered(List<GiftCertificateDTO> giftCertificatesOrdered) {
-        this.giftCertificatesOrdered = giftCertificatesOrdered;
+    public void setGiftCertificates(List<GiftCertificateDTO> giftCertificatesOrdered) {
+        this.giftCertificates = giftCertificatesOrdered;
     }
 
     @Override
@@ -85,24 +72,22 @@ public class OrderDTO extends DTO {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         OrderDTO orderDTO = (OrderDTO) o;
-        return Objects.equals(userDTO, orderDTO.userDTO) &&
-                Objects.equals(orderCost, orderDTO.orderCost) &&
+        return Objects.equals(orderCost, orderDTO.orderCost) &&
                 Objects.equals(timestamp, orderDTO.timestamp) &&
-                Objects.equals(giftCertificatesOrdered, orderDTO.giftCertificatesOrdered);
+                Objects.equals(giftCertificates, orderDTO.giftCertificates);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), userDTO, orderCost, timestamp, giftCertificatesOrdered);
+        return Objects.hash(super.hashCode(), orderCost, timestamp, giftCertificates);
     }
 
     @Override
     public String toString() {
         return "OrderDTO{" +
-                "userDTO=" + userDTO +
                 ", orderCost=" + orderCost +
                 ", timestamp=" + timestamp +
-                ", giftCertificatesOrdered=" + giftCertificatesOrdered +
+                ", giftCertificatesOrdered=" + giftCertificates +
                 ", id=" + id +
                 '}';
     }

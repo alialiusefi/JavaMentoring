@@ -22,17 +22,23 @@ VALUES (1, 1),
        (7, 3),
        (6, 3);
 
-insert into users(username, password, enabled) VALUES
-('admin','admin',true);
+insert into users(username, password, enabled)
+VALUES ('admin', 'admin', true),
+       ('ali', 'password', true);
 
 insert into authorities(user_id, userstatus)
 VALUES (1, 1);
 
 insert into orders(ordercost, timestamp)
-values (20.00, '2016-06-22 19:10:25-07');
+values (20.00, '2016-06-22 19:10:25-07'),
+       (67.77, '2016-06-23 19:10:25-07');
 
-insert into order_giftcertificate(order_id, giftcertificate_id) VALUES 
-(1,1);
+insert into order_giftcertificate(order_id, giftcertificate_id)
+VALUES (1, 1),
+       (2, 2),
+       (2, 3),
+       (2, 1);
 
 insert into order_user(order_id, user_id)
-VALUES (1, 1);
+VALUES (1, 1),
+       (2, 2);

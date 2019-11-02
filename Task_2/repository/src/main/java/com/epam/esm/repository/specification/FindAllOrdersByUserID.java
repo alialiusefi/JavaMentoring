@@ -9,11 +9,11 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 
-public class FindOrderByUserID extends FindSpecification<Order> {
+public class FindAllOrdersByUserID extends FindSpecification<Order> {
 
     private Long userID;
 
-    public FindOrderByUserID(Long userID) {
+    public FindAllOrdersByUserID(Long userID) {
         this.userID = userID;
     }
 

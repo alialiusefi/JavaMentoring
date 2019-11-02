@@ -34,6 +34,7 @@ public class UserDTO extends DTO {
     }
 
     public UserDTO() {
+        super();
     }
 
     public String getUsername() {

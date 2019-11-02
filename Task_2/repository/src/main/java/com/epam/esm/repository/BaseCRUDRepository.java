@@ -53,7 +53,8 @@ public abstract class BaseCRUDRepository<T extends AbstractEntity> implements CR
             query.setFirstResult((pageNumber - 1) * pageSize);
             query.setMaxResults(pageSize);
         }
-        return (List<T>) query.getResultList();
+        List<T> results = (List<T>) query.getResultList();
+        return results;
     }
 
     @Override

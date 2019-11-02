@@ -30,7 +30,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public TagDTO getByID(long id) {
+    public TagDTO getByID(Long id) {
         Tag tagfound = repository.queryEntity(new FindTagByID(id)).orElseThrow(() ->
                 new ResourceNotFoundException("Tag with this id doesn't exist!"));
         return tagConverter.toDTO(tagfound);

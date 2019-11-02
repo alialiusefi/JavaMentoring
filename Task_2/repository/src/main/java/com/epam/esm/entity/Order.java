@@ -1,16 +1,6 @@
 package com.epam.esm.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,6 +15,12 @@ public class Order extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tagSequence")
     private Long id;
 
+    @OneToOne
+    @JoinTable(name = "order_user", joinColumns = {@JoinColumn(name = "user_id")}
+            , inverseJoinColumns = {@JoinColumn(name = "order_id")})
+    private User user;
+
+
     @Column(name = "ordercost", nullable = false)
     private BigDecimal orderCost;
 
@@ -35,19 +31,15 @@ public class Order extends AbstractEntity {
     @JoinTable(name = "order_giftcertificate", joinColumns =
             {@JoinColumn(name = "order_id")},
             inverseJoinColumns = {@JoinColumn(name = "giftcertificate_id")})
-    private List<GiftCertificate> giftCertificateList;
+    private List<GiftCertificate> giftCertificates;
 
-    @OneToOne
-    @JoinTable(name = "order_user", joinColumns = {@JoinColumn(name = "user_id")}
-            , inverseJoinColumns = {@JoinColumn(name = "order_id")})
-    private User user;
 
     private Order(OrderBuilder builder) {
         this.id = builder.id;
         this.orderCost = builder.orderCost;
         this.timestamp = builder.timestamp;
         this.user = builder.user;
-        this.giftCertificateList = builder.giftCertificateList;
+        this.giftCertificates = builder.giftCertificateList;
     }
 
     public Order() {
@@ -79,12 +71,12 @@ public class Order extends AbstractEntity {
         this.timestamp = timestamp;
     }
 
-    public List<GiftCertificate> getGiftCertificateList() {
-        return giftCertificateList;
+    public List<GiftCertificate> getGiftCertificates() {
+        return giftCertificates;
     }
 
-    public void setGiftCertificateList(List<GiftCertificate> giftCertificateList) {
-        this.giftCertificateList = giftCertificateList;
+    public void setGiftCertificates(List<GiftCertificate> giftCertificates) {
+        this.giftCertificates = giftCertificates;
     }
 
     public User getUser() {
@@ -103,13 +95,13 @@ public class Order extends AbstractEntity {
         return Objects.equals(id, order.id) &&
                 Objects.equals(orderCost, order.orderCost) &&
                 Objects.equals(timestamp, order.timestamp) &&
-                Objects.equals(giftCertificateList, order.giftCertificateList) &&
+                Objects.equals(giftCertificates, order.giftCertificates) &&
                 Objects.equals(user, order.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, orderCost, timestamp, giftCertificateList, user);
+        return Objects.hash(id, orderCost, timestamp, giftCertificates, user);
     }
 
     public static class OrderBuilder {

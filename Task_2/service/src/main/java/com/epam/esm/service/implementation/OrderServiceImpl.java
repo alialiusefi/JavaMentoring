@@ -1,18 +1,23 @@
 package com.epam.esm.service.implementation;
 
 import com.epam.esm.converter.OrderConverter;
+import com.epam.esm.dto.OrderDTO;
 import com.epam.esm.entity.Order;
+import com.epam.esm.entity.User;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.OrderRepository;
+import com.epam.esm.repository.UserRepository;
+import com.epam.esm.repository.specification.FindAllOrdersByUserID;
 import com.epam.esm.repository.specification.FindOrderByID;
-import com.epam.esm.repository.specification.FindOrderByUserID;
+import com.epam.esm.repository.specification.FindUserByUserID;
+import com.epam.esm.repository.specification.FindUserOrderByOrderID;
 import com.epam.esm.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ReflectionUtils;
 
-import java.lang.reflect.Field;
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -20,16 +25,19 @@ import java.util.Map;
 public class OrderServiceImpl implements OrderService {
 
     private OrderRepository orderRepository;
+    private UserRepository userRepository;
     private OrderConverter orderConverter;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, OrderConverter orderConverter) {
+    public OrderServiceImpl(OrderRepository orderRepository, UserRepository userRepository,
+                            OrderConverter orderConverter) {
         this.orderRepository = orderRepository;
+        this.userRepository = userRepository;
         this.orderConverter = orderConverter;
     }
 
     @Override
-    public com.epam.esm.dto.OrderDTO getByID(long id) {
+    public OrderDTO getByID(Long id) {
         Order orderFound = orderRepository.queryEntity(new FindOrderByID(id)).orElseThrow(() ->
                 new ResourceNotFoundException("Order with this id doesn't exist!"));
         return orderConverter.toDTO(orderFound);
@@ -46,22 +54,42 @@ public class OrderServiceImpl implements OrderService {
         return null;
     }
 
-    public List<com.epam.esm.dto.OrderDTO> getOrdersByUserID(Long userID, int pageNumber, int pageSize) {
+    public List<OrderDTO> getOrdersByUserID(Long userID, int pageNumber, int pageSize) {
         try {
-            return orderConverter.toDTOList(
-                    orderRepository.queryList(new FindOrderByUserID(userID), pageNumber, pageSize));
+            List<Order> orders = orderRepository.queryList(new FindAllOrdersByUserID(userID), pageNumber, pageSize);
+            List<OrderDTO> orderDTOS = orderConverter.toDTOList(orders);
+            return orderDTOS;
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException("Didn't find orders");
         }
     }
 
     @Override
-    public com.epam.esm.dto.OrderDTO add(com.epam.esm.dto.OrderDTO dto) {
-        return null;
+    public OrderDTO getUserOrder(Long userID, Long orderID) {
+        User userfound = userRepository.queryEntity(new FindUserByUserID(userID))
+                .orElseThrow(() -> new ResourceNotFoundException("User with this " +
+                        "id was not found"));
+        Order order = orderRepository.queryEntity(new FindUserOrderByOrderID(userID, orderID)).
+                orElseThrow(() -> new ResourceNotFoundException("Order with this id was not found"));
+        OrderDTO orderDTO = orderConverter.toDTO(order);
+        return orderDTO;
     }
 
     @Override
-    public boolean delete(com.epam.esm.dto.OrderDTO dto) {
+    @Transactional
+    public OrderDTO add(Long userID, OrderDTO dto) {
+        Order order = orderConverter.toEntity(dto);//
+        User user = userRepository.queryEntity(new FindUserByUserID(userID)).
+                orElseThrow(() -> new ResourceNotFoundException("User with this id was not found"));//
+        order.setTimestamp(LocalDateTime.now());
+        Order orderAdded = orderRepository.add(order);
+        user.getOrderList().add(orderAdded);
+        userRepository.update(user);
+        return orderConverter.toDTO(orderAdded);
+    }
+
+    @Override
+    public boolean delete(OrderDTO dto) {
         return false;
     }
 
@@ -76,9 +104,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public com.epam.esm.dto.OrderDTO patch(Map<Object, Object> fields, long id) {
+    public com.epam.esm.dto.OrderDTO patch(Map<Object, Object> fields, Long id) {
         com.epam.esm.dto.OrderDTO oldOrder = getByID(id);
-        if (oldOrder == null) {
+        /*if (oldOrder == null) {
             throw new ResourceNotFoundException("Gift Certificate with ID: "
                     + id + " was not found!");
         }
@@ -86,6 +114,7 @@ public class OrderServiceImpl implements OrderService {
             Field field = ReflectionUtils.findField(com.epam.esm.dto.OrderDTO.class, (String) k);
             ReflectionUtils.setField(field, oldOrder, v);
         });
-        return update(oldOrder);
+        return update(oldOrder);*/
+        return null;
     }
 }

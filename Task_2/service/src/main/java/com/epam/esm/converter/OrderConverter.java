@@ -1,5 +1,6 @@
 package com.epam.esm.converter;
 
+import com.epam.esm.dto.OrderDTO;
 import com.epam.esm.entity.Order;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ public class OrderConverter extends BaseConverter implements Converter<com.epam.
     }
 
     @Override
-    public com.epam.esm.dto.OrderDTO toDTO(Order entity) {
-        return modelMapper.map(entity, com.epam.esm.dto.OrderDTO.class);
+    public OrderDTO toDTO(Order entity) {
+        return modelMapper.map(entity, OrderDTO.class);
     }
 
 

@@ -10,16 +10,7 @@ import com.epam.esm.exception.BadRequestException;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.repository.TagRepository;
-import com.epam.esm.repository.specification.FindAllGiftCertificates;
-import com.epam.esm.repository.specification.FindGiftCertificateByID;
-import com.epam.esm.repository.specification.FindGiftCertificatesByDescription;
-import com.epam.esm.repository.specification.FindGiftCertificatesByName;
-import com.epam.esm.repository.specification.FindGiftCertificatesByTagID;
-import com.epam.esm.repository.specification.FindTagByName;
-import com.epam.esm.repository.specification.GiftCertificatesSpecificationConjunction;
-import com.epam.esm.repository.specification.SortGiftCertificatesByDate;
-import com.epam.esm.repository.specification.SortGiftCertificatesByName;
-import com.epam.esm.repository.specification.Specification;
+import com.epam.esm.repository.specification.*;
 import com.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -27,12 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
@@ -53,7 +39,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public GiftCertificateDTO getByID(long id) {
+    public GiftCertificateDTO getByID(Long id) {
         GiftCertificate giftCertificate = giftCertificateRepo.queryEntity(
                 new FindGiftCertificateByID(id)).orElseThrow(() ->
                 new ResourceNotFoundException("Certificate with this id doesn't exist!"));
@@ -100,7 +86,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public GiftCertificateDTO patch(Map<Object, Object> fields, long id) {
+    public GiftCertificateDTO patch(Map<Object, Object> fields, Long id) {
         GiftCertificateDTO oldGiftCertificate = getByID(id);
         if (oldGiftCertificate == null) {
             throw new ResourceNotFoundException("Gift Certificate with ID: "

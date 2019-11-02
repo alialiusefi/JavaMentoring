@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface BaseService<T extends DTO> {
 
-    T getByID(long id);
+    T getByID(Long id);
 
     List<T> getAll(int pageNumber, int size);
 
@@ -19,5 +19,5 @@ public interface BaseService<T extends DTO> {
 
     T update(T dto);
 
-    T patch(Map<Object, Object> fields, long id);
+    T patch(Map<Object, Object> fields, Long id);
 }
