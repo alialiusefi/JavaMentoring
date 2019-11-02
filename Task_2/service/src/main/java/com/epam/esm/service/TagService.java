@@ -17,7 +17,7 @@ public interface TagService extends BaseService<TagDTO> {
 
     @Override
     default TagDTO patch(Map<Object, Object> fields, Long id) {
-        throw new UnsupportedOperationException("Update method not implemented yet!");
+        throw new UnsupportedOperationException("Patch method not implemented yet!");
     }
 
 }

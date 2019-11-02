@@ -11,12 +11,17 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
 @Validated
 public class OrderDTO extends DTO {
+
+    public static final int SCALE = 2;
+    public static final RoundingMode ROUNDING_MODE = RoundingMode.DOWN;
+
 
     @NotNull
     @Positive
@@ -47,7 +52,7 @@ public class OrderDTO extends DTO {
     }
 
     public void setOrderCost(BigDecimal orderCost) {
-        this.orderCost = orderCost;
+        this.orderCost = orderCost.setScale(SCALE, ROUNDING_MODE);
     }
 
     public LocalDateTime getTimestamp() {

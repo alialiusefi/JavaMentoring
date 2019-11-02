@@ -52,7 +52,8 @@ public class GiftCertificateController {
 
     @PatchMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public GiftCertificateDTO patchGiftCertificate(@PathVariable Long id, @RequestBody Map<Object, Object> fields) {
+    public GiftCertificateDTO patchGiftCertificate(@PathVariable Long id,
+                                                   @RequestBody Map<Object, Object> fields) {
         return giftCertificateBaseService.patch(fields, id);
     }
 

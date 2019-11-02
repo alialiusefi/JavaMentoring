@@ -7,16 +7,16 @@ import com.epam.esm.entity.User;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.OrderRepository;
 import com.epam.esm.repository.UserRepository;
-import com.epam.esm.repository.specification.FindAllOrdersByUserID;
-import com.epam.esm.repository.specification.FindOrderByID;
-import com.epam.esm.repository.specification.FindUserByUserID;
-import com.epam.esm.repository.specification.FindUserOrderByOrderID;
+import com.epam.esm.repository.specification.*;
 import com.epam.esm.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
 import javax.transaction.Transactional;
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -44,14 +44,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<com.epam.esm.dto.OrderDTO> getAll(int pageNumber, int size) {
-        /*try {
+    public List<OrderDTO> getAll(int pageNumber, int size) {
+        try {
             List<Order> orderList = orderRepository.queryList(new FindAllOrders(), pageNumber, size);
             return orderConverter.toDTOList(orderList);
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException("Didn't find Orders");
-        }*/
-        return null;
+        }
     }
 
     public List<OrderDTO> getOrdersByUserID(Long userID, int pageNumber, int pageSize) {
@@ -99,22 +98,45 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public com.epam.esm.dto.OrderDTO update(com.epam.esm.dto.OrderDTO dto) {
-        return null;
+    @Transactional
+    public OrderDTO update(OrderDTO dto) {
+        if (getByID(dto.getId()) == null) {
+            throw new ResourceNotFoundException("Order with ID: "
+                    + dto.getId() + " was not found!");
+        }
+        Order order = orderConverter.toEntity(dto);
+        return orderConverter.toDTO(orderRepository.update(order));
     }
 
+    @Transactional
     @Override
-    public com.epam.esm.dto.OrderDTO patch(Map<Object, Object> fields, Long id) {
-        com.epam.esm.dto.OrderDTO oldOrder = getByID(id);
-        /*if (oldOrder == null) {
-            throw new ResourceNotFoundException("Gift Certificate with ID: "
-                    + id + " was not found!");
-        }
+    public OrderDTO patch(Map<Object, Object> fields, Long id) {
+        Order order = orderRepository.queryEntity(
+                new FindOrderByID(id)).orElseThrow(() ->
+                new ResourceNotFoundException("Order with this id doesn't exist!"));
         fields.forEach((k, v) -> {
-            Field field = ReflectionUtils.findField(com.epam.esm.dto.OrderDTO.class, (String) k);
-            ReflectionUtils.setField(field, oldOrder, v);
+            // use reflection to get field k on manager and set it to value k
+            Field field = ReflectionUtils.findField(Order.class, (String) k);
+            field.setAccessible(true);
+            if (!handleBigDecimal(field, order, v)) {
+                ReflectionUtils.setField(field, order, v);
+            }
+            field.setAccessible(false);
         });
-        return update(oldOrder);*/
-        return null;
+        return update(orderConverter.toDTO(order));
+    }
+
+    private boolean handleBigDecimal(Field field, Order order, Object value) {
+        if (field.getType().equals(BigDecimal.class)) {
+            if (value instanceof Double) {
+                BigDecimal bigDecimal = BigDecimal.valueOf((Double) value).setScale(
+                        OrderDTO.SCALE,
+                        OrderDTO.ROUNDING_MODE
+                );
+                ReflectionUtils.setField(field, order, bigDecimal);
+                return true;
+            }
+        }
+        return false;
     }
 }

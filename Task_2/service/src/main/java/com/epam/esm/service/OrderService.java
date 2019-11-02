@@ -8,8 +8,7 @@ public interface OrderService extends BaseService<OrderDTO> {
 
     @Override
     default OrderDTO add(OrderDTO orderDTO) {
-        throw new UnsupportedOperationException("Method unimplemented yet!");
-
+        throw new UnsupportedOperationException("Wrong method called!");
     }
 
     OrderDTO add(Long userID, OrderDTO orderDTO);

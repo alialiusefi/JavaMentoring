@@ -16,7 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -85,28 +88,38 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         return giftCertificateConverter.toDTO(giftCertificateRepo.update(certificate));
     }
 
+    @Transactional
     @Override
     public GiftCertificateDTO patch(Map<Object, Object> fields, Long id) {
-        GiftCertificateDTO oldGiftCertificate = getByID(id);
-        if (oldGiftCertificate == null) {
-            throw new ResourceNotFoundException("Gift Certificate with ID: "
-                    + id + " was not found!");
-        }
-        //todo: invoke set method of the object
-        /*ields.forEach((k,v) -> {
-            Field field = ReflectionUtils.findField(GiftCertificateDTO.class,(String)k);
+        GiftCertificate oldGiftCertificate = giftCertificateRepo.queryEntity(
+                new FindGiftCertificateByID(id)).orElseThrow(() ->
+                new ResourceNotFoundException("Certificate with this id doesn't exist!"));
+        fields.forEach((k, v) -> {
+            // use reflection to get field k on manager and set it to value k
+            Field field = ReflectionUtils.findField(GiftCertificate.class, (String) k);
             field.setAccessible(true);
-            try {
-                String s1 = field.getName().substring(0, 1).toUpperCase();
-                String nameCapitalized = s1 + field.getName().substring(1);
-                Method method = ReflectionUtils.get
-            } catch (Exception e) {
-                throw new BadRequestException("Incorrect Field Name");
+            if (!handleBigDecimal(field, oldGiftCertificate, v)) {
+                ReflectionUtils.setField(field, oldGiftCertificate, v);
             }
             field.setAccessible(false);
-        });*/
-        return update(oldGiftCertificate);
+        });
+        return update(giftCertificateConverter.toDTO(oldGiftCertificate));
     }
+
+    private boolean handleBigDecimal(Field field, GiftCertificate certificate, Object value) {
+        if (field.getType().equals(BigDecimal.class)) {
+            if (value instanceof Double) {
+                BigDecimal bigDecimal = BigDecimal.valueOf((Double) value).setScale(
+                        GiftCertificateDTO.SCALE,
+                        GiftCertificateDTO.ROUNDING_MODE
+                );
+                ReflectionUtils.setField(field, certificate, bigDecimal);
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     private List<Tag> getTagsWithID(List<Tag> tags) {
         List<Tag> tagsWithID = new ArrayList<>();

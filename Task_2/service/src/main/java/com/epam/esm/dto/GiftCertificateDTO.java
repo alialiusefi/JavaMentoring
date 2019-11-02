@@ -21,8 +21,8 @@ import java.util.Objects;
 @Validated
 public class GiftCertificateDTO extends DTO {
 
-    private static final int SCALE = 2;
-    private static final RoundingMode ROUNDING_MODE = RoundingMode.DOWN;
+    public static final int SCALE = 2;
+    public static final RoundingMode ROUNDING_MODE = RoundingMode.DOWN;
 
     @Size(min = 1, max = 50)
     @NotNull
