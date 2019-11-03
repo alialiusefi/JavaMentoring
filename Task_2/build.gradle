@@ -22,7 +22,6 @@ subprojects {
         compile 'org.springframework:spring-core:5.2.0.RELEASE'
         compile 'org.springframework:spring-webmvc:5.2.0.RELEASE'
         compile 'org.springframework:spring-test:5.2.0.RELEASE'
-        //compile group: 'org.springframework', name: 'spring-tx', version: '5.1.9.RELEASE'
         compile 'javax.validation:validation-api:2.0.1.Final'
         compile 'org.hibernate:hibernate-validator:6.0.17.Final'
         compile 'org.hibernate:hibernate-validator-annotation-processor:6.0.17.Final'
@@ -35,6 +34,7 @@ subprojects {
         compile 'org.hibernate:hibernate-entitymanager:4.3.8.Final'
         compile 'org.hsqldb:hsqldb:2.3.2'
         compile 'org.springframework:spring-orm:5.2.0.RELEASE'
+        compile group: 'org.springframework.security', name: 'spring-security-core', version: '5.2.0.RELEASE'
     }
 
     sourceCompatibility = '1.8'

@@ -178,14 +178,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                                                         Integer pageNumber, Integer pageSize) {
         Deque<Specification<GiftCertificate>> specifications = new ArrayDeque<>();
         if (tagID != null) {
-            /*List<GiftCertificate> giftCertificates = new ArrayList<>();
-            for(Long i : tagID){
-                FindTagByID findTagByID = new FindTagByID(i);
-                Optional<Tag> tag = tagRepository.queryEntity(findTagByID);
-                if(!tag.isPresent()){
-                    throw new ResourceNotFoundException("Couldn't find certificates with tag id:" + i);
-                }
-            }*/
             specifications.add(new FindGiftCertificatesByTagID(tagID));
         }
         if (name != null) {

@@ -22,7 +22,6 @@ public class OrderDTO extends DTO {
     public static final int SCALE = 2;
     public static final RoundingMode ROUNDING_MODE = RoundingMode.DOWN;
 
-
     @NotNull
     @Positive
     private BigDecimal orderCost;

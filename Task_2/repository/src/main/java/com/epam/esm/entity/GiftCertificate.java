@@ -1,15 +1,6 @@
 package com.epam.esm.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -30,11 +21,11 @@ public final class GiftCertificate extends AbstractEntity {
     private String description;
     @Column(name = "price", nullable = false)
     private BigDecimal price;
+
     @Column(name = "date_created", nullable = false)
-    /*@CreatedDate*/
     private LocalDate dateOfCreation;
     @Column(name = "date_modified")
-    /*@LastModifiedDate*/
+
     private LocalDate dateOfModification;
     @Column(name = "duration_till_expiry", nullable = false)
     private Integer durationTillExpiry;

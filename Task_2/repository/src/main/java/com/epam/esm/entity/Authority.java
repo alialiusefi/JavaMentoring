@@ -1,19 +1,13 @@
 package com.epam.esm.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import org.springframework.security.core.GrantedAuthority;
+
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity(name = "authorities")
 @Table
-public class Authority extends AbstractEntity {
+public class Authority extends AbstractEntity implements GrantedAuthority {
 
     @Id
     @SequenceGenerator(name = "authoritySequence", sequenceName = "authoritires_id_seq", allocationSize = 1)
@@ -42,6 +36,11 @@ public class Authority extends AbstractEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public String getAuthority() {
+        return this.userStatus.toString();
     }
 
     public Integer getUserID() {
