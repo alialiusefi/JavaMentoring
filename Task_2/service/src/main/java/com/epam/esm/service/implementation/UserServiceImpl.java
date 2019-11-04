@@ -2,8 +2,6 @@ package com.epam.esm.service.implementation;
 
 import com.epam.esm.converter.UserConverter;
 import com.epam.esm.dto.UserDTO;
-import com.epam.esm.entity.Authority;
-import com.epam.esm.entity.User;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.UserRepository;
 import com.epam.esm.repository.specification.FindAllUsers;
@@ -98,12 +96,5 @@ public class UserServiceImpl implements UserService {
                         " was not found!")));
     }
 
-    @Override
-    public List<Authority> getAuthorityList(UserDTO userDetails) {
-        User user = userRepository.queryEntity(new FindUserByUserID(userDetails.getId()))
-                .orElseThrow(() -> new ResourceNotFoundException("User with this id" +
-                        "was not found"));
-        List<Authority> authorities = user.getAuthorityList();
-        return authorities;
-    }
+
 }

@@ -1,13 +1,17 @@
 package com.epam.esm.security.provider;
 
-import com.epam.esm.dto.UserDTO;
 import com.epam.esm.security.exception.InvalidJwtAuthenticationException;
-import com.epam.esm.service.UserService;
-import io.jsonwebtoken.*;
+import com.epam.esm.service.implementation.CustomUserServiceImpl;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -24,11 +28,11 @@ public class JwtTokenProvider {
     @Value("${security.jwt.token.expire-length:3600000}")
     private long validityInMilliseconds = 3600000; // 1h
 
-    private UserService userService;
+    private CustomUserServiceImpl customUserService;
 
     @Autowired
-    public JwtTokenProvider(UserService userService) {
-        this.userService = userService;
+    public JwtTokenProvider(CustomUserServiceImpl customUserService) {
+        this.customUserService = customUserService;
     }
 
     @PostConstruct
@@ -50,9 +54,9 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token) {
-        UserDTO userDetails = this.userService.getByUserName(getUsername(token));
+        UserDetails userDetails = this.customUserService.loadUserByUsername(getUsername(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "",
-                userService.getAuthorityList(userDetails));
+                userDetails.getAuthorities());
     }
 
     public String getUsername(String token) {

@@ -7,22 +7,6 @@ import javax.persistence.criteria.CriteriaQuery;
 
 public class SortGiftCertificatesByName extends SortSpecification<GiftCertificate> {
 
-    private static final String SQL_CLAUSE_ASC = "select giftcertificates.id,giftcertificates.name" +
-            ",giftcertificates.description,giftcertificates.price" +
-            ",giftcertificates.date_created,giftcertificates.date_modified," +
-            "giftcertificates.duration_till_expiry " +
-            "from giftcertificates " +
-            "order by giftcertificates.date_created asc ";
-    private static final String SQL_CLAUSE_DESC = "select giftcertificates.id,giftcertificates.name" +
-            ",giftcertificates.description,giftcertificates.price" +
-            ",giftcertificates.date_created,giftcertificates.date_modified," +
-            "giftcertificates.duration_till_expiry " +
-            "from giftcertificates " +
-            "order by giftcertificates.date_created desc ";
-
-    private static final String CONJ_SQL_CLAUSE_ASC = "order by giftcertificates.date_created asc ";
-    private static final String CONJ_SQL_CLAUSE_DESC = "order by giftcertificates.date_created desc ";
-
     private int sortOrder;
 
     public SortGiftCertificatesByName(int sortOrder) {
@@ -31,7 +15,11 @@ public class SortGiftCertificatesByName extends SortSpecification<GiftCertificat
 
     @Override
     public void setPredicatesIntoQuery(CriteriaQuery<GiftCertificate> criteriaQuery, CriteriaBuilder builder) {
-        return;
+        if (sortOrder == 1) {
+            criteriaQuery.orderBy(builder.asc(criteriaQuery.from(GiftCertificate.class).get("name")));
+        } else {
+            criteriaQuery.orderBy(builder.desc(criteriaQuery.from(GiftCertificate.class).get("name")));
+        }
     }
 }
 

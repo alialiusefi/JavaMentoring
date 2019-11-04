@@ -1,6 +1,16 @@
 package com.epam.esm.entity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,8 +37,8 @@ public class User extends AbstractEntity {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "order_user", joinColumns =
-            {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "order_id")})
+            {@JoinColumn(name = "order_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")})
     private List<Order> orderList;
 
     private User(UserBuilder userBuilder) {

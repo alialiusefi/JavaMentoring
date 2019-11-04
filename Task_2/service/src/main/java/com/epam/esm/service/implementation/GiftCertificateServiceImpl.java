@@ -10,7 +10,16 @@ import com.epam.esm.exception.BadRequestException;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.repository.TagRepository;
-import com.epam.esm.repository.specification.*;
+import com.epam.esm.repository.specification.FindAllGiftCertificates;
+import com.epam.esm.repository.specification.FindGiftCertificateByID;
+import com.epam.esm.repository.specification.FindGiftCertificatesByDescription;
+import com.epam.esm.repository.specification.FindGiftCertificatesByName;
+import com.epam.esm.repository.specification.FindGiftCertificatesByTagID;
+import com.epam.esm.repository.specification.FindTagByName;
+import com.epam.esm.repository.specification.GiftCertificatesSpecificationConjunction;
+import com.epam.esm.repository.specification.SortGiftCertificatesByDate;
+import com.epam.esm.repository.specification.SortGiftCertificatesByName;
+import com.epam.esm.repository.specification.Specification;
 import com.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -21,7 +30,12 @@ import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
@@ -95,7 +109,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                 new FindGiftCertificateByID(id)).orElseThrow(() ->
                 new ResourceNotFoundException("Certificate with this id doesn't exist!"));
         fields.forEach((k, v) -> {
-            // use reflection to get field k on manager and set it to value k
             Field field = ReflectionUtils.findField(GiftCertificate.class, (String) k);
             field.setAccessible(true);
             if (!handleBigDecimal(field, oldGiftCertificate, v)) {
