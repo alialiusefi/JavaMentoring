@@ -21,10 +21,10 @@ VALUES (1, 1),
        (8, 3),
        (7, 3),
        (6, 3);
-
+/*newadmin*/
 insert into users(username, password, enabled)
-VALUES ('admin', 'admin', true),
-       ('ali', 'password', true);
+VALUES ('admin', '$2a$10$00.3wo0l8NyLW/anp15hdu6tmSYrNdShSspfapqcLH.DS9sGhhQc6', true),
+       ('ali', '$2a$10$00.3wo0l8NyLW/anp15hdu6tmSYrNdShSspfapqcLH.DS9sGhhQc6', true);
 
 insert into authorities(user_id, userstatus)
 VALUES (1, 1);

@@ -1,46 +1,35 @@
 package com.epam.esm.service.implementation;
 
-import com.epam.esm.dto.UserDTO;
-import com.epam.esm.entity.Authority;
-import com.epam.esm.entity.CustomUser;
-import com.epam.esm.entity.User;
-import com.epam.esm.exception.ResourceNotFoundException;
-import com.epam.esm.repository.UserRepository;
-import com.epam.esm.repository.specification.FindUserByUserID;
-import com.epam.esm.repository.specification.FindUserByUserName;
+import com.epam.esm.converter.UserConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import javax.transaction.Transactional;
 
 @Service
 public class CustomUserServiceImpl implements UserDetailsService {
 
-    private UserRepository userRepository;
+    //private UserService userservice;
+    private UserConverter userConverter;
 
     @Autowired
-    public CustomUserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public CustomUserServiceImpl(/*UserService userservice,*/ UserConverter userConverter) {
+        //this.userservice = userservice;
+        this.userConverter = userConverter;
     }
+
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.queryEntity(new FindUserByUserName(username))
-                .orElseThrow(() -> new ResourceNotFoundException("User with this username" +
-                        " was not found!"));
-        CustomUser customUser = new CustomUser(user);
-        return customUser;
-
+        /* UserDTO userDTO = userservice.getByUserName(username);*/
+       /* User user = userConverter.toEntity(userDTO);
+        return new CustomUser(user);*/
+        return null;
     }
 
-    public List<Authority> getAuthorityList(UserDTO userDetails) {
-        User user = userRepository.queryEntity(new FindUserByUserID(userDetails.getId()))
-                .orElseThrow(() -> new ResourceNotFoundException("User with this id" +
-                        "was not found"));
-        List<Authority> authorities = user.getAuthorityList();
-        return authorities;
-    }
+
 }

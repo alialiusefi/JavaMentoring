@@ -18,18 +18,15 @@ public class UserDTO extends DTO {
     @Size(min = 6, max = 50)
     private String password;
 
-    private boolean enabled;
-
     @Valid
     private List<OrderDTO> orders;
 
     public UserDTO(Long id, @NotBlank @Size(min = 6, max = 50) String username,
                    @NotBlank @Size(min = 6, max = 50) String password,
-                   boolean enabled, List<OrderDTO> orders) {
+                   List<OrderDTO> orders) {
         super(id);
         this.username = username;
         this.password = password;
-        this.enabled = enabled;
         this.orders = orders;
     }
 
@@ -53,13 +50,6 @@ public class UserDTO extends DTO {
         this.password = password;
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
 
     public List<OrderDTO> getOrders() {
         return orders;
@@ -75,7 +65,7 @@ public class UserDTO extends DTO {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         UserDTO userDTO = (UserDTO) o;
-        return enabled == userDTO.enabled &&
+        return
                 Objects.equals(username, userDTO.username) &&
                 Objects.equals(password, userDTO.password) &&
                 Objects.equals(orders, userDTO.orders);
@@ -83,7 +73,7 @@ public class UserDTO extends DTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), username, password, enabled, orders);
+        return Objects.hash(super.hashCode(), username, password, orders);
     }
 
     @Override
@@ -91,7 +81,6 @@ public class UserDTO extends DTO {
         return "UserDTO{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", enabled=" + enabled +
                 ", orders=" + orders +
                 '}';
     }

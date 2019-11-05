@@ -9,6 +9,7 @@ import com.epam.esm.repository.specification.FindUserByUserID;
 import com.epam.esm.repository.specification.FindUserByUserName;
 import com.epam.esm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,14 +21,18 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private UserConverter userConverter;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserConverter userConverter) {
+    public UserServiceImpl(UserRepository userRepository, UserConverter userConverter,
+                           BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userConverter = userConverter;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
+    @Transactional
     public UserDTO getByID(Long id) {
         return userConverter.toDTO(userRepository.queryEntity(new FindUserByUserID(id))
                 .orElseThrow(() -> new ResourceNotFoundException("User with this id was not found!")));
@@ -38,11 +43,12 @@ public class UserServiceImpl implements UserService {
         return userConverter.toDTOList(userRepository.queryList(new FindAllUsers(), pageNumber, size));
     }
 
+    @Transactional
     @Override
     public UserDTO add(UserDTO dto) {
-        throw new UnsupportedOperationException("Unimplemented Method");
+        dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+        return userConverter.toDTO(userRepository.add(userConverter.toEntity(dto)));
     }
-
 
     @Override
     public UserDTO signUp(UserDTO userDTO) {
@@ -55,7 +61,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-
     @Override
     public boolean delete(UserDTO dto) {
         UserDTO userDTO = getByID(dto.getId());
@@ -90,6 +95,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDTO getByUserName(String username) {
         return userConverter.toDTO(userRepository.queryEntity(new FindUserByUserName(username))
                 .orElseThrow(() -> new ResourceNotFoundException("User with this username" +

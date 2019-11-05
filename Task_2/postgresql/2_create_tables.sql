@@ -24,9 +24,9 @@ create table tagged_giftcertificates
 create table users
 (
     id       serial primary key,
-    username varchar(50) not null,
-    password varchar(50) not null,
-    enabled  boolean     not null
+    username varchar(50) unique not null,
+    password varchar(64)        not null,
+    enabled  boolean            not null
 );
 
 /*CREATE TYPE userstatus AS ENUM ('Administrator', 'Guest', 'User');*/

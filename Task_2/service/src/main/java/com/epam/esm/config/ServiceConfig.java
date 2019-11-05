@@ -15,5 +15,4 @@ public class ServiceConfig {
         return modelMapper;
     }
 
-
 }
