@@ -2,10 +2,11 @@ package com.epam.esm.config;
 
 import com.epam.esm.security.filter.JwtTokenAuthenticationFilter;
 import com.epam.esm.security.handler.SecurityEntryPoint;
-import com.epam.esm.service.implementation.CustomUserServiceImpl;
+import com.epam.esm.service.CustomUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -20,12 +22,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private CustomUserServiceImpl customUserService;
-    @Autowired
+    private CustomUserService customUserService;
     private JwtTokenAuthenticationFilter authenticationFilter;
-    @Autowired
     private SecurityEntryPoint restAuthenticationEntryPoint;
 
+    @Autowired
+    public void setAuthenticationFilter(JwtTokenAuthenticationFilter authenticationFilter) {
+        this.authenticationFilter = authenticationFilter;
+    }
+
+    @Autowired
+    public void setRestAuthenticationEntryPoint(SecurityEntryPoint restAuthenticationEntryPoint) {
+        this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
+    }
 
     @Autowired
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -34,23 +43,22 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // We don't need CSRF for this example
         http.csrf().disable()
-                // dont authenticate this particular request
-                .authorizeRequests().antMatchers("/v2/auth/**").anonymous().
-                // all other requests need to be authenticated
-                        anyRequest().authenticated().and().
-                // make sure we use stateless session; session won't be used to
-                // store user's state.
-                        exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .authorizeRequests().antMatchers("/v2/auth/**").anonymous()
+                .and().authorizeRequests().antMatchers(HttpMethod.GET, "/v1/tags/**").anonymous()
+                .and().authorizeRequests().antMatchers(HttpMethod.GET, "/v1/giftcertificates/**").anonymous()
+                .and().authorizeRequests().antMatchers(HttpMethod.GET, "/v2/orders/**").anonymous()
+                .and().authorizeRequests().antMatchers(HttpMethod.GET, "/v2/users/**").anonymous()
+                .anyRequest().authenticated().and().
+                exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().securityContext();
         // Add a filter to validate the tokens with every request
         http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
-    public BCryptPasswordEncoder encoder() {
+    public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -59,6 +67,5 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
 
 }

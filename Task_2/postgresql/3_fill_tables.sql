@@ -23,11 +23,11 @@ VALUES (1, 1),
        (6, 3);
 /*newadmin*/
 insert into users(username, password, enabled)
-VALUES ('admin', '$2a$10$00.3wo0l8NyLW/anp15hdu6tmSYrNdShSspfapqcLH.DS9sGhhQc6', true),
-       ('ali', '$2a$10$00.3wo0l8NyLW/anp15hdu6tmSYrNdShSspfapqcLH.DS9sGhhQc6', true);
+VALUES ('adminadmin', '$2a$10$00.3wo0l8NyLW/anp15hdu6tmSYrNdShSspfapqcLH.DS9sGhhQc6', true),
+       ('aliali', '$2a$10$00.3wo0l8NyLW/anp15hdu6tmSYrNdShSspfapqcLH.DS9sGhhQc6', true);
 
 insert into authorities(user_id, userstatus)
-VALUES (1, 1);
+VALUES (1, 1),(2,1);
 
 insert into orders(ordercost, timestamp)
 values (20.00, '2016-06-22 19:10:25-07'),

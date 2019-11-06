@@ -1,7 +1,6 @@
 package com.epam.esm.repository.specification;
 
 
-
 import com.epam.esm.entity.AbstractEntity;
 
 import java.util.Comparator;

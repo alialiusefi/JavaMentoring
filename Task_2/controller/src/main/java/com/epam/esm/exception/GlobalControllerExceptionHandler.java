@@ -41,6 +41,7 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
         return new ResponseEntity<Object>(
                 apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex,

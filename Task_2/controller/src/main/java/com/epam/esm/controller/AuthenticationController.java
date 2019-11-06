@@ -3,8 +3,8 @@ package com.epam.esm.controller;
 import com.epam.esm.dto.TokenDTO;
 import com.epam.esm.dto.UserDTO;
 import com.epam.esm.security.provider.JwtTokenProvider;
+import com.epam.esm.service.CustomUserService;
 import com.epam.esm.service.UserService;
-import com.epam.esm.service.implementation.CustomUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,11 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -28,12 +24,12 @@ public class AuthenticationController {
 
     private AuthenticationManager authenticationManager;
     private JwtTokenProvider jwtTokenProvider;
-    private CustomUserServiceImpl userDetailsService;
+    private CustomUserService userDetailsService;
     private UserService userService;
 
     @Autowired
     public AuthenticationController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider,
-                                    CustomUserServiceImpl userDetailsService, UserService userService) {
+                                    CustomUserService userDetailsService, UserService userService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         this.userDetailsService = userDetailsService;

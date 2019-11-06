@@ -67,8 +67,8 @@ public class UserDTO extends DTO {
         UserDTO userDTO = (UserDTO) o;
         return
                 Objects.equals(username, userDTO.username) &&
-                Objects.equals(password, userDTO.password) &&
-                Objects.equals(orders, userDTO.orders);
+                        Objects.equals(password, userDTO.password) &&
+                        Objects.equals(orders, userDTO.orders);
     }
 
     @Override

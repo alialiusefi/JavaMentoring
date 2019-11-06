@@ -127,7 +127,7 @@ public final class ConnectionPool extends AbstractDataSource {
         }
     }
 
-    @PreDestroy
+    //@PreDestroy
     public void destroy() {
         if (freeConnections != null && usedConnections != null) {
             usedConnections.addAll(freeConnections);

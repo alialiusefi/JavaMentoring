@@ -1,12 +1,8 @@
 package com.epam.esm.security.provider;
 
 import com.epam.esm.security.exception.InvalidJwtAuthenticationException;
-import com.epam.esm.service.implementation.CustomUserServiceImpl;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.epam.esm.service.CustomUserService;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,10 +21,10 @@ public class JwtTokenProvider {
 
     private String secretKey = "secret";
     private static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
-    private CustomUserServiceImpl customUserService;
+    private CustomUserService customUserService;
 
     @Autowired
-    public JwtTokenProvider(CustomUserServiceImpl customUserService) {
+    public JwtTokenProvider(CustomUserService customUserService) {
         this.customUserService = customUserService;
     }
 

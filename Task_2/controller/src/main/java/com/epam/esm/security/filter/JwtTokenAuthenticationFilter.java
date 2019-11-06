@@ -20,7 +20,7 @@ public class JwtTokenAuthenticationFilter extends GenericFilterBean {
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public JwtTokenAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
+    public void setJwtTokenProvider(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 

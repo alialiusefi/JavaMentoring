@@ -89,7 +89,7 @@ public class GiftCertificateDTO extends DTO {
     }
 */
     public void setPrice(BigDecimal price) {
-        this.price = price.setScale(SCALE,ROUNDING_MODE);
+        this.price = price.setScale(SCALE, ROUNDING_MODE);
     }
 
     public LocalDate getDateOfCreation() {

@@ -23,13 +23,11 @@ public class TagController {
         this.tagService = tagService;
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN,USER,GUEST')")
     @GetMapping("/{id}")
     public TagDTO getTag(@PathVariable long id) {
         return tagService.getByID(id);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN,USER,GUEST')")
     @GetMapping()
     public List<TagDTO> getAllTags(@RequestParam(defaultValue = "1") int page,
                                    @RequestParam(defaultValue = "5") int size) {

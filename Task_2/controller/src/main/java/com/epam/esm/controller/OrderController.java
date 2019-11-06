@@ -4,6 +4,7 @@ import com.epam.esm.dto.OrderDTO;
 import com.epam.esm.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +36,7 @@ public class OrderController {
 
     @PatchMapping("/{orderID}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN')")
     public OrderDTO patchOrder(@RequestBody Map<Object, Object> fields,
                                @PathVariable Long orderID) {
         return orderService.patch(fields, orderID);
@@ -42,12 +44,14 @@ public class OrderController {
 
     @PutMapping("/{orderID}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN')")
     public OrderDTO updateOrder(@RequestBody OrderDTO orderDTO, Long orderID) {
         orderDTO.setId(orderID);
         return orderService.update(orderDTO);
     }
 
     @DeleteMapping("/{orderID}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteOrder(@PathVariable Long orderID) {
         orderService.delete(orderID);

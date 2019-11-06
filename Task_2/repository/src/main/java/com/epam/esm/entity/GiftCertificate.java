@@ -11,7 +11,7 @@ import java.util.Objects;
 public final class GiftCertificate extends AbstractEntity {
 
     @Id
-    @SequenceGenerator(name="giftcertificatesSequence",sequenceName="giftcertificates_id_seq", allocationSize=1)
+    @SequenceGenerator(name = "giftcertificatesSequence", sequenceName = "giftcertificates_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "giftcertificatesSequence")
     private Long id;
 
