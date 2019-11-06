@@ -15,7 +15,7 @@ public class Authority extends AbstractEntity implements GrantedAuthority {
     private Long id;
 
     @Column(name = "user_id", nullable = false)
-    private Integer userID;
+    private Long userID;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "userstatus", nullable = false)
@@ -43,11 +43,11 @@ public class Authority extends AbstractEntity implements GrantedAuthority {
         return this.userStatus.toString();
     }
 
-    public Integer getUserID() {
+    public Long getUserID() {
         return userID;
     }
 
-    public void setUserID(Integer userID) {
+    public void setUserID(Long userID) {
         this.userID = userID;
     }
 
@@ -85,10 +85,10 @@ public class Authority extends AbstractEntity implements GrantedAuthority {
 
     public static class AuthorityBuilder {
 
-        private final Integer userID;
+        private final Long userID;
         private final UserStatus userStatus;
 
-        public AuthorityBuilder(Integer userID, UserStatus status) {
+        public AuthorityBuilder(Long userID, UserStatus status) {
             this.userID = userID;
             this.userStatus = status;
         }

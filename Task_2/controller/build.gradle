@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+
     compile project(':service')
     providedCompile 'javax.servlet:jstl:1.2'
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
@@ -14,6 +15,5 @@ dependencies {
     compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.3.7.RELEASE'
     compile group: 'org.springframework.security', name: 'spring-security-oauth2-client', version: '5.2.0.RELEASE'
     compile group: 'org.springframework.security', name: 'spring-security-oauth2-jose', version: '5.2.0.RELEASE'
-
 
 }

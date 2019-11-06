@@ -3,11 +3,7 @@ package com.epam.esm.repository.specification;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 
 public class FindGiftCertificatesByTagID extends FindSpecification<GiftCertificate> {
 

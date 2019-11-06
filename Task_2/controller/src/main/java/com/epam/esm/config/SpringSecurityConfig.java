@@ -2,8 +2,12 @@ package com.epam.esm.config;
 
 import com.epam.esm.security.filter.ExceptionHandlerFilter;
 import com.epam.esm.security.filter.JwtTokenAuthenticationFilter;
+import com.epam.esm.security.handler.OAuth2AuthenticationFailureHandler;
+import com.epam.esm.security.handler.OAuth2AuthenticationSuccessHandler;
 import com.epam.esm.security.handler.SecurityEntryPoint;
+import com.epam.esm.security.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.epam.esm.service.CustomUserService;
+import com.epam.esm.service.implementation.CustomOAuth2UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,17 +31,18 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtTokenAuthenticationFilter authenticationFilter;
     private SecurityEntryPoint restAuthenticationEntryPoint;
     private ExceptionHandlerFilter exceptionHandlingfilter;
-    //@Autowired
-    //private CustomOAuth2UserService customOAuth2UserService;
 
-    //@Autowired
-    //private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
 
-    //@Autowired
-    //private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+    @Autowired
+    private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
-    //    @Autowired
-    //  private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
+    @Autowired
+    private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+
+    @Autowired
+    private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
     @Autowired
     public void setAuthenticationFilter(JwtTokenAuthenticationFilter authenticationFilter) {
@@ -63,20 +68,22 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeRequests().antMatchers("/v2/auth/**").permitAll()
-                .and().authorizeRequests().antMatchers(HttpMethod.GET, "/v2/oauth2/**").permitAll()
+                .and().authorizeRequests().antMatchers("/oauth2/**").permitAll()
                 .and().authorizeRequests().antMatchers(HttpMethod.GET, "/v1/tags/**").permitAll()
                 .and().authorizeRequests().antMatchers(HttpMethod.GET, "/v1/giftcertificates/**").permitAll()
                 .and().authorizeRequests().antMatchers(HttpMethod.GET, "/v2/orders/**").permitAll()
                 .and().authorizeRequests().antMatchers(HttpMethod.GET, "/v2/users/**").permitAll()
                 .anyRequest().authenticated().and()
                 .oauth2Login().authorizationEndpoint()
-                .baseUri("/oauth2/callback/**").and()
-                .userInfoEndpoint().userService(customOAuth2UserService).and()
-                .successHandler(oAuth2AuthenticationSuccessHandler).failureHandler(oAuth2AuthenticationFailureHandler)
-                .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
+                .baseUri("/oauth2/authorize/")
+                .authorizationRequestRepository(cookieAuthorizationRequestRepository())
+                .and().redirectionEndpoint().baseUri("/oauth2/callback/*")
+                .and().userInfoEndpoint().userService(customOAuth2UserService).and()
+                .successHandler(oAuth2AuthenticationSuccessHandler)
+                .failureHandler(oAuth2AuthenticationFailureHandler)
+                .and().exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().securityContext();
-        // Add a filter to validate the tokens with every request
         http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(exceptionHandlingfilter, JwtTokenAuthenticationFilter.class);
     }
@@ -93,11 +100,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    /*@Bean
+    @Bean
     public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
         return new HttpCookieOAuth2AuthorizationRequestRepository();
     }
-*/
 
 
 }

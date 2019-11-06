@@ -1,5 +1,6 @@
 package com.epam.esm.security.provider;
 
+import com.epam.esm.properties.AppProperties;
 import com.epam.esm.security.exception.InvalidJwtAuthenticationException;
 import com.epam.esm.service.CustomUserService;
 import io.jsonwebtoken.*;
@@ -22,10 +23,12 @@ public class JwtTokenProvider {
     private String secretKey = "secret";
     private static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
     private CustomUserService customUserService;
+    private AppProperties appProperties;
 
     @Autowired
-    public JwtTokenProvider(CustomUserService customUserService) {
+    public JwtTokenProvider(CustomUserService customUserService, AppProperties appProperties) {
         this.customUserService = customUserService;
+        this.appProperties = appProperties;
     }
 
     @PostConstruct
