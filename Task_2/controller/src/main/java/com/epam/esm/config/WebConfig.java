@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -13,6 +14,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 @ComponentScan(basePackages = "com.epam.esm")
 public class WebConfig implements WebMvcConfigurer {
+
+    private final long MAX_AGE_SECS = 3600;
 
     @Bean
     public MethodValidationPostProcessor methodValidationPostProcessor() {
@@ -35,5 +38,16 @@ public class WebConfig implements WebMvcConfigurer {
         source.setUseCodeAsDefaultMessage(true);
         return source;
     }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+                .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE")
+                .allowedHeaders("*")
+                .allowCredentials(true)
+                .maxAge(MAX_AGE_SECS);
+    }
+
 
 }

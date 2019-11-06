@@ -1,5 +1,6 @@
 package com.epam.esm.config;
 
+import com.epam.esm.security.filter.ExceptionHandlerFilter;
 import com.epam.esm.security.filter.JwtTokenAuthenticationFilter;
 import com.epam.esm.security.handler.SecurityEntryPoint;
 import com.epam.esm.service.CustomUserService;
@@ -25,6 +26,18 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomUserService customUserService;
     private JwtTokenAuthenticationFilter authenticationFilter;
     private SecurityEntryPoint restAuthenticationEntryPoint;
+    private ExceptionHandlerFilter exceptionHandlingfilter;
+    //@Autowired
+    //private CustomOAuth2UserService customOAuth2UserService;
+
+    //@Autowired
+    //private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+
+    //@Autowired
+    //private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+
+    //    @Autowired
+    //  private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
     @Autowired
     public void setAuthenticationFilter(JwtTokenAuthenticationFilter authenticationFilter) {
@@ -37,25 +50,37 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
+    public void setExceptionHandlingfilter(ExceptionHandlerFilter exceptionHandlingfilter) {
+        this.exceptionHandlingfilter = exceptionHandlingfilter;
+    }
+
+    @Autowired
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(customUserService).passwordEncoder(encoder());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeRequests().antMatchers("/v2/auth/**").anonymous()
-                .and().authorizeRequests().antMatchers(HttpMethod.GET, "/v1/tags/**").anonymous()
-                .and().authorizeRequests().antMatchers(HttpMethod.GET, "/v1/giftcertificates/**").anonymous()
-                .and().authorizeRequests().antMatchers(HttpMethod.GET, "/v2/orders/**").anonymous()
-                .and().authorizeRequests().antMatchers(HttpMethod.GET, "/v2/users/**").anonymous()
-                .anyRequest().authenticated().and().
-                exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
+        http.cors().and().csrf().disable()
+                .authorizeRequests().antMatchers("/v2/auth/**").permitAll()
+                .and().authorizeRequests().antMatchers(HttpMethod.GET, "/v2/oauth2/**").permitAll()
+                .and().authorizeRequests().antMatchers(HttpMethod.GET, "/v1/tags/**").permitAll()
+                .and().authorizeRequests().antMatchers(HttpMethod.GET, "/v1/giftcertificates/**").permitAll()
+                .and().authorizeRequests().antMatchers(HttpMethod.GET, "/v2/orders/**").permitAll()
+                .and().authorizeRequests().antMatchers(HttpMethod.GET, "/v2/users/**").permitAll()
+                .anyRequest().authenticated().and()
+                .oauth2Login().authorizationEndpoint()
+                .baseUri("/oauth2/callback/**").and()
+                .userInfoEndpoint().userService(customOAuth2UserService).and()
+                .successHandler(oAuth2AuthenticationSuccessHandler).failureHandler(oAuth2AuthenticationFailureHandler)
+                .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().securityContext();
         // Add a filter to validate the tokens with every request
         http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(exceptionHandlingfilter, JwtTokenAuthenticationFilter.class);
     }
+
 
     @Bean
     public PasswordEncoder encoder() {
@@ -67,5 +92,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
+    /*@Bean
+    public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
+        return new HttpCookieOAuth2AuthorizationRequestRepository();
+    }
+*/
+
 
 }
