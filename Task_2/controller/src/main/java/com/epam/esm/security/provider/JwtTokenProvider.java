@@ -20,8 +20,8 @@ import java.util.Map;
 @Component
 public class JwtTokenProvider {
 
-    private String secretKey = "secret";
     private static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+    private String secretKey = "secret";
     private CustomUserService customUserService;
     private AppProperties appProperties;
 
@@ -64,8 +64,10 @@ public class JwtTokenProvider {
         String bearerToken = req.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
+        } else {
+            String token = req.getParameter("token");
+            return token;
         }
-        return null;
     }
 
     public boolean validateToken(String token) {

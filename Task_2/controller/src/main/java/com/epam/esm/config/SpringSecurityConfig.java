@@ -6,8 +6,8 @@ import com.epam.esm.security.handler.OAuth2AuthenticationFailureHandler;
 import com.epam.esm.security.handler.OAuth2AuthenticationSuccessHandler;
 import com.epam.esm.security.handler.SecurityEntryPoint;
 import com.epam.esm.security.repository.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.epam.esm.service.CustomOAuthUserService;
 import com.epam.esm.service.CustomUserService;
-import com.epam.esm.service.implementation.CustomOAuth2UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,16 +33,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private ExceptionHandlerFilter exceptionHandlingfilter;
 
     @Autowired
-    private CustomOAuth2UserService customOAuth2UserService;
+    private CustomOAuthUserService customOAuth2UserService;
 
     @Autowired
     private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
     @Autowired
     private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
-
-    @Autowired
-    private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
     @Autowired
     public void setAuthenticationFilter(JwtTokenAuthenticationFilter authenticationFilter) {
@@ -78,7 +75,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .baseUri("/oauth2/authorize/")
                 .authorizationRequestRepository(cookieAuthorizationRequestRepository())
                 .and().redirectionEndpoint().baseUri("/oauth2/callback/*")
-                .and().userInfoEndpoint().userService(customOAuth2UserService).and()
+                .and().userInfoEndpoint().userService(customOAuth2UserService)
+                .and()/*.userInfoEndpoint().oidcUserService().and()*/
                 .successHandler(oAuth2AuthenticationSuccessHandler)
                 .failureHandler(oAuth2AuthenticationFailureHandler)
                 .and().exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)

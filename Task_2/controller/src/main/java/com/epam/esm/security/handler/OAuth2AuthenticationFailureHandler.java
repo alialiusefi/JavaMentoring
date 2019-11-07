@@ -20,7 +20,8 @@ import static com.epam.esm.security.repository.HttpCookieOAuth2AuthorizationRequ
 public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     @Autowired
-    HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
+    HttpCookieOAuth2AuthorizationRequestRepository
+            httpCookieOAuth2AuthorizationRequestRepository;
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {

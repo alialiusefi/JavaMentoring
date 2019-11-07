@@ -6,7 +6,7 @@ import java.util.Objects;
 
 @Table
 @Entity(name = "users")
-public class User extends AbstractEntity {
+public class UserEntity extends AbstractEntity {
 
     @Id
     @SequenceGenerator(name = "usersSequence", sequenceName = "users_id_seq", allocationSize = 1)
@@ -14,7 +14,7 @@ public class User extends AbstractEntity {
     private Long id;
     @Column(name = "username", nullable = false, unique = true)
     private String username;
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String password;
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
@@ -31,7 +31,7 @@ public class User extends AbstractEntity {
             inverseJoinColumns = {@JoinColumn(name = "user_id")})
     private List<Order> orderList;
 
-    private User(UserBuilder userBuilder) {
+    private UserEntity(UserBuilder userBuilder) {
         this.username = userBuilder.username;
         this.password = userBuilder.password;
         this.enabled = userBuilder.enabled;
@@ -39,7 +39,7 @@ public class User extends AbstractEntity {
         this.orderList = userBuilder.orderList;
     }
 
-    public User() {
+    public UserEntity() {
         super();
     }
 
@@ -95,11 +95,11 @@ public class User extends AbstractEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return isEnabled() == user.isEnabled() &&
-                Objects.equals(getUsername(), user.getUsername()) &&
-                Objects.equals(getPassword(), user.getPassword()) &&
-                Objects.equals(getAuthorityList(), user.getAuthorityList());
+        UserEntity userEntity = (UserEntity) o;
+        return isEnabled() == userEntity.isEnabled() &&
+                Objects.equals(getUsername(), userEntity.getUsername()) &&
+                Objects.equals(getPassword(), userEntity.getPassword()) &&
+                Objects.equals(getAuthorityList(), userEntity.getAuthorityList());
     }
 
     @Override
@@ -143,8 +143,8 @@ public class User extends AbstractEntity {
             return this;
         }
 
-        public User getResult() {
-            return new User(this);
+        public UserEntity getResult() {
+            return new UserEntity(this);
         }
 
 

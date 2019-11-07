@@ -18,7 +18,7 @@ public class Order extends AbstractEntity {
     @OneToOne
     @JoinTable(name = "order_user", joinColumns = {@JoinColumn(name = "user_id")}
             , inverseJoinColumns = {@JoinColumn(name = "order_id")})
-    private User user;
+    private UserEntity userEntity;
 
 
     @Column(name = "ordercost", nullable = false)
@@ -38,7 +38,7 @@ public class Order extends AbstractEntity {
         this.id = builder.id;
         this.orderCost = builder.orderCost;
         this.timestamp = builder.timestamp;
-        this.user = builder.user;
+        this.userEntity = builder.userEntity;
         this.giftCertificates = builder.giftCertificateList;
     }
 
@@ -79,12 +79,12 @@ public class Order extends AbstractEntity {
         this.giftCertificates = giftCertificates;
     }
 
-    public User getUser() {
-        return user;
+    public UserEntity getUserEntity() {
+        return userEntity;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
 
     @Override
@@ -96,12 +96,12 @@ public class Order extends AbstractEntity {
                 Objects.equals(orderCost, order.orderCost) &&
                 Objects.equals(timestamp, order.timestamp) &&
                 Objects.equals(giftCertificates, order.giftCertificates) &&
-                Objects.equals(user, order.user);
+                Objects.equals(userEntity, order.userEntity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, orderCost, timestamp, giftCertificates, user);
+        return Objects.hash(id, orderCost, timestamp, giftCertificates, userEntity);
     }
 
     public static class OrderBuilder {
@@ -110,14 +110,14 @@ public class Order extends AbstractEntity {
         private final BigDecimal orderCost;
         private final LocalDateTime timestamp;
         private final List<GiftCertificate> giftCertificateList;
-        private final User user;
+        private final UserEntity userEntity;
 
         public OrderBuilder(Long id, BigDecimal orderCost,
-                            LocalDateTime timestamp, User user, List<GiftCertificate> giftCertificateList) {
+                            LocalDateTime timestamp, UserEntity userEntity, List<GiftCertificate> giftCertificateList) {
             this.id = id;
             this.orderCost = orderCost;
             this.timestamp = timestamp;
-            this.user = user;
+            this.userEntity = userEntity;
             this.giftCertificateList = giftCertificateList;
         }
 

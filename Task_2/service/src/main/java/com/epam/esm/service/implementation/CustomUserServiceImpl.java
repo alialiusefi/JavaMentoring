@@ -1,7 +1,7 @@
 package com.epam.esm.service.implementation;
 
-import com.epam.esm.entity.CustomUser;
-import com.epam.esm.entity.User;
+import com.epam.esm.entity.LocalCustomOAuthUser;
+import com.epam.esm.entity.UserEntity;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.UserRepository;
 import com.epam.esm.repository.specification.FindUserByUserName;
@@ -25,10 +25,10 @@ public class CustomUserServiceImpl implements CustomUserService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) {
-        User user = userRepository.queryEntity(new FindUserByUserName(username))
+        UserEntity userEntity = userRepository.queryEntity(new FindUserByUserName(username))
                 .orElseThrow(() -> new ResourceNotFoundException("User with this username" +
                         " was not found!"));
-        return new CustomUser(user);
+        return new LocalCustomOAuthUser(userEntity);
     }
 
 

@@ -3,7 +3,7 @@ package com.epam.esm.service.implementation;
 import com.epam.esm.converter.OrderConverter;
 import com.epam.esm.dto.OrderDTO;
 import com.epam.esm.entity.Order;
-import com.epam.esm.entity.User;
+import com.epam.esm.entity.UserEntity;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.OrderRepository;
 import com.epam.esm.repository.UserRepository;
@@ -65,7 +65,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDTO getUserOrder(Long userID, Long orderID) {
-        User userfound = userRepository.queryEntity(new FindUserByUserID(userID))
+        UserEntity userfound = userRepository.queryEntity(new FindUserByUserID(userID))
                 .orElseThrow(() -> new ResourceNotFoundException("User with this " +
                         "id was not found"));
         Order order = orderRepository.queryEntity(new FindUserOrderByOrderID(userID, orderID)).
@@ -78,12 +78,12 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public OrderDTO add(Long userID, OrderDTO dto) {
         Order order = orderConverter.toEntity(dto);//
-        User user = userRepository.queryEntity(new FindUserByUserID(userID)).
+        UserEntity userEntity = userRepository.queryEntity(new FindUserByUserID(userID)).
                 orElseThrow(() -> new ResourceNotFoundException("User with this id was not found"));//
         order.setTimestamp(LocalDateTime.now());
         Order orderAdded = orderRepository.add(order);
-        user.getOrderList().add(orderAdded);
-        userRepository.update(user);
+        userEntity.getOrderList().add(orderAdded);
+        userRepository.update(userEntity);
         return orderConverter.toDTO(orderAdded);
     }
 

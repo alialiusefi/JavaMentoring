@@ -10,7 +10,7 @@ import java.util.Objects;
 public class Authority extends AbstractEntity implements GrantedAuthority {
 
     @Id
-    @SequenceGenerator(name = "authoritySequence", sequenceName = "authoritires_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "authoritySequence", sequenceName = "authorities_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "authoritySequence")
     private Long id;
 

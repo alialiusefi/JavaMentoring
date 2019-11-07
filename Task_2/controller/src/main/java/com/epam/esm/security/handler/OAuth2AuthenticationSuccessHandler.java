@@ -28,7 +28,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     public final static String authorizedRedirectUri = "http://localhost:8080/oauth2/redirect";
     private JwtTokenProvider tokenProvider;
     private AppProperties appProperties;
-    private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
+    private HttpCookieOAuth2AuthorizationRequestRepository
+            httpCookieOAuth2AuthorizationRequestRepository;
 
     @Autowired
     OAuth2AuthenticationSuccessHandler(JwtTokenProvider tokenProvider, AppProperties appProperties,
@@ -47,7 +48,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
             return;
         }
-
         clearAuthenticationAttributes(request, response);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
@@ -65,11 +65,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String token = tokenProvider.generateToken(userDetails);
-
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", token)
                 .build().toUriString();
     }
+
 
     protected void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
         super.clearAuthenticationAttributes(request);
