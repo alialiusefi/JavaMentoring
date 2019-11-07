@@ -25,7 +25,7 @@ create table users
 (
     id       serial primary key,
     username varchar(50) unique not null,
-    password varchar(64)        not null,
+    password varchar(64),
     enabled  boolean            not null
 );
 
