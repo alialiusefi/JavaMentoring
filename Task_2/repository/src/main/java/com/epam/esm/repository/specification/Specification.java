@@ -3,12 +3,13 @@ package com.epam.esm.repository.specification;
 
 import com.epam.esm.entity.AbstractEntity;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 
 public interface Specification<T extends AbstractEntity> {
 
-    void setPredicatesIntoQuery(CriteriaQuery<T> criteriaQuery, CriteriaBuilder builder);
+    Query getQuery(EntityManager em, CriteriaBuilder builder);
 
 
 }

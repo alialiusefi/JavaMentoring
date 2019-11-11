@@ -3,6 +3,8 @@ package com.epam.esm.repository.specification;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.UserEntity;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.criteria.*;
 
 public class FindUserOrderByOrderID extends FindSpecification<Order> {
@@ -16,7 +18,8 @@ public class FindUserOrderByOrderID extends FindSpecification<Order> {
     }
 
     @Override
-    public void setPredicatesIntoQuery(CriteriaQuery<Order> criteriaQuery, CriteriaBuilder builder) {
+    public Query getQuery(EntityManager manager, CriteriaBuilder builder) {
+        CriteriaQuery<Order> criteriaQuery = builder.createQuery(Order.class);
         Root<UserEntity> userRoot = criteriaQuery.from(UserEntity.class);
         Root<Order> orderRoot = criteriaQuery.from(Order.class);
         Predicate[] predicates = new Predicate[]{
@@ -25,5 +28,6 @@ public class FindUserOrderByOrderID extends FindSpecification<Order> {
         criteriaQuery.where(builder.and(predicates));
         Join<UserEntity, Order> orders = userRoot.join("orderList");
         criteriaQuery.select(orders);
+        return manager.createQuery(criteriaQuery);
     }
 }

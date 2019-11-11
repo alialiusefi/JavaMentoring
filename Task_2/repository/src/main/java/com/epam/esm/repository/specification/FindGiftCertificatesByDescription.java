@@ -2,9 +2,9 @@ package com.epam.esm.repository.specification;
 
 import com.epam.esm.entity.GiftCertificate;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 public class FindGiftCertificatesByDescription extends FindSpecification<GiftCertificate> {
 
@@ -25,8 +25,7 @@ public class FindGiftCertificatesByDescription extends FindSpecification<GiftCer
 
 
     @Override
-    public void setPredicatesIntoQuery(CriteriaQuery<GiftCertificate> criteriaQuery, CriteriaBuilder builder) {
-        Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
-
+    public Query getQuery(EntityManager em, CriteriaBuilder builder) {
+        throw new UnsupportedOperationException("Unimplemented this specification yet!");
     }
 }

@@ -18,7 +18,7 @@ public class FindAllOrdersByUserID extends FindSpecification<Order> {
     }
 
     @Override
-    public void setPredicatesIntoQuery(CriteriaQuery<Order> criteriaQuery, CriteriaBuilder builder) {
+    public void getQuery(CriteriaQuery<Order> criteriaQuery, CriteriaBuilder builder) {
         Root<UserEntity> userRoot = criteriaQuery.from(UserEntity.class);
         criteriaQuery.where(builder.equal(userRoot.get("id"), this.userID));
         Join<UserEntity, Order> orders = userRoot.join("orderList");

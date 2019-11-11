@@ -1,29 +1,17 @@
 package com.epam.esm.entity;
 
-import java.util.List;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
+import java.util.Map;
 
 public class LocalCustomOAuthUser extends CustomOAuthUser {
 
-    private String username;
-    private List<Authority> authorityList;
-
-    public LocalCustomOAuthUser(String username, String password,
-                                List<Authority> authorities) {
-        super(username, password, authorities);
-        this.username = username;
-        this.authorityList = authorities;
+    public LocalCustomOAuthUser(Collection<? extends GrantedAuthority> authorities,
+                                Map<String, Object> attributes,
+                                String nameAttributeKey, UserEntity userEntity) {
+        super(authorities, attributes, nameAttributeKey, userEntity);
     }
 
-    public LocalCustomOAuthUser(UserEntity userEntity) {
-        super(userEntity);
-    }
 
-    @Override
-    public String getSubject() {
-        return this.username;
-    }
-
-    public List<Authority> getAuthorityList() {
-        return authorityList;
-    }
 }

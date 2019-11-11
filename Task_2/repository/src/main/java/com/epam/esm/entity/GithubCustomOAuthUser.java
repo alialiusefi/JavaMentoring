@@ -1,18 +1,17 @@
 package com.epam.esm.entity;
 
-import java.util.List;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
 import java.util.Map;
 
 public class GithubCustomOAuthUser extends CustomOAuthUser {
 
-    public GithubCustomOAuthUser(Map<String, Object> attributes, List<Authority> authorities) {
-        super((String) attributes.get("login"), "nopass", authorities);
-        this.oAuth2attributes = attributes;
+    public GithubCustomOAuthUser(Collection<? extends GrantedAuthority> authorities,
+                                 Map<String, Object> attributes,
+                                 String nameAttributeKey, UserEntity userEntity) {
+        super(authorities, attributes, nameAttributeKey, userEntity);
     }
 
-    @Override
-    public String getSubject() {
-        return (String) this.oAuth2attributes.get("login");
-    }
 
 }

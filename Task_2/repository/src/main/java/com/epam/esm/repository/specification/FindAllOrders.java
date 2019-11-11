@@ -10,8 +10,8 @@ public class FindAllOrders extends FindSpecification<Order> {
 
 
     @Override
-    public void setPredicatesIntoQuery(CriteriaQuery<Order> criteriaQuery,
-                                       CriteriaBuilder builder) {
+    public void getQuery(CriteriaQuery<Order> criteriaQuery,
+                         CriteriaBuilder builder) {
         Root<Order> root = criteriaQuery.from(Order.class);
         criteriaQuery.select(root);
     }

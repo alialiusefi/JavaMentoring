@@ -31,7 +31,7 @@ public class OrderController {
     @GetMapping()
     public List<OrderDTO> getAllOrders(@RequestParam(defaultValue = "1") Integer page,
                                        @RequestParam(defaultValue = "5") Integer size) {
-        return orderService.getAll(page, size);
+        return (List<OrderDTO>) orderService.getAll(page, size);
     }
 
     @PatchMapping("/{orderID}")

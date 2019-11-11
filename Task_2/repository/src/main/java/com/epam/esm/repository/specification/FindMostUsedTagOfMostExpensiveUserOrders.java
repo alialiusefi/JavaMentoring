@@ -1,15 +1,17 @@
 package com.epam.esm.repository.specification;
 
-import com.epam.esm.entity.Tag;
+import com.epam.esm.entity.GiftCertificate;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 
-public class FindMostUsedTagOfMostExpensiveUserOrders extends FindSpecification<Tag> {
+public class FindMostUsedTagOfMostExpensiveUserOrders extends NativeFindSpecification<GiftCertificate> {
+
+
 
     @Override
-    public void setPredicatesIntoQuery(CriteriaQuery<Tag> criteriaQuery, CriteriaBuilder builder) {
-
+    public Query getQuery(EntityManager em, CriteriaBuilder builder) {
+        throw new UnsupportedOperationException("Unimplemented this specification yet!");
     }
-
 }

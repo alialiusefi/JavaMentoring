@@ -1,12 +1,13 @@
 package com.epam.esm.service.implementation;
 
 import com.epam.esm.converter.UserConverter;
+import com.epam.esm.converter.UserWithoutPasswordConverter;
 import com.epam.esm.dto.UserDTO;
+import com.epam.esm.dto.UserWithoutPassDTO;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.UserRepository;
 import com.epam.esm.repository.specification.FindAllUsers;
 import com.epam.esm.repository.specification.FindUserByUserID;
-import com.epam.esm.repository.specification.FindUserByUserName;
 import com.epam.esm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,26 +22,29 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private UserConverter userConverter;
+    private UserWithoutPasswordConverter userWithoutPasswordConverter;
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, UserConverter userConverter,
-                           BCryptPasswordEncoder passwordEncoder) {
+                           UserWithoutPasswordConverter userWithoutPasswordConverter, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userConverter = userConverter;
+        this.userWithoutPasswordConverter = userWithoutPasswordConverter;
         this.passwordEncoder = passwordEncoder;
     }
 
+
     @Override
     @Transactional
-    public UserDTO getByID(Long id) {
-        return userConverter.toDTO(userRepository.queryEntity(new FindUserByUserID(id))
+    public UserWithoutPassDTO getByID(Long id) {
+        return userWithoutPasswordConverter.toDTO(userRepository.queryEntity(new FindUserByUserID(id))
                 .orElseThrow(() -> new ResourceNotFoundException("User with this id was not found!")));
     }
 
     @Override
-    public List<UserDTO> getAll(int pageNumber, int size) {
-        return userConverter.toDTOList(userRepository.queryList(new FindAllUsers(), pageNumber, size));
+    public List<UserWithoutPassDTO> getAll(int pageNumber, int size) {
+        return userWithoutPasswordConverter.toDTOList(userRepository.queryList(new FindAllUsers(), pageNumber, size));
     }
 
     @Transactional
@@ -50,36 +54,26 @@ public class UserServiceImpl implements UserService {
         return userConverter.toDTO(userRepository.add(userConverter.toEntity(dto)));
     }
 
-    @Override
-    public UserDTO signUp(UserDTO userDTO) {
-        throw new UnsupportedOperationException("Unimplemented Method");
-    }
-
-    @Override
-    public UserDTO logIn(UserDTO userDTO) {
-        throw new UnsupportedOperationException("Unimplemented Method");
-    }
-
     @Transactional
     @Override
     public boolean delete(UserDTO dto) {
-        UserDTO userDTO = getByID(dto.getId());
+        UserWithoutPassDTO userDTO = getByID(dto.getId());
         if (userDTO != null) {
-            userRepository.delete(userConverter.toEntity(userDTO));
+            userRepository.delete(userWithoutPasswordConverter.toEntity(userDTO));
             return true;
         }
-        throw new ResourceNotFoundException("Tag with this id doesn't exist");
+        throw new ResourceNotFoundException("User with this id doesn't exist");
     }
 
     @Transactional
     @Override
     public boolean delete(long id) {
-        UserDTO userDTO = getByID(id);
+        UserWithoutPassDTO userDTO = getByID(id);
         if (userDTO != null) {
-            userRepository.delete(userConverter.toEntity(userDTO));
+            userRepository.delete(userWithoutPasswordConverter.toEntity(userDTO));
             return true;
         }
-        throw new ResourceNotFoundException("Tag with this id doesn't exist");
+        throw new ResourceNotFoundException("User with this id doesn't exist");
     }
 
     @Transactional
@@ -92,14 +86,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO patch(Map<Object, Object> fields, Long id) {
         throw new UnsupportedOperationException("Unimplemented Method");
-    }
-
-    @Override
-    @Transactional
-    public UserDTO getByUserName(String username) {
-        return userConverter.toDTO(userRepository.queryEntity(new FindUserByUserName(username))
-                .orElseThrow(() -> new ResourceNotFoundException("User with this username" +
-                        " was not found!")));
     }
 
 

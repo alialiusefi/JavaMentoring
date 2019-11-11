@@ -9,7 +9,7 @@ import javax.persistence.criteria.Root;
 public class FindAllTags extends FindSpecification<Tag> {
 
     @Override
-    public void setPredicatesIntoQuery(CriteriaQuery<Tag> criteriaQuery, CriteriaBuilder builder) {
+    public void getQuery(CriteriaQuery<Tag> criteriaQuery, CriteriaBuilder builder) {
         Root<Tag> root = criteriaQuery.from(Tag.class);
         criteriaQuery.select(root);
     }

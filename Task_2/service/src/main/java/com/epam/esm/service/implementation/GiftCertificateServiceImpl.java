@@ -6,7 +6,6 @@ import com.epam.esm.dto.GiftCertificateDTO;
 import com.epam.esm.dto.TagDTO;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
-import com.epam.esm.exception.BadRequestException;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.repository.TagRepository;
@@ -176,29 +175,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                                                         String desc, Integer sortByDate, Integer sortByName,
                                                         Integer pageNumber, Integer pageSize) {
         Deque<Specification<GiftCertificate>> specifications = new ArrayDeque<>();
-        if (tagID != null) {
-            specifications.add(new FindGiftCertificatesByTagID(tagID));
-        }
-        if (name != null) {
-            specifications.add(new FindGiftCertificatesByName(name));
-        }
-        if (desc != null) {
-            specifications.add(new FindGiftCertificatesByDescription(desc));
-        }
-        if (sortByDate != null && sortByDate != 0) {
-            if (sortByDate != 1 && sortByDate != -1) {
-                throw new BadRequestException("Sort parameter should accept either 1 or -1");
-            }
-            specifications.add(new SortGiftCertificatesByDate(sortByDate));
-
-        } else {
-            if (sortByName != null && sortByName != 0) {
-                if (sortByName != 1 && sortByName != -1) {
-                    throw new BadRequestException("Sort parameter should accept either 1 or -1");
-                }
-                specifications.add(new SortGiftCertificatesByName(sortByName));
-            }
-        }
+        specifications.add(new
+                FindGiftCertificatesByTagID(tagID,
+                name, desc, sortByDate, sortByName));
         GiftCertificatesSpecificationConjunction conjunction = new GiftCertificatesSpecificationConjunction(specifications);
         return giftCertificateConverter.toDTOList(giftCertificateRepo.queryList(conjunction, pageNumber, pageSize));
     }

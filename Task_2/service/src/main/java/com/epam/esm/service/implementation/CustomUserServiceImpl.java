@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashMap;
 
 @Service
 public class CustomUserServiceImpl implements CustomUserService {
@@ -28,7 +29,10 @@ public class CustomUserServiceImpl implements CustomUserService {
         UserEntity userEntity = userRepository.queryEntity(new FindUserByUserName(username))
                 .orElseThrow(() -> new ResourceNotFoundException("User with this username" +
                         " was not found!"));
-        return new LocalCustomOAuthUser(userEntity);
+        return new LocalCustomOAuthUser(userEntity.getAuthorityList(),
+                new HashMap<String, Object>() {{
+                    put("username", userEntity.getUsername());
+                }}, "username", userEntity);
     }
 
 

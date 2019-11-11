@@ -9,7 +9,7 @@ import javax.persistence.criteria.Root;
 public class FindAllUsers extends FindSpecification<UserEntity> {
 
     @Override
-    public void setPredicatesIntoQuery(CriteriaQuery<UserEntity> criteriaQuery, CriteriaBuilder builder) {
+    public void getQuery(CriteriaQuery<UserEntity> criteriaQuery, CriteriaBuilder builder) {
         Root<UserEntity> root = criteriaQuery.from(UserEntity.class);
         criteriaQuery.select(root);
     }

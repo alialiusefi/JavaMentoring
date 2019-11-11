@@ -2,9 +2,9 @@ package com.epam.esm.repository.specification;
 
 import com.epam.esm.entity.GiftCertificate;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 public class FindGiftCertificatesByName extends FindSpecification<GiftCertificate> {
 
@@ -15,9 +15,8 @@ public class FindGiftCertificatesByName extends FindSpecification<GiftCertificat
     }
 
     @Override
-    public void setPredicatesIntoQuery(CriteriaQuery<GiftCertificate> criteriaQuery, CriteriaBuilder builder) {
-        Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
-        criteriaQuery.select(root).where(builder.like(root.get("name"), name));
+    public Query getQuery(EntityManager em, CriteriaBuilder builder) {
+        throw new UnsupportedOperationException("Unimplemented this specification yet!");
     }
     //todo: use custom function instead of like
 

@@ -18,6 +18,7 @@ public class TagController {
 
     private TagService tagService;
 
+
     @Autowired
     public TagController(TagService tagService) {
         this.tagService = tagService;
@@ -31,21 +32,30 @@ public class TagController {
     @GetMapping()
     public List<TagDTO> getAllTags(@RequestParam(defaultValue = "1") int page,
                                    @RequestParam(defaultValue = "5") int size) {
-        return tagService.getAll(page, size);
+        return (List<TagDTO>) tagService.getAll(page, size);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TagDTO saveTag(@RequestBody @Valid TagDTO tag) {
         return tagService.add(tag);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTag(@PathVariable long id) {
         tagService.delete(id);
     }
+
+    /*@GetMapping
+    public void welcome(SecurityContextHolderAwareRequestWrapper request) {
+        boolean b = request.isUserInRole("ROLE_ADMIN");
+        System.out.println("ROLE_ADMIN=" + b);
+
+        boolean c = request.isUserInRole("ROLE_USER");
+        System.out.println("ROLE_USER=" + c);
+    }*/
 
 }

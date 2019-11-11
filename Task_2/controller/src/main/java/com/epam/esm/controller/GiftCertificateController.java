@@ -78,7 +78,7 @@ public class GiftCertificateController {
                 giftCertificateDesc == null &&
                 sortByDate == null &&
                 sortByName == null) {
-            return giftCertificateBaseService.getAll(page, size);
+            return (List<GiftCertificateDTO>) giftCertificateBaseService.getAll(page, size);
         }
         return giftCertificateBaseService.getGiftCertificates(tagID, giftCertificateName,
                 giftCertificateDesc,

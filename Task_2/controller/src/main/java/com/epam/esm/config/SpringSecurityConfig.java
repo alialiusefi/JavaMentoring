@@ -7,11 +7,11 @@ import com.epam.esm.security.handler.OAuth2AuthenticationSuccessHandler;
 import com.epam.esm.security.handler.SecurityEntryPoint;
 import com.epam.esm.security.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.epam.esm.service.CustomOAuthUserService;
+import com.epam.esm.service.CustomOIDAuthService;
 import com.epam.esm.service.CustomUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,18 +26,21 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private static final String GIFTCERTIFICATE_MAPPING = "/v1/giftcertificates/**";
+    private static final String TAG_MAPPING = "/v1/tags/**";
+    private static final String ORDERS_MAPPING = "/v2/orders/**";
+    private static final String USERS_MAPPING = "/v2/users/**";
     @Autowired
     private CustomUserService customUserService;
     private JwtTokenAuthenticationFilter authenticationFilter;
     private SecurityEntryPoint restAuthenticationEntryPoint;
     private ExceptionHandlerFilter exceptionHandlingfilter;
-
     @Autowired
     private CustomOAuthUserService customOAuth2UserService;
-
+    @Autowired
+    private CustomOIDAuthService customOIDAuthService;
     @Autowired
     private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-
     @Autowired
     private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
 
@@ -66,26 +69,34 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .authorizeRequests().antMatchers("/v2/auth/**").permitAll()
                 .and().authorizeRequests().antMatchers("/oauth2/**").permitAll()
-                .and().authorizeRequests().antMatchers(HttpMethod.GET, "/v1/tags/**").permitAll()
-                .and().authorizeRequests().antMatchers(HttpMethod.GET, "/v1/giftcertificates/**").permitAll()
-                .and().authorizeRequests().antMatchers(HttpMethod.GET, "/v2/orders/**").permitAll()
-                .and().authorizeRequests().antMatchers(HttpMethod.GET, "/v2/users/**").permitAll()
-                .anyRequest().authenticated().and()
-                .oauth2Login().authorizationEndpoint()
-                .baseUri("/oauth2/authorize/")
+                .and().oauth2Login().authorizationEndpoint().baseUri("/oauth2/authorize/")
                 .authorizationRequestRepository(cookieAuthorizationRequestRepository())
                 .and().redirectionEndpoint().baseUri("/oauth2/callback/*")
                 .and().userInfoEndpoint().userService(customOAuth2UserService)
-                .and()/*.userInfoEndpoint().oidcUserService().and()*/
+                .and().userInfoEndpoint().oidcUserService(customOIDAuthService).and()
                 .successHandler(oAuth2AuthenticationSuccessHandler)
                 .failureHandler(oAuth2AuthenticationFailureHandler)
                 .and().exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().securityContext();
+        //  configAuthorization(http);
         http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(exceptionHandlingfilter, JwtTokenAuthenticationFilter.class);
     }
 
+//    private void configAuthorization(HttpSecurity http) throws Exception {
+//        http.authorizeRequests().antMatchers(HttpMethod.GET, TAG_MAPPING, GIFTCERTIFICATE_MAPPING,
+//                ORDERS_MAPPING).permitAll()
+//                .and().authorizeRequests().antMatchers(HttpMethod.DELETE, TAG_MAPPING,
+//                GIFTCERTIFICATE_MAPPING, ORDERS_MAPPING, USERS_MAPPING).hasAuthority("ADMIN")
+//                .and().authorizeRequests().antMatchers(HttpMethod.POST, "/v2/users/*/orders/*").hasAuthority("ROLE_USER")
+//                .and().authorizeRequests().antMatchers(HttpMethod.PUT, TAG_MAPPING,
+//                GIFTCERTIFICATE_MAPPING, ORDERS_MAPPING, USERS_MAPPING).hasAuthority("ADMIN")
+//                .and().authorizeRequests().antMatchers(HttpMethod.PATCH, TAG_MAPPING,
+//                GIFTCERTIFICATE_MAPPING, ORDERS_MAPPING, USERS_MAPPING).hasAuthority("ADMIN")
+//                .and().authorizeRequests().antMatchers(HttpMethod.POST, GIFTCERTIFICATE_MAPPING, TAG_MAPPING,
+//                ORDERS_MAPPING, USERS_MAPPING).hasAuthority("ADMIN").anyRequest().authenticated();
+//    }
 
     @Bean
     public PasswordEncoder encoder() {

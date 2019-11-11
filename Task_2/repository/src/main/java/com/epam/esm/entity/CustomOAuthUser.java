@@ -1,35 +1,61 @@
 package com.epam.esm.entity;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 
 import java.util.Collection;
 import java.util.Map;
 
-public abstract class CustomOAuthUser extends User implements OAuth2User {
+public abstract class CustomOAuthUser extends DefaultOAuth2User implements UserDetails {
 
-    protected Map<String, Object> oAuth2attributes;
+    protected UserEntity userEntity;
 
-    public CustomOAuthUser(String username, String password,
-                           Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, authorities);
+    public CustomOAuthUser(Collection<? extends GrantedAuthority> authorities, Map<String, Object> attributes, String nameAttributeKey, UserEntity userEntity) {
+        super(authorities, attributes, nameAttributeKey);
+        this.userEntity = userEntity;
     }
 
-    public CustomOAuthUser(UserEntity userEntity) {
-        super(userEntity.getUsername(), userEntity.getPassword(), userEntity.getAuthorityList());
+    public UserEntity getUserEntity() {
+        return userEntity;
+    }
+
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
 
     @Override
-    public Map<String, Object> getAttributes() {
-        return oAuth2attributes;
+    public String getPassword() {
+        return userEntity.getPassword();
     }
 
     @Override
-    public String getName() {
-        return this.getName();
+    public String getUsername() {
+        return userEntity.getUsername();
     }
 
-    public abstract String getSubject();
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return userEntity.isEnabled();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.userEntity.getAuthorityList();
+    }
 }

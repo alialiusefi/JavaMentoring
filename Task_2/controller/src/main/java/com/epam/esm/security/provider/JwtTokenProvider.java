@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,20 +21,23 @@ import java.util.Map;
 @Component
 public class JwtTokenProvider {
 
-    private static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
-    private String secretKey = "secret";
     private CustomUserService customUserService;
     private AppProperties appProperties;
+    private String secretKey;
+    private Long tokenDuration;
 
     @Autowired
     public JwtTokenProvider(CustomUserService customUserService, AppProperties appProperties) {
         this.customUserService = customUserService;
         this.appProperties = appProperties;
+
     }
 
     @PostConstruct
     protected void init() {
-        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+        secretKey = Base64.getEncoder().encodeToString(
+                appProperties.getAuth().getTokenSecret().getBytes());
+        tokenDuration = appProperties.getAuth().getTokenExpirationMsec();
     }
 
 
@@ -44,7 +48,7 @@ public class JwtTokenProvider {
 
     private String doGenerateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + tokenDuration * 1000))
                 .signWith(SignatureAlgorithm.HS512, secretKey).compact();
 
     }
@@ -52,20 +56,22 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = this.customUserService.loadUserByUsername(getUsername(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "",
-                userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails,
+                userDetails.getPassword(), userDetails.getAuthorities());
     }
 
     public String getUsername(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
-    public String resolveToken(HttpServletRequest req) {
+    public String resolveToken(HttpServletRequest req,
+                               HttpServletResponse response) {
         String bearerToken = req.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         } else {
             String token = req.getParameter("token");
+            response.addHeader("Authorization", "Bearer " + token);
             return token;
         }
     }

@@ -4,11 +4,12 @@ import com.epam.esm.entity.*;
 import com.epam.esm.repository.AuthorityRepository;
 import com.epam.esm.repository.UserRepository;
 import com.epam.esm.repository.specification.FindUserByUserName;
-import com.epam.esm.service.CustomOAuthUserService;
+import com.epam.esm.service.CustomOIDAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
@@ -17,21 +18,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 @Transactional
-public class CustomOAuthUserServiceImpl extends DefaultOAuth2UserService
-        implements CustomOAuthUserService {
+@Service
+public class CustomOIDAuthServiceImpl extends OidcUserService implements CustomOIDAuthService {
 
+    private static final String GOOGLE_NAMEATTRIBUTEKEY = "email";
     public UserRepository userRepository;
     public AuthorityRepository authorityRepository;
 
     @Autowired
-    public void setUserRepository(UserRepository userRepository) {
+    public CustomOIDAuthServiceImpl(UserRepository userRepository, AuthorityRepository authorityRepository) {
         this.userRepository = userRepository;
-    }
-
-    @Autowired
-    public void setAuthorityRepository(AuthorityRepository authorityRepository) {
         this.authorityRepository = authorityRepository;
     }
 
@@ -53,27 +50,22 @@ public class CustomOAuthUserServiceImpl extends DefaultOAuth2UserService
     }
 
     @Override
-    public OAuth2User loadUser(OAuth2UserRequest userRequest)
-            throws OAuth2AuthenticationException {
-        OAuth2User user = super.loadUser(userRequest);
-        return processOAuth2User(userRequest, user);
-    }
-
-    @Override
-    public CustomOAuthUser processOAuth2User(OAuth2UserRequest userRequest,
-                                             OAuth2User oauthUser)
+    public OidcUser processOAuth2User(OidcUserRequest userRequest,
+                                      OidcUser oauthUser)
             throws OAuth2AuthenticationException {
         if (userRequest.
                 getClientRegistration().getRegistrationId().equalsIgnoreCase(AuthenticationProvider.
-                GITHUB.toString().toLowerCase())) {
-            GithubCustomOAuthUser githubCustomOAuthUser =
-                    new GithubCustomOAuthUser(oauthUser.getAuthorities(),
-                            oauthUser.getAttributes(),
-                            "login", null);
+                GOOGLE.toString().toLowerCase())) {
             UserEntity userEntity;
+            GoogleCustomOIDAuthUser customOAuthUser =
+                    new GoogleCustomOIDAuthUser(oauthUser.getAuthorities(),
+                            oauthUser.getClaims(),
+                            GOOGLE_NAMEATTRIBUTEKEY, null,
+                            oauthUser.getIdToken(),
+                            oauthUser.getUserInfo());
             Optional<UserEntity> optionalUser;
-            if (!githubCustomOAuthUser.getName().isEmpty()) {
-                String username = githubCustomOAuthUser.getName();
+            if (!customOAuthUser.getSubject().isEmpty()) {
+                String username = customOAuthUser.getSubject();
                 optionalUser = userRepository.
                         queryEntity(new FindUserByUserName(username));
                 if (optionalUser.isPresent()) {
@@ -81,11 +73,16 @@ public class CustomOAuthUserServiceImpl extends DefaultOAuth2UserService
                 } else {
                     userEntity = registerNewUser(username);
                 }
-                githubCustomOAuthUser.setUserEntity(userEntity);
-                return githubCustomOAuthUser;
+                customOAuthUser.setUserEntity(userEntity);
+                return customOAuthUser;
             }
         }
         return null;
     }
 
+    @Override
+    public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
+        OAuth2User user = super.loadUser(userRequest);
+        return processOAuth2User(userRequest, (OidcUser) user);
+    }
 }

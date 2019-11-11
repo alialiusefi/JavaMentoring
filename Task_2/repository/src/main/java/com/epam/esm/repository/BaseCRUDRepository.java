@@ -8,8 +8,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,9 +30,7 @@ public abstract class BaseCRUDRepository<T extends AbstractEntity> implements CR
     @Override
     public Optional<T> queryEntity(Specification<T> specification) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<T> criteriaQuery = getCriteriaQuery(builder);
-        specification.setPredicatesIntoQuery(criteriaQuery, builder);
-        Query query = entityManager.createQuery(criteriaQuery);
+        Query query = specification.getQuery(entityManager, builder);
         try {
             T entity = (T) query.getSingleResult();
             return Optional.of(entity);
@@ -46,9 +42,7 @@ public abstract class BaseCRUDRepository<T extends AbstractEntity> implements CR
     @Override
     public List<T> queryList(Specification<T> specification, Integer pageNumber, Integer pageSize) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<T> criteriaQuery = getCriteriaQuery(builder);
-        specification.setPredicatesIntoQuery(criteriaQuery, builder);
-        Query query = entityManager.createQuery(criteriaQuery);
+        Query query = specification.getQuery(entityManager, builder);
         if (pageNumber != null && pageSize != null) {
             query.setFirstResult((pageNumber - 1) * pageSize);
             query.setMaxResults(pageSize);
@@ -75,9 +69,9 @@ public abstract class BaseCRUDRepository<T extends AbstractEntity> implements CR
         certificatesToDelete.forEach(this::delete);
     }
 
-    private CriteriaQuery<T> getCriteriaQuery(CriteriaBuilder builder) {
+    /*private CriteriaQuery<T> getCriteriaQuery(CriteriaBuilder builder) {
         Class<T> clazz = (Class<T>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0];
         return builder.createQuery(clazz);
-    }
+    }*/
 }

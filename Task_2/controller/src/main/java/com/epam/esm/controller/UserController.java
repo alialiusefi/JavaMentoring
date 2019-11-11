@@ -35,7 +35,7 @@ public class UserController {
 
     @GetMapping()
     public List<UserDTO> getAllUsers(@RequestParam Integer page, @RequestParam Integer size) {
-        return userService.getAll(page, size);
+        return (List<UserDTO>) userService.getAll(page, size);
     }
 
     @PutMapping(value = "/{userID}")

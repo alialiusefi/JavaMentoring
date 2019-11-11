@@ -2,6 +2,8 @@ package com.epam.esm.repository.specification;
 
 import com.epam.esm.entity.GiftCertificate;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
@@ -14,12 +16,14 @@ public class SortGiftCertificatesByName extends SortSpecification<GiftCertificat
     }
 
     @Override
-    public void setPredicatesIntoQuery(CriteriaQuery<GiftCertificate> criteriaQuery, CriteriaBuilder builder) {
+    public Query getQuery(EntityManager manager, CriteriaBuilder builder) {
+        CriteriaQuery<GiftCertificate> criteriaQuery = builder.createQuery(GiftCertificate.class);
         if (sortOrder == 1) {
             criteriaQuery.orderBy(builder.asc(criteriaQuery.from(GiftCertificate.class).get("name")));
         } else {
             criteriaQuery.orderBy(builder.desc(criteriaQuery.from(GiftCertificate.class).get("name")));
         }
+        return manager.createQuery(criteriaQuery);
     }
 }
 

@@ -17,6 +17,7 @@ public class AppProperties {
     }
 
     public static class Auth {
+
         private String tokenSecret;
         private long tokenExpirationMsec;
 
@@ -38,18 +39,19 @@ public class AppProperties {
     }
 
     public static class OAuth2 {
-        private String authorizedRedirectUris;
 
-        public String getAuthorizedRedirectUris() {
-            return authorizedRedirectUris;
+        private String authorizedRedirectUri;
+
+        public String getAuthorizedRedirectUri() {
+            return authorizedRedirectUri;
         }
 
-        public void setAuthorizedRedirectUris(String authorizedRedirectUris) {
-            this.authorizedRedirectUris = authorizedRedirectUris;
+        public void setAuthorizedRedirectUri(String authorizedRedirectUris) {
+            this.authorizedRedirectUri = authorizedRedirectUris;
         }
 
-        public OAuth2 authorizedRedirectUris(String authorizedRedirectUris) {
-            this.authorizedRedirectUris = authorizedRedirectUris;
+        public OAuth2 authorizedRedirectUri(String authorizedRedirectUris) {
+            this.authorizedRedirectUri = authorizedRedirectUris;
             return this;
         }
     }
