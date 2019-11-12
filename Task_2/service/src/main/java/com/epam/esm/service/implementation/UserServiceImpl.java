@@ -4,6 +4,7 @@ import com.epam.esm.converter.UserConverter;
 import com.epam.esm.converter.UserWithoutPasswordConverter;
 import com.epam.esm.dto.UserDTO;
 import com.epam.esm.dto.UserWithoutPassDTO;
+import com.epam.esm.entity.UserEntity;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.UserRepository;
 import com.epam.esm.repository.specification.FindAllUsers;
@@ -12,8 +13,10 @@ import com.epam.esm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
 import javax.transaction.Transactional;
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
@@ -79,13 +82,27 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserDTO update(UserDTO dto) {
-        throw new UnsupportedOperationException("Unimplemented Method");
+        if (getByID(dto.getId()) == null) {
+            throw new ResourceNotFoundException("User with ID: "
+                    + dto.getId() + " was not found!");
+        }
+        UserEntity user = userConverter.toEntity(dto);
+        return userConverter.toDTO(userRepository.update(user));
     }
 
     @Transactional
     @Override
     public UserDTO patch(Map<Object, Object> fields, Long id) {
-        throw new UnsupportedOperationException("Unimplemented Method");
+        UserEntity user = userRepository.queryEntity(
+                new FindUserByUserID(id)).orElseThrow(() ->
+                new ResourceNotFoundException("User with this id doesn't exist!"));
+        fields.forEach((k, v) -> {
+            Field field = ReflectionUtils.findField(UserEntity.class, (String) k);
+            field.setAccessible(true);
+            ReflectionUtils.setField(field, user, v);
+            field.setAccessible(false);
+        });
+        return update(userConverter.toDTO(user));
     }
 
 

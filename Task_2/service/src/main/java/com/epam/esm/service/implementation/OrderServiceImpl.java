@@ -7,7 +7,11 @@ import com.epam.esm.entity.UserEntity;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.OrderRepository;
 import com.epam.esm.repository.UserRepository;
-import com.epam.esm.repository.specification.*;
+import com.epam.esm.repository.specification.FindAllOrders;
+import com.epam.esm.repository.specification.FindAllOrdersByUserID;
+import com.epam.esm.repository.specification.FindOrderByID;
+import com.epam.esm.repository.specification.FindUserByUserID;
+import com.epam.esm.repository.specification.FindUserOrderByOrderID;
 import com.epam.esm.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -127,7 +131,6 @@ public class OrderServiceImpl implements OrderService {
                 new FindOrderByID(id)).orElseThrow(() ->
                 new ResourceNotFoundException("Order with this id doesn't exist!"));
         fields.forEach((k, v) -> {
-            // use reflection to get field k on manager and set it to value k
             Field field = ReflectionUtils.findField(Order.class, (String) k);
             field.setAccessible(true);
             if (!handleBigDecimal(field, order, v)) {
