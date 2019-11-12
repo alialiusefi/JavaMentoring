@@ -3,7 +3,11 @@ package com.epam.esm.security.provider;
 import com.epam.esm.properties.AppProperties;
 import com.epam.esm.security.exception.InvalidJwtAuthenticationException;
 import com.epam.esm.service.CustomUserService;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,6 +29,7 @@ public class JwtTokenProvider {
     private AppProperties appProperties;
     private String secretKey;
     private Long tokenDuration;
+    private Long refreshTokenExpirationMsec;
 
     @Autowired
     public JwtTokenProvider(CustomUserService customUserService, AppProperties appProperties) {
@@ -38,21 +43,28 @@ public class JwtTokenProvider {
         secretKey = Base64.getEncoder().encodeToString(
                 appProperties.getAuth().getTokenSecret().getBytes());
         tokenDuration = appProperties.getAuth().getTokenExpirationMsec();
+        refreshTokenExpirationMsec = appProperties.getAuth().getRefreshTokenExpirationMsec();
     }
 
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateAccessToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        return doGenerateToken(claims, userDetails.getUsername());
+        return doGenerateAccessToken(claims, userDetails.getUsername());
     }
 
-    private String doGenerateToken(Map<String, Object> claims, String subject) {
+    private String doGenerateAccessToken(Map<String, Object> claims, String subject) {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + tokenDuration * 1000))
                 .signWith(SignatureAlgorithm.HS512, secretKey).compact();
 
     }
 
+    private String doGenerateRefreshToken(Map<String, Object> claims, String subject) {
+        return Jwts.builder().setClaims(claims).setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + refreshTokenExpirationMsec * 1000))
+                .signWith(SignatureAlgorithm.HS512, secretKey).compact();
+    }
 
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = this.customUserService.loadUserByUsername(getUsername(token));
@@ -64,8 +76,8 @@ public class JwtTokenProvider {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
-    public String resolveToken(HttpServletRequest req,
-                               HttpServletResponse response) {
+    public String resolveAccessToken(HttpServletRequest req,
+                                     HttpServletResponse response) {
         String bearerToken = req.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);

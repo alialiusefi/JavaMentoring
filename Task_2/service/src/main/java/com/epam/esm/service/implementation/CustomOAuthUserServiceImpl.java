@@ -1,11 +1,18 @@
 package com.epam.esm.service.implementation;
 
-import com.epam.esm.entity.*;
+import com.epam.esm.entity.AuthenticationProvider;
+import com.epam.esm.entity.Authority;
+import com.epam.esm.entity.CustomOAuthUser;
+import com.epam.esm.entity.GithubCustomOAuthUser;
+import com.epam.esm.entity.UserEntity;
+import com.epam.esm.entity.UserStatus;
 import com.epam.esm.repository.AuthorityRepository;
 import com.epam.esm.repository.UserRepository;
 import com.epam.esm.repository.specification.FindUserByUserName;
 import com.epam.esm.service.CustomOAuthUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -66,6 +73,7 @@ public class CustomOAuthUserServiceImpl extends DefaultOAuth2UserService
         if (userRequest.
                 getClientRegistration().getRegistrationId().equalsIgnoreCase(AuthenticationProvider.
                 GITHUB.toString().toLowerCase())) {
+
             GithubCustomOAuthUser githubCustomOAuthUser =
                     new GithubCustomOAuthUser(oauthUser.getAuthorities(),
                             oauthUser.getAttributes(),
@@ -82,6 +90,12 @@ public class CustomOAuthUserServiceImpl extends DefaultOAuth2UserService
                     userEntity = registerNewUser(username);
                 }
                 githubCustomOAuthUser.setUserEntity(userEntity);
+                List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
+                for (GrantedAuthority i : userEntity.getAuthorityList()) {
+                    SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(i.getAuthority());
+                    grantedAuthorities.add(simpleGrantedAuthority);
+                }
+                //SecurityContextHolder.getContext().getAuthentication().getAuthorities().addAll(grantedAuthorities);
                 return githubCustomOAuthUser;
             }
         }

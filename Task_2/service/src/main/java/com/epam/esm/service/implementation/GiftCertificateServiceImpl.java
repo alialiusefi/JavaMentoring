@@ -6,10 +6,20 @@ import com.epam.esm.dto.GiftCertificateDTO;
 import com.epam.esm.dto.TagDTO;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
+import com.epam.esm.exception.BadRequestException;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.repository.TagRepository;
-import com.epam.esm.repository.specification.*;
+import com.epam.esm.repository.specification.FindAllGiftCertificates;
+import com.epam.esm.repository.specification.FindGiftCertificateByID;
+import com.epam.esm.repository.specification.FindGiftCertificatesByDescription;
+import com.epam.esm.repository.specification.FindGiftCertificatesByName;
+import com.epam.esm.repository.specification.FindGiftCertificatesByTagID;
+import com.epam.esm.repository.specification.FindTagByName;
+import com.epam.esm.repository.specification.GiftCertificatesSpecificationConjunction;
+import com.epam.esm.repository.specification.SortGiftCertificatesByDate;
+import com.epam.esm.repository.specification.SortGiftCertificatesByName;
+import com.epam.esm.repository.specification.Specification;
 import com.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -20,7 +30,12 @@ import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
@@ -175,9 +190,32 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                                                         String desc, Integer sortByDate, Integer sortByName,
                                                         Integer pageNumber, Integer pageSize) {
         Deque<Specification<GiftCertificate>> specifications = new ArrayDeque<>();
-        specifications.add(new
-                FindGiftCertificatesByTagID(tagID,
-                name, desc, sortByDate, sortByName));
+        if (tagID != null) {
+            specifications.add(new
+                    FindGiftCertificatesByTagID(tagID, false));
+        }
+        if (name != null) {
+            specifications.add(new
+                    FindGiftCertificatesByName(name));
+        }
+        if (desc != null) {
+            specifications.add(new FindGiftCertificatesByDescription(desc));
+        }
+        if (sortByDate != null && sortByDate != 0) {
+            if (sortByDate != 1 && sortByDate != -1) {
+                throw new BadRequestException("Sort parameter should accept either 1 or -1");
+            }
+            SortGiftCertificatesByDate sortGiftCertificatesByDate = new SortGiftCertificatesByDate(sortByDate);
+            specifications.add(sortGiftCertificatesByDate);
+        }
+        if (sortByName != null && sortByName != 0) {
+            if (sortByName != 1 && sortByName != -1) {
+                throw new BadRequestException("Sort parameter should accept either 1 or -1");
+            }
+            SortGiftCertificatesByName sortGiftCertificatesByName = new SortGiftCertificatesByName(sortByName);
+            specifications.add(sortGiftCertificatesByName);
+        }
+
         GiftCertificatesSpecificationConjunction conjunction = new GiftCertificatesSpecificationConjunction(specifications);
         return giftCertificateConverter.toDTOList(giftCertificateRepo.queryList(conjunction, pageNumber, pageSize));
     }

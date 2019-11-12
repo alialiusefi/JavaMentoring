@@ -8,6 +8,15 @@ import javax.persistence.criteria.CriteriaBuilder;
 
 public class FindGiftCertificatesByName extends FindSpecification<GiftCertificate> {
 
+    private static final String SQL_CLAUSE = "select giftcertificates.id,giftcertificates.name" +
+            ",giftcertificates.description,giftcertificates.price" +
+            ",giftcertificates.date_created,giftcertificates.date_modified," +
+            "giftcertificates.duration_till_expiry " +
+            "from giftcertificates " +
+            "where public.consists(?,giftcertificates.description) ";
+
+    private static final String CONJ_SQL_CLAUSE = "and public.consists(?,giftcertificates.description) ";
+
     private String name;
 
     public FindGiftCertificatesByName(String name) {
@@ -16,8 +25,7 @@ public class FindGiftCertificatesByName extends FindSpecification<GiftCertificat
 
     @Override
     public Query getQuery(EntityManager em, CriteriaBuilder builder) {
-        throw new UnsupportedOperationException("Unimplemented this specification yet!");
+        return em.createNativeQuery(SQL_CLAUSE);
     }
-    //todo: use custom function instead of like
 
 }

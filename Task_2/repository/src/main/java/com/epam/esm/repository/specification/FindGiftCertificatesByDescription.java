@@ -26,6 +26,6 @@ public class FindGiftCertificatesByDescription extends FindSpecification<GiftCer
 
     @Override
     public Query getQuery(EntityManager em, CriteriaBuilder builder) {
-        throw new UnsupportedOperationException("Unimplemented this specification yet!");
+        return em.createNativeQuery(SQL_CLAUSE);
     }
 }
