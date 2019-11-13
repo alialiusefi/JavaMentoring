@@ -4,6 +4,7 @@ import com.epam.esm.security.provider.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -34,6 +35,19 @@ public class JwtTokenAuthenticationFilter extends GenericFilterBean {
             Authentication auth = jwtTokenProvider.getAuthentication(token);
             if (auth != null) {
                 SecurityContextHolder.getContext().setAuthentication(auth);
+            }
+        } else {
+            String refreshToken = jwtTokenProvider.resolveRefreshToken((HttpServletRequest) req, (HttpServletResponse) response);
+            if (refreshToken != null && jwtTokenProvider.validateToken(refreshToken)) {
+                String newAccessToken = jwtTokenProvider.generateAccessToken((UserDetails) SecurityContextHolder
+                        .getContext().getAuthentication().getPrincipal());
+                ((HttpServletResponse) response).addHeader("Authorization", "Bearer " + newAccessToken);
+                if (newAccessToken != null && jwtTokenProvider.validateToken(newAccessToken)) {
+                    Authentication auth = jwtTokenProvider.getAuthentication(newAccessToken);
+                    if (auth != null) {
+                        SecurityContextHolder.getContext().setAuthentication(auth);
+                    }
+                }
             }
         }
         filterChain.doFilter(req, response);

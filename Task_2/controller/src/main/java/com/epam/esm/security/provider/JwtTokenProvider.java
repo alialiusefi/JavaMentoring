@@ -52,6 +52,11 @@ public class JwtTokenProvider {
         return doGenerateAccessToken(claims, userDetails.getUsername());
     }
 
+    public String generateRefreshToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        return doGenerateRefreshToken(claims, userDetails.getUsername());
+    }
+
     private String doGenerateAccessToken(Map<String, Object> claims, String subject) {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + tokenDuration * 1000))
@@ -83,10 +88,29 @@ public class JwtTokenProvider {
             return bearerToken.substring(7);
         } else {
             String token = req.getParameter("token");
-            response.addHeader("Authorization", "Bearer " + token);
-            return token;
+            if (token != null) {
+                response.addHeader("Authorization", "Bearer " + token);
+                return token;
+            }
         }
+        throw new InvalidJwtAuthenticationException("Cannot resolve access token!");
+
     }
+
+    public String resolveRefreshToken(HttpServletRequest req, HttpServletResponse response) {
+        String token = req.getHeader("Refresh");
+        if (token != null) {
+            return token;
+        } else {
+            token = req.getParameter("refresh");
+            if (token != null) {
+                response.addHeader("Refresh", token);
+                return token;
+            }
+        }
+        throw new InvalidJwtAuthenticationException("Cannot resolve refresh token!");
+    }
+
 
     public boolean validateToken(String token) {
         try {
