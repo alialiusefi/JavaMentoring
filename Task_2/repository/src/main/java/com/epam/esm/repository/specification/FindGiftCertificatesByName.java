@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 
-public class FindGiftCertificatesByName extends FindSpecification<GiftCertificate> {
+public class FindGiftCertificatesByName extends NativeSQLFindSpecification<GiftCertificate> {
 
     private static final String SQL_CLAUSE = "select giftcertificates.id,giftcertificates.name" +
             ",giftcertificates.description,giftcertificates.price" +
@@ -26,6 +26,11 @@ public class FindGiftCertificatesByName extends FindSpecification<GiftCertificat
     @Override
     public Query getQuery(EntityManager em, CriteriaBuilder builder) {
         return em.createNativeQuery(SQL_CLAUSE);
+    }
+
+    @Override
+    public String getSQLClause(boolean isConjunction) {
+        return isConjunction ? CONJ_SQL_CLAUSE : SQL_CLAUSE;
     }
 
 }

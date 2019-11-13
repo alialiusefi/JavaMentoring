@@ -9,14 +9,21 @@ import java.util.Deque;
 
 public class GiftCertificatesSpecificationConjunction extends FindSpecification<GiftCertificate> {
 
-    private Deque<Specification<GiftCertificate>> specifications;
+    private Deque<NativeSpecification<GiftCertificate>> specifications;
 
-    public GiftCertificatesSpecificationConjunction(Deque<Specification<GiftCertificate>> specifications) {
+    public GiftCertificatesSpecificationConjunction(Deque<NativeSpecification<GiftCertificate>> specifications) {
         this.specifications = specifications;
     }
 
     @Override
     public Query getQuery(EntityManager em, CriteriaBuilder builder) {
-        return null;
+        NativeSpecification<GiftCertificate> first = specifications.poll();
+        String query = first.getSQLClause(false);
+        StringBuilder stringBuilder = new StringBuilder(query);
+        for (NativeSpecification i : specifications) {
+            stringBuilder.append(i.getSQLClause(true));
+        }
+        String finalQuery = stringBuilder.toString();
+        return em.createNativeQuery(finalQuery);
     }
 }

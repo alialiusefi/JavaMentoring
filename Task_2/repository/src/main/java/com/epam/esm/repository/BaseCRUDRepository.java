@@ -69,9 +69,4 @@ public abstract class BaseCRUDRepository<T extends AbstractEntity> implements CR
         certificatesToDelete.forEach(this::delete);
     }
 
-    /*private CriteriaQuery<T> getCriteriaQuery(CriteriaBuilder builder) {
-        Class<T> clazz = (Class<T>) ((ParameterizedType) getClass()
-                .getGenericSuperclass()).getActualTypeArguments()[0];
-        return builder.createQuery(clazz);
-    }*/
 }

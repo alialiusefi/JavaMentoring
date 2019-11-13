@@ -7,7 +7,7 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 
 public class FindGiftCertificatesByTagID
-        extends FindSpecification<GiftCertificate> {
+        extends NativeSQLFindSpecification<GiftCertificate> {
 
     private static final String SQL_CLAUSE = "select giftcertificates.id,giftcertificates.name" +
             ",giftcertificates.description,giftcertificates.price" +
@@ -21,22 +21,15 @@ public class FindGiftCertificatesByTagID
 
 
     private Long[] tagID;
-    private boolean isConjunction;
 
     public FindGiftCertificatesByTagID(Long[] tagID, boolean isConjunction) {
         this.tagID = tagID;
-        this.isConjunction = isConjunction;
     }
 
     @Override
     public Query getQuery(EntityManager em,
                           CriteriaBuilder builder) {
-        StringBuilder stringBuilder;
-        if (!isConjunction) {
-            stringBuilder = new StringBuilder(SQL_CLAUSE);
-        } else {
-            stringBuilder = new StringBuilder(CONJ_SQL_CLAUSE);
-        }
+        StringBuilder stringBuilder = new StringBuilder(SQL_CLAUSE);
         for (int i = 1; i < tagID.length; i++) {
             stringBuilder.append(" or tag_id = ?");
         }
@@ -44,7 +37,11 @@ public class FindGiftCertificatesByTagID
         for (int i = 0; i < tagID.length; i++) {
             nativeQuery.setParameter(i, tagID[i]);
         }
-
         return nativeQuery;
+    }
+
+    @Override
+    public String getSQLClause(boolean isConjunction) {
+        return isConjunction ? CONJ_SQL_CLAUSE : SQL_CLAUSE;
     }
 }

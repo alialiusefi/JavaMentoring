@@ -5,9 +5,24 @@ import com.epam.esm.entity.GiftCertificate;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 
-public class SortGiftCertificatesByDate extends SortSpecification<GiftCertificate> {
+public class SortGiftCertificatesByDate extends NativeSQLSortSpecification<GiftCertificate> {
+
+    private static final String SQL_CLAUSE_ASC = "select giftcertificates.id,giftcertificates.name" +
+            ",giftcertificates.description,giftcertificates.price" +
+            ",giftcertificates.date_created,giftcertificates.date_modified," +
+            "giftcertificates.duration_till_expiry " +
+            "from giftcertificates " +
+            "order by giftcertificates.date_created asc ";
+    private static final String SQL_CLAUSE_DESC = "select giftcertificates.id,giftcertificates.name" +
+            ",giftcertificates.description,giftcertificates.price" +
+            ",giftcertificates.date_created,giftcertificates.date_modified," +
+            "giftcertificates.duration_till_expiry " +
+            "from giftcertificates " +
+            "order by giftcertificates.date_created desc ";
+
+    private static final String CONJ_SQL_CLAUSE_ASC = "order by giftcertificates.date_created asc ";
+    private static final String CONJ_SQL_CLAUSE_DESC = "order by giftcertificates.date_created desc ";
 
     private int sortOrder;
 
@@ -16,13 +31,19 @@ public class SortGiftCertificatesByDate extends SortSpecification<GiftCertificat
     }
 
     @Override
-    public Query getQuery(EntityManager manager, CriteriaBuilder builder) {
-        CriteriaQuery<GiftCertificate> criteriaQuery = builder.createQuery(GiftCertificate.class);
+    public String getSQLClause(boolean isConjunction) {
         if (sortOrder == 1) {
-            criteriaQuery.orderBy(builder.asc(criteriaQuery.from(GiftCertificate.class).get("dateOfCreation")));
+            return isConjunction ? CONJ_SQL_CLAUSE_ASC : SQL_CLAUSE_ASC;
         } else {
-            criteriaQuery.orderBy(builder.desc(criteriaQuery.from(GiftCertificate.class).get("dateOfCreation")));
+            if (sortOrder == -1) {
+                return isConjunction ? CONJ_SQL_CLAUSE_DESC : SQL_CLAUSE_DESC;
+            }
         }
-        return manager.createQuery(criteriaQuery);
+        return SQL_CLAUSE_ASC;
+    }
+
+    @Override
+    public Query getQuery(EntityManager em, CriteriaBuilder builder) {
+        return sortOrder == 1 ? em.createNativeQuery(SQL_CLAUSE_ASC) : em.createNativeQuery(SQL_CLAUSE_DESC);
     }
 }

@@ -25,7 +25,6 @@ import static com.epam.esm.security.repository.HttpCookieOAuth2AuthorizationRequ
 @Component
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    public final static String authorizedRedirectUri = "http://localhost:8080/oauth2/redirect";
     private JwtTokenProvider tokenProvider;
     private AppProperties appProperties;
     private HttpCookieOAuth2AuthorizationRequestRepository
@@ -79,7 +78,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private boolean isAuthorizedRedirectUri(String uri) {
         URI clientRedirectUri = URI.create(uri);
-        URI authorizedURI = URI.create(authorizedRedirectUri);
+        URI authorizedURI = URI.create(appProperties.getOauth2().getAuthorizedRedirectUri());
         return authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
                 && authorizedURI.getPort() == clientRedirectUri.getPort();
 
