@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 
-public class FindMostUsedTagOfMostExpensiveUserOrders extends FindSpecification<GiftCertificate> {
+public class FindMostUsedTagOfMostExpensiveUserOrders extends NativeSQLFindSpecification<GiftCertificate> {
 
     public static final String SQL_CLAUSE = "select tag.id, tag.tag_name " +
             "from tag " +
@@ -16,14 +16,30 @@ public class FindMostUsedTagOfMostExpensiveUserOrders extends FindSpecification<
             "from ((select id " +
             "from order_user " +
             "where order_user.user_id = ?) as app_or " +
-            "left join order_giftcertificate " +
-            "on app_or.id = order_giftcertificate.order_id) as s " +
-            "group by gift_certificate_id, order_id " +
-            "order by sum(select orders.ordercost from orders where orders.id = order_id) desc " +
+            "left join orders " +
+            "on app_or.id = orders.id) as s " +
+            "group by gift_certificate_id, s.id " +
+            "order by sum(s.ordercost) desc " +
             "limit 1))";
+
+    private Long userID;
+
+    public FindMostUsedTagOfMostExpensiveUserOrders(Long userID) {
+        this.userID = userID;
+    }
 
     @Override
     public Query getQuery(EntityManager em, CriteriaBuilder builder) {
-        return em.createNativeQuery(SQL_CLAUSE);
+        Query nativeQuery = em.createNativeQuery(SQL_CLAUSE);
+        nativeQuery.setParameter(1, userID);
+        return nativeQuery;
+    }
+
+    @Override
+    public String getSQLClause(boolean isConjunction) {
+        if (isConjunction) {
+            throw new UnsupportedOperationException("Unimplemented Operation");
+        }
+        return SQL_CLAUSE;
     }
 }

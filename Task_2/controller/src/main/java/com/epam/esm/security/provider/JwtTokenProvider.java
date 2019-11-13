@@ -25,6 +25,7 @@ import java.util.Map;
 @Component
 public class JwtTokenProvider {
 
+    public static final String REFRESH_HEADER = "Refresh";
     private CustomUserService customUserService;
     private AppProperties appProperties;
     private String secretKey;
@@ -45,7 +46,6 @@ public class JwtTokenProvider {
         tokenDuration = appProperties.getAuth().getTokenExpirationMsec();
         refreshTokenExpirationMsec = appProperties.getAuth().getRefreshTokenExpirationMsec();
     }
-
 
     public String generateAccessToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
@@ -98,13 +98,17 @@ public class JwtTokenProvider {
     }
 
     public String resolveRefreshToken(HttpServletRequest req, HttpServletResponse response) {
-        String token = req.getHeader("Refresh");
+        String token = req.getHeader(REFRESH_HEADER);
         if (token != null) {
             return token;
         } else {
             token = req.getParameter("refresh");
             if (token != null) {
-                response.addHeader("Refresh", token);
+                if (!response.containsHeader(REFRESH_HEADER)) {
+                    response.addHeader(REFRESH_HEADER, token);
+                } else {
+                    response.setHeader(REFRESH_HEADER, token);
+                }
                 return token;
             }
         }

@@ -16,6 +16,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -34,7 +35,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String USERS_MAPPING = "/v2/users/**";
     @Autowired
     private CustomUserService customUserService;
-    private JwtTokenAuthenticationFilter authenticationFilter;
+
     private SecurityEntryPoint restAuthenticationEntryPoint;
     private ExceptionHandlerFilter exceptionHandlingfilter;
     @Autowired
@@ -45,11 +46,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     @Autowired
     private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
-
-    @Autowired
-    public void setAuthenticationFilter(JwtTokenAuthenticationFilter authenticationFilter) {
-        this.authenticationFilter = authenticationFilter;
-    }
 
     @Autowired
     public void setRestAuthenticationEntryPoint(SecurityEntryPoint restAuthenticationEntryPoint) {
@@ -69,8 +65,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
-                .authorizeRequests().antMatchers("/v2/auth/**").permitAll()
-                .and().authorizeRequests().antMatchers("/oauth2/**").permitAll()
+                /*.authorizeRequests().antMatchers("/v2/auth/**").anonymous()
+                .and()*/.authorizeRequests().antMatchers("/oauth2/**").anonymous()
                 .and().oauth2Login().authorizationEndpoint().baseUri("/oauth2/authorize/")
                 .authorizationRequestRepository(cookieAuthorizationRequestRepository())
                 .and().redirectionEndpoint().baseUri("/oauth2/callback/*")
@@ -82,27 +78,18 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().securityContext();
         //  configAuthorization(http);
-        http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(exceptionHandlingfilter, JwtTokenAuthenticationFilter.class);
     }
-
-//    private void configAuthorization(HttpSecurity http) throws Exception {
-//        http.authorizeRequests().antMatchers(HttpMethod.GET, TAG_MAPPING, GIFTCERTIFICATE_MAPPING,
-//                ORDERS_MAPPING).permitAll()
-//                .and().authorizeRequests().antMatchers(HttpMethod.DELETE, TAG_MAPPING,
-//                GIFTCERTIFICATE_MAPPING, ORDERS_MAPPING, USERS_MAPPING).hasAuthority("ADMIN")
-//                .and().authorizeRequests().antMatchers(HttpMethod.POST, "/v2/users/*/orders/*").hasAuthority("ROLE_USER")
-//                .and().authorizeRequests().antMatchers(HttpMethod.PUT, TAG_MAPPING,
-//                GIFTCERTIFICATE_MAPPING, ORDERS_MAPPING, USERS_MAPPING).hasAuthority("ADMIN")
-//                .and().authorizeRequests().antMatchers(HttpMethod.PATCH, TAG_MAPPING,
-//                GIFTCERTIFICATE_MAPPING, ORDERS_MAPPING, USERS_MAPPING).hasAuthority("ADMIN")
-//                .and().authorizeRequests().antMatchers(HttpMethod.POST, GIFTCERTIFICATE_MAPPING, TAG_MAPPING,
-//                ORDERS_MAPPING, USERS_MAPPING).hasAuthority("ADMIN").anyRequest().authenticated();
-//    }
 
     @Bean
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/v2/auth/**");
     }
 
     @Override

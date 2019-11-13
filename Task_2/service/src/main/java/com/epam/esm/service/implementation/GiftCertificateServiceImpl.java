@@ -219,4 +219,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         GiftCertificatesSpecificationConjunction conjunction = new GiftCertificatesSpecificationConjunction(specifications);
         return giftCertificateConverter.toDTOList(giftCertificateRepo.queryList(conjunction, pageNumber, pageSize));
     }
+
+
 }

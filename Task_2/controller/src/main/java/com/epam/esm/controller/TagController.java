@@ -26,7 +26,6 @@ public class TagController {
 
     private TagService tagService;
 
-
     @Autowired
     public TagController(TagService tagService) {
         this.tagService = tagService;
@@ -56,5 +55,6 @@ public class TagController {
     public void deleteTag(@PathVariable long id) {
         tagService.delete(id);
     }
+
 
 }

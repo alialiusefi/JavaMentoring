@@ -64,9 +64,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String token = tokenProvider.generateAccessToken(userDetails);
-        String accessToken = tokenProvider.generateRefreshToken(userDetails);
+        String refreshToken = tokenProvider.generateRefreshToken(userDetails);
         return UriComponentsBuilder.fromUriString(targetUrl)
-                .queryParam("token", token).queryParam("refresh", accessToken)
+                .queryParam("token", token).queryParam("refresh", refreshToken)
                 .build().toUriString();
     }
 

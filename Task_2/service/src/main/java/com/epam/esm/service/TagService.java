@@ -10,6 +10,8 @@ public interface TagService extends BaseService<TagDTO> {
 
     TagDTO getByName(String name);
 
+    TagDTO getMostUsedTagOfMostExpensiveUserOrders(Long userID);
+
     @Override
     default TagDTO update(TagDTO dto) {
         throw new UnsupportedOperationException("Update method not implemented yet!");
