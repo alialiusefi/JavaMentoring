@@ -12,7 +12,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 @RequestMapping("/v2/users")
 @RestController
@@ -66,14 +64,6 @@ public class UserController {
                               @Valid UserDTO userDTO) {
         userDTO.setId(userID);
         return userService.update(userDTO);
-    }
-
-    @PatchMapping(value = "/{userID}")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public UserDTO patchUser(@PathVariable Long userID,
-                             @RequestBody Map<Object, Object> fields) {
-        return userService.patch(fields, userID);
     }
 
 

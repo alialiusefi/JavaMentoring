@@ -68,8 +68,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
-                /*.authorizeRequests().antMatchers("/v2/auth/**").anonymous()
-                .and()*/.authorizeRequests().antMatchers("/oauth2/**").anonymous()
+                .authorizeRequests().antMatchers("/oauth2/**").anonymous()
                 .and().oauth2Login().authorizationEndpoint().baseUri("/oauth2/authorize/")
                 .authorizationRequestRepository(cookieAuthorizationRequestRepository())
                 .and().redirectionEndpoint().baseUri("/oauth2/callback/*")

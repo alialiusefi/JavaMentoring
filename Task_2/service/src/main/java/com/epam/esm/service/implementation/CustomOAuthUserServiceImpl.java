@@ -48,11 +48,11 @@ public class CustomOAuthUserServiceImpl extends DefaultOAuth2UserService
                 username,
                 "nopass", true);
         UserEntity userEntity = builder.getResult();
-        userEntity = userRepository.add(userEntity);
         List<Authority> authorities = new ArrayList<>();
+        userEntity = userRepository.add(userEntity);
         Authority authority = new Authority.AuthorityBuilder(userEntity.getId(),
                 UserStatus.USER).getResult();
-        authority = authorityRepository.add(authority);
+        authority = this.authorityRepository.add(authority);
         authorities.add(authority);
         userEntity.setAuthorityList(authorities);
         userEntity = userRepository.update(userEntity);

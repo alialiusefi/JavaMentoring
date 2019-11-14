@@ -16,14 +16,10 @@ import com.epam.esm.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ReflectionUtils;
 
 import javax.transaction.Transactional;
-import java.lang.reflect.Field;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -124,34 +120,4 @@ public class OrderServiceImpl implements OrderService {
         return orderConverter.toDTO(orderRepository.update(order));
     }
 
-    @Transactional
-    @Override
-    public OrderDTO patch(Map<Object, Object> fields, Long id) {
-        Order order = orderRepository.queryEntity(
-                new FindOrderByID(id)).orElseThrow(() ->
-                new ResourceNotFoundException("Order with this id doesn't exist!"));
-        fields.forEach((k, v) -> {
-            Field field = ReflectionUtils.findField(Order.class, (String) k);
-            field.setAccessible(true);
-            if (!handleBigDecimal(field, order, v)) {
-                ReflectionUtils.setField(field, order, v);
-            }
-            field.setAccessible(false);
-        });
-        return update(orderConverter.toDTO(order));
-    }
-
-    private boolean handleBigDecimal(Field field, Order order, Object value) {
-        if (field.getType().equals(BigDecimal.class)) {
-            if (value instanceof Double) {
-                BigDecimal bigDecimal = BigDecimal.valueOf((Double) value).setScale(
-                        OrderDTO.SCALE,
-                        OrderDTO.ROUNDING_MODE
-                );
-                ReflectionUtils.setField(field, order, bigDecimal);
-                return true;
-            }
-        }
-        return false;
-    }
 }

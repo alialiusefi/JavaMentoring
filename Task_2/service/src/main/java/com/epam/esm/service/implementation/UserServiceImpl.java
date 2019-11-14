@@ -13,12 +13,9 @@ import com.epam.esm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ReflectionUtils;
 
 import javax.transaction.Transactional;
-import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -90,20 +87,6 @@ public class UserServiceImpl implements UserService {
         return userConverter.toDTO(userRepository.update(user));
     }
 
-    @Transactional
-    @Override
-    public UserDTO patch(Map<Object, Object> fields, Long id) {
-        UserEntity user = userRepository.queryEntity(
-                new FindUserByUserID(id)).orElseThrow(() ->
-                new ResourceNotFoundException("User with this id doesn't exist!"));
-        fields.forEach((k, v) -> {
-            Field field = ReflectionUtils.findField(UserEntity.class, (String) k);
-            field.setAccessible(true);
-            ReflectionUtils.setField(field, user, v);
-            field.setAccessible(false);
-        });
-        return update(userConverter.toDTO(user));
-    }
 
 
 }

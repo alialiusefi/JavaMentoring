@@ -1,6 +1,10 @@
 package com.epam.esm.service.implementation;
 
-import com.epam.esm.entity.*;
+import com.epam.esm.entity.AuthenticationProvider;
+import com.epam.esm.entity.Authority;
+import com.epam.esm.entity.GoogleCustomOIDAuthUser;
+import com.epam.esm.entity.UserEntity;
+import com.epam.esm.entity.UserStatus;
 import com.epam.esm.repository.AuthorityRepository;
 import com.epam.esm.repository.UserRepository;
 import com.epam.esm.repository.specification.FindUserByUserName;
@@ -38,11 +42,11 @@ public class CustomOIDAuthServiceImpl extends OidcUserService implements CustomO
                 username,
                 "nopass", true);
         UserEntity userEntity = builder.getResult();
-        userEntity = userRepository.add(userEntity);
         List<Authority> authorities = new ArrayList<>();
+        userEntity = userRepository.add(userEntity);
         Authority authority = new Authority.AuthorityBuilder(userEntity.getId(),
                 UserStatus.USER).getResult();
-        authority = authorityRepository.add(authority);
+        authority = this.authorityRepository.add(authority);
         authorities.add(authority);
         userEntity.setAuthorityList(authorities);
         userEntity = userRepository.update(userEntity);

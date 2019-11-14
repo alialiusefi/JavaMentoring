@@ -3,6 +3,7 @@ package com.epam.esm.service;
 import com.epam.esm.dto.OrderDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface OrderService extends BaseService<OrderDTO> {
 
@@ -16,4 +17,8 @@ public interface OrderService extends BaseService<OrderDTO> {
     List<OrderDTO> getOrdersByUserID(Long userID, int pageNumber, int pageSize);
 
     OrderDTO getUserOrder(Long userID, Long orderID);
+
+    default OrderDTO patch(Map<Object, Object> fields, Long id) {
+        throw new UnsupportedOperationException("Unimplemented method!");
+    }
 }

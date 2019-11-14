@@ -17,8 +17,7 @@ import java.io.IOException;
 
 public class JwtTokenAuthenticationFilter extends GenericFilterBean {
 
-    public static final String LOCAL_SIGNUP_URI = "/api/v2/auth/signup";
-    public static final String LOCAL_LOGIN_URI = "api/v2/auth/login";
+
     private JwtTokenProvider jwtTokenProvider;
     @Autowired
     public JwtTokenAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
