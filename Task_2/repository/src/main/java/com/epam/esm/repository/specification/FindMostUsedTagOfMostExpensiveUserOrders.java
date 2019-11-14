@@ -19,7 +19,7 @@ public class FindMostUsedTagOfMostExpensiveUserOrders extends NativeSQLFindSpeci
                     "WHERE order_user.user_id = ? " +
                     "GROUP BY tag.id " +
                     "ORDER BY sum(orders.ordercost) " +
-                    "    DESC limit 1";
+                    "    DESC";
 
     private Long userID;
 

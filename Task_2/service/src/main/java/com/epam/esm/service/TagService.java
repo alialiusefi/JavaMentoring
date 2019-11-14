@@ -3,6 +3,7 @@ package com.epam.esm.service;
 
 import com.epam.esm.dto.TagDTO;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -10,7 +11,7 @@ public interface TagService extends BaseService<TagDTO> {
 
     TagDTO getByName(String name);
 
-    TagDTO getMostUsedTagOfMostExpensiveUserOrders(Long userID);
+    List<TagDTO> getMostUsedTagOfMostExpensiveUserOrders(Long userID);
 
     @Override
     default TagDTO update(TagDTO dto) {

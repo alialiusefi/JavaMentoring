@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TagServiceImpl implements TagService {
@@ -72,17 +71,12 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public TagDTO getMostUsedTagOfMostExpensiveUserOrders(Long userID) {
+    public List<TagDTO> getMostUsedTagOfMostExpensiveUserOrders(Long userID) {
         UserEntity userEntity = userRepository.queryEntity(new FindUserByUserID(userID))
                 .orElseThrow(() -> new ResourceNotFoundException("User with this id doesnt exists!"));
-
-        Optional<Tag> tagFound = tagRepository.queryEntity(
-                new FindMostUsedTagOfMostExpensiveUserOrders(userID));
-        if (tagFound.isPresent()) {
-            return tagConverter.toDTO(tagFound.get());
-        } else {
-            throw new ResourceNotFoundException("Couldn't find a tag!");
-        }
+        List<Tag> tags = tagRepository.queryList(
+                new FindMostUsedTagOfMostExpensiveUserOrders(userID), 1, 1);
+        return tagConverter.toDTOList(tags);
     }
 
     @Transactional

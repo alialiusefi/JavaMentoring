@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @GetMapping("/{userID}/tags")
-    public TagDTO getPopularTag(@PathVariable Long userID, @RequestParam boolean popular) {
+    public List<TagDTO> getPopularTag(@PathVariable Long userID, @RequestParam boolean popular) {
         return tagService.getMostUsedTagOfMostExpensiveUserOrders(userID);
     }
 
