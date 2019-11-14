@@ -5,6 +5,7 @@ import com.epam.esm.security.filter.JwtTokenAuthenticationFilter;
 import com.epam.esm.security.handler.OAuth2AuthenticationFailureHandler;
 import com.epam.esm.security.handler.OAuth2AuthenticationSuccessHandler;
 import com.epam.esm.security.handler.SecurityEntryPoint;
+import com.epam.esm.security.provider.JwtTokenProvider;
 import com.epam.esm.security.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.epam.esm.service.CustomOAuthUserService;
 import com.epam.esm.service.CustomOIDAuthService;
@@ -26,16 +27,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String GIFTCERTIFICATE_MAPPING = "/v1/giftcertificates/**";
     private static final String TAG_MAPPING = "/v1/tags/**";
     private static final String ORDERS_MAPPING = "/v2/orders/**";
     private static final String USERS_MAPPING = "/v2/users/**";
+
     @Autowired
     private CustomUserService customUserService;
-
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
     private SecurityEntryPoint restAuthenticationEntryPoint;
     private ExceptionHandlerFilter exceptionHandlingfilter;
     @Autowired
@@ -77,8 +80,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().securityContext();
-        //  configAuthorization(http);
-        http.addFilterBefore(new JwtTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        http.addFilterBefore(new JwtTokenAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(exceptionHandlingfilter, JwtTokenAuthenticationFilter.class);
     }
 

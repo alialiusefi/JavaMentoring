@@ -133,6 +133,22 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         return false;
     }
 
+    private boolean handleLocalDate(Field field, GiftCertificate certificate, Object value) {
+        if (field.getType().equals(LocalDate.class)) {
+            if (value instanceof Double) {
+                BigDecimal bigDecimal = BigDecimal.valueOf((Double) value).setScale(
+                        GiftCertificateDTO.SCALE,
+                        GiftCertificateDTO.ROUNDING_MODE
+                );
+                ReflectionUtils.setField(field, certificate, bigDecimal);
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
 
     private List<Tag> getTagsWithID(List<Tag> tags) {
         List<Tag> tagsWithID = new ArrayList<>();

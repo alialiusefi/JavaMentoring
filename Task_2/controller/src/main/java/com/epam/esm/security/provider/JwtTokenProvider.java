@@ -26,6 +26,8 @@ import java.util.Map;
 public class JwtTokenProvider {
 
     public static final String REFRESH_HEADER = "Refresh";
+    private static final String ACCESS_HEADER_KEY = "Authorization";
+    private static final String ACCESS_HEADER_VALUEPREFIX = "Bearer ";
     private CustomUserService customUserService;
     private AppProperties appProperties;
     private String secretKey;
@@ -83,13 +85,13 @@ public class JwtTokenProvider {
 
     public String resolveAccessToken(HttpServletRequest req,
                                      HttpServletResponse response) {
-        String bearerToken = req.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+        String bearerToken = req.getHeader(ACCESS_HEADER_KEY);
+        if (bearerToken != null && bearerToken.startsWith(ACCESS_HEADER_VALUEPREFIX)) {
             return bearerToken.substring(7);
         } else {
             String token = req.getParameter("token");
             if (token != null) {
-                response.addHeader("Authorization", "Bearer " + token);
+                response.addHeader(ACCESS_HEADER_KEY, ACCESS_HEADER_VALUEPREFIX + token);
                 return token;
             }
         }
