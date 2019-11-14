@@ -8,19 +8,18 @@ import javax.persistence.criteria.CriteriaBuilder;
 
 public class FindMostUsedTagOfMostExpensiveUserOrders extends NativeSQLFindSpecification<GiftCertificate> {
 
-    public static final String SQL_CLAUSE = "select tag.id, tag.tag_name " +
-            "from tag " +
-            "where tag.id in (select tag_id " +
-            "from tagged_giftcertificates ct " +
-            "where ct.gift_certificate_id = (select gift_certificate_id " +
-            "from ((select id " +
-            "from order_user " +
-            "where order_user.user_id = ?) as app_or " +
-            "left join orders " +
-            "on app_or.id = orders.id) as s " +
-            "group by gift_certificate_id, s.id " +
-            "order by sum(s.ordercost) desc " +
-            "limit 1))";
+    public static final String SQL_CLAUSE =
+            "SELECT tag.id, tag.tag_name " +
+                    "FROM tag " +
+                    "         JOIN tagged_giftcertificates ON tag.id = tagged_giftcertificates.tag_id " +
+                    "         JOIN giftcertificates ON tagged_giftcertificates.gift_certificate_id = giftcertificates.id " +
+                    "         JOIN order_giftcertificate ON giftcertificates.id = order_giftcertificate.giftcertificate_id " +
+                    "         join orders on order_giftcertificate.giftcertificate_id = orders.id " +
+                    "         join order_user on orders.id = order_user.order_id " +
+                    "WHERE order_user.user_id = ? " +
+                    "GROUP BY tag.id " +
+                    "ORDER BY sum(orders.ordercost) " +
+                    "    DESC limit 1";
 
     private Long userID;
 
