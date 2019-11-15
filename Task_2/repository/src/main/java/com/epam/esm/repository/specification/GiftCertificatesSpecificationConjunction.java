@@ -6,13 +6,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Deque;
+import java.util.List;
 
 public class GiftCertificatesSpecificationConjunction extends FindSpecification<GiftCertificate> {
 
     private Deque<NativeSpecification<GiftCertificate>> specifications;
+    private List<Object> parameters;
 
-    public GiftCertificatesSpecificationConjunction(Deque<NativeSpecification<GiftCertificate>> specifications) {
+    public GiftCertificatesSpecificationConjunction(Deque<NativeSpecification<GiftCertificate>> specifications,
+                                                    List<Object> parameters) {
         this.specifications = specifications;
+        this.parameters = parameters;
     }
 
     @Override
@@ -24,6 +28,10 @@ public class GiftCertificatesSpecificationConjunction extends FindSpecification<
             stringBuilder.append(i.getSQLClause(true));
         }
         String finalQuery = stringBuilder.toString();
-        return em.createNativeQuery(finalQuery);
+        Query queryObj = em.createNativeQuery(finalQuery);
+        for (int i = 0; i < parameters.size(); i++) {
+            queryObj.setParameter(i, parameters.get(i));
+        }
+        return queryObj;
     }
 }

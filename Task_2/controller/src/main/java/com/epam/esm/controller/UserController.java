@@ -47,7 +47,8 @@ public class UserController {
     }
 
     @GetMapping()
-    public List<UserDTO> getAllUsers(@RequestParam Integer page, @RequestParam Integer size) {
+    public List<UserDTO> getAllUsers(@RequestParam(defaultValue = "${app.pagedefault.defaultPageNumber}") Integer page,
+                                     @RequestParam(defaultValue = "${app.pagedefault.defaultPageSize}") Integer size) {
         return (List<UserDTO>) userService.getAll(page, size);
     }
 
@@ -59,7 +60,7 @@ public class UserController {
 
     @PutMapping(value = "/{userID}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     public UserDTO updateUser(@PathVariable Long userID,
                               @Valid UserDTO userDTO) {
         userDTO.setId(userID);
@@ -69,15 +70,15 @@ public class UserController {
 
     @DeleteMapping("/{userID}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteUser(@PathVariable Long userID) {
         userService.delete(userID);
     }
 
     @GetMapping("/{userID}/orders")
     public List<OrderDTO> getOrdersByUserID(@PathVariable Long userID,
-                                            @RequestParam(defaultValue = "1") int page,
-                                            @RequestParam(defaultValue = "5") int size) {
+                                            @RequestParam(defaultValue = "${app.pagedefault.defaultPageNumber}") Integer page,
+                                            @RequestParam(defaultValue = "${app.pagedefault.defaultPageSize}") Integer size) {
         return orderService.getOrdersByUserID(userID, page, size);
     }
 
@@ -89,7 +90,7 @@ public class UserController {
 
     @PostMapping(value = "/{userID}/orders")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public OrderDTO saveUserOrder(@RequestBody @Valid OrderDTO orderDTO,
                                   @PathVariable Long userID) {
         return orderService.add(userID, orderDTO);

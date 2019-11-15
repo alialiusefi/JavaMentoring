@@ -61,18 +61,5 @@ create table order_giftcertificate
     order_id           integer not null,
     giftcertificate_id integer not null,
     constraint fk_orders_id foreign key (order_id) references orders (id),
-    constraint fk_orders_giftcertificates foreign key (giftcertificate_id) references giftcertificates (id)
+    constraint fk_orders_giftcertificates foreign key (giftcertificate_id) references giftcertificates (id) on delete cascade
 );
-
-CREATE FUNCTION public.consists(IN a text, IN b text)
-    RETURNS boolean
-    LANGUAGE 'plpgsql'
-AS
-$BODY$
-begin
-    return b like '%' || a || '%';
-end;
-$BODY$;
-
-ALTER FUNCTION public.consists(text, text)
-    OWNER TO postgres;

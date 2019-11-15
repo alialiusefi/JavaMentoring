@@ -42,7 +42,7 @@ public class GiftCertificateController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public GiftCertificateDTO saveGiftCertificate(@RequestBody @Valid GiftCertificateDTO
                                                           giftCertificateDTO) {
         return giftCertificateBaseService.add(giftCertificateDTO);
@@ -50,7 +50,7 @@ public class GiftCertificateController {
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public GiftCertificateDTO updateGiftCertificate(@PathVariable long id,
                                                     @RequestBody @Valid GiftCertificateDTO giftCertificateDTO) {
         giftCertificateDTO.setId(id);
@@ -59,14 +59,14 @@ public class GiftCertificateController {
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteGiftCertificate(@PathVariable long id) {
         giftCertificateBaseService.delete(id);
     }
 
     @PatchMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public GiftCertificateDTO patchGiftCertificate(@PathVariable Long id,
                                                    @RequestBody Map<Object, Object> fields) {
         return giftCertificateBaseService.patch(fields, id);
@@ -80,8 +80,8 @@ public class GiftCertificateController {
                                                         @Size(min = 1, max = 256) String giftCertificateDesc,
                                                         @RequestParam(required = false) Integer sortByDate,
                                                         @RequestParam(required = false) Integer sortByName,
-                                                        @RequestParam(defaultValue = "1") int page,
-                                                        @RequestParam(defaultValue = "5") int size) {
+                                                        @RequestParam(defaultValue = "${app.pagedefault.defaultPageNumber}") Integer page,
+                                                        @RequestParam(defaultValue = "${app.pagedefault.defaultPageSize}") Integer size) {
         if (tagID == null &&
                 giftCertificateName == null &&
                 giftCertificateDesc == null &&

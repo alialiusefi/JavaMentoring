@@ -32,7 +32,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Deque;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -110,13 +112,26 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                 new ResourceNotFoundException("Certificate with this id doesn't exist!"));
         fields.forEach((k, v) -> {
             Field field = ReflectionUtils.findField(GiftCertificate.class, (String) k);
+            if (field == null) {
+                throw new BadRequestException("Field not found!");
+            }
             field.setAccessible(true);
-            if (!handleBigDecimal(field, oldGiftCertificate, v)) {
+            if (!isFieldPatchable(field)) {
+                throw new BadRequestException("Cannot patch this field");
+            }
+            if (!handleBigDecimal(field, oldGiftCertificate, v) &&
+                    !handleTagList(field, oldGiftCertificate, v)) {
                 ReflectionUtils.setField(field, oldGiftCertificate, v);
             }
             field.setAccessible(false);
         });
         return update(giftCertificateConverter.toDTO(oldGiftCertificate));
+    }
+
+    private boolean isFieldPatchable(Field field) {
+        Class type = field.getType();
+        return !type.equals(LocalDate.class)
+                && !type.equals(Long.class);
     }
 
     private boolean handleBigDecimal(Field field, GiftCertificate certificate, Object value) {
@@ -133,21 +148,29 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         return false;
     }
 
-    private boolean handleLocalDate(Field field, GiftCertificate certificate, Object value) {
-        if (field.getType().equals(LocalDate.class)) {
-            if (value instanceof Double) {
-                BigDecimal bigDecimal = BigDecimal.valueOf((Double) value).setScale(
-                        GiftCertificateDTO.SCALE,
-                        GiftCertificateDTO.ROUNDING_MODE
-                );
-                ReflectionUtils.setField(field, certificate, bigDecimal);
-                return true;
+    private boolean handleTagList(Field field, GiftCertificate certificate, Object value) {
+        if (field.getName().equals("tags")) {
+            Field[] fields = {ReflectionUtils.findField(Tag.class, "id"),
+                    ReflectionUtils.findField(Tag.class, "name")};
+            for (Field i : fields) {
+                i.setAccessible(true);
             }
+            ArrayList<LinkedHashMap<Object, Object>> list = (ArrayList<LinkedHashMap<Object, Object>>) value;
+            List<Tag> tags = new ArrayList<>();
+            for (LinkedHashMap<Object, Object> i : list) {
+                Long id = ((Integer) i.get("id")).longValue();
+                String name = (String) i.get("name");
+                Tag tag = new Tag.TagBuilder(id, name).getResult();
+                tags.add(tag);
+            }
+            ReflectionUtils.setField(field, certificate, tags);
+            for (Field i : fields) {
+                i.setAccessible(false);
+            }
+            return true;
         }
         return false;
     }
-
-
 
 
     private List<Tag> getTagsWithID(List<Tag> tags) {
@@ -206,16 +229,21 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                                                         String desc, Integer sortByDate, Integer sortByName,
                                                         Integer pageNumber, Integer pageSize) {
         Deque<NativeSpecification<GiftCertificate>> specifications = new ArrayDeque<>();
+        List<Object> parameters = new ArrayList<>();
+
         if (tagID != null) {
             specifications.add(new
                     FindGiftCertificatesByTagID(tagID, false));
+            parameters.addAll(Arrays.asList(tagID));
         }
         if (name != null) {
             specifications.add(new
                     FindGiftCertificatesByName(name));
+            parameters.add(name);
         }
         if (desc != null) {
             specifications.add(new FindGiftCertificatesByDescription(desc));
+            parameters.add(desc);
         }
         if (sortByDate != null && sortByDate != 0) {
             if (sortByDate != 1 && sortByDate != -1) {
@@ -232,7 +260,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                 specifications.add(sortGiftCertificatesByName);
             }
         }
-        GiftCertificatesSpecificationConjunction conjunction = new GiftCertificatesSpecificationConjunction(specifications);
+        GiftCertificatesSpecificationConjunction conjunction = new GiftCertificatesSpecificationConjunction(
+                specifications, parameters);
         return giftCertificateConverter.toDTOList(giftCertificateRepo.queryList(conjunction, pageNumber, pageSize));
     }
 

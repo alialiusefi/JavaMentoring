@@ -65,8 +65,8 @@ public abstract class BaseCRUDRepository<T extends AbstractEntity> implements CR
 
     @Override
     public void delete(Specification specification) {
-        List<T> certificatesToDelete = queryList(specification, null, null);
-        certificatesToDelete.forEach(this::delete);
+        List<T> entitiesToDelete = queryList(specification, null, null);
+        entitiesToDelete.forEach(this::delete);
     }
 
 }

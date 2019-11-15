@@ -24,7 +24,6 @@ import java.util.List;
 public class OrderController {
 
     private OrderService orderService;
-
     @Autowired
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
@@ -36,21 +35,21 @@ public class OrderController {
     }
 
     @GetMapping()
-    public List<OrderDTO> getAllOrders(@RequestParam(defaultValue = "1") Integer page,
-                                       @RequestParam(defaultValue = "5") Integer size) {
+    public List<OrderDTO> getAllOrders(@RequestParam(defaultValue = "${app.pagedefault.defaultPageNumber}") Integer page,
+                                       @RequestParam(defaultValue = "${app.pagedefault.defaultPageSize}") Integer size) {
         return (List<OrderDTO>) orderService.getAll(page, size);
     }
 
     @PutMapping("/{orderID}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public OrderDTO updateOrder(@RequestBody OrderDTO orderDTO, Long orderID) {
         orderDTO.setId(orderID);
         return orderService.update(orderDTO);
     }
 
     @DeleteMapping("/{orderID}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteOrder(@PathVariable Long orderID) {
         orderService.delete(orderID);
