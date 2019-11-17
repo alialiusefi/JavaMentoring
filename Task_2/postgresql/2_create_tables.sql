@@ -36,7 +36,7 @@ create table authorities
     id         serial primary key,
     user_id    integer not null,
     userstatus smallint,
-    constraint fk_authorities_users foreign key (user_id) references users (id)
+    constraint fk_authorities_users foreign key (user_id) references users (id) on delete cascade
 );
 create unique index ix_auth_username on authorities (user_id, userstatus);
 
@@ -51,8 +51,8 @@ create table order_user
 (
     order_id integer not null,
     user_id  integer not null,
-    constraint fk_users foreign key (user_id) references users (id),
-    constraint fk_orders foreign key (order_id) references orders (id)
+    constraint fk_users foreign key (user_id) references users (id) on delete cascade,
+    constraint fk_orders foreign key (order_id) references orders (id) on delete cascade
 
 );
 
@@ -60,6 +60,6 @@ create table order_giftcertificate
 (
     order_id           integer not null,
     giftcertificate_id integer not null,
-    constraint fk_orders_id foreign key (order_id) references orders (id),
+    constraint fk_orders_id foreign key (order_id) references orders (id) on delete cascade,
     constraint fk_orders_giftcertificates foreign key (giftcertificate_id) references giftcertificates (id) on delete cascade
 );

@@ -7,11 +7,7 @@ import com.epam.esm.entity.UserEntity;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.OrderRepository;
 import com.epam.esm.repository.UserRepository;
-import com.epam.esm.repository.specification.FindAllOrders;
-import com.epam.esm.repository.specification.FindAllOrdersByUserID;
-import com.epam.esm.repository.specification.FindOrderByID;
-import com.epam.esm.repository.specification.FindUserByUserID;
-import com.epam.esm.repository.specification.FindUserOrderByOrderID;
+import com.epam.esm.repository.specification.*;
 import com.epam.esm.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -81,9 +77,10 @@ public class OrderServiceImpl implements OrderService {
         UserEntity userEntity = userRepository.queryEntity(new FindUserByUserID(userID)).
                 orElseThrow(() -> new ResourceNotFoundException("User with this id was not found"));//
         order.setTimestamp(LocalDateTime.now());
+        order.setUserEntity(userEntity);
         Order orderAdded = orderRepository.add(order);
-        userEntity.getOrderList().add(orderAdded);
-        userRepository.update(userEntity);
+        userEntity.getOrders().add(orderAdded);
+        userEntity = userRepository.update(userEntity);
         return orderConverter.toDTO(orderAdded);
     }
 

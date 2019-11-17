@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 
-public class FindMostUsedTagOfMostExpensiveUserOrders extends NativeSQLFindSpecification<GiftCertificate> {
+public class FindMostUsedTagOfMostExpensiveUserOrders implements NativeSQLFindSpecification<GiftCertificate> {
 
     public static final String SQL_CLAUSE =
             "SELECT tag.id, tag.tag_name " +
@@ -19,7 +19,7 @@ public class FindMostUsedTagOfMostExpensiveUserOrders extends NativeSQLFindSpeci
                     "WHERE order_user.user_id = ? " +
                     "GROUP BY tag.id " +
                     "ORDER BY sum(orders.ordercost) " +
-                    "    DESC";
+                    "    DESC ";
 
     private Long userID;
 

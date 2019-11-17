@@ -7,7 +7,7 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 
 public class FindGiftCertificatesByTagID
-        extends NativeSQLFindSpecification<GiftCertificate> {
+        implements NativeSQLFindSpecification<GiftCertificate> {
 
     private static final String SQL_CLAUSE = "select giftcertificates.id,giftcertificates.name" +
             ",giftcertificates.description,giftcertificates.price" +
@@ -34,8 +34,8 @@ public class FindGiftCertificatesByTagID
             stringBuilder.append(" or tag_id = ?");
         }
         Query nativeQuery = em.createNativeQuery(stringBuilder.toString());
-        for (int i = 0; i < tagID.length; i++) {
-            nativeQuery.setParameter(i, tagID[i]);
+        for (int i = 1; i <= tagID.length; i++) {
+            nativeQuery.setParameter(i, tagID[i - 1]);
         }
         return nativeQuery;
     }

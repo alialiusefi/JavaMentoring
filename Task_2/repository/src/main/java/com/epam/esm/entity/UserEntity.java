@@ -1,18 +1,6 @@
 package com.epam.esm.entity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,17 +26,17 @@ public class UserEntity extends AbstractEntity {
     private List<Authority> authorityList;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "order_user", joinColumns =
+    @JoinTable(name = "order_user", inverseJoinColumns =
             {@JoinColumn(name = "order_id")},
-            inverseJoinColumns = {@JoinColumn(name = "user_id")})
-    private List<Order> orderList;
+            joinColumns = {@JoinColumn(name = "user_id")})
+    private List<Order> orders;
 
     private UserEntity(UserBuilder userBuilder) {
         this.username = userBuilder.username;
         this.password = userBuilder.password;
         this.enabled = userBuilder.enabled;
         this.authorityList = userBuilder.authorityList;
-        this.orderList = userBuilder.orderList;
+        this.orders = userBuilder.orderList;
     }
 
     public UserEntity() {
@@ -95,12 +83,12 @@ public class UserEntity extends AbstractEntity {
         this.authorityList = authorityList;
     }
 
-    public List<Order> getOrderList() {
-        return orderList;
+    public List<Order> getOrders() {
+        return orders;
     }
 
-    public void setOrderList(List<Order> orderList) {
-        this.orderList = orderList;
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     @Override
@@ -128,7 +116,7 @@ public class UserEntity extends AbstractEntity {
                 ", password='" + password + '\'' +
                 ", enabled=" + enabled +
                 ", authorityList=" + authorityList +
-                ", orderList=" + orderList +
+                ", orderList=" + orders +
                 '}';
     }
 

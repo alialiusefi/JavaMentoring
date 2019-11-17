@@ -15,9 +15,9 @@ public class Order extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tagSequence")
     private Long id;
 
-    @OneToOne
-    @JoinTable(name = "order_user", joinColumns = {@JoinColumn(name = "user_id")}
-            , inverseJoinColumns = {@JoinColumn(name = "order_id")})
+    @ManyToOne
+    @JoinTable(name = "order_user", inverseJoinColumns = {@JoinColumn(name = "user_id")}
+            , joinColumns = {@JoinColumn(name = "order_id")})
     private UserEntity userEntity;
 
 

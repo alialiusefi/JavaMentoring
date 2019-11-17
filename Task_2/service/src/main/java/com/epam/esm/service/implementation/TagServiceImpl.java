@@ -8,17 +8,15 @@ import com.epam.esm.exception.BadRequestException;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.TagRepository;
 import com.epam.esm.repository.UserRepository;
-import com.epam.esm.repository.specification.FindAllTags;
-import com.epam.esm.repository.specification.FindMostUsedTagOfMostExpensiveUserOrders;
-import com.epam.esm.repository.specification.FindTagByID;
-import com.epam.esm.repository.specification.FindTagByName;
-import com.epam.esm.repository.specification.FindUserByUserID;
+import com.epam.esm.repository.specification.*;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -74,9 +72,14 @@ public class TagServiceImpl implements TagService {
     public List<TagDTO> getMostUsedTagOfMostExpensiveUserOrders(Long userID) {
         UserEntity userEntity = userRepository.queryEntity(new FindUserByUserID(userID))
                 .orElseThrow(() -> new ResourceNotFoundException("User with this id doesnt exists!"));
-        List<Tag> tags = tagRepository.queryList(
-                new FindMostUsedTagOfMostExpensiveUserOrders(userID), 1, 1);
-        return tagConverter.toDTOList(tags);
+        List tags = tagRepository.queryList(
+                new FindMostUsedTagOfMostExpensiveUserOrders(userEntity.getId()), 1, 1);
+        if (tags.isEmpty()) {
+            return new ArrayList<>();
+        }
+        Object[] tag = (Object[]) tags.get(0);
+        Tag tagFound = new Tag.TagBuilder(((Integer) tag[0]).longValue(), (String) tag[1]).getResult();
+        return tagConverter.toDTOList(Arrays.asList(tagFound));
     }
 
     @Transactional

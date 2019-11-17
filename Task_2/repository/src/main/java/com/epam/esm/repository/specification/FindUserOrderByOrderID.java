@@ -26,7 +26,7 @@ public class FindUserOrderByOrderID extends FindSpecification<Order> {
                 builder.equal(userRoot.get("id"), this.userID),
                 builder.equal(orderRoot.get("id"), this.orderID)};
         criteriaQuery.where(builder.and(predicates));
-        Join<UserEntity, Order> orders = userRoot.join("orderList");
+        Join<UserEntity, Order> orders = userRoot.join("orders");
         criteriaQuery.select(orders);
         return manager.createQuery(criteriaQuery);
     }

@@ -39,8 +39,8 @@ public class TagConverter extends BaseConverter implements Converter<TagDTO, Tag
     @Override
     public List<TagDTO> toDTOList(List<Tag> entities) {
         List<TagDTO> tagDTOs = new ArrayList<>();
-        for (Tag i : entities) {
-            tagDTOs.add(toDTO(i));
+        for (int i = 0; i < entities.size(); i++) {
+            tagDTOs.add(toDTO(entities.get(i)));
         }
         return tagDTOs;
     }

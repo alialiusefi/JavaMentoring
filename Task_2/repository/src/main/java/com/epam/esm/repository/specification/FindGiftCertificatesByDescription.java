@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 
-public class FindGiftCertificatesByDescription extends NativeSQLFindSpecification<GiftCertificate> {
+public class FindGiftCertificatesByDescription implements NativeSQLFindSpecification<GiftCertificate> {
 
     private static final String SQL_CLAUSE = "select giftcertificates.id,giftcertificates.name" +
             ",giftcertificates.description,giftcertificates.price" +

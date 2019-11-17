@@ -21,6 +21,9 @@ public class GiftCertificatesSpecificationConjunction extends FindSpecification<
 
     @Override
     public Query getQuery(EntityManager em, CriteriaBuilder builder) {
+        if (specifications.size() == 1) {
+            return specifications.poll().getQuery(em, builder);
+        }
         NativeSpecification<GiftCertificate> first = specifications.poll();
         String query = first.getSQLClause(false);
         StringBuilder stringBuilder = new StringBuilder(query);
