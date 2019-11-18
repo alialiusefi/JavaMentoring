@@ -1,9 +1,27 @@
 package com.epam.esm.service;
 
-//@RunWith(MockitoJUnitRunner.class)
+import com.epam.esm.dto.GiftCertificateDTO;
+import com.epam.esm.dto.TagDTO;
+import com.epam.esm.service.implementation.GiftCertificateServiceImpl;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+
+@RunWith(MockitoJUnitRunner.class)
 public class IGiftCertificateBaseServiceTest {
 
-/*
+
     @Mock
     public GiftCertificateServiceImpl IGiftCertificateServiceImpl;
 
@@ -17,7 +35,7 @@ public class IGiftCertificateBaseServiceTest {
 
     @Test
     public void getGiftCertificateByID() {
-        when(IGiftCertificateServiceImpl.getByID(1)).thenReturn(
+        when(IGiftCertificateServiceImpl.getByID(1l)).thenReturn(
                 new GiftCertificateDTO(1, "ACME Discount Voucher",
                         "Discount while shopping",
                         BigDecimal.valueOf(20.00),
@@ -28,7 +46,7 @@ public class IGiftCertificateBaseServiceTest {
                         new TagDTO(2, "Food")
                 )
                 ));
-        Assert.assertEquals(IGiftCertificateServiceImpl.getByID(1),
+        Assert.assertEquals(IGiftCertificateServiceImpl.getByID(1l),
                 new GiftCertificateDTO(1, "ACME Discount Voucher",
                         "Discount while shopping",
                         BigDecimal.valueOf(20.00),
@@ -48,7 +66,8 @@ public class IGiftCertificateBaseServiceTest {
         String desc = "Voucher";
         int sortByDate = 1;
         int sortByName = -1;
-        List<GiftCertificateDTO> expected = Arrays.asList(new GiftCertificateDTO(1, "ACME Discount Voucher",
+        List<GiftCertificateDTO> expected = Arrays.asList(
+                new GiftCertificateDTO(1, "ACME Discount Voucher",
                 "Discount while shopping",
                 BigDecimal.valueOf(20.00),
                 LocalDate.of(2012, 9, 9),
@@ -57,8 +76,10 @@ public class IGiftCertificateBaseServiceTest {
                 new TagDTO(1, "Accesories"),
                 new TagDTO(2, "Food")
         )));
-        when(IGiftCertificateServiceImpl.getGiftCertificate(tagID, name, desc, sortByDate, sortByName)).thenReturn(expected);
-        Assert.assertEquals(expected, IGiftCertificateServiceImpl.getGiftCertificate(tagID, name, desc, sortByDate, sortByName));
+        when(IGiftCertificateServiceImpl.getGiftCertificates(new Long[]{tagID},
+                name, desc, sortByDate, sortByName, 1, 1)).thenReturn(expected);
+        Assert.assertEquals(expected, IGiftCertificateServiceImpl.getGiftCertificates(
+                new Long[]{tagID}, name, desc, sortByDate, sortByName, 1, 1));
     }
 
     @Test
@@ -124,7 +145,6 @@ public class IGiftCertificateBaseServiceTest {
         boolean actual = IGiftCertificateServiceImpl.delete(giftCertificateDTO);
         Assert.assertTrue(actual);
     }
-*/
 
 
 }

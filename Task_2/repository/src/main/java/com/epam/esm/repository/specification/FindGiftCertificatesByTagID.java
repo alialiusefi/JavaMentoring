@@ -22,7 +22,7 @@ public class FindGiftCertificatesByTagID
 
     private Long[] tagID;
 
-    public FindGiftCertificatesByTagID(Long[] tagID, boolean isConjunction) {
+    public FindGiftCertificatesByTagID(Long[] tagID) {
         this.tagID = tagID;
     }
 

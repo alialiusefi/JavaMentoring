@@ -1,9 +1,21 @@
 package com.epam.esm.service;
 
-//@RunWith(MockitoJUnitRunner.class)
+import com.epam.esm.dto.TagDTO;
+import com.epam.esm.service.implementation.TagServiceImpl;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import static org.mockito.Mockito.when;
+
+@RunWith(MockitoJUnitRunner.class)
 public class ITagBaseServiceTest {
 
-   /* @Mock
+    @Mock
     public TagServiceImpl ITagServiceImpl;
 
     @Before
@@ -41,5 +53,5 @@ public class ITagBaseServiceTest {
         TagDTO tag = new TagDTO(5, "TestTag");
         when(ITagServiceImpl.delete(tag)).thenReturn(expected);
         Assert.assertTrue(ITagServiceImpl.delete(tag));
-    }*/
+    }
 }

@@ -32,8 +32,8 @@ public class GiftCertificatesSpecificationConjunction extends FindSpecification<
         }
         String finalQuery = stringBuilder.toString();
         Query queryObj = em.createNativeQuery(finalQuery);
-        for (int i = 0; i < parameters.size(); i++) {
-            queryObj.setParameter(i, parameters.get(i));
+        for (int i = 1; i <= parameters.size(); i++) {
+            queryObj.setParameter(i, parameters.get(i - 1));
         }
         return queryObj;
     }

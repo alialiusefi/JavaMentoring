@@ -1,9 +1,21 @@
 package com.epam.esm.repository;
 
+import com.epam.esm.repository.impl.GiftCertificateRepositoryImpl;
+import com.epam.esm.repository.impl.TagRepositoryImpl;
+import com.opentable.db.postgres.junit.EmbeddedPostgresRules;
+import com.opentable.db.postgres.junit.SingleInstancePostgresRule;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import javax.persistence.EntityManager;
+import javax.sql.DataSource;
+
 public abstract class AbstractRepoTest {
 
-    /*@ClassRule
-    public static SingleInstancePostgresRule pg = EmbeddedPostgresRules.singleInstance();*//*
+    @ClassRule
+    public static SingleInstancePostgresRule pg = EmbeddedPostgresRules.singleInstance();
     public EntityManager entityManager;
     @Autowired
     public TagRepositoryImpl tagRepositoryImpl;
@@ -17,7 +29,7 @@ public abstract class AbstractRepoTest {
     @Before
     public void setUp() {
 
-       *//* template = new JdbcTemplate(pg.getEmbeddedPostgres().getPostgresDatabase());
+        template = new JdbcTemplate(pg.getEmbeddedPostgres().getPostgresDatabase());
         template.execute("" +
                 "create table giftcertificates\n" +
                 "(\n" +
@@ -30,7 +42,7 @@ public abstract class AbstractRepoTest {
                 "    duration_till_expiry integer\n" +
                 ");" +
                 "");
-       *//**//* entityManager.createNativeQuery("create table tag\n" +
+        entityManager.createNativeQuery("create table tag\n" +
                 "(\n" +
                 "    id       serial primary key,\n" +
                 "    tag_name varchar(16)\n" +
@@ -66,6 +78,6 @@ public abstract class AbstractRepoTest {
         entityManager.createNativeQuery("insert into tagged_giftcertificates(tag_id, gift_certificate_id)\n" +
                 "VALUES (1, 1),\n" +
                 "       (2, 1)," +
-                "(1,2);").executeUpdate();*//*
-    }*/
+                "(1,2);").executeUpdate();
+    }
 }

@@ -10,7 +10,17 @@ import com.epam.esm.exception.BadRequestException;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.repository.TagRepository;
-import com.epam.esm.repository.specification.*;
+import com.epam.esm.repository.specification.FindAllGiftCertificates;
+import com.epam.esm.repository.specification.FindGiftCertificateByID;
+import com.epam.esm.repository.specification.FindGiftCertificatesByDescription;
+import com.epam.esm.repository.specification.FindGiftCertificatesByName;
+import com.epam.esm.repository.specification.FindGiftCertificatesByTagID;
+import com.epam.esm.repository.specification.FindTagByName;
+import com.epam.esm.repository.specification.FindTagsByCertificateID;
+import com.epam.esm.repository.specification.GiftCertificatesSpecificationConjunction;
+import com.epam.esm.repository.specification.NativeSpecification;
+import com.epam.esm.repository.specification.SortGiftCertificatesByDate;
+import com.epam.esm.repository.specification.SortGiftCertificatesByName;
 import com.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -21,7 +31,15 @@ import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Deque;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
@@ -214,10 +232,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                                                         Integer pageNumber, Integer pageSize) {
         Deque<NativeSpecification<GiftCertificate>> specifications = new ArrayDeque<>();
         List<Object> parameters = new ArrayList<>();
-
         if (tagID != null) {
             specifications.add(new
-                    FindGiftCertificatesByTagID(tagID, false));
+                    FindGiftCertificatesByTagID(tagID));
             parameters.addAll(Arrays.asList(tagID));
         }
         if (name != null) {
@@ -233,26 +250,52 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             if (sortByDate != 1 && sortByDate != -1) {
                 throw new BadRequestException("Sort parameter should accept either 1 or -1");
             }
-            SortGiftCertificatesByDate sortGiftCertificatesByDate = new SortGiftCertificatesByDate(sortByDate);
+            SortGiftCertificatesByDate sortGiftCertificatesByDate =
+                    new SortGiftCertificatesByDate(sortByDate);
             specifications.add(sortGiftCertificatesByDate);
         } else {
             if (sortByName != null && sortByName != 0) {
                 if (sortByName != 1 && sortByName != -1) {
                     throw new BadRequestException("Sort parameter should accept either 1 or -1");
                 }
-                SortGiftCertificatesByName sortGiftCertificatesByName = new SortGiftCertificatesByName(sortByName);
+                SortGiftCertificatesByName sortGiftCertificatesByName =
+                        new SortGiftCertificatesByName(sortByName);
                 specifications.add(sortGiftCertificatesByName);
             }
         }
         GiftCertificatesSpecificationConjunction conjunction = new GiftCertificatesSpecificationConjunction(
                 specifications, parameters);
-        List<GiftCertificate> giftCertificates = giftCertificateRepo.queryList(conjunction, pageNumber, pageSize);
-        return giftCertificateConverter.toDTOList(giftCertificates);
+        List giftCertificates = giftCertificateRepo.queryList(conjunction, pageNumber, pageSize);
+        List<GiftCertificate> handledGiftCertificates = handleGiftCertifcates(giftCertificates);
+        return giftCertificateConverter.toDTOList(handledGiftCertificates);
     }
 
     public List<GiftCertificate> handleGiftCertifcates(List giftcertificates) {
-        //todo: handle gift certificate here
-        return null;
+        List<Object[]> giftcertificatesObjects = (List<Object[]>) giftcertificates;
+        List<GiftCertificate> handledGiftCertificates = new ArrayList<>();
+        for (Object[] i : giftcertificatesObjects) {
+            Long id = ((Integer) i[0]).longValue();
+            String name = (String) i[1];
+            String desc = (String) i[2];
+            Double price = (Double) i[3];
+            Date dateCreated = (Date) i[4];
+            Date dateModified = null;
+            if (i[4] != null) {
+                dateModified = (Date) i[5];
+            }
+            Integer duration = (Integer) i[6];
+            GiftCertificate giftCertificate = new GiftCertificate.GiftCertificateBuilder(id, name, desc,
+                    BigDecimal.valueOf(price), duration).getResult();
+            giftCertificate.setDateOfCreation(new java.sql.Date(dateCreated.getTime()).toLocalDate());
+            if (dateModified != null) {
+                giftCertificate.setDateOfModification(new java.sql.Date(dateModified.getTime()).toLocalDate());
+            }
+            List<Tag> tags = tagRepository.queryList(new FindTagsByCertificateID(giftCertificate.getId()),
+                    null, null);
+            giftCertificate.setTags(tags);
+            handledGiftCertificates.add(giftCertificate);
+        }
+        return handledGiftCertificates;
     }
 
 

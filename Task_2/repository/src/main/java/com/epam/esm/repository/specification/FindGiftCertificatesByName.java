@@ -13,9 +13,9 @@ public class FindGiftCertificatesByName implements NativeSQLFindSpecification<Gi
             ",giftcertificates.date_created,giftcertificates.date_modified," +
             "giftcertificates.duration_till_expiry " +
             "from giftcertificates " +
-            "where public.consists(?,giftcertificates.description) ";
+            "where public.consists(?,giftcertificates.name) ";
 
-    private static final String CONJ_SQL_CLAUSE = "and public.consists(?,giftcertificates.description) ";
+    private static final String CONJ_SQL_CLAUSE = "and public.consists(?,giftcertificates.name) ";
 
     private String name;
 
@@ -25,7 +25,9 @@ public class FindGiftCertificatesByName implements NativeSQLFindSpecification<Gi
 
     @Override
     public Query getQuery(EntityManager em, CriteriaBuilder builder) {
-        return em.createNativeQuery(SQL_CLAUSE);
+        Query nativeQuery = em.createNativeQuery(SQL_CLAUSE);
+        nativeQuery.setParameter(1, name);
+        return nativeQuery;
     }
 
     @Override

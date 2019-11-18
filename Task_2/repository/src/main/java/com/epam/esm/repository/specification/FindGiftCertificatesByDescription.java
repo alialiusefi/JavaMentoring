@@ -26,7 +26,9 @@ public class FindGiftCertificatesByDescription implements NativeSQLFindSpecifica
 
     @Override
     public Query getQuery(EntityManager em, CriteriaBuilder builder) {
-        return em.createNativeQuery(SQL_CLAUSE);
+        Query nativeQuery = em.createNativeQuery(SQL_CLAUSE);
+        nativeQuery.setParameter(1, description);
+        return nativeQuery;
     }
 
     @Override
