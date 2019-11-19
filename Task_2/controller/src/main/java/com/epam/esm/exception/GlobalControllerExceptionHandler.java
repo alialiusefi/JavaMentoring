@@ -3,6 +3,7 @@ package com.epam.esm.exception;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -22,10 +23,17 @@ import java.util.List;
 @ControllerAdvice(annotations = RestController.class)
 public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
+
     @ExceptionHandler({RuntimeException.class})
     public ResponseEntity<Object> handleRunTimeException(RuntimeException e) {
         return new ResponseEntity<Object>(
                 new APIError(e.getMessage()), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler({AccessDeniedException.class})
+    public ResponseEntity<Object> handleAccessDeniedException(RuntimeException e) {
+        return new ResponseEntity<Object>(
+                new APIError(e.getMessage()), new HttpHeaders(), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler({ConstraintViolationException.class})

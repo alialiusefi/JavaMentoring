@@ -14,7 +14,7 @@ public interface OrderService extends BaseService<OrderDTO> {
 
     OrderDTO add(Long userID, OrderDTO orderDTO);
 
-    List<OrderDTO> getOrdersByUserID(Long userID, int pageNumber, int pageSize);
+    List<OrderDTO> getOrdersByUserID(Long currentUserID, Long userIDOrders, int pageNumber, int pageSize);
 
     OrderDTO getUserOrder(Long userID, Long orderID);
 

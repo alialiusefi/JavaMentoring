@@ -1,5 +1,6 @@
 package com.epam.esm.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -16,6 +17,7 @@ public class UserDTO extends DTO {
     private String username;
     @NotBlank
     @Size(min = 6, max = 50)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Valid
@@ -41,6 +43,7 @@ public class UserDTO extends DTO {
     public void setUsername(String username) {
         this.username = username;
     }
+
 
     public String getPassword() {
         return password;

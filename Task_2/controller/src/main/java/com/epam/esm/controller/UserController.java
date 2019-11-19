@@ -3,6 +3,7 @@ package com.epam.esm.controller;
 import com.epam.esm.dto.OrderDTO;
 import com.epam.esm.dto.TagDTO;
 import com.epam.esm.dto.UserDTO;
+import com.epam.esm.entity.LocalCustomOAuthUser;
 import com.epam.esm.exception.BadRequestException;
 import com.epam.esm.service.OrderService;
 import com.epam.esm.service.TagService;
@@ -10,8 +11,19 @@ import com.epam.esm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -41,7 +53,7 @@ public class UserController {
     @GetMapping()
     public List<UserDTO> getAllUsers(@RequestParam(defaultValue = "${app.pagedefault.defaultPageNumber}") Integer page,
                                      @RequestParam(defaultValue = "${app.pagedefault.defaultPageSize}") Integer size) {
-        return (List<UserDTO>) userService.getAll(page, size);
+        return userService.getAll(page, size);
     }
 
     @GetMapping("/{userID}/tags")
@@ -75,7 +87,9 @@ public class UserController {
     public List<OrderDTO> getOrdersByUserID(@PathVariable Long userID,
                                             @RequestParam(defaultValue = "${app.pagedefault.defaultPageNumber}") Integer page,
                                             @RequestParam(defaultValue = "${app.pagedefault.defaultPageSize}") Integer size) {
-        return orderService.getOrdersByUserID(userID, page, size);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        LocalCustomOAuthUser customOAuthUser = (LocalCustomOAuthUser) authentication.getPrincipal();
+        return orderService.getOrdersByUserID(customOAuthUser.getUserEntity().getId(), userID, page, size);
     }
 
     @GetMapping("/{userID}/orders/{orderID}")

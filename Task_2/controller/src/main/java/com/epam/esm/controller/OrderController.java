@@ -30,6 +30,7 @@ public class OrderController {
     }
 
     @GetMapping("/{orderID}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public OrderDTO getOrder(@PathVariable Long orderID) {
         return orderService.getByID(orderID);
     }
@@ -37,7 +38,7 @@ public class OrderController {
     @GetMapping()
     public List<OrderDTO> getAllOrders(@RequestParam(defaultValue = "${app.pagedefault.defaultPageNumber}") Integer page,
                                        @RequestParam(defaultValue = "${app.pagedefault.defaultPageSize}") Integer size) {
-        return (List<OrderDTO>) orderService.getAll(page, size);
+        return orderService.getAll(page, size);
     }
 
     @PutMapping("/{orderID}")

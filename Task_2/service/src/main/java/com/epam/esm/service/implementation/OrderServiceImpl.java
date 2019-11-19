@@ -4,10 +4,15 @@ import com.epam.esm.converter.OrderConverter;
 import com.epam.esm.dto.OrderDTO;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.UserEntity;
+import com.epam.esm.exception.OAuth2AuthenticationProcessingException;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.OrderRepository;
 import com.epam.esm.repository.UserRepository;
-import com.epam.esm.repository.specification.*;
+import com.epam.esm.repository.specification.FindAllOrders;
+import com.epam.esm.repository.specification.FindAllOrdersByUserID;
+import com.epam.esm.repository.specification.FindOrderByID;
+import com.epam.esm.repository.specification.FindUserByUserID;
+import com.epam.esm.repository.specification.FindUserOrderByOrderID;
 import com.epam.esm.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -49,9 +54,12 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    public List<OrderDTO> getOrdersByUserID(Long userID, int pageNumber, int pageSize) {
+    public List<OrderDTO> getOrdersByUserID(Long currentUserID, Long userIDOrders, int pageNumber, int pageSize) {
+        if (!currentUserID.equals(userIDOrders)) {
+            throw new OAuth2AuthenticationProcessingException("Access is denied!");
+        }
         try {
-            List<Order> orders = orderRepository.queryList(new FindAllOrdersByUserID(userID), pageNumber, pageSize);
+            List<Order> orders = orderRepository.queryList(new FindAllOrdersByUserID(userIDOrders), pageNumber, pageSize);
             List<OrderDTO> orderDTOS = orderConverter.toDTOList(orders);
             return orderDTOS;
         } catch (EmptyResultDataAccessException e) {

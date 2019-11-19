@@ -39,7 +39,7 @@ public class TagController {
     @GetMapping()
     public List<TagDTO> getAllTags(@RequestParam(defaultValue = "${app.pagedefault.defaultPageNumber}") Integer page,
                                    @RequestParam(defaultValue = "${app.pagedefault.defaultPageSize}") Integer size) {
-        return (List<TagDTO>) tagService.getAll(page, size);
+        return tagService.getAll(page, size);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")

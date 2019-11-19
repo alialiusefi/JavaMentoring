@@ -1,9 +1,7 @@
 package com.epam.esm.service.implementation;
 
 import com.epam.esm.converter.UserConverter;
-import com.epam.esm.converter.UserWithoutPasswordConverter;
 import com.epam.esm.dto.UserDTO;
-import com.epam.esm.dto.UserWithoutPassDTO;
 import com.epam.esm.entity.UserEntity;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.UserRepository;
@@ -22,29 +20,27 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private UserConverter userConverter;
-    private UserWithoutPasswordConverter userWithoutPasswordConverter;
     private BCryptPasswordEncoder passwordEncoder;
-
     @Autowired
     public UserServiceImpl(UserRepository userRepository, UserConverter userConverter,
-                           UserWithoutPasswordConverter userWithoutPasswordConverter, BCryptPasswordEncoder passwordEncoder) {
+                           BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userConverter = userConverter;
-        this.userWithoutPasswordConverter = userWithoutPasswordConverter;
         this.passwordEncoder = passwordEncoder;
     }
 
 
     @Override
     @Transactional
-    public UserWithoutPassDTO getByID(Long id) {
-        return userWithoutPasswordConverter.toDTO(userRepository.queryEntity(new FindUserByUserID(id))
-                .orElseThrow(() -> new ResourceNotFoundException("User with this id was not found!")));
+    public UserDTO getByID(Long id) {
+        UserEntity userEntity = userRepository.queryEntity(new FindUserByUserID(id))
+                .orElseThrow(() -> new ResourceNotFoundException("User with this id was not found!"));
+        return userConverter.toDTO(userEntity);
     }
 
     @Override
-    public List<UserWithoutPassDTO> getAll(int pageNumber, int size) {
-        return userWithoutPasswordConverter.toDTOList(userRepository.queryList(new FindAllUsers(), pageNumber, size));
+    public List<UserDTO> getAll(int pageNumber, int size) {
+        return userConverter.toDTOList(userRepository.queryList(new FindAllUsers(), pageNumber, size));
     }
 
     @Transactional
@@ -57,9 +53,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public boolean delete(UserDTO dto) {
-        UserWithoutPassDTO userDTO = getByID(dto.getId());
+        UserDTO userDTO = getByID(dto.getId());
         if (userDTO != null) {
-            userRepository.delete(userWithoutPasswordConverter.toEntity(userDTO));
+            userRepository.delete(userConverter.toEntity(userDTO));
             return true;
         }
         throw new ResourceNotFoundException("User with this id doesn't exist");
@@ -68,9 +64,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public boolean delete(long id) {
-        UserWithoutPassDTO userDTO = getByID(id);
+        UserDTO userDTO = getByID(id);
         if (userDTO != null) {
-            userRepository.delete(userWithoutPasswordConverter.toEntity(userDTO));
+            userRepository.delete(userConverter.toEntity(userDTO));
             return true;
         }
         throw new ResourceNotFoundException("User with this id doesn't exist");

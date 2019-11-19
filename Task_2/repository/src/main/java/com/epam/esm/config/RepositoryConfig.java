@@ -44,12 +44,6 @@ public class RepositoryConfig {
         return new JdbcTemplate(dataSource);
     }
 
-    /*@Bean
-    @DependsOn("connectionPool")
-    public PlatformTransactionManager transactionManager(DataSource dataSource) {
-        return new DataSourceTransactionManager(dataSource);
-    }*/
-
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em

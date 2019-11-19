@@ -156,7 +156,7 @@ public class GiftCertificateRepoTest extends AbstractRepoTest {
 
     @Test
     public void testFindByTagIDAndDescriptionandSortByName() {
-        FindGiftCertificatesByTagID findGiftCertificatesByTagID = new FindGiftCertificatesByTagID(new Long[]{1L}, false);
+        FindGiftCertificatesByTagID findGiftCertificatesByTagID = new FindGiftCertificatesByTagID(new Long[]{1L});
         FindGiftCertificatesByDescription findGiftCertificatesByDesc = new FindGiftCertificatesByDescription("Dis");
         SortGiftCertificatesByName sortGiftCertificatesByName = new SortGiftCertificatesByName(1);
         ArrayDeque deque = new ArrayDeque();

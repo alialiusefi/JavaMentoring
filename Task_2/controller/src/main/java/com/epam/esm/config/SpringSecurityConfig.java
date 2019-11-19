@@ -2,6 +2,7 @@ package com.epam.esm.config;
 
 import com.epam.esm.security.filter.ExceptionHandlerFilter;
 import com.epam.esm.security.filter.JwtTokenAuthenticationFilter;
+import com.epam.esm.security.handler.CustomAccessDeniedHandler;
 import com.epam.esm.security.handler.OAuth2AuthenticationFailureHandler;
 import com.epam.esm.security.handler.OAuth2AuthenticationSuccessHandler;
 import com.epam.esm.security.handler.SecurityEntryPoint;
@@ -35,29 +36,31 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String ORDERS_MAPPING = "/v2/orders/**";
     private static final String USERS_MAPPING = "/v2/users/**";
 
-    @Autowired
+
     private CustomUserService customUserService;
-    @Autowired
     private JwtTokenProvider jwtTokenProvider;
     private SecurityEntryPoint restAuthenticationEntryPoint;
     private ExceptionHandlerFilter exceptionHandlingfilter;
-    @Autowired
     private CustomOAuthUserService customOAuth2UserService;
-    @Autowired
+
     private CustomOIDAuthService customOIDAuthService;
-    @Autowired
     private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-    @Autowired
     private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
 
     @Autowired
-    public void setRestAuthenticationEntryPoint(SecurityEntryPoint restAuthenticationEntryPoint) {
+    public SpringSecurityConfig(CustomUserService customUserService, JwtTokenProvider jwtTokenProvider,
+                                SecurityEntryPoint restAuthenticationEntryPoint, ExceptionHandlerFilter exceptionHandlingfilter,
+                                CustomOAuthUserService customOAuth2UserService, CustomOIDAuthService customOIDAuthService,
+                                OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler,
+                                OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler) {
+        this.customUserService = customUserService;
+        this.jwtTokenProvider = jwtTokenProvider;
         this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
-    }
-
-    @Autowired
-    public void setExceptionHandlingfilter(ExceptionHandlerFilter exceptionHandlingfilter) {
         this.exceptionHandlingfilter = exceptionHandlingfilter;
+        this.customOAuth2UserService = customOAuth2UserService;
+        this.customOIDAuthService = customOIDAuthService;
+        this.oAuth2AuthenticationSuccessHandler = oAuth2AuthenticationSuccessHandler;
+        this.oAuth2AuthenticationFailureHandler = oAuth2AuthenticationFailureHandler;
     }
 
     @Autowired
@@ -77,11 +80,17 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(oAuth2AuthenticationSuccessHandler)
                 .failureHandler(oAuth2AuthenticationFailureHandler)
                 .and().exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
+                .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler())
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().securityContext();
 
         http.addFilterBefore(new JwtTokenAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(exceptionHandlingfilter, JwtTokenAuthenticationFilter.class);
+    }
+
+    @Bean
+    public CustomAccessDeniedHandler accessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
     }
 
     @Bean

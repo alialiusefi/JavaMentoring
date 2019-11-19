@@ -9,7 +9,7 @@ public interface BaseService<T extends DTO> {
 
     T getByID(Long id);
 
-    List<? extends DTO> getAll(int pageNumber, int size);
+    List<T> getAll(int pageNumber, int size);
 
     T add(T dto);
 
