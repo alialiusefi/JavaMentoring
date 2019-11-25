@@ -30,6 +30,12 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
                 new APIError(e.getMessage()), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler({OAuth2AuthenticationProcessingException.class})
+    public ResponseEntity<Object> handleOAuth2AuthenticationProcessingException(RuntimeException e) {
+        return new ResponseEntity<Object>(
+                new APIError(e.getMessage()), new HttpHeaders(), HttpStatus.UNAUTHORIZED);
+    }
+
     @ExceptionHandler({AccessDeniedException.class})
     public ResponseEntity<Object> handleAccessDeniedException(RuntimeException e) {
         return new ResponseEntity<Object>(

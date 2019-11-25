@@ -2,8 +2,11 @@ package com.epam.esm.service.implementation;
 
 import com.epam.esm.converter.OrderConverter;
 import com.epam.esm.dto.OrderDTO;
+import com.epam.esm.entity.Authority;
+import com.epam.esm.entity.CustomOAuthUser;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.UserEntity;
+import com.epam.esm.entity.UserStatus;
 import com.epam.esm.exception.OAuth2AuthenticationProcessingException;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.OrderRepository;
@@ -54,17 +57,30 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    public List<OrderDTO> getOrdersByUserID(Long currentUserID, Long userIDOrders, int pageNumber, int pageSize) {
-        if (!currentUserID.equals(userIDOrders)) {
-            throw new OAuth2AuthenticationProcessingException("Access is denied!");
+    public List<OrderDTO> getOrdersByUserID(CustomOAuthUser currentUserEntity, Long userIDOrders,
+                                            int pageNumber, int pageSize) {
+        UserEntity userEntity = this.userRepository.queryEntity(new FindUserByUserID(userIDOrders))
+                .orElseThrow(() -> new ResourceNotFoundException("Couldn't find user " + userIDOrders));
+        List<Authority> authorities = (List<Authority>) currentUserEntity.getAuthorities();
+        boolean isAdmin = false;
+        for (Authority i : authorities) {
+            if (i.getUserStatus() == UserStatus.ADMIN) {
+                isAdmin = true;
+                break;
+            }
         }
-        try {
-            List<Order> orders = orderRepository.queryList(new FindAllOrdersByUserID(userIDOrders), pageNumber, pageSize);
-            List<OrderDTO> orderDTOS = orderConverter.toDTOList(orders);
-            return orderDTOS;
-        } catch (EmptyResultDataAccessException e) {
-            throw new ResourceNotFoundException("Didn't find orders");
+        if (currentUserEntity.getUserEntity().getId().equals(userIDOrders) || isAdmin) {
+            try {
+                List<Order> orders = orderRepository.queryList(new FindAllOrdersByUserID(userIDOrders),
+                        pageNumber, pageSize);
+                List<OrderDTO> orderDTOS = orderConverter.toDTOList(orders);
+                return orderDTOS;
+            } catch (EmptyResultDataAccessException e) {
+                throw new ResourceNotFoundException("Didn't find orders");
+            }
         }
+        throw new OAuth2AuthenticationProcessingException("Access is denied!");
+
     }
 
     @Override

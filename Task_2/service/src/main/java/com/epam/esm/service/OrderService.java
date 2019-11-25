@@ -1,6 +1,7 @@
 package com.epam.esm.service;
 
 import com.epam.esm.dto.OrderDTO;
+import com.epam.esm.entity.CustomOAuthUser;
 
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,7 @@ public interface OrderService extends BaseService<OrderDTO> {
 
     OrderDTO add(Long userID, OrderDTO orderDTO);
 
-    List<OrderDTO> getOrdersByUserID(Long currentUserID, Long userIDOrders, int pageNumber, int pageSize);
+    List<OrderDTO> getOrdersByUserID(CustomOAuthUser currentUser, Long userIDOrders, int pageNumber, int pageSize);
 
     OrderDTO getUserOrder(Long userID, Long orderID);
 

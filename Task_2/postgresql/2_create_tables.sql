@@ -61,5 +61,5 @@ create table order_giftcertificate
     order_id           integer not null,
     giftcertificate_id integer not null,
     constraint fk_orders_id foreign key (order_id) references orders (id) on delete cascade,
-    constraint fk_orders_giftcertificates foreign key (giftcertificate_id) references giftcertificates (id) on delete cascade
+    constraint fk_orders_giftcertificates foreign key (giftcertificate_id) references giftcertificates (id) on delete SET NULL
 );

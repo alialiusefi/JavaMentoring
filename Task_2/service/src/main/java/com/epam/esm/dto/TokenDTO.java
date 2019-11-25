@@ -1,5 +1,8 @@
 package com.epam.esm.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties({"id"})
 public class TokenDTO extends DTO {
 
     private String accessToken;

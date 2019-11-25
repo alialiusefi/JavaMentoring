@@ -4,7 +4,6 @@ import com.epam.esm.dto.OrderDTO;
 import com.epam.esm.dto.TagDTO;
 import com.epam.esm.dto.UserDTO;
 import com.epam.esm.entity.LocalCustomOAuthUser;
-import com.epam.esm.exception.BadRequestException;
 import com.epam.esm.service.OrderService;
 import com.epam.esm.service.TagService;
 import com.epam.esm.service.UserService;
@@ -46,23 +45,21 @@ public class UserController {
     }
 
     @GetMapping("/{userID}")
+    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     public UserDTO getUser(@PathVariable Long userID) {
         return userService.getByID(userID);
     }
 
     @GetMapping()
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public List<UserDTO> getAllUsers(@RequestParam(defaultValue = "${app.pagedefault.defaultPageNumber}") Integer page,
                                      @RequestParam(defaultValue = "${app.pagedefault.defaultPageSize}") Integer size) {
         return userService.getAll(page, size);
     }
 
     @GetMapping("/{userID}/tags")
-    public List<TagDTO> getPopularTag(@PathVariable Long userID, @RequestParam boolean popular) {
-        if (popular) {
+    public List<TagDTO> getPopularTag(@PathVariable Long userID) {
             return tagService.getMostUsedTagOfMostExpensiveUserOrders(userID);
-        } else {
-            throw new BadRequestException("Popular should be true!");
-        }
     }
 
 
@@ -89,10 +86,11 @@ public class UserController {
                                             @RequestParam(defaultValue = "${app.pagedefault.defaultPageSize}") Integer size) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         LocalCustomOAuthUser customOAuthUser = (LocalCustomOAuthUser) authentication.getPrincipal();
-        return orderService.getOrdersByUserID(customOAuthUser.getUserEntity().getId(), userID, page, size);
+        return orderService.getOrdersByUserID(customOAuthUser, userID, page, size);
     }
 
     @GetMapping("/{userID}/orders/{orderID}")
+    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     public OrderDTO getUserOrder(@PathVariable @Valid Long userID,
                                  @PathVariable @Valid Long orderID) {
         return orderService.getUserOrder(userID, orderID);

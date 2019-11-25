@@ -28,6 +28,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validation;
+import javax.validation.Validator;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -40,6 +44,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
@@ -48,6 +53,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private GiftCertificateConverter giftCertificateConverter;
     private TagRepository tagRepository;
     private TagConverter tagConverter;
+    private Validator validator;
 
     @Autowired
     public GiftCertificateServiceImpl(GiftCertificateRepository giftCertificateRepo, TagRepository tagRepository,
@@ -57,6 +63,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         this.tagRepository = tagRepository;
         this.giftCertificateConverter = giftCertificateConverter;
         this.tagConverter = tagConverter;
+        this.validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
     @Override
@@ -109,6 +116,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Transactional
     @Override
     public GiftCertificateDTO patch(Map<Object, Object> fields, Long id) {
+
         GiftCertificate oldGiftCertificate = giftCertificateRepo.queryEntity(
                 new FindGiftCertificateByID(id)).orElseThrow(() ->
                 new ResourceNotFoundException("Certificate with this id doesn't exist!"));
@@ -127,7 +135,13 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             }
             field.setAccessible(false);
         });
-        return update(giftCertificateConverter.toDTO(oldGiftCertificate));
+        GiftCertificateDTO giftCertificateDTO = giftCertificateConverter.toDTO(oldGiftCertificate);
+        Set<ConstraintViolation<GiftCertificateDTO>> violations =
+                validator.validate(giftCertificateDTO);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException("Incorrect Data!", violations);
+        }
+        return update(giftCertificateDTO);
     }
 
     private boolean isFieldPatchable(Field field) {

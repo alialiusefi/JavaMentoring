@@ -31,7 +31,7 @@ public class OrderDTO extends DTO {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime timestamp;
 
-    @Valid
+
     private List<GiftCertificateDTO> giftCertificates;
 
     public OrderDTO() {

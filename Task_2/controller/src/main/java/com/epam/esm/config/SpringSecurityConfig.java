@@ -14,6 +14,7 @@ import com.epam.esm.service.CustomUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -100,7 +101,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/v2/auth/**");
+        web.ignoring().antMatchers("/v2/auth/**")
+                .and().ignoring().antMatchers(HttpMethod.GET, "/v1/giftcertificates/**")
+                .and().ignoring().antMatchers(HttpMethod.GET, "/v1/tags/*");
     }
 
     @Override

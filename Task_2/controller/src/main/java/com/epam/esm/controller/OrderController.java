@@ -36,6 +36,7 @@ public class OrderController {
     }
 
     @GetMapping()
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<OrderDTO> getAllOrders(@RequestParam(defaultValue = "${app.pagedefault.defaultPageNumber}") Integer page,
                                        @RequestParam(defaultValue = "${app.pagedefault.defaultPageSize}") Integer size) {
         return orderService.getAll(page, size);
