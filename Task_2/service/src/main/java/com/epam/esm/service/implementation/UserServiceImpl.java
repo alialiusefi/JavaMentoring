@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setEnabled(true);
         userEntity.setOrders(new ArrayList<>());
         userEntity = userRepository.add(userEntity);
-        Authority authority = new Authority.AuthorityBuilder(userEntity.getId(), UserStatus.USER).getResult();
+        Authority authority = new Authority.AuthorityBuilder(userEntity, UserStatus.USER).getResult();
         authority = authorityRepository.add(authority);
         List<Authority> authorities = new ArrayList<>();
         authorities.add(authority);

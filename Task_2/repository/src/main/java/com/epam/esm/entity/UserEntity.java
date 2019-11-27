@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -31,10 +30,8 @@ public class UserEntity extends AbstractEntity {
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @JoinTable(name = "authorities", inverseJoinColumns = {
-            @JoinColumn(name = "id")},
-            joinColumns = {@JoinColumn(name = "user_id")})
+
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Authority> authorityList;
 
     @OneToMany(fetch = FetchType.LAZY)

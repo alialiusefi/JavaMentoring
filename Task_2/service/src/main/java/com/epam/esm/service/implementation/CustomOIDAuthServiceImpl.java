@@ -44,7 +44,7 @@ public class CustomOIDAuthServiceImpl extends OidcUserService implements CustomO
         UserEntity userEntity = builder.getResult();
         List<Authority> authorities = new ArrayList<>();
         userEntity = userRepository.add(userEntity);
-        Authority authority = new Authority.AuthorityBuilder(userEntity.getId(),
+        Authority authority = new Authority.AuthorityBuilder(userEntity,
                 UserStatus.USER).getResult();
         authority = this.authorityRepository.add(authority);
         authorities.add(authority);

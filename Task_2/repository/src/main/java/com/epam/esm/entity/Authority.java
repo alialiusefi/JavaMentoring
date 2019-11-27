@@ -2,7 +2,17 @@ package com.epam.esm.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity(name = "authorities")
@@ -14,15 +24,16 @@ public class Authority extends AbstractEntity implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "authoritySequence")
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userID;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id")
+    private UserEntity userEntity;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "userstatus", nullable = false)
     private UserStatus userStatus;
 
     private Authority(AuthorityBuilder builder) {
-        this.userID = builder.userID;
+        this.userEntity = builder.userEntity1;
         this.userStatus = builder.userStatus;
     }
 
@@ -38,18 +49,19 @@ public class Authority extends AbstractEntity implements GrantedAuthority {
         this.id = id;
     }
 
+    public UserEntity getUserEntity() {
+        return userEntity;
+    }
+
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
+    }
+
     @Override
     public String getAuthority() {
         return this.userStatus.toString();
     }
 
-    public Long getUserID() {
-        return userID;
-    }
-
-    public void setUserID(Long userID) {
-        this.userID = userID;
-    }
 
     public UserStatus getUserStatus() {
         return userStatus;
@@ -65,31 +77,17 @@ public class Authority extends AbstractEntity implements GrantedAuthority {
         if (o == null || getClass() != o.getClass()) return false;
         Authority authority = (Authority) o;
         return Objects.equals(id, authority.id) &&
-                Objects.equals(userID, authority.userID) &&
+                Objects.equals(userEntity, authority.userEntity) &&
                 userStatus == authority.userStatus;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, userID, userStatus);
-    }
-
-    @Override
-    public String toString() {
-        return "Authority{" +
-                "id=" + id +
-                ", userID=" + userID +
-                ", userStatus=" + userStatus +
-                '}';
     }
 
     public static class AuthorityBuilder {
 
-        private final Long userID;
+        private final UserEntity userEntity1;
         private final UserStatus userStatus;
 
-        public AuthorityBuilder(Long userID, UserStatus status) {
-            this.userID = userID;
+        public AuthorityBuilder(UserEntity userEntity1, UserStatus status) {
+            this.userEntity1 = userEntity1;
             this.userStatus = status;
         }
 
