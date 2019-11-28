@@ -93,6 +93,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         certificate.setDateOfModification(null);
         List<Tag> tagsWithID = getTagsWithID(certificate.getTags());
         certificate.setTags(tagsWithID);
+        certificate.setForSale(true);
         certificate = giftCertificateRepo.add(certificate);
         GiftCertificateDTO giftCertificateDTOCreated = giftCertificateConverter.toDTO(certificate);
         return giftCertificateDTOCreated;
@@ -205,7 +206,11 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             throw new ResourceNotFoundException("Gift Certificate with ID: "
                     + id + " was not found!");
         }
-        giftCertificateRepo.delete(new FindGiftCertificateByID(id));
+        GiftCertificate certificate = giftCertificateRepo.queryEntity(new FindGiftCertificateByID(id))
+                .orElseThrow(() -> new ResourceNotFoundException("Gift Certificate with ID: "
+                        + id + " was not found!"));
+        certificate.setForSale(false);
+        certificate = giftCertificateRepo.update(certificate);
         return true;
     }
 
@@ -217,7 +222,12 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             throw new ResourceNotFoundException("Gift Certificate with ID: "
                     + certificate.getId() + " was not found!");
         }
-        giftCertificateRepo.delete(giftCertificateConverter.toEntity(certificate));
+        GiftCertificate certificatefound = giftCertificateRepo.queryEntity(new FindGiftCertificateByID(
+                certificate.getId()))
+                .orElseThrow(() -> new ResourceNotFoundException("Gift Certificate with ID: "
+                        + certificate.getId() + " was not found!"));
+        certificatefound.setForSale(false);
+        certificatefound = giftCertificateRepo.update(certificatefound);
         return true;
     }
 
@@ -294,12 +304,13 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             Double price = (Double) i[3];
             Date dateCreated = (Date) i[4];
             Date dateModified = null;
-            if (i[4] != null) {
+            if (i[5] != null) {
                 dateModified = (Date) i[5];
             }
             Integer duration = (Integer) i[6];
+            boolean isForSale = (Boolean) i[7];
             GiftCertificate giftCertificate = new GiftCertificate.GiftCertificateBuilder(id, name, desc,
-                    BigDecimal.valueOf(price), duration).getResult();
+                    BigDecimal.valueOf(price), isForSale, duration).getResult();
             giftCertificate.setDateOfCreation(new java.sql.Date(dateCreated.getTime()).toLocalDate());
             if (dateModified != null) {
                 giftCertificate.setDateOfModification(new java.sql.Date(dateModified.getTime()).toLocalDate());

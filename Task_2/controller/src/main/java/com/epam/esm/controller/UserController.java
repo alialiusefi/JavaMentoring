@@ -1,5 +1,6 @@
 package com.epam.esm.controller;
 
+import com.epam.esm.dto.AddOrderDTO;
 import com.epam.esm.dto.OrderDTO;
 import com.epam.esm.dto.TagDTO;
 import com.epam.esm.dto.UserDTO;
@@ -99,7 +100,7 @@ public class UserController {
     @PostMapping(value = "/{userID}/orders")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
-    public OrderDTO saveUserOrder(@RequestBody @Valid OrderDTO orderDTO,
+    public OrderDTO saveUserOrder(@RequestBody @Valid AddOrderDTO orderDTO,
                                   @PathVariable Long userID) {
         return orderService.add(userID, orderDTO);
     }

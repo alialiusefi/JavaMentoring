@@ -11,7 +11,7 @@ public class FindGiftCertificatesByName implements NativeSQLFindSpecification<Gi
     private static final String SQL_CLAUSE = "select giftcertificates.id,giftcertificates.name" +
             ",giftcertificates.description,giftcertificates.price" +
             ",giftcertificates.date_created,giftcertificates.date_modified," +
-            "giftcertificates.duration_till_expiry " +
+            "giftcertificates.duration_till_expiry,giftcertificates.isforsale " +
             "from giftcertificates " +
             "where public.consists(?,giftcertificates.name) ";
 

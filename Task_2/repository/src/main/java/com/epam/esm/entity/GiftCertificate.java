@@ -1,6 +1,15 @@
 package com.epam.esm.entity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -30,6 +39,9 @@ public final class GiftCertificate extends AbstractEntity {
     @Column(name = "duration_till_expiry", nullable = false)
     private Integer durationTillExpiry;
 
+    @Column(name = "isForSale", nullable = false)
+    private boolean isForSale;
+
     @ManyToMany
     @JoinTable(name = "tagged_giftcertificates", inverseJoinColumns =
             {@JoinColumn(name = "tag_id")},
@@ -48,6 +60,7 @@ public final class GiftCertificate extends AbstractEntity {
         this.dateOfCreation = giftCertificateBuilder.dateOfCreation;
         this.dateOfModification = giftCertificateBuilder.dateOfModification;
         this.durationTillExpiry = giftCertificateBuilder.durationTillExpiry;
+        this.isForSale = giftCertificateBuilder.isForSale;
         this.tags = giftCertificateBuilder.tags;
     }
 
@@ -99,6 +112,14 @@ public final class GiftCertificate extends AbstractEntity {
         this.dateOfModification = dateOfModification;
     }
 
+    public boolean isForSale() {
+        return isForSale;
+    }
+
+    public void setForSale(boolean forSale) {
+        isForSale = forSale;
+    }
+
     public int getDurationTillExpiry() {
         return durationTillExpiry;
     }
@@ -119,30 +140,35 @@ public final class GiftCertificate extends AbstractEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         GiftCertificate that = (GiftCertificate) o;
-        return durationTillExpiry == that.durationTillExpiry &&
+        return isForSale == that.isForSale &&
+                Objects.equals(id, that.id) &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(price, that.price) &&
                 Objects.equals(dateOfCreation, that.dateOfCreation) &&
-                Objects.equals(dateOfModification, that.dateOfModification);
+                Objects.equals(dateOfModification, that.dateOfModification) &&
+                Objects.equals(durationTillExpiry, that.durationTillExpiry) &&
+                Objects.equals(tags, that.tags);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, description, price, dateOfCreation, dateOfModification, durationTillExpiry);
+        return Objects.hash(id, name, description, price, dateOfCreation, dateOfModification, durationTillExpiry, isForSale, tags);
     }
 
     @Override
     public String toString() {
         return "GiftCertificate{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", dateOfCreation=" + dateOfCreation +
                 ", dateOfModification=" + dateOfModification +
                 ", durationTillExpiry=" + durationTillExpiry +
+                ", isForSale=" + isForSale +
+                ", tags=" + tags +
                 '}';
     }
 
@@ -153,16 +179,18 @@ public final class GiftCertificate extends AbstractEntity {
         private final String description;
         private final BigDecimal price;
         private final Integer durationTillExpiry;
+        private boolean isForSale;
         private List<Tag> tags;
         private LocalDate dateOfCreation;
         private LocalDate dateOfModification;
 
-        public GiftCertificateBuilder(long id, String name, String description, BigDecimal price,
+        public GiftCertificateBuilder(long id, String name, String description, BigDecimal price, boolean isForSale,
                                       Integer durationTillExpiry) {
             this.id = id;
             this.name = name;
             this.description = description;
             this.price = price;
+            this.isForSale = isForSale;
             this.durationTillExpiry = durationTillExpiry;
         }
 
@@ -179,6 +207,14 @@ public final class GiftCertificate extends AbstractEntity {
         public GiftCertificateBuilder setTags(List<Tag> tags) {
             this.tags = tags;
             return this;
+        }
+
+        public boolean isForSale() {
+            return isForSale;
+        }
+
+        public void setForSale(boolean forSale) {
+            isForSale = forSale;
         }
 
         public GiftCertificate getResult() {

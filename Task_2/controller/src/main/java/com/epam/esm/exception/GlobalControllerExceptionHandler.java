@@ -1,5 +1,6 @@
 package com.epam.esm.exception;
 
+import com.epam.esm.security.exception.InvalidJwtAuthenticationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,12 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
 
     @ExceptionHandler({OAuth2AuthenticationProcessingException.class})
     public ResponseEntity<Object> handleOAuth2AuthenticationProcessingException(RuntimeException e) {
+        return new ResponseEntity<Object>(
+                new APIError(e.getMessage()), new HttpHeaders(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler({InvalidJwtAuthenticationException.class})
+    public ResponseEntity<Object> handleInvalidJwtAuthenticationException(RuntimeException e) {
         return new ResponseEntity<Object>(
                 new APIError(e.getMessage()), new HttpHeaders(), HttpStatus.UNAUTHORIZED);
     }

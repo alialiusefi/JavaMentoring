@@ -12,7 +12,7 @@ public class FindGiftCertificatesByTagID
     private static final String SQL_CLAUSE = "select giftcertificates.id,giftcertificates.name" +
             ",giftcertificates.description,giftcertificates.price" +
             ",giftcertificates.date_created,giftcertificates.date_modified," +
-            "giftcertificates.duration_till_expiry " +
+            "giftcertificates.duration_till_expiry,giftcertificates.isforsale " +
             "from giftcertificates inner join tagged_giftcertificates on giftcertificates.id = gift_certificate_id " +
             "where tag_id = ? ";
 
@@ -34,14 +34,22 @@ public class FindGiftCertificatesByTagID
             stringBuilder.append(" or tag_id = ?");
         }
         Query nativeQuery = em.createNativeQuery(stringBuilder.toString());
-        for (int i = 1; i <= tagID.length; i++) {
-            nativeQuery.setParameter(i, tagID[i - 1]);
+        for (int i = 0; i < tagID.length; i++) {
+            nativeQuery.setParameter(i + 1, tagID[i]);
         }
         return nativeQuery;
     }
 
     @Override
     public String getSQLClause(boolean isConjunction) {
-        return isConjunction ? CONJ_SQL_CLAUSE : SQL_CLAUSE;
+        String query = SQL_CLAUSE;
+        if (isConjunction) {
+            query = CONJ_SQL_CLAUSE;
+        }
+        StringBuilder stringBuilder = new StringBuilder(query);
+        for (int i = 1; i < tagID.length; i++) {
+            stringBuilder.append(" or tag_id = ?");
+        }
+        return stringBuilder.toString();
     }
 }

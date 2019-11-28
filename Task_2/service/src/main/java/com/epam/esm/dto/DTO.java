@@ -1,14 +1,12 @@
 package com.epam.esm.dto;
 
 
-import javax.validation.Valid;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.Min;
 import java.util.Objects;
 
-@Valid
 public abstract class DTO {
 
-    @Positive
+    @Min(1)
     protected Long id;
 
     public DTO() {

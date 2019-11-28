@@ -15,7 +15,7 @@ public class FindAllGiftCertificates extends FindSpecification<GiftCertificate> 
     public Query getQuery(EntityManager entityManager, CriteriaBuilder builder) {
         CriteriaQuery<GiftCertificate> criteriaQuery = builder.createQuery(GiftCertificate.class);
         Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
-        criteriaQuery.select(root);
+        criteriaQuery.select(root).where(builder.equal(root.get("isForSale"), true));
         return entityManager.createQuery(criteriaQuery);
     }
 }

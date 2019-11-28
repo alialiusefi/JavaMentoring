@@ -7,8 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.math.BigDecimal;
@@ -37,7 +37,7 @@ public class Order extends AbstractEntity {
     @Column(name = "timestamp", nullable = false)
     private LocalDateTime timestamp;
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(name = "order_giftcertificate", joinColumns =
             {@JoinColumn(name = "order_id")},
             inverseJoinColumns = {@JoinColumn(name = "giftcertificate_id")})

@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 public class FindGiftCertificateByID extends FindSpecification<GiftCertificate> {
@@ -20,7 +21,10 @@ public class FindGiftCertificateByID extends FindSpecification<GiftCertificate> 
     public Query getQuery(EntityManager manager, CriteriaBuilder builder) {
         CriteriaQuery<GiftCertificate> criteriaQuery = builder.createQuery(GiftCertificate.class);
         Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
-        criteriaQuery.select(root).where(builder.equal(root.get("id"), this.id));
+        Predicate predicateID = builder.equal(root.get("id"), this.id);
+        Predicate predicateIsForSale = builder.equal(root.get("isForSale"), true);
+        Predicate finalPredicate = builder.and(predicateID, predicateIsForSale);
+        criteriaQuery.select(root).where(finalPredicate);
         return manager.createQuery(criteriaQuery);
     }
 }

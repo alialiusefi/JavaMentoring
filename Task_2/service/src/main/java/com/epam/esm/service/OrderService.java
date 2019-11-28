@@ -1,5 +1,6 @@
 package com.epam.esm.service;
 
+import com.epam.esm.dto.AddOrderDTO;
 import com.epam.esm.dto.OrderDTO;
 import com.epam.esm.entity.CustomOAuthUser;
 
@@ -13,7 +14,7 @@ public interface OrderService extends BaseService<OrderDTO> {
         throw new UnsupportedOperationException("Wrong method called!");
     }
 
-    OrderDTO add(Long userID, OrderDTO orderDTO);
+    OrderDTO add(Long userID, AddOrderDTO orderDTO);
 
     List<OrderDTO> getOrdersByUserID(CustomOAuthUser currentUser, Long userIDOrders, int pageNumber, int pageSize);
 

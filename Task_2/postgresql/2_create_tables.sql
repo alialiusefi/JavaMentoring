@@ -1,12 +1,13 @@
 create table giftcertificates
 (
     id                   serial primary key,
-    name                 varchar(50) not null,
+    name                 varchar(50)          not null,
     description          text,
-    price                float       not null,
-    date_created         date        not null,
+    price                float                not null,
+    date_created         date                 not null,
     date_modified        date,
-    duration_till_expiry integer     not null
+    duration_till_expiry integer              not null,
+    isForSale            boolean default true not null
 );
 
 create table tag
@@ -29,7 +30,6 @@ create table users
     enabled  boolean            not null
 );
 
-/*CREATE TYPE userstatus AS ENUM ('Administrator', 'Guest', 'User');*/
 
 create table authorities
 (

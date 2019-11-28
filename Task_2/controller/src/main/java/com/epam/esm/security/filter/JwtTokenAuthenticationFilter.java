@@ -2,6 +2,7 @@ package com.epam.esm.security.filter;
 
 import com.epam.esm.security.exception.InvalidJwtAuthenticationException;
 import com.epam.esm.security.provider.JwtTokenProvider;
+import com.epam.esm.utility.CookieUtils;
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -33,7 +34,6 @@ public class JwtTokenAuthenticationFilter extends GenericFilterBean {
                 (HttpServletResponse) response);
         String refreshToken = jwtTokenProvider.resolveRefreshToken((HttpServletRequest) req,
                 (HttpServletResponse) response);
-
         if (accessToken != null && refreshToken != null) {
             Authentication auth = null;
             try {
@@ -45,7 +45,7 @@ public class JwtTokenAuthenticationFilter extends GenericFilterBean {
                     Authentication newAuthentication = jwtTokenProvider.getAuthentication(refreshToken);
                     String newAccessToken = jwtTokenProvider.generateAccessToken((UserDetails)
                             newAuthentication.getPrincipal());
-                    ((HttpServletResponse) response).addHeader("Authorization", "Bearer " + newAccessToken);
+                    CookieUtils.addCookie((HttpServletResponse) response, "accessToken", newAccessToken, 8000);
                     if (newAccessToken != null && jwtTokenProvider.validateToken(newAccessToken)) {
                         auth = jwtTokenProvider.getAuthentication(newAccessToken);
                     }

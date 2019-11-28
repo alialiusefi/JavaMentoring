@@ -48,8 +48,16 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             return;
         }
         clearAuthenticationAttributes(request, response);
-
+        saveTokensToCookies(response, authentication);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
+    }
+
+    private void saveTokensToCookies(HttpServletResponse response, Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String accessToken = tokenProvider.generateAccessToken(userDetails);
+        String refreshToken = tokenProvider.generateRefreshToken(userDetails);
+        CookieUtils.addCookie(response, "accessToken", accessToken, 8000);
+        CookieUtils.addCookie(response, "refreshToken", refreshToken, 16000);
     }
 
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response,
@@ -63,11 +71,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
 
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String token = tokenProvider.generateAccessToken(userDetails);
-        String refreshToken = tokenProvider.generateRefreshToken(userDetails);
-        return UriComponentsBuilder.fromUriString(targetUrl)
-                .queryParam("token", token).queryParam("refresh", refreshToken)
+        return UriComponentsBuilder.fromUriString(targetUrl)/*
+                .queryParam("token", token).queryParam("refresh", refreshToken)*/
                 .build().toUriString();
     }
 

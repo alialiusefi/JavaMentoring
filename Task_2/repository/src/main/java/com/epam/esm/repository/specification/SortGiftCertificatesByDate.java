@@ -11,13 +11,13 @@ public class SortGiftCertificatesByDate extends NativeSQLSortSpecification<GiftC
     private static final String SQL_CLAUSE_ASC = "select giftcertificates.id,giftcertificates.name" +
             ",giftcertificates.description,giftcertificates.price" +
             ",giftcertificates.date_created,giftcertificates.date_modified," +
-            "giftcertificates.duration_till_expiry " +
+            "giftcertificates.duration_till_expiry,giftcertificates.isforsale " +
             "from giftcertificates " +
             "order by giftcertificates.date_created asc ";
     private static final String SQL_CLAUSE_DESC = "select giftcertificates.id,giftcertificates.name" +
             ",giftcertificates.description,giftcertificates.price" +
             ",giftcertificates.date_created,giftcertificates.date_modified," +
-            "giftcertificates.duration_till_expiry " +
+            "giftcertificates.duration_till_expiry,giftcertificates.isforsale " +
             "from giftcertificates " +
             "order by giftcertificates.date_created desc ";
 

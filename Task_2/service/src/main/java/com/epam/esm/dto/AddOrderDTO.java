@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -17,9 +16,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-@Validated
-@JsonIgnoreProperties({"giftCertificates.price"})
-public class OrderDTO extends DTO {
+@JsonIgnoreProperties({"id"})
+public class AddOrderDTO extends DTO {
 
     public static final int SCALE = 2;
     public static final RoundingMode ROUNDING_MODE = RoundingMode.DOWN;
@@ -34,14 +32,14 @@ public class OrderDTO extends DTO {
     private LocalDateTime timestamp;
 
     @Valid
-    private List<GiftCertificateDTO> giftCertificates;
+    private List<@Positive @NotNull Long> giftCertificates;
 
-    public OrderDTO() {
+    public AddOrderDTO() {
         super();
     }
 
-    public OrderDTO(Long id, @NotNull @Positive BigDecimal orderCost,
-                    @NotNull LocalDateTime timestamp, @Valid List<GiftCertificateDTO> giftCertificatesOrdered) {
+    public AddOrderDTO(Long id, @NotNull @Positive BigDecimal orderCost,
+                       @NotNull LocalDateTime timestamp, @Valid List<Long> giftCertificatesOrdered) {
         super(id);
         this.orderCost = orderCost;
         this.timestamp = timestamp;
@@ -64,11 +62,11 @@ public class OrderDTO extends DTO {
         this.timestamp = timestamp;
     }
 
-    public List<GiftCertificateDTO> getGiftCertificates() {
+    public List<Long> getGiftCertificates() {
         return giftCertificates;
     }
 
-    public void setGiftCertificates(List<GiftCertificateDTO> giftCertificatesOrdered) {
+    public void setGiftCertificates(List<Long> giftCertificatesOrdered) {
         this.giftCertificates = giftCertificatesOrdered;
     }
 
@@ -77,7 +75,7 @@ public class OrderDTO extends DTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        OrderDTO orderDTO = (OrderDTO) o;
+        AddOrderDTO orderDTO = (AddOrderDTO) o;
         return Objects.equals(orderCost, orderDTO.orderCost) &&
                 Objects.equals(timestamp, orderDTO.timestamp) &&
                 Objects.equals(giftCertificates, orderDTO.giftCertificates);

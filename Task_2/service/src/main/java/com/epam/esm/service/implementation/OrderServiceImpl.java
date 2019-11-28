@@ -1,18 +1,23 @@
 package com.epam.esm.service.implementation;
 
+import com.epam.esm.converter.AddOrderConverter;
 import com.epam.esm.converter.OrderConverter;
+import com.epam.esm.dto.AddOrderDTO;
 import com.epam.esm.dto.OrderDTO;
 import com.epam.esm.entity.Authority;
 import com.epam.esm.entity.CustomOAuthUser;
+import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.UserEntity;
 import com.epam.esm.entity.UserStatus;
 import com.epam.esm.exception.OAuth2AuthenticationProcessingException;
 import com.epam.esm.exception.ResourceNotFoundException;
+import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.repository.OrderRepository;
 import com.epam.esm.repository.UserRepository;
 import com.epam.esm.repository.specification.FindAllOrders;
 import com.epam.esm.repository.specification.FindAllOrdersByUserID;
+import com.epam.esm.repository.specification.FindGiftCertificateByID;
 import com.epam.esm.repository.specification.FindOrderByID;
 import com.epam.esm.repository.specification.FindUserByUserID;
 import com.epam.esm.repository.specification.FindUserOrderByOrderID;
@@ -22,7 +27,9 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,13 +38,18 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
     private UserRepository userRepository;
     private OrderConverter orderConverter;
+    private AddOrderConverter addOrderConverter;
+    private GiftCertificateRepository giftCertificateRepository;
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, UserRepository userRepository,
-                            OrderConverter orderConverter) {
+                            OrderConverter orderConverter, AddOrderConverter addOrderConverter,
+                            GiftCertificateRepository giftCertificateRepository) {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
         this.orderConverter = orderConverter;
+        this.addOrderConverter = addOrderConverter;
+        this.giftCertificateRepository = giftCertificateRepository;
     }
 
     @Override
@@ -96,13 +108,28 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderDTO add(Long userID, OrderDTO dto) {
-        Order order = orderConverter.toEntity(dto);//
+    public OrderDTO add(Long userID, AddOrderDTO dto) {
+        Order order = addOrderConverter.toEntity(dto);//
+        order.setGiftCertificates(null);
         UserEntity userEntity = userRepository.queryEntity(new FindUserByUserID(userID)).
-                orElseThrow(() -> new ResourceNotFoundException("User with this id was not found"));//
+                orElseThrow(() -> new ResourceNotFoundException("User with this id was not found"));
+        List<GiftCertificate> giftCertificates = new ArrayList<>();
+        for (Long giftCertificateID : dto.getGiftCertificates()) {
+            GiftCertificate giftCertificateFound = giftCertificateRepository.queryEntity(
+                    new FindGiftCertificateByID(giftCertificateID)).orElseThrow(() -> new ResourceNotFoundException
+                    ("Couldn't find giftcertificate with id: " + giftCertificateID));
+            giftCertificates.add(giftCertificateFound);
+        }
         order.setTimestamp(LocalDateTime.now());
         order.setUserEntity(userEntity);
+        double sum = 0.0;
+        for (GiftCertificate i : giftCertificates) {
+            sum += i.getPrice().doubleValue();
+        }
+        order.setOrderCost(BigDecimal.valueOf(sum));
         Order orderAdded = orderRepository.add(order);
+        order.setGiftCertificates(giftCertificates);
+        orderAdded = orderRepository.update(orderAdded);
         userEntity.getOrders().add(orderAdded);
         userEntity = userRepository.update(userEntity);
         return orderConverter.toDTO(orderAdded);
@@ -133,11 +160,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderDTO update(OrderDTO dto) {
-        if (getByID(dto.getId()) == null) {
+        OrderDTO oldOrder;
+        if ((oldOrder = getByID(dto.getId())) == null) {
             throw new ResourceNotFoundException("Order with ID: "
                     + dto.getId() + " was not found!");
         }
         Order order = orderConverter.toEntity(dto);
+        order.setOrderCost(oldOrder.getOrderCost());
         return orderConverter.toDTO(orderRepository.update(order));
     }
 

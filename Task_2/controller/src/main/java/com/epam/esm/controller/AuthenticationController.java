@@ -49,8 +49,8 @@ public class AuthenticationController {
         final String accessToken = jwtTokenProvider.generateAccessToken(userDetails);
         final String refreshToken = jwtTokenProvider.generateRefreshToken(userDetails);
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + accessToken);
-        headers.set("Refresh", refreshToken);
+        headers.add("Set-Cookie", "accessToken=" + accessToken + " Max-Age=604800; Path=/; Secure; HttpOnly");
+        headers.add("Set-Cookie", "refreshToken=" + refreshToken + " Max-Age=604800; Path=/; Secure; HttpOnly");
         return ResponseEntity.ok().headers(headers).body(new TokenDTO(accessToken, refreshToken));
     }
 

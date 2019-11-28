@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Base64;
@@ -25,9 +26,7 @@ import java.util.Map;
 @Component
 public class JwtTokenProvider {
 
-    public static final String REFRESH_HEADER = "Refresh";
-    private static final String ACCESS_HEADER_KEY = "Authorization";
-    private static final String ACCESS_HEADER_VALUEPREFIX = "Bearer ";
+
     private CustomUserService customUserService;
     private AppProperties appProperties;
     private String secretKey;
@@ -85,33 +84,24 @@ public class JwtTokenProvider {
 
     public String resolveAccessToken(HttpServletRequest req,
                                      HttpServletResponse response) {
-        String bearerToken = req.getHeader(ACCESS_HEADER_KEY);
-        if (bearerToken != null && bearerToken.startsWith(ACCESS_HEADER_VALUEPREFIX)) {
-            return bearerToken.substring(7);
-        } else {
-            String token = req.getParameter("token");
-            if (token != null) {
-                response.addHeader(ACCESS_HEADER_KEY, ACCESS_HEADER_VALUEPREFIX + token);
-                return token;
+        Cookie[] cookies = req.getCookies();
+        if (cookies != null) {
+            for (Cookie i : cookies) {
+                if (i.getName().equals("accessToken")) {
+                    return i.getValue();
+                }
             }
         }
         throw new InvalidJwtAuthenticationException("Cannot resolve access token!");
-
     }
 
     public String resolveRefreshToken(HttpServletRequest req, HttpServletResponse response) {
-        String token = req.getHeader(REFRESH_HEADER);
-        if (token != null) {
-            return token;
-        } else {
-            token = req.getParameter("refresh");
-            if (token != null) {
-                if (!response.containsHeader(REFRESH_HEADER)) {
-                    response.addHeader(REFRESH_HEADER, token);
-                } else {
-                    response.setHeader(REFRESH_HEADER, token);
+        Cookie[] cookies = req.getCookies();
+        if (cookies != null) {
+            for (Cookie i : cookies) {
+                if (i.getName().equals("refreshToken")) {
+                    return i.getValue();
                 }
-                return token;
             }
         }
         throw new InvalidJwtAuthenticationException("Cannot resolve refresh token!");
