@@ -15,7 +15,7 @@ public class FindGiftCertificatesByName implements NativeSQLFindSpecification<Gi
             "from giftcertificates " +
             "where public.consists(?,giftcertificates.name) ";
 
-    private static final String CONJ_SQL_CLAUSE = "and public.consists(?,giftcertificates.name) ";
+    private static final String CONJ_SQL_CLAUSE = " and public.consists(?,giftcertificates.name) ";
 
     private String name;
 

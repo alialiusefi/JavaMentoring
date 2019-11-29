@@ -14,7 +14,7 @@ public class FindGiftCertificatesByTagID
             ",giftcertificates.date_created,giftcertificates.date_modified," +
             "giftcertificates.duration_till_expiry,giftcertificates.isforsale " +
             "from giftcertificates inner join tagged_giftcertificates on giftcertificates.id = gift_certificate_id " +
-            "where tag_id = ? ";
+            "where (tag_id = ? ";
 
     private static final String CONJ_SQL_CLAUSE = "inner join tagged_giftcertificates on giftcertificates.id = gift_certificate_id " +
             "where tag_id = ?";
@@ -33,6 +33,7 @@ public class FindGiftCertificatesByTagID
         for (int i = 1; i < tagID.length; i++) {
             stringBuilder.append(" or tag_id = ?");
         }
+        stringBuilder.append(" ) ");
         Query nativeQuery = em.createNativeQuery(stringBuilder.toString());
         for (int i = 0; i < tagID.length; i++) {
             nativeQuery.setParameter(i + 1, tagID[i]);
@@ -50,6 +51,7 @@ public class FindGiftCertificatesByTagID
         for (int i = 1; i < tagID.length; i++) {
             stringBuilder.append(" or tag_id = ?");
         }
+        stringBuilder.append(" ) ");
         return stringBuilder.toString();
     }
 }

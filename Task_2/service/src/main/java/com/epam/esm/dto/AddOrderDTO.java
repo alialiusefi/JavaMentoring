@@ -10,7 +10,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,9 +21,6 @@ public class AddOrderDTO extends DTO {
     public static final int SCALE = 2;
     public static final RoundingMode ROUNDING_MODE = RoundingMode.DOWN;
 
-    @NotNull
-    @Positive
-    private BigDecimal orderCost;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
@@ -38,20 +34,11 @@ public class AddOrderDTO extends DTO {
         super();
     }
 
-    public AddOrderDTO(Long id, @NotNull @Positive BigDecimal orderCost,
+    public AddOrderDTO(Long id,
                        @NotNull LocalDateTime timestamp, @Valid List<Long> giftCertificatesOrdered) {
         super(id);
-        this.orderCost = orderCost;
         this.timestamp = timestamp;
         this.giftCertificates = giftCertificatesOrdered;
-    }
-
-    public BigDecimal getOrderCost() {
-        return orderCost;
-    }
-
-    public void setOrderCost(BigDecimal orderCost) {
-        this.orderCost = orderCost.setScale(SCALE, ROUNDING_MODE);
     }
 
     public LocalDateTime getTimestamp() {
@@ -76,20 +63,20 @@ public class AddOrderDTO extends DTO {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         AddOrderDTO orderDTO = (AddOrderDTO) o;
-        return Objects.equals(orderCost, orderDTO.orderCost) &&
+        return
                 Objects.equals(timestamp, orderDTO.timestamp) &&
-                Objects.equals(giftCertificates, orderDTO.giftCertificates);
+                        Objects.equals(giftCertificates, orderDTO.giftCertificates);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), orderCost, timestamp, giftCertificates);
+        return Objects.hash(super.hashCode(), timestamp, giftCertificates);
     }
 
     @Override
     public String toString() {
         return "OrderDTO{" +
-                ", orderCost=" + orderCost +
+                ", orderCost=" +
                 ", timestamp=" + timestamp +
                 ", giftCertificatesOrdered=" + giftCertificates +
                 ", id=" + id +
