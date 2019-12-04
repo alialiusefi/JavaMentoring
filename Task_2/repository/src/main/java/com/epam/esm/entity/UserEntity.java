@@ -34,7 +34,7 @@ public class UserEntity extends AbstractEntity {
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Authority> authorityList;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany
     @JoinTable(name = "order_user", inverseJoinColumns =
             {@JoinColumn(name = "order_id")},
             joinColumns = {@JoinColumn(name = "user_id")})

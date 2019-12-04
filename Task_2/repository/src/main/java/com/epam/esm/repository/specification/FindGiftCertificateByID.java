@@ -22,7 +22,7 @@ public class FindGiftCertificateByID extends FindSpecification<GiftCertificate> 
         CriteriaQuery<GiftCertificate> criteriaQuery = builder.createQuery(GiftCertificate.class);
         Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
         Predicate predicateID = builder.equal(root.get("id"), this.id);
-        Predicate predicateIsForSale = builder.equal(root.get("isForSale"), true);
+        Predicate predicateIsForSale = builder.isTrue(root.get("isForSale"));
         Predicate finalPredicate = builder.and(predicateID, predicateIsForSale);
         criteriaQuery.select(root).where(finalPredicate);
         return manager.createQuery(criteriaQuery);
