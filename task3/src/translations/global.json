@@ -1,0 +1,6 @@
+{
+  "home":{
+    "title" : ["GiftCertificates","Подарочные сертификаты"],
+    "loginlogout" : ["Login/Logout","Войти/Выход"]
+  }
+}

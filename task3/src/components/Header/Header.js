@@ -2,8 +2,9 @@ import React from "react";
 import "./Header.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Link} from "react-router-dom";
-import {FormErrors} from '../FormErrors/FormErrors'
-
+import ChangeLocale from '../ChangeLocale/ChangeLocale';
+import {FormErrors} from '../FormErrors/FormErrors';
+import {Translate} from "react-localize-redux"
 class Header extends React.Component {
 
     constructor(props) {
@@ -17,17 +18,21 @@ class Header extends React.Component {
                     <div className="container-fluid">
                         <div className="row">
                             <div className="col-5">
-                                <Link className="nav-item" to={"/giftcertificates"}>GiftCertificates</Link>
+                                <Link className="nav-item" to={"/giftcertificates"}>
+                                    <Translate id="home.title">GiftCertificates</Translate>
+                                </Link>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-5">
-                                <Link className="nav-item text-info" to={"/changeLocale"}>RU/EN</Link>
+                                <ChangeLocale/>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-5">
-                                <Link className="nav-item" to={"/login"}>Login</Link>
+                                <Link className="nav-item" to={"/login"}>
+                                    <Translate id="home.loginlogout"> Login/Logout </Translate>
+                                </Link>
                             </div>
                         </div>
                     </div>

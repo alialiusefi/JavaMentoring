@@ -7,7 +7,9 @@ class Login extends React.Component {
 
     constructor(props) {
         super(props);
-        
+        this.validateField = this.validateField.bind(this);
+        this.validateForm = this.validateForm.bind(this);
+        this.handleUserInput = this.handleUserInput.bind(this);
         this.state = {
             username: 'a',
             password: 'a',
@@ -17,16 +19,16 @@ class Login extends React.Component {
             formValid: false
         }
 
-        this.validateField = this.validateField.bind(this);
-        this.validateForm = this.validateForm.bind(this);
-        this.handleUserInput = this.handleUserInput.bind(this);
+
     }
 
-    handleUserInput(e) {
-        const name = e.target.name;
-        const value = e.target.value;
+    handleUserInput(event) {
+        const name = event.target.name;
+        const value = event.target.value;
         this.setState({[name]: value},
-            () => { this.validateField(name, value) });
+            () => {
+                this.validateField(name, value)
+            });
     }
 
     validateField(fieldName, value) {
@@ -46,14 +48,15 @@ class Login extends React.Component {
             default:
                 break;
         }
-        this.setState({formErrors: fieldValidationErrors,
+        this.setState({
+            formErrors: fieldValidationErrors,
             usernameValid: usernameValid,
             passwordValid: passwordValid
         }, this.validateForm);
     }
 
     validateForm() {
-        this.setState({formValid: this.state.emailValid && this.state.passwordValid});
+        this.setState({formValid: this.state.usernameValid && this.state.passwordValid});
     }
 
     errorClass(error) {
@@ -70,15 +73,15 @@ class Login extends React.Component {
                             <h2 className="text text-center">
                                 Login
                             </h2>
-                            <div className={'form-group ${this.errorClass(this.state.formErrors.email)}'}>
+                            <div className={'form-group ${this.errorClass(this.state.formErrors.username)}'}>
                                 <label>Username</label>
-                                <input type="text" onChange={this.handleUserInput}
-                                       className="form-control" value={this.state.username}
+                                <input type="text" onChange={event => this.handleUserInput(event)}
+                                        className="form-control" value={this.state.username}
                                        placeholder="Enter Username"/>
                             </div>
                             <div className={"form-group ${this.errorClass(this.state.formErrors.password)}"}>
                                 <label>Password</label>
-                                <input type="password" onChange={this.handleUserInput}
+                                <input type="password" onChange={event => this.handleUserInput(event)}
                                        value={this.state.password}
                                        className="form-control"
                                        placeholder="Enter Password"/>
@@ -120,7 +123,6 @@ class Login extends React.Component {
             </div>
         );
     }
-
 
 
 }
