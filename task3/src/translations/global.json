@@ -2,5 +2,11 @@
   "home":{
     "title" : ["GiftCertificates","Подарочные сертификаты"],
     "loginlogout" : ["Login/Logout","Войти/Выход"]
+  },
+  "login": {
+    "loginbutton" : ["Log In", "Войти"],
+    "cancelbutton" : ["Cancel", "Выход"],
+    "username" : ["Username","Username"],
+    "password" : ["Password", "Пароль"]
   }
 }

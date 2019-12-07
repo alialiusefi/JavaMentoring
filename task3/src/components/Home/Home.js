@@ -15,8 +15,8 @@ class Home extends React.Component {
         super(props);
         this.props.initialize({
             languages: [
-                {name: "English", code: "en"},
-                {name: "Russian", code: "ru"}
+                {name: "EN", code: "en"},
+                {name: "RU", code: "ru"}
             ],
             translation: globalTranslations,
             options: {renderToStaticMarkup}

@@ -3,12 +3,15 @@ import "./Header.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Link} from "react-router-dom";
 import ChangeLocale from '../ChangeLocale/ChangeLocale';
-import {FormErrors} from '../FormErrors/FormErrors';
-import {Translate} from "react-localize-redux"
+import {Translate} from "react-localize-redux";
+
 class Header extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            isLoggedIn : false
+        }
     }
 
     render() {
@@ -28,6 +31,7 @@ class Header extends React.Component {
                                 <ChangeLocale/>
                             </div>
                         </div>
+                        <welcomeUsername isLoggedIn={false}/>
                         <div className="row">
                             <div className="col-5">
                                 <Link className="nav-item" to={"/login"}>
@@ -42,7 +46,18 @@ class Header extends React.Component {
                 </div>*/}
             </div>
         );
+
+        function welcomeUsername(props) {
+            if(props.isLoggedIn) {
+                return <div className="row">
+                    <div className="col-5">
+                        <ChangeLocale/>
+                    </div>
+                </div>;
+            }
+        }
     }
+
 }
 
 export default Header;
