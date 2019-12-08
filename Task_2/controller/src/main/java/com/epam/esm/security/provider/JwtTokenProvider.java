@@ -26,7 +26,6 @@ import java.util.Map;
 @Component
 public class JwtTokenProvider {
 
-
     private CustomUserService customUserService;
     private AppProperties appProperties;
     private String secretKey;
@@ -53,16 +52,16 @@ public class JwtTokenProvider {
         return doGenerateAccessToken(claims, userDetails.getUsername());
     }
 
-    public String generateRefreshToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        return doGenerateRefreshToken(claims, userDetails.getUsername());
-    }
-
     private String doGenerateAccessToken(Map<String, Object> claims, String subject) {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + tokenDuration * 1000))
                 .signWith(SignatureAlgorithm.HS512, secretKey).compact();
 
+    }
+
+    public String generateRefreshToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        return doGenerateRefreshToken(claims, userDetails.getUsername());
     }
 
     private String doGenerateRefreshToken(Map<String, Object> claims, String subject) {

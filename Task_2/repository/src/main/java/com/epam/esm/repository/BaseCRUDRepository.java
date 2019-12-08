@@ -51,6 +51,13 @@ public abstract class BaseCRUDRepository<T extends AbstractEntity> implements CR
         return results;
     }
 
+    /*@Override
+    public Integer queryCount(Specification<T> specification){
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        Query query = specification.getQuery(entityManager, builder);
+
+    }*/
+
     @Override
     public T update(T entity) {
         entityManager.merge(entity);

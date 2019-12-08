@@ -7,57 +7,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7c482e5e-8ec2-4e70-b212-5491b38e18c8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/config/GiftCertificateWebAppInitializer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/config/RootConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/config/WebConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/controller/GiftCertificateController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/controller/TagController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/exception/APIError.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/exception/GlobalControllerExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/runner/Application.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/resources/message.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/impl/GiftCertificateRepositoryImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/impl/TagRepositoryImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/config/ServiceConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/converter/BaseConverter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/converter/Converter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/converter/GiftCertificateConverter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/converter/TagConverter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/dto/DTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/dto/GiftCertificateDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/dto/TagDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/exception/BadRequestException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/exception/ResourceNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/BaseService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/GiftCertificateService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/TagService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/GiftCertificateServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/TagServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/test/java/com/epam/esm/service/IGiftCertificateBaseServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/test/java/com/epam/esm/service/ITagBaseServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c6b79a7a-1d63-4157-a97f-80054324f9f9.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c6b79a7a-1d63-4157-a97f-80054324f9f9/storage_v2/_src_/database/giftcertdb.0mJdJA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c6b79a7a-1d63-4157-a97f-80054324f9f9/storage_v2/_src_/database/giftcertdb.0mJdJA/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c6b79a7a-1d63-4157-a97f-80054324f9f9/storage_v2/_src_/database/giftcertdb.0mJdJA/schema/pg_catalog.0S1ZNQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c6b79a7a-1d63-4157-a97f-80054324f9f9/storage_v2/_src_/database/postgres.edMnLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c6b79a7a-1d63-4157-a97f-80054324f9f9/storage_v2/_src_/database/postgres.edMnLQ/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c6b79a7a-1d63-4157-a97f-80054324f9f9/storage_v2/_src_/database/postgres.edMnLQ/schema/pg_catalog.0S1ZNQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c6b79a7a-1d63-4157-a97f-80054324f9f9/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c6b79a7a-1d63-4157-a97f-80054324f9f9/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.zip" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/converter/UserWithoutPasswordConverter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/dto/UserWithoutPassDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/CustomOIDAuthService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/CustomOIDAuthServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/src/main/java/com/epam/esm/pool/ConnectionPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/repository/src/main/java/com/epam/esm/pool/ConnectionPool.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Task_2/controller/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/controller/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/config/RepositoryConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/config/RepositoryConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/CRUDRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/CRUDRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/GiftCertificateRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/GiftCertificateRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/TagRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/TagRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/test/java/com/epam/esm/repository/AbstractRepoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/test/java/com/epam/esm/repository/AbstractRepoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/test/java/com/epam/esm/repository/GiftCertificateRepoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/test/java/com/epam/esm/repository/GiftCertificateRepoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/test/java/com/epam/esm/repository/TagRepoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/test/java/com/epam/esm/repository/TagRepoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/service/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/config/SpringSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/config/SpringSecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/controller/GiftCertificateController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/controller/GiftCertificateController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/controller/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/controller/OrderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/controller/TagController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/controller/TagController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/properties/AppProperties.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/properties/AppProperties.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/security/filter/JwtTokenAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/security/filter/JwtTokenAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/security/handler/SecurityEntryPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/security/handler/SecurityEntryPoint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/security/provider/JwtTokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/security/provider/JwtTokenProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/controller/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/CustomOAuthUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/CustomOAuthUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/GithubCustomOAuthUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/GithubCustomOAuthUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/GoogleCustomOAuthUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/GoogleCustomOIDAuthUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/LocalCustomOAuthUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/LocalCustomOAuthUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindGiftCertificatesByName.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindGiftCertificatesByName.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindGiftCertificatesByTagID.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindGiftCertificatesByTagIDandGiftCertNameOrDescandSortByNameorDate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/BaseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/BaseService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/CustomOAuthUserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/CustomOAuthUserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/CustomUserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/CustomUserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/GiftCertificateServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/GiftCertificateServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/OrderServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/TagServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/TagServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/UserServiceImpl.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -556,6 +535,7 @@
       <workItem from="1572079796505" duration="24000" />
       <workItem from="1572082725849" duration="37000" />
       <workItem from="1572083450625" duration="621000" />
+      <workItem from="1573385638026" duration="2258000" />
     </task>
     <task id="LOCAL-00024" summary="Added method getFieldArray(), Implemented GiftCertificateRepo">
       <created>1569828724460</created>

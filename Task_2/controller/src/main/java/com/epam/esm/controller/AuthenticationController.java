@@ -45,7 +45,7 @@ public class AuthenticationController {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(dto.getUsername(),
                 dto.getPassword());
         authenticationManager.authenticate(token);
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(dto.getUsername());
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(dto.getUsername());
         final String accessToken = jwtTokenProvider.generateAccessToken(userDetails);
         final String refreshToken = jwtTokenProvider.generateRefreshToken(userDetails);
         HttpHeaders headers = new HttpHeaders();

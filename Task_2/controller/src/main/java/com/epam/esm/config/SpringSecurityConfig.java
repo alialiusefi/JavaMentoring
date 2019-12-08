@@ -32,12 +32,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String GIFTCERTIFICATE_MAPPING = "/v1/giftcertificates/**";
-    private static final String TAG_MAPPING = "/v1/tags/**";
-    private static final String ORDERS_MAPPING = "/v2/orders/**";
-    private static final String USERS_MAPPING = "/v2/users/**";
-
-
     private CustomUserService customUserService;
     private JwtTokenProvider jwtTokenProvider;
     private SecurityEntryPoint restAuthenticationEntryPoint;
@@ -102,6 +96,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/v2/auth/**")
+                .and().ignoring().antMatchers(HttpMethod.GET, "/v1/giftcertificates/**")
                 .and().ignoring().antMatchers(HttpMethod.GET, "/v1/giftcertificates/**")
                 .and().ignoring().antMatchers(HttpMethod.GET, "/v1/tags/*");
     }

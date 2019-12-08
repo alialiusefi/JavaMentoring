@@ -37,6 +37,14 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
                 new APIError(e.getMessage()), new HttpHeaders(), HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<Object> handleResourceNotFound(RuntimeException ex) {
+        return new ResponseEntity<Object>(
+                new APIError(ex.getMessage()), new HttpHeaders(), HttpStatus.NOT_FOUND);
+        /*return handleExceptionInternal(ex, new APIError(ex.getMessage()),
+                new HttpHeaders(), HttpStatus.NOT_FOUND, request);*/
+    }
+
     @ExceptionHandler({InvalidJwtAuthenticationException.class})
     public ResponseEntity<Object> handleInvalidJwtAuthenticationException(RuntimeException e) {
         return new ResponseEntity<Object>(
@@ -94,12 +102,7 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
                 apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Object> handleResourceNotFound(RuntimeException ex, WebRequest request) {
-        return handleExceptionInternal(ex, new APIError(ex.getMessage()),
-                new HttpHeaders(), HttpStatus.NOT_FOUND, request);
-    }
+
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BadRequestException.class)

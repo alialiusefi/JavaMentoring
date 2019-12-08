@@ -1,7 +1,10 @@
 {
   "home":{
     "title" : ["GiftCertificates","Подарочные сертификаты"],
-    "loginlogout" : ["Login/Logout","Войти/Выход"]
+    "loginlogout" : ["Login/Logout","Войти/Выход"],
+    "mygiftcertificates" : ["My GiftCertificates","мои сертификаты"],
+    "allgiftcertificates" : ["All GiftCertificates","все сертификаты"],
+    "search" : ["Search","Пойск"]
   },
   "login": {
     "loginbutton" : ["Log In", "Войти"],
