@@ -1,20 +1,37 @@
 import React from "react";
 import {Translate, withLocalize} from "react-localize-redux";
-import ReactPaginate from 'react-paginate';
+import Select from 'react-select';
+
+const options = [
+    {value: 5, label: '5'},
+    {value: 10, label: '10'},
+    {value: 15, label: '15'},
+];
 
 class PaginationSize extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            paginationSize: 5
+        }
     }
 
     render() {
+        const {paginationSize} = this.state;
         return (
             <div>
-                SELECT PAGINATION SIZE HERE
+                <Select value={paginationSize}
+                        onChange={this.handleChange}
+                        options={options}>
+                </Select>
             </div>
         );
     }
-}
 
+    handleChange = paginationSize => {
+        this.setState({paginationSize});
+    };
+
+}
 export default withLocalize(PaginationSize);

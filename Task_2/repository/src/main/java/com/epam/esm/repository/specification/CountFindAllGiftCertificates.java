@@ -10,10 +10,6 @@ public class CountFindAllGiftCertificates implements CountSpecification {
 
     @Override
     public Query getQuery(EntityManager em, CriteriaBuilder builder) {
-        /*CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
-        Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
-        criteriaQuery.select(builder.count(criteriaQuery.from(GiftCertificate.class)));
-        criteriaQuery.where(builder.isTrue(root.get("isForSale")));*/
         return em.createNativeQuery(SQL_QUERY);
     }
 }
