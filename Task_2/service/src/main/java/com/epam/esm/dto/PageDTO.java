@@ -1,28 +1,30 @@
 package com.epam.esm.dto;
 
+import java.util.List;
+
 public class PageDTO extends DTO {
 
-    private DTO dto;
-    private Integer totalResults;
-    
-    public PageDTO(DTO dto, Integer totalResults) {
-        this.dto = dto;
+    private List<GiftCertificateDTO> results;
+    private Long totalResults;
+
+    public PageDTO(List<GiftCertificateDTO> results, Long totalResults) {
+        this.results = results;
         this.totalResults = totalResults;
     }
 
-    public DTO getDto() {
-        return dto;
+    public List<GiftCertificateDTO> getResults() {
+        return results;
     }
 
-    public void setDto(DTO dto) {
-        this.dto = dto;
+    public void setResults(List<GiftCertificateDTO> results) {
+        this.results = results;
     }
 
-    public Integer getTotalResults() {
+    public Long getTotalResults() {
         return totalResults;
     }
 
-    public void setTotalResults(Integer totalResults) {
+    public void setTotalResults(Long totalResults) {
         this.totalResults = totalResults;
     }
 
