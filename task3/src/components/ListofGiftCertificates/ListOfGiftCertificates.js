@@ -12,7 +12,7 @@ class ListOfGiftCertificates extends React.Component {
     render() {
         return (
 
-            <ScrollBars style={{width: 1000, height: 500}}>
+            <ScrollBars style={{width: 1000, height: 1000}}>
                 <div className="container-fluid">
                     <div className="row">
                 {

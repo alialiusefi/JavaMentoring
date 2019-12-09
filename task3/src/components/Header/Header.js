@@ -10,17 +10,21 @@ class Header extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoggedIn : false
+            isLoggedIn: false,
+            username : 'USERNAME HERE'
         }
     }
 
     render() {
+        const isLoggedIn = this.state.isLoggedIn;
+
         return (
             <div>
                 <nav className="navbar navbar-expand-md navbar-static-top navbar-dark bg-light">
                     <div className="container-fluid">
                         <div className="row">
                             <div className="col-5">
+
                                 <Link className="nav-item" to={"/giftcertificates"}>
                                     <Translate id="home.title">GiftCertificates</Translate>
                                 </Link>
@@ -31,7 +35,9 @@ class Header extends React.Component {
                                 <ChangeLocale/>
                             </div>
                         </div>
-                        <welcomeUsername isLoggedIn={false}/>
+                        <div>
+                            Welcome {isLoggedIn ? this.state.username : 'Guest'}
+                        </div>
                         <div className="row">
                             <div className="col-5">
                                 <Link className="nav-item" to={"/login"}>
@@ -41,21 +47,10 @@ class Header extends React.Component {
                         </div>
                     </div>
                 </nav>
-                {/*<div className="panel panel-default">
-                    <FormErrors formErrors={this.state.formErrors}/>
-                </div>*/}
             </div>
         );
 
-        function welcomeUsername(props) {
-            if(props.isLoggedIn) {
-                return <div className="row">
-                    <div className="col-5">
-                        <ChangeLocale/>
-                    </div>
-                </div>;
-            }
-        }
+
     }
 
 }

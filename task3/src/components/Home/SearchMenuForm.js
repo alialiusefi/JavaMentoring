@@ -1,39 +1,43 @@
 import React, {Component} from "react";
-import {Field, reduxForm} from "redux-form";
+import Select from "react-select";
 import {Translate} from "react-localize-redux";
-import SearchForm from "./SearchForm";
+
+const options = [
+    {value: "MY", label: <Translate id="home.mygiftcertificates">My GiftCertificate</Translate>},
+    {value: "ALL", label: <Translate id="home.allgiftcertificates">All GiftCertificate</Translate>}
+];
+
 
 
 class SearchMenuForm extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            certificateDropDown: "ALL"
+        }
+    }
+
+
+
     render() {
-        const {handleSubmit} = this.props;
+        const {certificateDropDown} = this.state;
         return (
-            <form name="selectForm" onSubmit={this.handleSubmit}>
-                <select
-                    /*value={this.state.certificateLocation}
-                    onChange={event => {
-                        this.setState({ certificateLocation : event.target.value});
-                    }}*/
-                >
-                    <option value="ALL">
-                        {/*<Translate id="home.allgiftcertificates">
-                                                            </Translate>*/}
-                        All GiftCertificates
-                    </option>
-                    <option value="MY">
-                        {/*<Translate id="home.mygiftcertificates">
-                                                            </Translate>*/}
-                        My GiftCertificates
-                    </option>
-                </select>
-            </form>
+            <div>
+                <Select value={certificateDropDown}
+                        onChange={this.handleChange}
+                        options={options}>
+                </Select>
+            </div>
         );
     }
+
+    handleChange = (certificateDropDown) => {
+        this.setState({certificateDropDown});
+        this.props.handleGetAllCeritificates(certificateDropDown);
+    };
+
+
+
 }
-
-SearchMenuForm = reduxForm({
-    form: 'searchmenu' // a unique name for this form
-})(SearchMenuForm);
-
 export default SearchMenuForm;

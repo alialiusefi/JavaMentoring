@@ -20,6 +20,7 @@ const options = [
     {value: 'MY', label: 'My GiftCertificates'}
 ]
 
+const GETALLCERTIFICATES_URL  = "http://localhost:8080/api/v1/giftcertificates/";
 
 class Home extends React.Component {
 
@@ -35,27 +36,10 @@ class Home extends React.Component {
         });
         this.props.addTranslation(globalTranslations);
         this.state = {
-            giftCertificates: [
-                {
-                    name: 'GiftCertificate Name',
-                    description: 'GiftCertificate Description',
-                    date: 'Date here',
-                    price: 'GiftCertificate Price'
-                },
-                {
-                    name: 'GiftCertificate Name',
-                    description: 'GiftCertificate Description',
-                    date: 'Date here',
-                    price: 'GiftCertificate Price'
-                },
-                {
-                    name: 'GiftCertificate Name',
-                    description: 'GiftCertificate Description',
-                    date: 'Date here',
-                    price: 'GiftCertificate Price'
-                }
-            ]
+            giftCertificates: [],
+            pageCount : 5
         }
+
     }
 
     render() {
@@ -73,10 +57,10 @@ class Home extends React.Component {
                             </div>
                             <div className="container">
                                 <div className="row">
-                                    <div className="col">
-                                        <SearchMenuForm/>
+                                    <div className="col-4">
+                                        <SearchMenuForm handleGetAllCeritificates={this.handleGetAllCertificates}/>
                                     </div>
-                                    <div className="col-6">
+                                    <div className="col">
                                         <SearchForm/>
                                     </div>
                                 </div>
@@ -85,14 +69,15 @@ class Home extends React.Component {
                                 <ListOfGiftCertificates giftcertificates={this.state.giftCertificates}/>
                             </div>
                             <div className="container-fluid">
-                                <div className="row">
-                                    <div className="col">
+                                <div className="row justify-content-center">
+                                    <div className="col-3">
                                         <PaginationSize />
                                     </div>
-                                    <div className="col">
-                                        <PaginationPage />
+                                    <div className="col-6">
+                                        <PaginationPage  />
                                     </div>
                                 </div>
+                                <br/>
                                 <div className="row">
                                     <div className="col">
                                         <button className="btn btn-primary">Older</button>
@@ -101,6 +86,7 @@ class Home extends React.Component {
                                         <button className="btn btn-primary">Newer</button>
                                     </div>
                                 </div>
+                                <br/>
                             </div>
                         </div>
                     </Route>
@@ -110,7 +96,31 @@ class Home extends React.Component {
         );
     }
 
+    handleGetAllCertificates = (filterAllOrMy) => {
+        if(filterAllOrMy.value === "ALL"){
+            fetch(GETALLCERTIFICATES_URL,
+                {
+                    method:'GET',
+                    headers:{
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => {
+                const json = response.json();
+                if(!response.ok){
+                    return Promise.reject(json);
+                }
+                return json;
+            }).then(json => {
+                this.setState({giftCertificates : json.results});
+                console.log(this.state.giftCertificates);
+                return json;
+            }).catch(error => {
+                console.log(error);
+            });
+        } else {
 
+        }
+    }
 }
 
 export default withLocalize(Home);
