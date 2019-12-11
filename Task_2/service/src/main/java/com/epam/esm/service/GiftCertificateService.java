@@ -15,9 +15,12 @@ public interface GiftCertificateService extends BaseService<GiftCertificateDTO> 
     PageDTO getGiftCertificatesPage(Long[] tagID, String name, String desc, Integer sortByDate,
                                                  Integer sortByName, Integer pageNumber, Integer pageSize);
 
+
     default List<GiftCertificateDTO> getAll(int pageNumber, int size) {
         throw new UnsupportedOperationException("Incorrect Method invoked!");
     }
+
+
 
     PageDTO getAllPage(int pageNumber, int pageSize);
 

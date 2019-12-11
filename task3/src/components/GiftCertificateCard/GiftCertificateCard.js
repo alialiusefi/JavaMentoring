@@ -2,6 +2,7 @@ import React from "react";
 import {Translate, withLocalize} from "react-localize-redux";
 import ListGroup from "react-bootstrap/ListGroup";
 import Card from "react-bootstrap/Card";
+import ListOfTags from "../ListOfTags/ListOfTags";
 
 
 class GiftCertificateCard extends React.Component {
@@ -12,7 +13,6 @@ class GiftCertificateCard extends React.Component {
 
     render() {
         return (
-
                 <Card>
                     <ListGroup variant="flush">
                         <ListGroup.Item>
@@ -30,7 +30,7 @@ class GiftCertificateCard extends React.Component {
                         <ListGroup.Item>
                             <div className="container">
                                 <div className="row">
-                                    TAGS HERE
+                                    <ListOfTags tags={this.props.certificate.tags} handleGetCertificatesByTagName={this.props.handleGetCertificatesByTagName} />
                                 </div>
                                 <div className="row">
                                     {this.props.certificate.description}

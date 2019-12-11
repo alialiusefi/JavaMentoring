@@ -4,6 +4,7 @@ import com.epam.esm.converter.AddOrderConverter;
 import com.epam.esm.converter.OrderConverter;
 import com.epam.esm.dto.AddOrderDTO;
 import com.epam.esm.dto.OrderDTO;
+import com.epam.esm.dto.PageDTO;
 import com.epam.esm.entity.Authority;
 import com.epam.esm.entity.CustomOAuthUser;
 import com.epam.esm.entity.GiftCertificate;
@@ -94,6 +95,15 @@ public class OrderServiceImpl implements OrderService {
         throw new OAuth2AuthenticationProcessingException("Access is denied!");
 
     }
+
+    public PageDTO getOrdersByUserIDPage(CustomOAuthUser currentUserEntity, Long userIDOrders,
+                                         int pageNumber, int pageSize)
+    {
+        List<OrderDTO> dtos = getOrdersByUserID(currentUserEntity,userIDOrders,pageNumber,pageSize);
+        //Long resultCount = orderRepository.queryCount(/*new count specification*/);
+        return null;
+    }
+
 
     @Override
     public OrderDTO getUserOrder(Long userID, Long orderID) {

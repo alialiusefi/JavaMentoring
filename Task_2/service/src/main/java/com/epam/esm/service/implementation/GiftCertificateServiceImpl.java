@@ -89,6 +89,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             throw new ResourceNotFoundException("Didn't find gift certificates");
         }
     }
+
+
     @Transactional
     @Override
     public GiftCertificateDTO add(GiftCertificateDTO certificateDTO) {

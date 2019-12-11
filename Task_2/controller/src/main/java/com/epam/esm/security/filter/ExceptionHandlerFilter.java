@@ -1,6 +1,7 @@
 package com.epam.esm.security.filter;
 
 import com.epam.esm.exception.APIError;
+import com.epam.esm.security.exception.InvalidJwtAuthenticationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,10 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
+        } catch (InvalidJwtAuthenticationException e) {
+            APIError errorResponse = new APIError(e.getMessage());
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.getWriter().write(convertObjectToJson(errorResponse));
         } catch (RuntimeException e) {
             APIError errorResponse = new APIError(e.getMessage());
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());

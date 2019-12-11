@@ -5,20 +5,16 @@ class PaginationPage extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            pageNumber : 2
-        }
     }
 
     render() {
-        const pageNumber = this.state.pageNumber;
 
         return (
                 <Pagination>
                     <Pagination.Prev/>
-                    <Pagination.Item>{1}</Pagination.Item>
-                    <Pagination.Item {...pageNumber === 1 ? 'active' : ''}>{2}</Pagination.Item>
-                    <Pagination.Item>{3}</Pagination.Item>
+                    {
+                        this.generatePageNumbers(this.props.pageCount,this.props.pageNumber)
+                    }
                     <Pagination.Next />
                 </Pagination>
         );
@@ -26,8 +22,28 @@ class PaginationPage extends React.Component {
 
     }
 
-    handleChange = pageNumber => {
-        this.setState({pageNumber});
+    generatePageNumbers = (pageCount,pageNumber) => {
+        return (
+            <div>
+                {[...Array(pageCount)].map(function(object, i){
+                    if(i === pageNumber){
+                        return <Pagination.Item active>
+                            <a onClick={this.handlePageChange}>
+                                {i}
+                            </a>
+                        </Pagination.Item>;
+                    }
+                    return <Pagination.Item>
+                        <a onClick={this.handlePageChange}>
+                        {i}</a>
+                    </Pagination.Item>;
+                })}
+            </div>
+        )
+    };
+
+    handlePageChange = (pageNumber) => {
+        this.props.changePage(pageNumber);
     };
 
 }

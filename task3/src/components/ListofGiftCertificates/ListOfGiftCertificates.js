@@ -19,7 +19,9 @@ class ListOfGiftCertificates extends React.Component {
                     this.props.giftcertificates.map(
                         (certificate) =>
                                 <div className="col-md col-lg-6 p-2">
-                                    <GiftCertificateCard certificate={certificate}/>
+                                    <GiftCertificateCard certificate={certificate}
+                                                         handleGetCertificatesByTagName={this.props.handleGetCertificatesByTagName}
+                                    />
                                 </div>
                     )
                 }
