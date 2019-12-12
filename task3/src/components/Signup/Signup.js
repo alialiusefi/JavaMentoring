@@ -19,8 +19,8 @@ class Signup extends React.Component {
         );
     }
 
-    handleSubmit = (login,password) =>{
-        alert("signing up...");
+    handleSubmit = (values) =>{
+       this.props.handleSignup(values.username,values.password);
     }
 }
 

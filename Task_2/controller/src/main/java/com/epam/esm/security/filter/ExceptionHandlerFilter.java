@@ -40,4 +40,5 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(object);
     }
+
 }

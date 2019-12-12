@@ -4,7 +4,7 @@ import Footer from '../Footer/Footer'
 import Login from '../Login/Login'
 import "./Home.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {BrowserRouter, Route, Link, Switch, Redirect} from "react-router-dom";
+import {Route, Switch, Redirect, withRouter} from "react-router-dom";
 import {renderToStaticMarkup} from "react-dom/server";
 import {withLocalize, Translate} from "react-localize-redux";
 import globalTranslations from "../../translations/global.json";
@@ -15,9 +15,9 @@ import PaginationPage from "./PaginationPage";
 import PaginationSize from "./PaginationSize";
 import Pagination from "react-js-pagination";
 import Signup from "../Signup/Signup";
+import jwt_decode from 'jwt-decode';
 import NotFound from "../NotFound/NotFound";
-
-
+import AddEditGiftCertificate from "../AddEditGiftCertifcate/AddEditGiftCertificate";
 const options = [
     {value: 'ALL', label: 'All GiftCertificates'},
     {value: 'MY', label: 'My GiftCertificates'}
@@ -46,22 +46,27 @@ class Home extends React.Component {
             pageCount: 5,
             pageSize: 5,
             pageNumber: 1,
-            certificateDropDownValue: "ALL"
+            certificateDropDownValue: "ALL",
+            isLoggedIn: false,
+            username: null,
+            user_id: null
         }
 
     }
 
     render() {
         return (
-
             <div>
-                <Header/>
+                <Header isLoggedIn={this.state.isLoggedIn} username={this.state.username} location={this.props.location.pathname}/>
                 <Switch>
                     <Route path="/login">
                         <Login handleLogIn={this.handleLogIn}/>
                     </Route>
                     <Route path="/signup">
-                        <Signup/>
+                        <Signup handleSignup={this.handleSignup}/>
+                    </Route>
+                    <Route path="/add">
+                        <AddEditGiftCertificate />
                     </Route>
                     <Route path="/giftcertificates">
                         <div className="container text-center">
@@ -119,6 +124,33 @@ class Home extends React.Component {
             </div>
         );
     }
+
+    handleSignup = (login, password) => {
+        const URL = SIGNUP_URL;
+        const data = {
+            username: login,
+            password: password
+        }
+        fetch(URL,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then(response => {
+            const json = response.json();
+            if (!response.ok) {
+                return Promise.reject(json);
+            }
+            return json;
+        }).then(json => {
+            return json;
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
 
     handleGetAllCertificates = (filterAllOrMy) => {
         if (filterAllOrMy.value === "ALL") {
@@ -231,27 +263,30 @@ class Home extends React.Component {
 
     handleLogIn = (login, password) => {
         const URL = LOGIN_URL;
+        const data = {
+            username: login,
+            password: password
+        }
         fetch(URL,
             {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: {
-                    'username':login,
-                    'password':password
-                }
+                body: JSON.stringify(data)
             }).then(response => {
-            var headers = response.headers;
             const json = response.json();
             if (!response.ok) {
                 return Promise.reject(json);
             }
             return json;
         }).then(json => {
-            this.setState({giftCertificates: json.results});
-            this.setState({pageCount: json.totalResults});
-            console.log(this.state.giftCertificates);
+            localStorage.setItem('accessToken', json.accessToken);
+            localStorage.setItem('refreshToken', json.refreshToken);
+            const decodedToken = jwt_decode(localStorage.getItem('accessToken'));
+            this.setState({isLoggedIn: true});
+            this.setState({username: decodedToken.sub});
+            this.setState({user_id: decodedToken.user_id});
             return json;
         }).catch(error => {
             console.log(error);
@@ -261,5 +296,5 @@ class Home extends React.Component {
 }
 
 const LOGIN_URL = "http://localhost:8080/api/v2/auth/login";
-
-export default withLocalize(Home);
+const SIGNUP_URL = "http://localhost:8080/api/v2/auth/signup";
+export default withRouter(withLocalize(Home));

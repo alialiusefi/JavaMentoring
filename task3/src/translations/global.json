@@ -4,7 +4,8 @@
     "loginlogout" : ["Login/Logout","Войти/Выход"],
     "mygiftcertificates" : ["My GiftCertificates","мои сертификаты"],
     "allgiftcertificates" : ["All GiftCertificates","все сертификаты"],
-    "search" : ["Search","Пойск"]
+    "search" : ["Search","Пойск"],
+    "addnewgiftcertificates" : ["Add New GiftCertificates","Добавить новые подарочные сертификаты"]
   },
   "login": {
     "loginbutton" : ["Log In", "Войти"],
@@ -14,5 +15,16 @@
   },
   "signup": {
     "signupbutton" : ["Sign Up","зарегистрироваться"]
+  },
+  "giftcertificate" : {
+    "name" : ["Name","Имя"],
+    "description" : ["Description","Описание"],
+    "price" : ["Price","Цена"],
+    "dateofcreation" : ["Date Of Creation", "Дата создания"],
+    "dateofmodification" : ["Date of Modification","Дата модификации"],
+    "duration" : ["Duration","длительность"]
+  },
+  "tags" : {
+    "tags" : ["Tags","Теги"]
   }
 }

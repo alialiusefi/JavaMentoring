@@ -24,12 +24,6 @@ public class GiftCertificatesSpecificationConjunction extends FindSpecification<
         if (specifications.size() == 1) {
             return specifications.poll().getQuery(em, builder);
         }
-        /*NativeSpecification<GiftCertificate> first = specifications.poll();
-        String query = first.getSQLClause(false);
-        StringBuilder stringBuilder = new StringBuilder(query);
-        for (NativeSpecification i : specifications) {
-            stringBuilder.append(i.getSQLClause(true));
-        }*/
         String finalQuery = getFinalQuery(em, builder);
         Query queryObj = em.createNativeQuery(finalQuery);
         for (int i = 0; i < parameters.size(); i++) {
