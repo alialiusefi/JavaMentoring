@@ -11,5 +11,8 @@
     "cancelbutton" : ["Cancel", "Выход"],
     "username" : ["Username","Username"],
     "password" : ["Password", "Пароль"]
+  },
+  "signup": {
+    "signupbutton" : ["Sign Up","зарегистрироваться"]
   }
 }

@@ -13,18 +13,15 @@ class SearchMenuForm extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            certificateDropDown: "ALL"
-        }
+
     }
 
 
 
     render() {
-        const {certificateDropDown} = this.state;
         return (
             <div>
-                <Select value={certificateDropDown}
+                <Select value={this.props.certificateDropDownValue}
                         onChange={this.handleChange}
                         options={options}>
                 </Select>
@@ -33,7 +30,6 @@ class SearchMenuForm extends Component {
     }
 
     handleChange = (certificateDropDown) => {
-        this.setState({certificateDropDown});
         this.props.handleGetAllCertificates(certificateDropDown);
     };
 

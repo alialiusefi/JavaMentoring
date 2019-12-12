@@ -30,7 +30,7 @@ class PaginationSize extends React.Component {
     }
 
     handleChange = paginationSize => {
-        this.setState({paginationSize});
+        this.props.handleChangePageSize(paginationSize.value);
     };
 
 }

@@ -43,41 +43,9 @@ class Login extends React.Component {
         );
     }
 
-    handleSubmit(values) {
-        try {
-            login_api(values.username, values.password);
-        } catch (err) {
-            alert(err);
-        }
-
+    handleSubmit = (values) =>  {
+        this.props.handleLogIn(values.username,values.password);
     }
-}
-
-const LOGIN_URI = "http://localhost:8080/api/v2/auth/login";
-
-
-function login_api(username, password) {
-    (async () => {
-        await fetch(LOGIN_URI, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({username: username, password: password})
-        }).then(async rawResponse => {
-            if(!rawResponse.ok){
-                console.log(JSON.stringify(rawResponse.json()));
-                throw Error(JSON.stringify(rawResponse.json()));
-            }
-            const content = await rawResponse.json();
-            const accessToken = content.accessToken;
-            const refreshToken = content.refreshToken;
-            return content;
-        }).catch(err => {
-            console.log(err);
-        });
-    })();
 }
 
 export default Login;

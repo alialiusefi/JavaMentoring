@@ -4,7 +4,7 @@ import Footer from '../Footer/Footer'
 import Login from '../Login/Login'
 import "./Home.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {BrowserRouter, Route, Link, Switch} from "react-router-dom";
+import {BrowserRouter, Route, Link, Switch, Redirect} from "react-router-dom";
 import {renderToStaticMarkup} from "react-dom/server";
 import {withLocalize, Translate} from "react-localize-redux";
 import globalTranslations from "../../translations/global.json";
@@ -13,6 +13,9 @@ import SearchMenuForm from "./SearchMenuForm";
 import ListOfGiftCertificates from "../ListofGiftCertificates/ListOfGiftCertificates";
 import PaginationPage from "./PaginationPage";
 import PaginationSize from "./PaginationSize";
+import Pagination from "react-js-pagination";
+import Signup from "../Signup/Signup";
+import NotFound from "../NotFound/NotFound";
 
 
 const options = [
@@ -23,6 +26,7 @@ const options = [
 const GETALLCERTIFICATES_URL = "http://localhost:8080/api/v1/giftcertificates?page=PAGE_NUMBER&size=PAGE_SIZE";
 const GETALLUSERORDERS_URL = "http://localhost:8080/api/v2/users/USER_ID/orders/";
 const GETALLGIFTCARDSBYTAGID = "http://localhost:8080/api/v1/giftcertificates?page=PAGE_NUMBER&size=PAGE_SIZE&tagID=TAG_ID_HERE";
+const NotFoundRedirect = () => <Redirect to='/not_found'/>;
 
 class Home extends React.Component {
 
@@ -41,20 +45,25 @@ class Home extends React.Component {
             giftCertificates: [],
             pageCount: 5,
             pageSize: 5,
-            pageNumber: 1
+            pageNumber: 1,
+            certificateDropDownValue: "ALL"
         }
 
     }
 
     render() {
         return (
+
             <div>
                 <Header/>
                 <Switch>
                     <Route path="/login">
-                        <Login/>
+                        <Login handleLogIn={this.handleLogIn}/>
                     </Route>
-                    <Route path="/">
+                    <Route path="/signup">
+                        <Signup/>
+                    </Route>
+                    <Route path="/giftcertificates">
                         <div className="container text-center">
                             <div className="text h3">
                                 <br/> <Translate id="home.title">GiftCertificates</Translate>
@@ -62,7 +71,8 @@ class Home extends React.Component {
                             <div className="container">
                                 <div className="row">
                                     <div className="col-4">
-                                        <SearchMenuForm handleGetAllCertificates={this.handleGetAllCertificates}/>
+                                        <SearchMenuForm certificateDropDownValue={this.state.certificateDropDownValue}
+                                                        handleGetAllCertificates={this.handleGetAllCertificates}/>
                                     </div>
                                     <div className="col">
                                         <SearchForm/>
@@ -76,11 +86,17 @@ class Home extends React.Component {
                             <div className="container-fluid">
                                 <div className="row justify-content-center">
                                     <div className="col-3">
-                                        <PaginationSize/>
+                                        <PaginationSize handleChangePageSize={this.handleChangePageSize}/>
                                     </div>
                                     <div className="col-6">
-                                        <PaginationPage totalResults={this.state.pageCount}
-                                                        changePage={this.handleChangePage}/>
+                                        <Pagination activePage={this.state.pageNumber}
+                                                    itemsCountPerPage={this.state.pageSize}
+                                                    totalItemsCount={this.state.pageCount}
+                                                    pageRangeDisplayed={5}
+                                                    onChange={this.handleChangePage}
+                                                    itemClass="page-item"
+                                                    linkClass="page-link">
+                                        </Pagination>
                                     </div>
                                 </div>
                                 <br/>
@@ -96,6 +112,8 @@ class Home extends React.Component {
                             </div>
                         </div>
                     </Route>
+                    <Route component={NotFound} path="/not_found"/>
+                    <Route component={NotFoundRedirect}/>
                 </Switch>
                 <Footer/>
             </div>
@@ -104,6 +122,7 @@ class Home extends React.Component {
 
     handleGetAllCertificates = (filterAllOrMy) => {
         if (filterAllOrMy.value === "ALL") {
+            this.setState({certificateDropDownValue: "ALL"});
             const URL = GETALLCERTIFICATES_URL.replace("PAGE_NUMBER", this.state.pageNumber).replace("PAGE_SIZE", this.state.pageSize);
             fetch(URL,
                 {
@@ -127,6 +146,7 @@ class Home extends React.Component {
             });
         } else {
             /*todo: replace "2" with dynamic userID and handle pagination*/
+            this.setState({certificateDropDownValue: "MY"});
             const URLWITHID = GETALLUSERORDERS_URL.replace("USER_ID", "2");
             fetch(URLWITHID,
                 {
@@ -177,8 +197,12 @@ class Home extends React.Component {
         });
     };
 
+    handleChangePageSize = (pageSize) => {
+        this.setState({pageSize: pageSize});
+    };
+
     handleChangePage = (pageNumber) => {
-        this.setState({pageNumber : pageNumber});
+        this.setState({pageNumber: pageNumber});
         const URL = GETALLCERTIFICATES_URL
             .replace("PAGE_NUMBER", this.state.pageNumber)
             .replace("PAGE_SIZE", this.state.pageSize);
@@ -196,7 +220,7 @@ class Home extends React.Component {
             return json;
         }).then(json => {
             this.setState({giftCertificates: json.results});
-            const pageCount =  Math.ceil(json.totalResults / this.state.pageSize);
+            const pageCount = Math.ceil(json.totalResults / this.state.pageSize);
             this.setState({pageCount: pageCount});
             console.log(this.state.giftCertificates);
             return json;
@@ -205,7 +229,37 @@ class Home extends React.Component {
         });
     };
 
+    handleLogIn = (login, password) => {
+        const URL = LOGIN_URL;
+        fetch(URL,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: {
+                    'username':login,
+                    'password':password
+                }
+            }).then(response => {
+            var headers = response.headers;
+            const json = response.json();
+            if (!response.ok) {
+                return Promise.reject(json);
+            }
+            return json;
+        }).then(json => {
+            this.setState({giftCertificates: json.results});
+            this.setState({pageCount: json.totalResults});
+            console.log(this.state.giftCertificates);
+            return json;
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
 }
 
+const LOGIN_URL = "http://localhost:8080/api/v2/auth/login";
 
 export default withLocalize(Home);
