@@ -1,4 +1,7 @@
 {
+  "header" : {
+    "welcome" : ["Welcome","Добро Пожаловать"]
+  },
   "home":{
     "title" : ["GiftCertificates","Подарочные сертификаты"],
     "loginlogout" : ["Login/Logout","Войти/Выход"],
@@ -26,5 +29,10 @@
   },
   "tags" : {
     "tags" : ["Tags","Теги"]
+  },
+  "addeditgiftcertificate" : {
+    "title" : ["Add/Edit Gift Certificate", "Изменеие/Добавление сертификат"],
+    "add" : ["Add Certificate", "Добавить Сертификат"],
+    "edit" : ["Edit Certificate", "Изменить Сертификат"]
   }
 }

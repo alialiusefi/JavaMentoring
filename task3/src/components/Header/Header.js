@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Link} from "react-router-dom";
 import ChangeLocale from '../ChangeLocale/ChangeLocale';
 import {Translate} from "react-localize-redux";
+
 class Header extends React.Component {
 
     constructor(props) {
@@ -38,7 +39,7 @@ class Header extends React.Component {
                             </div>
                         </div>
                         <div>
-                            Welcome {this.props.isLoggedIn ? this.props.username : 'Guest'}
+                            <Translate id="header.welcome"/> {this.props.isLoggedIn ? this.props.username : 'Guest'}
                         </div>
                         <div className="row">
                             <div className="col-5">

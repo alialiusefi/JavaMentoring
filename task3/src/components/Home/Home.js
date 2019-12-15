@@ -6,7 +6,7 @@ import "./Home.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Route, Switch, Redirect, withRouter} from "react-router-dom";
 import {renderToStaticMarkup} from "react-dom/server";
-import {withLocalize, Translate} from "react-localize-redux";
+import {withLocalize, Translate, setActiveLanguage} from "react-localize-redux";
 import globalTranslations from "../../translations/global.json";
 import SearchForm from "./SearchForm";
 import SearchMenuForm from "./SearchMenuForm";
@@ -18,6 +18,7 @@ import Signup from "../Signup/Signup";
 import jwt_decode from 'jwt-decode';
 import NotFound from "../NotFound/NotFound";
 import AddEditGiftCertificate from "../AddEditGiftCertifcate/AddEditGiftCertificate";
+
 const options = [
     {value: 'ALL', label: 'All GiftCertificates'},
     {value: 'MY', label: 'My GiftCertificates'}
@@ -28,15 +29,17 @@ const GETALLUSERORDERS_URL = "http://localhost:8080/api/v2/users/USER_ID/orders/
 const GETALLGIFTCARDSBYTAGID = "http://localhost:8080/api/v1/giftcertificates?page=PAGE_NUMBER&size=PAGE_SIZE&tagID=TAG_ID_HERE";
 const NotFoundRedirect = () => <Redirect to='/not_found'/>;
 
+const EnglishInit = () => [
+    {name: "EN", code: "en"},
+    {name: "RU", code: "ru"}
+];
+
 class Home extends React.Component {
 
     constructor(props) {
         super(props);
         this.props.initialize({
-            languages: [
-                {name: "EN", code: "en"},
-                {name: "RU", code: "ru"}
-            ],
+            languages: EnglishInit(),
             translation: globalTranslations,
             options: {renderToStaticMarkup}
         });
@@ -49,15 +52,39 @@ class Home extends React.Component {
             certificateDropDownValue: "ALL",
             isLoggedIn: false,
             username: null,
-            user_id: null
+            user_id: null,
+            selectedGiftCertificate: null
         }
 
+    }
+
+
+    componentDidUpdate(prevProps) {
+        if (this.props.location !== prevProps.location) {
+            this.onRouteChanged();
+        }
+    }
+
+    onRouteChanged() {
+        /* alert("ROUTE CHANGED");
+         if(localStorage.getItem("locale") == null) {
+             localStorage.setItem("locale","en");
+         } else {
+             if(localStorage.getItem("locale") === "ru"){
+                 setActiveLanguage("ru");
+             }
+             if(localStorage.getItem("locale") === "en") {
+                 setActiveLanguage("en");
+             }
+
+         }*/
     }
 
     render() {
         return (
             <div>
-                <Header isLoggedIn={this.state.isLoggedIn} username={this.state.username} location={this.props.location.pathname}/>
+                <Header isLoggedIn={this.state.isLoggedIn} username={this.state.username}
+                        location={this.props.location.pathname}/>
                 <Switch>
                     <Route path="/login">
                         <Login handleLogIn={this.handleLogIn}/>
@@ -66,7 +93,10 @@ class Home extends React.Component {
                         <Signup handleSignup={this.handleSignup}/>
                     </Route>
                     <Route path="/add">
-                        <AddEditGiftCertificate />
+                        <AddEditGiftCertificate handleAddCertificate={this.handleAddCertificate}/>
+                    </Route>
+                    <Route path="/edit">
+                        <AddEditGiftCertificate certificate={this.state.selectedGiftCertificate}/>
                     </Route>
                     <Route path="/giftcertificates">
                         <div className="container text-center">
@@ -102,15 +132,6 @@ class Home extends React.Component {
                                                     itemClass="page-item"
                                                     linkClass="page-link">
                                         </Pagination>
-                                    </div>
-                                </div>
-                                <br/>
-                                <div className="row">
-                                    <div className="col">
-                                        <button className="btn btn-primary">Older</button>
-                                    </div>
-                                    <div className="col">
-                                        <button className="btn btn-primary">Newer</button>
                                     </div>
                                 </div>
                                 <br/>
@@ -266,7 +287,7 @@ class Home extends React.Component {
         const data = {
             username: login,
             password: password
-        }
+        };
         fetch(URL,
             {
                 method: 'POST',
@@ -293,8 +314,56 @@ class Home extends React.Component {
         });
     }
 
+    handleAddCertificate = (name, description, price, durationTillExpiry, tags) => {
+        const URL = ADD_CERTIFICATE_URL;
+
+        const data = {
+            name: name,
+            description: description,
+            price: price,
+            durationTillExpiry: durationTillExpiry,
+            tags: tags
+        };
+        const accessToken = localStorage.getItem("accessToken");
+        const refreshToken = localStorage.getItem("refreshToken");
+        if (accessToken == null || refreshToken == null) {
+            alert("unauthorized");
+            return;
+        }
+        document.cookie = "accessToken=" + accessToken;
+        document.cookie = "refreshToken=" + refreshToken;
+        const body = JSON.stringify(data);
+        fetch(URL,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: body
+            }).then(response => {
+            console.log(response);
+            const json = response.json();
+            if (!response.ok) {
+                return Promise.reject(json);
+            }
+            return json;
+        }).then(json => {
+            console.log(json);
+            return json;
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
+
 }
 
+function onload() {
+
+}
+
+const ADD_CERTIFICATE_URL = "http://localhost:8080/api/v1/giftcertificates";
 const LOGIN_URL = "http://localhost:8080/api/v2/auth/login";
 const SIGNUP_URL = "http://localhost:8080/api/v2/auth/signup";
 export default withRouter(withLocalize(Home));

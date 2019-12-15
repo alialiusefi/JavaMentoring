@@ -16,7 +16,7 @@ const renderField = ({input, label, type, meta: {touched, error, warning}}) => (
 )
 
 const validate = values => {
-    const errors = {}
+    const errors = {};
     if (!values.username) {
         errors.username = 'Required'
     } else if (!(values.username.length > 4 && values.username.length < 31)) {

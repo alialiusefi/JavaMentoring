@@ -22,7 +22,7 @@ class GiftCertificateCard extends React.Component {
                                         {this.props.certificate.name}
                                     </div>
                                     <div className="col">
-                                        {this.props.certificate.date}
+                                        {this.props.certificate.dateOfCreation}
                                     </div>
                                 </div>
                             </div>
