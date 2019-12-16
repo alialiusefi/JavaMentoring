@@ -7,11 +7,13 @@ import com.epam.esm.repository.UserRepository;
 import com.epam.esm.repository.specification.FindUserByUserName;
 import com.epam.esm.service.CustomUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class CustomUserServiceImpl implements CustomUserService {
@@ -29,10 +31,16 @@ public class CustomUserServiceImpl implements CustomUserService {
         UserEntity userEntity = userRepository.queryEntity(new FindUserByUserName(username))
                 .orElseThrow(() -> new ResourceNotFoundException("User with this username" +
                         " was not found!"));
-        return new LocalCustomOAuthUser(userEntity.getAuthorityList(),
-                new HashMap<String, Object>() {{
-                    put("username", userEntity.getUsername());
-                }}, "username", userEntity);
+        Long user_id = userEntity.getId();
+        Object[] authorities = userEntity.getAuthorityList().toArray();
+        GrantedAuthority authority = (GrantedAuthority) authorities[0];
+        String role = authority.getAuthority();
+        Map<String,Object> claims = new HashMap<>();
+        claims.put("user_id",user_id);
+        claims.put("role",role);
+        claims.put("username",userEntity.getUsername());
+        return new LocalCustomOAuthUser(userEntity.getAuthorityList(),claims,
+                "username", userEntity);
     }
 
 

@@ -14,7 +14,7 @@ class Header extends React.Component {
     render() {
         let homeButton;
         let homeButtonLink;
-        if (this.props.location === '/giftcertificates') {
+        if (this.props.location === '/giftcertificates' && this.props.role === "ADMIN") {
             homeButton = "home.addnewgiftcertificates";
             homeButtonLink = "/add";
         } else {

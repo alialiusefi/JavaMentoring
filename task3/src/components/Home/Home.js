@@ -53,6 +53,7 @@ class Home extends React.Component {
             isLoggedIn: false,
             username: null,
             user_id: null,
+            user_role:null,
             selectedGiftCertificate: null
         }
 
@@ -84,7 +85,7 @@ class Home extends React.Component {
         return (
             <div>
                 <Header isLoggedIn={this.state.isLoggedIn} username={this.state.username}
-                        location={this.props.location.pathname}/>
+                        location={this.props.location.pathname} role={this.state.user_role}/>
                 <Switch>
                     <Route path="/login">
                         <Login handleLogIn={this.handleLogIn}/>
@@ -107,7 +108,8 @@ class Home extends React.Component {
                                 <div className="row">
                                     <div className="col-4">
                                         <SearchMenuForm certificateDropDownValue={this.state.certificateDropDownValue}
-                                                        handleGetAllCertificates={this.handleGetAllCertificates}/>
+                                                        handleGetAllCertificates={this.handleGetAllCertificates}
+                                                        role={this.state.user_role}/>
                                     </div>
                                     <div className="col">
                                         <SearchForm/>
@@ -308,11 +310,12 @@ class Home extends React.Component {
             this.setState({isLoggedIn: true});
             this.setState({username: decodedToken.sub});
             this.setState({user_id: decodedToken.user_id});
+            this.setState({user_role:decodedToken.role});
             return json;
         }).catch(error => {
             console.log(error);
         });
-    }
+    };
 
     handleAddCertificate = (name, description, price, durationTillExpiry, tags) => {
         const URL = ADD_CERTIFICATE_URL;
@@ -359,9 +362,6 @@ class Home extends React.Component {
 
 }
 
-function onload() {
-
-}
 
 const ADD_CERTIFICATE_URL = "http://localhost:8080/api/v1/giftcertificates";
 const LOGIN_URL = "http://localhost:8080/api/v2/auth/login";

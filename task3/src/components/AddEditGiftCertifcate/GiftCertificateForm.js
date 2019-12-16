@@ -43,14 +43,14 @@ const validate = values => {
 const applyButton = (certificate, pristine, submitting, invalid) => {
     if (certificate == null) {
         return (
-            <button disabled={pristine || submitting || invalid}
+            <button type="submit" disabled={pristine || submitting || invalid}
                     className="btn btn-dark text-white  justify-content-center flex-column">
                 <Translate id="addeditgiftcertificate.add"/>
             </button>
         );
     } else {
         return (
-            <button disabled={pristine || submitting || invalid}
+            <button type="submit" disabled={pristine || submitting || invalid}
                     className="btn btn-dark text-white  justify-content-center flex-column">
                 <Translate id="addeditgiftcertificate.edit"/>
             </button>
@@ -101,10 +101,7 @@ let GiftCertifcateForm = props => {
                 <div className="row">
                     <div className="col">
                         {/*{applyButton(certificate,pristine, submitting, invalid)}*/}
-                        <button type="submit" disabled={pristine || submitting || invalid}
-                                className="btn btn-dark text-white  justify-content-center flex-column">
-                            <Translate id="addeditgiftcertificate.add"/>
-                        </button>
+                        {applyButton()}
                     </div>
 
                     <div className="col">

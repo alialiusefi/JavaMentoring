@@ -8,7 +8,6 @@ const options = [
 ];
 
 
-
 class SearchMenuForm extends Component {
 
     constructor(props) {
@@ -17,16 +16,18 @@ class SearchMenuForm extends Component {
     }
 
 
-
     render() {
-        return (
-            <div>
-                <Select value={this.props.certificateDropDownValue}
-                        onChange={this.handleChange}
-                        options={options}>
-                </Select>
-            </div>
-        );
+        {
+            if (this.props.role !== null) {
+                return (
+                    <Select value={this.props.certificateDropDownValue}
+                            onChange={this.handleChange}
+                            options={options}>
+                    </Select>);
+            } else {
+                return (<div></div>);
+            }
+        }
     }
 
     handleChange = (certificateDropDown) => {
@@ -34,6 +35,6 @@ class SearchMenuForm extends Component {
     };
 
 
-
 }
+
 export default SearchMenuForm;
