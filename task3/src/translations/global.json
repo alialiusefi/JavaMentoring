@@ -24,15 +24,47 @@
     "description" : ["Description","Описание"],
     "price" : ["Price","Цена"],
     "dateofcreation" : ["Date Of Creation", "Дата создания"],
-    "dateofmodification" : ["Date of Modification","Дата модификации"],
-    "duration" : ["Duration","длительность"]
+    "dateofmodification": [
+      "Date of Modification",
+      "Дата модификации"
+    ],
+    "duration": [
+      "Duration",
+      "длительность"
+    ]
   },
-  "tags" : {
-    "tags" : ["Tags","Теги"]
+  "tags": {
+    "tags": [
+      "Tags",
+      "Теги"
+    ]
   },
-  "addeditgiftcertificate" : {
-    "title" : ["Add/Edit Gift Certificate", "Изменеие/Добавление сертификат"],
-    "add" : ["Add Certificate", "Добавить Сертификат"],
-    "edit" : ["Edit Certificate", "Изменить Сертификат"]
+  "addeditgiftcertificate": {
+    "title": [
+      "Add/Edit Gift Certificate",
+      "Изменеие/Добавление сертификат"
+    ],
+    "add": [
+      "Add Certificate",
+      "Добавить Сертификат"
+    ],
+    "edit": [
+      "Edit Certificate",
+      "Изменить Сертификат"
+    ]
+  },
+  "button": {
+    "buy": [
+      "Buy",
+      "Купить"
+    ],
+    "delete": [
+      "Delete",
+      "Удалить"
+    ],
+    "edit": [
+      "Edit",
+      "Изменить"
+    ]
   }
 }

@@ -4,19 +4,17 @@ import Footer from '../Footer/Footer'
 import Login from '../Login/Login'
 import "./Home.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Route, Switch, Redirect, withRouter} from "react-router-dom";
+import {Redirect, Route, Switch, withRouter} from "react-router-dom";
 import {renderToStaticMarkup} from "react-dom/server";
-import {withLocalize, Translate, setActiveLanguage} from "react-localize-redux";
+import {Translate, withLocalize} from "react-localize-redux";
 import globalTranslations from "../../translations/global.json";
 import SearchForm from "./SearchForm";
 import SearchMenuForm from "./SearchMenuForm";
 import ListOfGiftCertificates from "../ListofGiftCertificates/ListOfGiftCertificates";
-import PaginationPage from "./PaginationPage";
 import PaginationSize from "./PaginationSize";
 import Pagination from "react-js-pagination";
 import Signup from "../Signup/Signup";
 import jwt_decode from 'jwt-decode';
-import NotFound from "../NotFound/NotFound";
 import AddEditGiftCertificate from "../AddEditGiftCertifcate/AddEditGiftCertificate";
 
 const options = [
@@ -25,7 +23,7 @@ const options = [
 ]
 
 const GETALLCERTIFICATES_URL = "http://localhost:8080/api/v1/giftcertificates?page=PAGE_NUMBER&size=PAGE_SIZE";
-const GETALLUSERORDERS_URL = "http://localhost:8080/api/v2/users/USER_ID/orders/";
+const GETALLUSERORDERS_URL = "http://localhost:8080/api/v2/users/USER_ID/orders?page=PAGE_NUMBER&size=PAGE_SIZE";
 const GETALLGIFTCARDSBYTAGID = "http://localhost:8080/api/v1/giftcertificates?page=PAGE_NUMBER&size=PAGE_SIZE&tagID=TAG_ID_HERE";
 const NotFoundRedirect = () => <Redirect to='/not_found'/>;
 
@@ -46,40 +44,19 @@ class Home extends React.Component {
         this.props.addTranslation(globalTranslations);
         this.state = {
             giftCertificates: [],
-            pageCount: 5,
-            pageSize: 5,
-            pageNumber: 1,
+            pageCount: null,
+            pageSize: null,
+            pageNumber: null,
             certificateDropDownValue: "ALL",
             isLoggedIn: false,
             username: null,
             user_id: null,
-            user_role:null,
+            user_role: null,
             selectedGiftCertificate: null
         }
 
     }
 
-
-    componentDidUpdate(prevProps) {
-        if (this.props.location !== prevProps.location) {
-            this.onRouteChanged();
-        }
-    }
-
-    onRouteChanged() {
-        /* alert("ROUTE CHANGED");
-         if(localStorage.getItem("locale") == null) {
-             localStorage.setItem("locale","en");
-         } else {
-             if(localStorage.getItem("locale") === "ru"){
-                 setActiveLanguage("ru");
-             }
-             if(localStorage.getItem("locale") === "en") {
-                 setActiveLanguage("en");
-             }
-
-         }*/
-    }
 
     render() {
         return (
@@ -118,7 +95,11 @@ class Home extends React.Component {
                             </div>
                             <div className="container">
                                 <ListOfGiftCertificates giftcertificates={this.state.giftCertificates}
-                                                        handleGetCertificatesByTagName={this.handleGetCertificatesByTagName}/>
+                                                        handleGetCertificatesByTagName={this.handleGetCertificatesByTagName}
+                                                        handleGetAllCertificates={this.handleGetAllCertificates}
+                                                        setPageSize={this.setPageSize}
+                                                        setPageNumber={this.setPageNumber}
+                                                        role={this.state.user_role}/>
                             </div>
                             <div className="container-fluid">
                                 <div className="row justify-content-center">
@@ -140,8 +121,8 @@ class Home extends React.Component {
                             </div>
                         </div>
                     </Route>
-                    <Route component={NotFound} path="/not_found"/>
-                    <Route component={NotFoundRedirect}/>
+                    {/*<Route component={NotFound} path="/not_found"/>
+                    <Route component={NotFoundRedirect}/>*/}
                 </Switch>
                 <Footer/>
             </div>
@@ -174,11 +155,31 @@ class Home extends React.Component {
         });
     }
 
+    setPageSize = (pageSize) => {
+        this.setState({pageSize: pageSize})
+    };
+
+    setPageNumber = (pageNumber) => {
+        this.setState({pageNumber: pageNumber})
+    };
+
+    setSelectedGiftCertificate = (certificate) => {
+        this.setState({selectedGiftCertificate: certificate});
+    };
 
     handleGetAllCertificates = (filterAllOrMy) => {
-        if (filterAllOrMy.value === "ALL") {
+        let arg = filterAllOrMy;
+        if (!(filterAllOrMy === "ALL" || filterAllOrMy === "MY")) {
+            arg = filterAllOrMy.value;
+        }
+        if (arg === "ALL") {
             this.setState({certificateDropDownValue: "ALL"});
-            const URL = GETALLCERTIFICATES_URL.replace("PAGE_NUMBER", this.state.pageNumber).replace("PAGE_SIZE", this.state.pageSize);
+            let URL = GETALLCERTIFICATES_URL.replace("PAGE_NUMBER", 1)
+                .replace("PAGE_SIZE", 5);
+            if (this.state.pageSize != null && this.state.pageNumber != null) {
+                URL = GETALLCERTIFICATES_URL.replace("PAGE_NUMBER", this.state.pageNumber)
+                    .replace("PAGE_SIZE", this.state.pageSize);
+            }
             fetch(URL,
                 {
                     method: 'GET',
@@ -200,15 +201,29 @@ class Home extends React.Component {
                 console.log(error);
             });
         } else {
-            /*todo: replace "2" with dynamic userID and handle pagination*/
             this.setState({certificateDropDownValue: "MY"});
-            const URLWITHID = GETALLUSERORDERS_URL.replace("USER_ID", "2");
+            let URLWITHID = GETALLUSERORDERS_URL.replace("USER_ID", this.state.user_id)
+                .replace("PAGE_NUMBER", 1)
+                .replace("PAGE_SIZE", 5);
+            if (this.state.pageSize != null && this.state.pageNumber != null) {
+                URLWITHID = GETALLCERTIFICATES_URL.replace("PAGE_NUMBER", this.state.pageNumber)
+                    .replace("PAGE_SIZE", this.state.pageSize);
+            }
+            const accessToken = localStorage.getItem("accessToken");
+            const refreshToken = localStorage.getItem("refreshToken");
+            if (accessToken == null || refreshToken == null) {
+                alert("unauthorized");
+                return;
+            }
+            document.cookie = "accessToken=" + accessToken;
+            document.cookie = "refreshToken=" + refreshToken;
             fetch(URLWITHID,
                 {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json'
-                    }
+                    },
+                    credentials: 'include'
                 }).then(response => {
                 const json = response.json();
                 if (!response.ok) {
@@ -310,7 +325,7 @@ class Home extends React.Component {
             this.setState({isLoggedIn: true});
             this.setState({username: decodedToken.sub});
             this.setState({user_id: decodedToken.user_id});
-            this.setState({user_role:decodedToken.role});
+            this.setState({user_role: decodedToken.role});
             return json;
         }).catch(error => {
             console.log(error);

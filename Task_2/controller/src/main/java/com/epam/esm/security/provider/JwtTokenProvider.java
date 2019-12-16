@@ -4,15 +4,10 @@ import com.epam.esm.entity.LocalCustomOAuthUser;
 import com.epam.esm.properties.AppProperties;
 import com.epam.esm.security.exception.InvalidJwtAuthenticationException;
 import com.epam.esm.service.CustomUserService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +15,10 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.Base64;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class JwtTokenProvider {
@@ -48,7 +46,7 @@ public class JwtTokenProvider {
 
     public String generateAccessToken(UserDetails userDetails) {
         LocalCustomOAuthUser user = (LocalCustomOAuthUser) userDetails;
-        Map<String,Object> attr = user.getAttributes();
+        Map<String, Object> attr = user.getAttributes();
         return doGenerateAccessToken(attr, userDetails.getUsername());
     }
 

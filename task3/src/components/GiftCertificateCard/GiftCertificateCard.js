@@ -11,62 +11,91 @@ class GiftCertificateCard extends React.Component {
         super(props);
     }
 
-    render() {
-        return (
-                <Card>
-                    <ListGroup variant="flush">
-                        <ListGroup.Item>
-                            <div className="container">
-                                <div className="row">
-                                    <div className="col">
-                                        {this.props.certificate.name}
-                                    </div>
-                                    <div className="col">
-                                        {this.props.certificate.dateOfCreation}
-                                    </div>
-                                </div>
-                            </div>
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            <div className="container">
-                                <div className="row">
-                                    <ListOfTags tags={this.props.certificate.tags} handleGetCertificatesByTagName={this.props.handleGetCertificatesByTagName} />
-                                </div>
-                                <div className="row">
-                                    {this.props.certificate.description}
-                                </div>
-                            </div>
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            <div className="container-fluid">
-                                <div className="row">
-                                    <div className="col">
-                                        <button
-                                            className="btn btn-dark text-white d-flex justify-content-center flex-column">
-                                            Edit
-                                        </button>
-                                    </div>
-                                    <div className="col">
 
-                                        <button
-                                            className="btn btn-dark text-white d-flex justify-content-center flex-column">
-                                            Delete
-                                        </button>
-                                    </div>
-                                    <div className="col">
-                                        <button
-                                            className="btn btn-dark text-white d-flex justify-content-center flex-column">
-                                            Buy
-                                        </button>
-                                    </div>
-                                    <div className="h-5">
-                                        <label>{this.props.certificate.price} BYN</label>
-                                    </div>
+    render() {
+
+        const editButton = () => {
+            if (this.props.role === "ADMIN") {
+                return (
+                    <button
+                        className="btn btn-dark text-white d-flex justify-content-center flex-column">
+                        <Translate id="button.edit"/>
+                    </button>
+                );
+            }
+        };
+
+        const deleteButton = () => {
+            if (this.props.role === "ADMIN") {
+                return (
+                    <button
+                        className="btn btn-dark text-white d-flex justify-content-center flex-column">
+                        <Translate id="button.delete"/>
+                    </button>
+                );
+            }
+        };
+
+        const buyButton = () => {
+            if (this.props.role === "ADMIN" ||
+                this.props.role === "USER") {
+                return (
+                    <button
+                        className="btn btn-dark text-white d-flex justify-content-center flex-column">
+                        <Translate id="button.buy"/>
+                    </button>
+                );
+            }
+        };
+
+        return (
+            <Card>
+                <ListGroup variant="flush">
+                    <ListGroup.Item>
+                        <div className="container">
+                            <div className="row">
+                                <div className="col">
+                                    {this.props.certificate.name}
+                                </div>
+                                <div className="col">
+                                    {this.props.certificate.dateOfCreation}
                                 </div>
                             </div>
-                        </ListGroup.Item>
-                    </ListGroup>
-                </Card>
+                        </div>
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                        <div className="container">
+                            <div className="row">
+                                <ListOfTags tags={this.props.certificate.tags}
+                                            handleGetCertificatesByTagName={this.props.handleGetCertificatesByTagName}/>
+                            </div>
+                            <div className="row">
+                                {this.props.certificate.description}
+                            </div>
+                        </div>
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col">
+                                    {editButton()}
+                                </div>
+                                <div className="col">
+                                    {
+                                        deleteButton()
+                                    }
+                                </div>
+                                <div className="col">
+                                    {buyButton()}
+                                </div>
+                                <div className="h-5">
+                                    <label>{this.props.certificate.price} BYN</label>
+                                </div>
+                            </div>
+                        </div>
+                    </ListGroup.Item>
+                </ListGroup>
+            </Card>
         );
     }
 }

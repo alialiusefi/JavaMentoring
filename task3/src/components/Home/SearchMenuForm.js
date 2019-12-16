@@ -31,7 +31,7 @@ class SearchMenuForm extends Component {
     }
 
     handleChange = (certificateDropDown) => {
-        this.props.handleGetAllCertificates(certificateDropDown);
+        this.props.handleGetAllCertificates(certificateDropDown, 5, 1);
     };
 
 
