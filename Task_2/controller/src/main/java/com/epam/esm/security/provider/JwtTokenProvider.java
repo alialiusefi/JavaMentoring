@@ -4,11 +4,7 @@ import com.epam.esm.entity.LocalCustomOAuthUser;
 import com.epam.esm.properties.AppProperties;
 import com.epam.esm.security.exception.InvalidJwtAuthenticationException;
 import com.epam.esm.service.CustomUserService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -50,8 +46,8 @@ public class JwtTokenProvider {
 
     public String generateAccessToken(UserDetails userDetails) {
         LocalCustomOAuthUser user = (LocalCustomOAuthUser) userDetails;
-        Map<String,Object> attributes = user.getAttributes();
-        return doGenerateAccessToken(attributes, userDetails.getUsername());
+        Map<String, Object> attr = user.getAttributes();
+        return doGenerateAccessToken(attr, userDetails.getUsername());
     }
 
     private String doGenerateAccessToken(Map<String, Object> claims, String subject) {
@@ -62,12 +58,12 @@ public class JwtTokenProvider {
     }
 
     public String generateRefreshToken(UserDetails userDetails) {
-        LocalCustomOAuthUser user = (LocalCustomOAuthUser) userDetails;
-        return doGenerateRefreshToken(user.getAttributes(), userDetails.getUsername());
+        Map<String, Object> claims = new HashMap<>();
+        return doGenerateRefreshToken(claims, userDetails.getUsername());
     }
 
     private String doGenerateRefreshToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder().addClaims(claims).setSubject(subject)
+        return Jwts.builder().setClaims(claims).setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + refreshTokenExpirationMsec * 1000))
                 .signWith(SignatureAlgorithm.HS512, secretKey).compact();
