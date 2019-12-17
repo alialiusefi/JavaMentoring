@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import GiftCertificateForm from "./GiftCertificateForm";
 import {Translate} from "react-localize-redux";
 import './ReactInput.css'
+
 class AddEditGiftCertificate extends React.Component {
 
     constructor(props) {
@@ -24,15 +25,16 @@ class AddEditGiftCertificate extends React.Component {
                     <h2><Translate id={"addeditgiftcertificate.title"}/></h2>
                 </div>
                 <div className="row">
-                    <GiftCertificateForm onSubmit={this.handleSubmit}
-                                         initialValues={this.props.certificate}
-                                         certificate={this.props.certificate}
-                                        handleTagDelete={this.handleDelete}
-                                         handleTagAdd={this.handleAddition}
-                                         handleTagDrag={this.handleDrag}
-                                         tags={this.state.tags}
-                                         suggestions={this.state.suggestions}
-                                         handleInputChange={this.handleInputChange}
+                    <GiftCertificateForm
+                        onSubmit={this.props.certificate == null ? this.handleSubmit : this.handleUpdate}
+                        initialValues={this.props.certificate}
+                        certificate={this.props.certificate}
+                        handleTagDelete={this.handleDelete}
+                        handleTagAdd={this.handleAddition}
+                        handleTagDrag={this.handleDrag}
+                        tags={this.state.tags}
+                        suggestions={this.state.suggestions}
+                        handleInputChange={this.handleInputChange}
                     />
                 </div>
             </div>
@@ -53,15 +55,30 @@ class AddEditGiftCertificate extends React.Component {
             arrayTag);
     };
 
+    handleUpdate = (values) => {
+        console.log(values);
+        let arrayTag = [];
+        this.state.tags.map((tag) => {
+            arrayTag.push({name: tag.text})
+        });
+        const certificate_id = this.props.certificate.id;
+        this.props.handleUpdateCertificate(
+            values.name,
+            values.description,
+            values.price,
+            values.durationTillExpiry,
+            arrayTag, certificate_id);
+    };
+
     handleDelete = (i) => {
-        const { tags } = this.state;
+        const {tags} = this.state;
         this.setState({
             tags: tags.filter((tag, index) => index !== i),
         });
     }
 
     handleAddition = (tag) => {
-        this.setState(state => ({ tags: [...state.tags, tag] }));
+        this.setState(state => ({tags: [...state.tags, tag]}));
         console.log(this.state.tags);
     }
 

@@ -25,6 +25,7 @@ class ListOfGiftCertificates extends React.Component {
                                         <GiftCertificateCard certificate={certificate}
                                                              handleGetCertificatesByTagName={this.props.handleGetCertificatesByTagName}
                                                              role={this.props.role}
+                                                             setSelectedGiftCertificate={this.props.setSelectedGiftCertificate}
                                         />
                                     </div>
                             )

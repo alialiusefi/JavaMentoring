@@ -74,7 +74,8 @@ class Home extends React.Component {
                         <AddEditGiftCertificate handleAddCertificate={this.handleAddCertificate}/>
                     </Route>
                     <Route path="/edit">
-                        <AddEditGiftCertificate certificate={this.state.selectedGiftCertificate}/>
+                        <AddEditGiftCertificate certificate={this.state.selectedGiftCertificate}
+                                                handleUpdateCertificate={this.handleUpdateCertificate}/>
                     </Route>
                     <Route path="/giftcertificates">
                         <div className="container text-center">
@@ -99,7 +100,9 @@ class Home extends React.Component {
                                                         handleGetAllCertificates={this.handleGetAllCertificates}
                                                         setPageSize={this.setPageSize}
                                                         setPageNumber={this.setPageNumber}
-                                                        role={this.state.user_role}/>
+                                                        role={this.state.user_role}
+                                                        setSelectedGiftCertificate={this.setSelectedGiftCertificate}
+                                />
                             </div>
                             <div className="container-fluid">
                                 <div className="row justify-content-center">
@@ -156,15 +159,16 @@ class Home extends React.Component {
     }
 
     setPageSize = (pageSize) => {
-        this.setState({pageSize: pageSize})
+        this.setState({pageSize: pageSize});
     };
 
     setPageNumber = (pageNumber) => {
-        this.setState({pageNumber: pageNumber})
+        this.setState({pageNumber: pageNumber});
     };
 
     setSelectedGiftCertificate = (certificate) => {
-        this.setState({selectedGiftCertificate: certificate});
+        this.setState({selectedGiftCertificate: certificate},
+            this.props.history.push("edit"));
     };
 
     handleGetAllCertificates = (filterAllOrMy) => {
@@ -239,6 +243,7 @@ class Home extends React.Component {
                 console.log(error);
             });
         }
+        this.props.history.push("giftcertificates");
     };
 
     handleGetCertificatesByTagName = (tagID, tagName) => {
@@ -330,6 +335,49 @@ class Home extends React.Component {
         }).catch(error => {
             console.log(error);
         });
+        this.props.history.push("giftcertificates");
+    };
+
+    handleUpdateCertificate = (name, description, price, durationTillExpiry, tags, id) => {
+        const URL = UPDATE_CERTIIFCATE_URL.replace("CERTIFICATE_ID", id);
+        const data = {
+            name: name,
+            description: description,
+            price: price,
+            durationTillExpiry: durationTillExpiry,
+            tags: tags
+        };
+        const accessToken = localStorage.getItem("accessToken");
+        const refreshToken = localStorage.getItem("refreshToken");
+        if (accessToken == null || refreshToken == null) {
+            alert("unauthorized");
+            return;
+        }
+        document.cookie = "accessToken=" + accessToken;
+        document.cookie = "refreshToken=" + refreshToken;
+        const body = JSON.stringify(data);
+        fetch(URL,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: body
+            }).then(response => {
+            console.log(response);
+            const json = response.json();
+            if (!response.ok) {
+                return Promise.reject(json);
+            }
+            return json;
+        }).then(json => {
+            console.log(json);
+            return json;
+        }).catch(error => {
+            console.log(error);
+        });
+        this.props.history.push("giftcertificates");
     };
 
     handleAddCertificate = (name, description, price, durationTillExpiry, tags) => {
@@ -377,7 +425,7 @@ class Home extends React.Component {
 
 }
 
-
+const UPDATE_CERTIIFCATE_URL = "http://localhost:8080/api/v1/giftcertificates/CERTIFICATE_ID";
 const ADD_CERTIFICATE_URL = "http://localhost:8080/api/v1/giftcertificates";
 const LOGIN_URL = "http://localhost:8080/api/v2/auth/login";
 const SIGNUP_URL = "http://localhost:8080/api/v2/auth/signup";

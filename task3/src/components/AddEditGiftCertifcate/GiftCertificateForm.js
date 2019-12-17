@@ -2,7 +2,7 @@ import React from 'react';
 import {Field, reduxForm} from 'redux-form';
 import {Link} from "react-router-dom";
 import {Translate} from "react-localize-redux"
-import { WithContext as ReactTags } from 'react-tag-input';
+import {WithContext as ReactTags} from 'react-tag-input';
 
 const renderField = ({input, label, type, meta: {touched, error, warning}}) => (
     <div>
@@ -29,9 +29,9 @@ const validate = values => {
     }
     if (!values.price) {
         errors.price = 'Required'
-    } else if (!values.price.match("\\d[\\d\\,\\.]+")) {
+    } /*else if (!values.price.match("\\d[\\d\\,\\.]+")) {
         errors.price = 'Incorrect price format'
-    }
+    }*/
     if (!values.durationTillExpiry) {
         errors.durationTillExpiry = 'Required'
     } else if (!(values.durationTillExpiry > 0)) {
@@ -100,8 +100,8 @@ let GiftCertifcateForm = props => {
                 </div>
                 <div className="row">
                     <div className="col">
-                        {/*{applyButton(certificate,pristine, submitting, invalid)}*/}
-                        {applyButton()}
+                        {applyButton(certificate, pristine, submitting, invalid)}
+                        {/*{applyButton()}*/}
                     </div>
 
                     <div className="col">
