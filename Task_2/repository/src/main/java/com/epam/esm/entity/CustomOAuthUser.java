@@ -21,6 +21,8 @@ public abstract class CustomOAuthUser extends DefaultOAuth2User implements UserD
         return userEntity;
     }
 
+
+
     public void setUserEntity(UserEntity userEntity) {
         this.userEntity = userEntity;
     }
@@ -59,4 +61,6 @@ public abstract class CustomOAuthUser extends DefaultOAuth2User implements UserD
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.userEntity.getAuthorityList();
     }
+
+
 }
