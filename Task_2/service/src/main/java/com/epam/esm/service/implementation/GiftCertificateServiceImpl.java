@@ -79,7 +79,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     public PageDTO getAllPage(int pageNumber, int pageSize) {
         try {
-            List<GiftCertificateDTO> dto = giftCertificateConverter.toDTOList(
+            List dto = giftCertificateConverter.toDTOList(
                     giftCertificateRepo.queryList(new FindAllGiftCertificates(), pageNumber, pageSize));
             Long totalCount = giftCertificateRepo.queryCount(new CountFindAllGiftCertificates()).orElseThrow(
                     () -> new ResourceNotFoundException("Cannot find amount of results!"));
@@ -300,7 +300,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                 specifications, parameters);
         List giftCertificates = giftCertificateRepo.queryList(conjunction, pageNumber, pageSize);
         List<GiftCertificate> handledGiftCertificates = handleGiftCertifcates(giftCertificates);
-        List<GiftCertificateDTO> result = giftCertificateConverter.toDTOList(handledGiftCertificates);
+        List result = giftCertificateConverter.toDTOList(handledGiftCertificates);
         conjunction.setSpecifications(specifications2);
         Long totalCount = giftCertificateRepo.queryCount(new CountGiftCertificatesSpecificationConjunction(conjunction))
                 .orElseThrow(() -> new ResourceNotFoundException("Cannot get total count!"));

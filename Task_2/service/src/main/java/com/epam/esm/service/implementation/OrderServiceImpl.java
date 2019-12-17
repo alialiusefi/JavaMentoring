@@ -16,6 +16,7 @@ import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.repository.OrderRepository;
 import com.epam.esm.repository.UserRepository;
+import com.epam.esm.repository.specification.CountFindAllUserOrders;
 import com.epam.esm.repository.specification.FindAllOrders;
 import com.epam.esm.repository.specification.FindAllOrdersByUserID;
 import com.epam.esm.repository.specification.FindGiftCertificateByID;
@@ -26,6 +27,7 @@ import com.epam.esm.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import sun.jvm.hotspot.debugger.Page;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -93,16 +95,15 @@ public class OrderServiceImpl implements OrderService {
             }
         }
         throw new OAuth2AuthenticationProcessingException("Access is denied!");
-
     }
 
     public PageDTO getOrdersByUserIDPage(CustomOAuthUser currentUserEntity, Long userIDOrders,
-                                         int pageNumber, int pageSize)
-    {
-        List<OrderDTO> dtos = getOrdersByUserID(currentUserEntity,userIDOrders,pageNumber,pageSize);
-        //Long resultCount = orderRepository.queryCount(/*new count specification*/);
-        return null;
-    }
+                                         int pageNumber, int pageSize) {
+        List dtos = getOrdersByUserID(currentUserEntity, userIDOrders, pageNumber, pageSize);
+        Long resultCount = orderRepository.queryCount(new CountFindAllUserOrders(currentUserEntity.getUserEntity().getId()))
+                .orElseThrow(() -> new ResourceNotFoundException("Cannot Find User's Orders Certificates"));
+        return new PageDTO(dtos,resultCount);
+  }
 
 
     @Override

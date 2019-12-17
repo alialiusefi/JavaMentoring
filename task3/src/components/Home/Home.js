@@ -45,8 +45,8 @@ class Home extends React.Component {
         this.state = {
             giftCertificates: [],
             pageCount: null,
-            pageSize: null,
-            pageNumber: null,
+            pageSize: 5,
+            pageNumber: 1,
             certificateDropDownValue: "ALL",
             isLoggedIn: false,
             username: null,
@@ -171,18 +171,18 @@ class Home extends React.Component {
             this.props.history.push("edit"));
     };
 
-    handleGetAllCertificates = (filterAllOrMy) => {
+    handleGetAllCertificates = (filterAllOrMy,pageSize,pageNumber) => {
         let arg = filterAllOrMy;
         if (!(filterAllOrMy === "ALL" || filterAllOrMy === "MY")) {
             arg = filterAllOrMy.value;
         }
         if (arg === "ALL") {
             this.setState({certificateDropDownValue: "ALL"});
-            let URL = GETALLCERTIFICATES_URL.replace("PAGE_NUMBER", 1)
-                .replace("PAGE_SIZE", 5);
-            if (this.state.pageSize != null && this.state.pageNumber != null) {
-                URL = GETALLCERTIFICATES_URL.replace("PAGE_NUMBER", this.state.pageNumber)
-                    .replace("PAGE_SIZE", this.state.pageSize);
+            let URL = GETALLCERTIFICATES_URL.replace("PAGE_NUMBER", this.state.pageNumber)
+                .replace("PAGE_SIZE", this.state.pageSize);
+            if (pageSize != null && pageNumber != null) {
+                URL = GETALLCERTIFICATES_URL.replace("PAGE_NUMBER",pageNumber)
+                    .replace("PAGE_SIZE", pageSize);
             }
             fetch(URL,
                 {
@@ -207,11 +207,11 @@ class Home extends React.Component {
         } else {
             this.setState({certificateDropDownValue: "MY"});
             let URLWITHID = GETALLUSERORDERS_URL.replace("USER_ID", this.state.user_id)
-                .replace("PAGE_NUMBER", 1)
-                .replace("PAGE_SIZE", 5);
-            if (this.state.pageSize != null && this.state.pageNumber != null) {
-                URLWITHID = GETALLCERTIFICATES_URL.replace("PAGE_NUMBER", this.state.pageNumber)
-                    .replace("PAGE_SIZE", this.state.pageSize);
+                .replace("PAGE_NUMBER", this.state.pageNumber)
+                .replace("PAGE_SIZE", this.state.pageSize);
+            if (pageSize != null && pageNumber != null) {
+                URLWITHID = GETALLUSERORDERS_URL.replace("USER_ID", this.state.user_id).replace("PAGE_NUMBER", pageNumber)
+                    .replace("PAGE_SIZE", pageSize);
             }
             const accessToken = localStorage.getItem("accessToken");
             const refreshToken = localStorage.getItem("refreshToken");
@@ -235,7 +235,13 @@ class Home extends React.Component {
                 }
                 return json;
             }).then(json => {
-                this.setState({giftCertificates: json.results.giftCertificates});
+                let certificates = [];
+                json.results.map((order) => {
+                    order.giftCertificates.map((certificate) => {
+                        certificates.push(certificate);
+                    })
+                });
+                this.setState({giftCertificates: certificates});
                 this.setState({pageCount: json.totalResults});
                 console.log(this.state.giftCertificates);
                 return json;
@@ -273,7 +279,8 @@ class Home extends React.Component {
     };
 
     handleChangePageSize = (pageSize) => {
-        this.setState({pageSize: pageSize});
+        this.setState({pageSize: pageSize},
+            this.handleGetAllCertificates(this.state.certificateDropDownValue,pageSize,this.state.pageNumber));
     };
 
     handleChangePage = (pageNumber) => {

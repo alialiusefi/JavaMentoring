@@ -4,19 +4,19 @@ import java.util.List;
 
 public class PageDTO extends DTO {
 
-    private List<GiftCertificateDTO> results;
+    private List<? extends DTO> results;
     private Long totalResults;
 
-    public PageDTO(List<GiftCertificateDTO> results, Long totalResults) {
+    public PageDTO(List<DTO> results, Long totalResults) {
         this.results = results;
         this.totalResults = totalResults;
     }
 
-    public List<GiftCertificateDTO> getResults() {
+    public List<? extends DTO> getResults() {
         return results;
     }
 
-    public void setResults(List<GiftCertificateDTO> results) {
+    public void setResults(List<DTO> results) {
         this.results = results;
     }
 
