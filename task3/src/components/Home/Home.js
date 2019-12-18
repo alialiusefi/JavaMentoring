@@ -58,6 +58,18 @@ class Home extends React.Component {
 
     }
 
+    componentDidMount() {
+        const now = new Date();
+        const decodedToken = jwt_decode(localStorage.getItem('accessToken'));
+        console.log("Expiry:" + decodedToken.exp);
+        console.log("Now:" + now.getTime() / 1000);
+        if(!(decodedToken.exp < now.getTime() / 1000)){
+            this.setState({isLoggedIn: true});
+            this.setState({username: decodedToken.sub});
+            this.setState({user_id: decodedToken.user_id});
+            this.setState({user_role: decodedToken.role});
+        }
+    }
 
     render() {
 
@@ -65,7 +77,8 @@ class Home extends React.Component {
         return (
             <div>
                 <Header isLoggedIn={this.state.isLoggedIn} username={this.state.username}
-                        location={this.props.location.pathname} role={this.state.user_role}/>
+                        location={this.props.location.pathname} role={this.state.user_role}
+                        handleLogOut={this.handleLogOut}/>
                 <Switch>
                     <Route path="/login">
                         <Login handleLogIn={this.handleLogIn}/>
@@ -174,6 +187,16 @@ class Home extends React.Component {
         this.setState({selectedGiftCertificate: certificate},
             this.props.history.push("edit"));
     };
+
+    handleLogOut = () =>{
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+            this.setState({isLoggedIn : false});
+            this.setState({user_role : null});
+            this.setState({username : null});
+            this.setState({user_id : null});
+            this.props.history.push("login");
+    }
 
     handleDeleteCertificateModal = (certificate) => {
         const URL = DELETE_CERTIFICATE_URL

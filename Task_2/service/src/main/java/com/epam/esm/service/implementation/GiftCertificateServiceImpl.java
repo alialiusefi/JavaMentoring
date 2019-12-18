@@ -2,6 +2,7 @@ package com.epam.esm.service.implementation;
 
 import com.epam.esm.converter.GiftCertificateConverter;
 import com.epam.esm.converter.TagConverter;
+import com.epam.esm.dto.DTO;
 import com.epam.esm.dto.GiftCertificateDTO;
 import com.epam.esm.dto.PageDTO;
 import com.epam.esm.dto.TagDTO;
@@ -110,12 +111,14 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Transactional
     @Override
     public GiftCertificateDTO update(GiftCertificateDTO certificateDTO) {
-        if (getByID(certificateDTO.getId()) == null) {
+        GiftCertificateDTO DTOfound;
+        if ((DTOfound = getByID(certificateDTO.getId())) == null) {
             throw new ResourceNotFoundException("Gift Certificate with ID: "
                     + certificateDTO.getId() + " was not found!");
         }
         addNewTagsIfTheyDontExist(certificateDTO);
         GiftCertificate certificate = giftCertificateConverter.toEntity(certificateDTO);
+        certificate.setDateOfCreation(DTOfound.getDateOfCreation());
         certificate.setDateOfModification(LocalDate.now());
         List<Tag> tagsWithID = getTagsWithID(certificate.getTags());
         certificate.setTags(tagsWithID);

@@ -11,6 +11,12 @@ class Header extends React.Component {
         super(props);
     }
 
+    logOut = (isLoggedIn) => {
+        if(isLoggedIn) {
+            this.props.handleLogOut();
+        }
+    };
+
     render() {
         let homeButton;
         let homeButtonLink;
@@ -21,6 +27,8 @@ class Header extends React.Component {
             homeButton = "home.title";
             homeButtonLink = "/giftcertificates";
         }
+
+
 
         return (
             <div>
@@ -43,7 +51,7 @@ class Header extends React.Component {
                         </div>
                         <div className="row">
                             <div className="col-5">
-                                <Link className="nav-item" to={"/login"}>
+                                <Link className="nav-item" to={"/login"} onClick={this.logOut}>
                                     <Translate id="home.loginlogout"> Login/Logout </Translate>
                                 </Link>
                             </div>

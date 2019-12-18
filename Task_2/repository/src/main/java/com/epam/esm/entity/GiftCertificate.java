@@ -34,7 +34,7 @@ public final class GiftCertificate extends AbstractEntity {
     private boolean isForSale;
 
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "tagged_giftcertificates", inverseJoinColumns =
             {@JoinColumn(name = "tag_id")},
             joinColumns = {@JoinColumn(name = "gift_certificate_id")})

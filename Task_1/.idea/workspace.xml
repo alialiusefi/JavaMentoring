@@ -7,36 +7,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7c482e5e-8ec2-4e70-b212-5491b38e18c8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/converter/UserWithoutPasswordConverter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/dto/UserWithoutPassDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/CustomOIDAuthService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/CustomOIDAuthServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../task3/src/components/DeleteCertificateModal/DeleteCertificateModal.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/controller/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/controller/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/config/SpringSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/config/SpringSecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/controller/GiftCertificateController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/controller/GiftCertificateController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/controller/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/controller/OrderController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/controller/TagController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/controller/TagController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/properties/AppProperties.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/properties/AppProperties.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/security/filter/JwtTokenAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/security/filter/JwtTokenAuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/security/handler/SecurityEntryPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/security/handler/SecurityEntryPoint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/security/provider/JwtTokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/java/com/epam/esm/security/provider/JwtTokenProvider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/controller/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/controller/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/CustomOAuthUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/CustomOAuthUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/GithubCustomOAuthUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/GithubCustomOAuthUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/GoogleCustomOAuthUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/GoogleCustomOIDAuthUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/LocalCustomOAuthUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/LocalCustomOAuthUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindGiftCertificatesByName.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindGiftCertificatesByName.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindGiftCertificatesByTagID.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/repository/specification/FindGiftCertificatesByTagIDandGiftCertNameOrDescandSortByNameorDate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/BaseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/BaseService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/CustomOAuthUserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/CustomOAuthUserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/CustomUserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/CustomUserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/GiftCertificateServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/GiftCertificateServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/OrderServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/TagServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/TagServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../task3/src/components/AddEditGiftCertifcate/AddEditGiftCertificate.js" beforeDir="false" afterPath="$PROJECT_DIR$/../task3/src/components/AddEditGiftCertifcate/AddEditGiftCertificate.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../task3/src/components/GiftCertificateCard/GiftCertificateCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/../task3/src/components/GiftCertificateCard/GiftCertificateCard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../task3/src/components/Home/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/../task3/src/components/Home/Home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../task3/src/components/ListofGiftCertificates/ListOfGiftCertificates.js" beforeDir="false" afterPath="$PROJECT_DIR$/../task3/src/components/ListofGiftCertificates/ListOfGiftCertificates.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -536,6 +512,7 @@
       <workItem from="1572082725849" duration="37000" />
       <workItem from="1572083450625" duration="621000" />
       <workItem from="1573385638026" duration="2258000" />
+      <workItem from="1576662702427" duration="706000" />
     </task>
     <task id="LOCAL-00024" summary="Added method getFieldArray(), Implemented GiftCertificateRepo">
       <created>1569828724460</created>
@@ -933,19 +910,19 @@
     <SUITE FILE_PATH="coverage/gift_certficate_app$GiftCertificateRepoTest.ic" NAME="GiftCertificateRepoTest Coverage Results" MODIFIED="1571221361957" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.epam.esm.repository.*</FILTER>
     </SUITE>
+    <SUITE FILE_PATH="coverage/gift_certficate_app$GiftCertificateServiceTest.ic" NAME="GiftCertificateServiceTest Coverage Results" MODIFIED="1570204785192" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.epam.esm.service.*</FILTER>
+    </SUITE>
     <SUITE FILE_PATH="coverage/gift_certficate_app$Tomcat_9_0_242.ic" NAME="Tomcat 9.0.242 Coverage Results" MODIFIED="1570696579181" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/gift_certficate_app$com_epam_esm_repository_in_repository.ic" NAME="com.epam.esm.repository in repository Coverage Results" MODIFIED="1571223660585" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.epam.esm.repository.*</FILTER>
     </SUITE>
+    <SUITE FILE_PATH="coverage/gift_certficate_app$GiftCertificateRepoTest_and_1_more.ic" NAME="GiftCertificateRepoTest and 1 more Coverage Results" MODIFIED="1571221399688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/gift_certficate_app$TagRepoTest.ic" NAME="TagRepoTest Coverage Results" MODIFIED="1571218929623" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.epam.esm.repository.*</FILTER>
-    </SUITE>
-    <SUITE FILE_PATH="coverage/gift_certficate_app$GiftCertificateServiceTest.ic" NAME="GiftCertificateServiceTest Coverage Results" MODIFIED="1570204785192" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
-      <FILTER>com.epam.esm.service.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/gift_certficate_app$GiftCertificateServiceTest_getGiftCertificate.ic" NAME="GiftCertificateServiceTest.getGiftCertificate Coverage Results" MODIFIED="1570204759132" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.epam.esm.service.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/gift_certficate_app$GiftCertificateRepoTest_and_1_more.ic" NAME="GiftCertificateRepoTest and 1 more Coverage Results" MODIFIED="1571221399688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
