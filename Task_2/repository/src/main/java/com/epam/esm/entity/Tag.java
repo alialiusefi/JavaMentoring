@@ -27,11 +27,11 @@ public class Tag extends AbstractEntity {
     @Column(name = "tag_name", nullable = false)
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "tagged_giftcertificates", joinColumns =
+    @ManyToMany(mappedBy = "tags")
+   /* @JoinTable(name = "tagged_giftcertificates", joinColumns =
             {@JoinColumn(name = "tag_id")},
             inverseJoinColumns = {@JoinColumn(name = "gift_certificate_id")})
-    private List<GiftCertificate> certificateList;
+   */ private List<GiftCertificate> certificateList;
 
     private Tag(TagBuilder tagBuilder) {
         this.id = tagBuilder.id;
