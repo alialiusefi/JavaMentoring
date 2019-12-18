@@ -52,13 +52,16 @@ class Home extends React.Component {
             username: null,
             user_id: null,
             user_role: null,
-            selectedGiftCertificate: null
+            selectedGiftCertificate: null,
+
         }
 
     }
 
 
     render() {
+
+
         return (
             <div>
                 <Header isLoggedIn={this.state.isLoggedIn} username={this.state.username}
@@ -102,6 +105,7 @@ class Home extends React.Component {
                                                         setPageNumber={this.setPageNumber}
                                                         role={this.state.user_role}
                                                         setSelectedGiftCertificate={this.setSelectedGiftCertificate}
+                                                        handleDeleteCertificate={this.handleDeleteCertificateModal}
                                 />
                             </div>
                             <div className="container-fluid">
@@ -171,7 +175,35 @@ class Home extends React.Component {
             this.props.history.push("edit"));
     };
 
-    handleGetAllCertificates = (filterAllOrMy,pageSize,pageNumber) => {
+    handleDeleteCertificateModal = (certificate) => {
+        const URL = DELETE_CERTIFICATE_URL
+            .replace("CERTIFICATE_ID", certificate.id);
+        const accessToken = localStorage.getItem("accessToken");
+        const refreshToken = localStorage.getItem("refreshToken");
+        if (accessToken == null || refreshToken == null) {
+            alert("unauthorized");
+            return;
+        }
+        document.cookie = "accessToken=" + accessToken;
+        document.cookie = "refreshToken=" + refreshToken;
+        fetch(URL,
+            {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include'
+            }).then(response => {
+            if (!response.ok) {
+                return Promise.reject(response.json());
+            }
+        }).catch(error => {
+            console.log(error);
+        });
+    };
+
+
+    handleGetAllCertificates = (filterAllOrMy, pageSize, pageNumber) => {
         let arg = filterAllOrMy;
         if (!(filterAllOrMy === "ALL" || filterAllOrMy === "MY")) {
             arg = filterAllOrMy.value;
@@ -181,7 +213,7 @@ class Home extends React.Component {
             let URL = GETALLCERTIFICATES_URL.replace("PAGE_NUMBER", this.state.pageNumber)
                 .replace("PAGE_SIZE", this.state.pageSize);
             if (pageSize != null && pageNumber != null) {
-                URL = GETALLCERTIFICATES_URL.replace("PAGE_NUMBER",pageNumber)
+                URL = GETALLCERTIFICATES_URL.replace("PAGE_NUMBER", pageNumber)
                     .replace("PAGE_SIZE", pageSize);
             }
             fetch(URL,
@@ -280,7 +312,7 @@ class Home extends React.Component {
 
     handleChangePageSize = (pageSize) => {
         this.setState({pageSize: pageSize},
-            this.handleGetAllCertificates(this.state.certificateDropDownValue,pageSize,this.state.pageNumber));
+            this.handleGetAllCertificates(this.state.certificateDropDownValue, pageSize, this.state.pageNumber));
     };
 
     handleChangePage = (pageNumber) => {
@@ -432,6 +464,7 @@ class Home extends React.Component {
 
 }
 
+const DELETE_CERTIFICATE_URL = "http://localhost:8080/api/v1/giftcertificates/CERTIFICATE_ID";
 const UPDATE_CERTIIFCATE_URL = "http://localhost:8080/api/v1/giftcertificates/CERTIFICATE_ID";
 const ADD_CERTIFICATE_URL = "http://localhost:8080/api/v1/giftcertificates";
 const LOGIN_URL = "http://localhost:8080/api/v2/auth/login";

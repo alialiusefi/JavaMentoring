@@ -17,6 +17,19 @@ class AddEditGiftCertificate extends React.Component {
         };
     }
 
+    componentDidMount() {
+        if(( this.props.certificate != null && this.props.certificate.tags != null && this.props.certificate.tags.length !== 0)) {
+            let reactTags = [];
+            this.props.certificate.tags.map((tag) => {
+                reactTags.push({
+                    id : tag.name,
+                    text : tag.name
+                });
+            })
+            this.setState({tags : reactTags});
+        }
+    }
+
     render() {
         return (
             <div className="container">

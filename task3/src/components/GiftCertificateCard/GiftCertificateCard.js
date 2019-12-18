@@ -4,6 +4,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Card from "react-bootstrap/Card";
 import ListOfTags from "../ListOfTags/ListOfTags";
 import Button from "react-bootstrap/Button";
+import DeleteCertificateModal from "../DeleteCertificateModal/DeleteCertificateModal";
 
 
 class GiftCertificateCard extends React.Component {
@@ -30,10 +31,8 @@ class GiftCertificateCard extends React.Component {
         const deleteButton = () => {
             if (this.props.role === "ADMIN") {
                 return (
-                    <button
-                        className="btn btn-dark text-white d-flex justify-content-center flex-column">
-                        <Translate id="button.delete"/>
-                    </button>
+                    <DeleteCertificateModal certificate={this.props.certificate}
+                                            handleDeleteCertificate={this.props.handleDeleteCertificate}/>
                 );
             }
         };

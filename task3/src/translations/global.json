@@ -65,6 +65,10 @@
     "edit": [
       "Edit",
       "Изменить"
-    ]
+    ],
+    "cancel" : ["Cancel","Отмена"]
+  },
+  "modal" : {
+    "deletequestion" : ["Are you sure?","Вы уверены?"]
   }
 }
