@@ -2,7 +2,6 @@ package com.epam.esm.service.implementation;
 
 import com.epam.esm.converter.GiftCertificateConverter;
 import com.epam.esm.converter.TagConverter;
-import com.epam.esm.dto.DTO;
 import com.epam.esm.dto.GiftCertificateDTO;
 import com.epam.esm.dto.PageDTO;
 import com.epam.esm.dto.TagDTO;
@@ -91,7 +90,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         }
     }
 
-
     @Transactional
     @Override
     public GiftCertificateDTO add(GiftCertificateDTO certificateDTO) {
@@ -111,15 +109,16 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Transactional
     @Override
     public GiftCertificateDTO update(GiftCertificateDTO certificateDTO) {
-        GiftCertificateDTO DTOfound;
-        if ((DTOfound = getByID(certificateDTO.getId())) == null) {
-            throw new ResourceNotFoundException("Gift Certificate with ID: "
-                    + certificateDTO.getId() + " was not found!");
-        }
+        GiftCertificate giftCertificateFound;
+        giftCertificateFound = giftCertificateRepo.queryEntity(
+                new FindGiftCertificateByID(certificateDTO.getId()))
+                .orElseThrow(() -> new ResourceNotFoundException("Gift Certificate with ID: "
+                        + certificateDTO.getId() + " was not found!"));
         addNewTagsIfTheyDontExist(certificateDTO);
         GiftCertificate certificate = giftCertificateConverter.toEntity(certificateDTO);
-        certificate.setDateOfCreation(DTOfound.getDateOfCreation());
+        certificate.setDateOfCreation(giftCertificateFound.getDateOfCreation());
         certificate.setDateOfModification(LocalDate.now());
+        certificate.setForSale(giftCertificateFound.isForSale());
         List<Tag> tagsWithID = getTagsWithID(certificate.getTags());
         certificate.setTags(tagsWithID);
         return giftCertificateConverter.toDTO(giftCertificateRepo.update(certificate));

@@ -22,7 +22,7 @@ const options = [
     {value: 'MY', label: 'My GiftCertificates'}
 ]
 
-const GETALLCERTIFICATES_URL = "http://localhost:8080/api/v1/giftcertificates?page=PAGE_NUMBER&size=PAGE_SIZE";
+const GETALLCERTIFICATES_URL = "http://localhost:8080/api/v1/giftcertificates?page=PAGE_NUMBER&size=PAGE_SIZE&sortByDate=-1";
 const GETALLUSERORDERS_URL = "http://localhost:8080/api/v2/users/USER_ID/orders?page=PAGE_NUMBER&size=PAGE_SIZE";
 const GETALLGIFTCARDSBYTAGID = "http://localhost:8080/api/v1/giftcertificates?page=PAGE_NUMBER&size=PAGE_SIZE&tagID=TAG_ID_HERE";
 const NotFoundRedirect = () => <Redirect to='/not_found'/>;
