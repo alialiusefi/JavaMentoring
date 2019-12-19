@@ -1,7 +1,14 @@
 import React from "react";
-import {withLocalize, setActiveLanguage} from "react-localize-redux";
+import {withLocalize} from "react-localize-redux";
 
 const ChangeLocale = ({languages, activeLanguage, setActiveLanguage}) => (
+    /*
+        const Example = () => {
+            React.useEffect(() => {
+
+            },[])
+        };
+    */
     <div className="container-fluid">
         {languages.map(lang => (
             <div key={lang.code}>

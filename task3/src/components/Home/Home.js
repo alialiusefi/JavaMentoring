@@ -20,7 +20,7 @@ import AddEditGiftCertificate from "../AddEditGiftCertifcate/AddEditGiftCertific
 const options = [
     {value: 'ALL', label: 'All GiftCertificates'},
     {value: 'MY', label: 'My GiftCertificates'}
-]
+];
 
 const GETALLCERTIFICATES_URL = "http://localhost:8080/api/v1/giftcertificates?page=PAGE_NUMBER&size=PAGE_SIZE&sortByDate=-1";
 const GETALLUSERORDERS_URL = "http://localhost:8080/api/v2/users/USER_ID/orders?page=PAGE_NUMBER&size=PAGE_SIZE";
@@ -54,26 +54,28 @@ class Home extends React.Component {
             user_role: null,
             selectedGiftCertificate: null,
 
+        };
+        const locale = localStorage.getItem("locale");
+        if (locale == null) {
+            localStorage.setItem("locale", "en");
         }
-
+        this.props.setActiveLanguage(locale);
     }
 
     componentDidMount() {
         const now = new Date();
         const decodedToken = jwt_decode(localStorage.getItem('accessToken'));
-        console.log("Expiry:" + decodedToken.exp);
-        console.log("Now:" + now.getTime() / 1000);
-        if(!(decodedToken.exp < now.getTime() / 1000)){
+        if (!(decodedToken.exp < now.getTime() / 1000)) {
             this.setState({isLoggedIn: true});
             this.setState({username: decodedToken.sub});
             this.setState({user_id: decodedToken.user_id});
             this.setState({user_role: decodedToken.role});
         }
+        const lang = localStorage.getItem("locale");
+        this.props.setActiveLanguage(lang);
     }
 
     render() {
-
-
         return (
             <div>
                 <Header isLoggedIn={this.state.isLoggedIn} username={this.state.username}
@@ -106,7 +108,7 @@ class Home extends React.Component {
                                                         role={this.state.user_role}/>
                                     </div>
                                     <div className="col">
-                                        <SearchForm/>
+                                        <SearchForm onSubmit={this.handleSearch}/>
                                     </div>
                                 </div>
                             </div>
@@ -149,6 +151,23 @@ class Home extends React.Component {
         );
     }
 
+    handleSearch = (values) => {
+        let searchValueTokens = values.searchField.split(" ");
+        let tagsToSearch = [];
+        let nameOrDescription;
+        for (var i = 0; i < searchValueTokens.length; i++) {
+            let token = searchValueTokens[i];
+            if (token.charAt(0) === "#" && token.charAt(1) === "{"
+                && token.charAt(token.length - 1) === "}") {
+                tagsToSearch.push(token.substr(2, token.length - 3));
+            } else {
+                nameOrDescription = token;
+            }
+        }
+
+    };
+
+
     handleSignup = (login, password) => {
         const URL = SIGNUP_URL;
         const data = {
@@ -188,14 +207,14 @@ class Home extends React.Component {
             this.props.history.push("edit"));
     };
 
-    handleLogOut = () =>{
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("refreshToken");
-            this.setState({isLoggedIn : false});
-            this.setState({user_role : null});
-            this.setState({username : null});
-            this.setState({user_id : null});
-            this.props.history.push("login");
+    handleLogOut = () => {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        this.setState({isLoggedIn: false});
+        this.setState({user_role: null});
+        this.setState({username: null});
+        this.setState({user_id: null});
+        this.props.history.push("login");
     }
 
     handleDeleteCertificateModal = (certificate) => {
@@ -492,4 +511,4 @@ const UPDATE_CERTIIFCATE_URL = "http://localhost:8080/api/v1/giftcertificates/CE
 const ADD_CERTIFICATE_URL = "http://localhost:8080/api/v1/giftcertificates";
 const LOGIN_URL = "http://localhost:8080/api/v2/auth/login";
 const SIGNUP_URL = "http://localhost:8080/api/v2/auth/signup";
-export default withRouter(withLocalize(Home));
+export default withLocalize(withRouter(Home));
