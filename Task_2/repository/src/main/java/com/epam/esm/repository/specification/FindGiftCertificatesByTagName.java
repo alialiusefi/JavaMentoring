@@ -13,14 +13,16 @@ public class FindGiftCertificatesByTagName implements NativeSQLFindSpecification
             ",giftcertificates.date_created,giftcertificates.date_modified," +
             "giftcertificates.duration_till_expiry,giftcertificates.isforsale " +
             "from giftcertificates inner join tagged_giftcertificates on giftcertificates.id = gift_certificate_id " +
-            "where (tag_name = ? and giftcertificates.isforsale = true) ";
+            "inner join tag on tagged_giftcertificates.tag_id = tag.id " +
+            "where (giftcertificates.isforsale = true and (public.consists(?,tag.tag_name) ";
 
     private static final String CONJ_SQL_CLAUSE = "inner join tagged_giftcertificates on giftcertificates.id = gift_certificate_id " +
-            "where (tag_name = ? and giftcertificates.isforsale = true) ";
+            "inner join tag on tagged_giftcertificates.tag_id = tag.id " +
+            "where (public.consists(?,tag.tag_name)  ";
 
-    private String tagName;
+    private String[] tagName;
 
-    public FindGiftCertificatesByTagName(String tagName) {
+    public FindGiftCertificatesByTagName(String[] tagName) {
         this.tagName = tagName;
     }
 
@@ -28,8 +30,14 @@ public class FindGiftCertificatesByTagName implements NativeSQLFindSpecification
     public Query getQuery(EntityManager em,
                           CriteriaBuilder builder) {
         StringBuilder stringBuilder = new StringBuilder(SQL_CLAUSE);
+        for (int i = 1; i < tagName.length; i++) {
+            stringBuilder.append(" or public.consists(?,tag_name)");
+        }
+        stringBuilder.append(" ) )");
         Query nativeQuery = em.createNativeQuery(stringBuilder.toString());
-            nativeQuery.setParameter(1, tagName);
+        for (int i = 0; i < tagName.length; i++) {
+            nativeQuery.setParameter(i + 1, tagName[i]);
+        }
         return nativeQuery;
     }
 

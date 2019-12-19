@@ -7,17 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
@@ -73,23 +63,24 @@ public class GiftCertificateController {
     }
 
     @GetMapping
-    public PageDTO getGiftCertificates(@RequestParam(required = false) Long[] tagID,
+    public PageDTO getGiftCertificates(@RequestParam(required = false) String[] tagName,
+                                       @RequestParam(required = false) Long[] tagID,
                                        @RequestParam(required = false)
-                                                        @Size(min = 1, max = 50) String giftCertificateName,
+                                       @Size(min = 1, max = 50) String giftCertificateName,
                                        @RequestParam(required = false)
-                                                        @Size(min = 1, max = 256) String giftCertificateDesc,
+                                       @Size(min = 1, max = 256) String giftCertificateDesc,
                                        @RequestParam(required = false) Integer sortByDate,
                                        @RequestParam(required = false) Integer sortByName,
                                        @RequestParam(defaultValue = "${app.pagedefault.defaultPageNumber}") Integer page,
                                        @RequestParam(defaultValue = "${app.pagedefault.defaultPageSize}") Integer size) {
-        if (tagID == null &&
+        if (tagName == null && tagID == null &&
                 giftCertificateName == null &&
                 giftCertificateDesc == null &&
                 sortByDate == null &&
                 sortByName == null) {
             return giftCertificateBaseService.getAllPage(page, size);
         }
-        return giftCertificateBaseService.getGiftCertificatesPage(tagID, giftCertificateName,
+        return giftCertificateBaseService.getGiftCertificatesPage(tagName, tagID, giftCertificateName,
                 giftCertificateDesc,
                 sortByDate,
                 sortByName,

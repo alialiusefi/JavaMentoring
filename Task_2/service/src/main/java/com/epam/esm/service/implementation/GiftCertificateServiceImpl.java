@@ -11,19 +11,7 @@ import com.epam.esm.exception.BadRequestException;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.repository.TagRepository;
-import com.epam.esm.repository.specification.CountFindAllGiftCertificates;
-import com.epam.esm.repository.specification.CountGiftCertificatesSpecificationConjunction;
-import com.epam.esm.repository.specification.FindAllGiftCertificates;
-import com.epam.esm.repository.specification.FindGiftCertificateByID;
-import com.epam.esm.repository.specification.FindGiftCertificatesByDescription;
-import com.epam.esm.repository.specification.FindGiftCertificatesByName;
-import com.epam.esm.repository.specification.FindGiftCertificatesByTagID;
-import com.epam.esm.repository.specification.FindTagByName;
-import com.epam.esm.repository.specification.FindTagsByCertificateID;
-import com.epam.esm.repository.specification.GiftCertificatesSpecificationConjunction;
-import com.epam.esm.repository.specification.NativeSpecification;
-import com.epam.esm.repository.specification.SortGiftCertificatesByDate;
-import com.epam.esm.repository.specification.SortGiftCertificatesByName;
+import com.epam.esm.repository.specification.*;
 import com.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -38,15 +26,7 @@ import javax.validation.Validator;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
@@ -261,11 +241,15 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public PageDTO getGiftCertificatesPage(Long[] tagID, String name,
+    public PageDTO getGiftCertificatesPage(String[] tagName, Long[] tagID, String name,
                                            String desc, Integer sortByDate, Integer sortByName,
                                            Integer pageNumber, Integer pageSize) {
         ArrayDeque<NativeSpecification<GiftCertificate>> specifications = new ArrayDeque<>();
         List<Object> parameters = new ArrayList<>();
+        if (tagName != null) {
+            specifications.add(new FindGiftCertificatesByTagName(tagName));
+            parameters.addAll(Arrays.asList(tagName));
+        }
         if (tagID != null) {
             specifications.add(new
                     FindGiftCertificatesByTagID(tagID));

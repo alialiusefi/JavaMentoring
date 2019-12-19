@@ -8,7 +8,7 @@ import java.util.List;
 public class CountGiftCertificatesSpecificationConjunction implements CountSpecification {
 
     private static final String COUNT_PREFIX = "select count(*) from ( ";
-    private static final String COUNT_SUFFIX = " ) as foo";
+    private static final String COUNT_SUFFIX = " ) ) ) as foo";
     private GiftCertificatesSpecificationConjunction conjunction;
 
     public CountGiftCertificatesSpecificationConjunction(GiftCertificatesSpecificationConjunction specificationConjunction) {
