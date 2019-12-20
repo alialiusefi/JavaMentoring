@@ -26,7 +26,7 @@ const GETALLCERTIFICATES_URL = "http://localhost:8080/api/v1/giftcertificates?pa
 const GETALLUSERORDERS_URL = "http://localhost:8080/api/v2/users/USER_ID/orders?page=PAGE_NUMBER&size=PAGE_SIZE";
 const GETALLGIFTCARDSBYTAGID = "http://localhost:8080/api/v1/giftcertificates?page=PAGE_NUMBER&size=PAGE_SIZE&tagID=TAG_ID_HERE";
 const NotFoundRedirect = () => <Redirect to='/not_found'/>;
-
+const BUY_CERTIFICATE_URL = "http://localhost:8080/api/v2/users/USER_ID/orders";
 const EnglishInit = () => [
     {name: "EN", code: "en"},
     {name: "RU", code: "ru"}
@@ -127,6 +127,7 @@ class Home extends React.Component {
                                                         role={this.state.user_role}
                                                         setSelectedGiftCertificate={this.setSelectedGiftCertificate}
                                                         handleDeleteCertificate={this.handleDeleteCertificateModal}
+                                                        handleBuyCertificate={this.handleBuyCertificate}
                                 />
                             </div>
                             <div className="container-fluid">
@@ -156,6 +157,38 @@ class Home extends React.Component {
             </div>
         );
     }
+
+    handleBuyCertificate = (certificate) => {
+        const URL = BUY_CERTIFICATE_URL
+            .replace("USER_ID", this.state.user_id);
+        const accessToken = localStorage.getItem("accessToken");
+        const refreshToken = localStorage.getItem("refreshToken");
+        if (accessToken == null || refreshToken == null) {
+            alert("unauthorized");
+            return;
+        }
+        document.cookie = "accessToken=" + accessToken;
+        document.cookie = "refreshToken=" + refreshToken;
+        const data = {
+            giftCertificates: [certificate.id]
+        };
+        fetch(URL,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify(data)
+            }).then(response => {
+            if (!response.ok) {
+                return Promise.reject(response.json());
+            }
+        }).catch(error => {
+            console.log(error);
+        });
+    };
+
 
     handleSearch = (values) => {
         let searchValueTokens = values.searchField.split(" ");

@@ -5,6 +5,7 @@ import Card from "react-bootstrap/Card";
 import ListOfTags from "../ListOfTags/ListOfTags";
 import Button from "react-bootstrap/Button";
 import DeleteCertificateModal from "../DeleteCertificateModal/DeleteCertificateModal";
+import BuyCertificateModal from "../BuyCertificateModal/BuyCertificateModal";
 
 
 class GiftCertificateCard extends React.Component {
@@ -20,7 +21,6 @@ class GiftCertificateCard extends React.Component {
             if (this.props.role === "ADMIN") {
                 return (
                     <Button onClick={() => this.props.setSelectedGiftCertificate(this.props.certificate)}
-                        /*href={"/edit"}*/
                             className="btn btn-dark text-white d-flex justify-content-center flex-column">
                         <Translate id="button.edit"/>
                     </Button>
@@ -41,10 +41,11 @@ class GiftCertificateCard extends React.Component {
             if (this.props.role === "ADMIN" ||
                 this.props.role === "USER") {
                 return (
-                    <button
-                        className="btn btn-dark text-white d-flex justify-content-center flex-column">
+                    <BuyCertificateModal certificate={this.props.certificate}
+                                         handleBuyCertificate={this.props.handleBuyCertificate}
+                                         className="btn btn-dark text-white d-flex justify-content-center flex-column">
                         <Translate id="button.buy"/>
-                    </button>
+                    </BuyCertificateModal>
                 );
             }
         };
