@@ -6,7 +6,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 
 public class CountFindAllGiftCertificates implements CountSpecification {
 
-    private static final String SQL_QUERY = "select count(*) from giftcertificates where giftcertificates.isforsale = true";
+    private static final String SQL_QUERY =
+            "select count(*) from giftcertificates where giftcertificates.isforsale = true";
 
 
     @Override

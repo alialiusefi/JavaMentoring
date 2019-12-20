@@ -39,6 +39,10 @@ public class GiftCertificatesSpecificationConjunction extends FindSpecification<
         for (NativeSpecification i : specifications) {
             stringBuilder.append(i.getSQLClause(true));
         }
+        int lastBracket = stringBuilder.lastIndexOf(")");
+        if (!(lastBracket == -1)) {
+            stringBuilder.insert(lastBracket + 1, " ) ");
+        }
         String finalQuery = stringBuilder.toString();
         return finalQuery;
     }
@@ -46,6 +50,7 @@ public class GiftCertificatesSpecificationConjunction extends FindSpecification<
     public List<Object> getParameters() {
         return parameters;
     }
+
 
     public Deque<NativeSpecification<GiftCertificate>> getSpecifications() {
         return specifications;

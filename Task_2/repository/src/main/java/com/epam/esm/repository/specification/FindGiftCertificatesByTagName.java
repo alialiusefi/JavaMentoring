@@ -33,7 +33,7 @@ public class FindGiftCertificatesByTagName implements NativeSQLFindSpecification
         for (int i = 1; i < tagName.length; i++) {
             stringBuilder.append(" or public.consists(?,tag_name)");
         }
-        stringBuilder.append(" ) )");
+        stringBuilder.append(" ) ) ");
         Query nativeQuery = em.createNativeQuery(stringBuilder.toString());
         for (int i = 0; i < tagName.length; i++) {
             nativeQuery.setParameter(i + 1, tagName[i]);
@@ -43,9 +43,15 @@ public class FindGiftCertificatesByTagName implements NativeSQLFindSpecification
 
     @Override
     public String getSQLClause(boolean isConjunction) {
+        String query = SQL_CLAUSE;
         if (isConjunction) {
-            return CONJ_SQL_CLAUSE;
+            query = CONJ_SQL_CLAUSE;
         }
-        return SQL_CLAUSE;
+        StringBuilder stringBuilder = new StringBuilder(query);
+        for (int i = 1; i < tagName.length; i++) {
+            stringBuilder.append(" or tag.tag_name = ?");
+        }
+        stringBuilder.append(" ) ");
+        return stringBuilder.toString();
     }
 }

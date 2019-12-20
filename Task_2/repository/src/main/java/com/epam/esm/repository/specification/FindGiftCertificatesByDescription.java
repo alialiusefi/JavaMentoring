@@ -7,13 +7,14 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 
 public class FindGiftCertificatesByDescription implements NativeSQLFindSpecification<GiftCertificate> {
+//todo: fix sql brackets
 
     private static final String SQL_CLAUSE = "select giftcertificates.id,giftcertificates.name" +
             ",giftcertificates.description,giftcertificates.price" +
             ",giftcertificates.date_created,giftcertificates.date_modified," +
             "giftcertificates.duration_till_expiry,giftcertificates.isforsale " +
             "from giftcertificates " +
-            "where (public.consists(?,giftcertificates.description) and giftcertificates.isforsale = true) ";
+            "where (public.consists(?,giftcertificates.description) and giftcertificates.isforsale = true ";
 
     private static final String CONJ_SQL_CLAUSE = " and public.consists(?,giftcertificates.description) ";
 
@@ -26,7 +27,8 @@ public class FindGiftCertificatesByDescription implements NativeSQLFindSpecifica
 
     @Override
     public Query getQuery(EntityManager em, CriteriaBuilder builder) {
-        Query nativeQuery = em.createNativeQuery(SQL_CLAUSE);
+        String finalQuery = SQL_CLAUSE + " ) ";
+        Query nativeQuery = em.createNativeQuery(finalQuery);
         nativeQuery.setParameter(1, description);
         return nativeQuery;
     }

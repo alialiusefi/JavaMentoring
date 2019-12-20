@@ -33,7 +33,7 @@ public class FindGiftCertificatesByTagID
         for (int i = 1; i < tagID.length; i++) {
             stringBuilder.append(" or tag_id = ?");
         }
-        stringBuilder.append(" ) )");
+        stringBuilder.append(" ) ) ");
         Query nativeQuery = em.createNativeQuery(stringBuilder.toString());
         for (int i = 0; i < tagID.length; i++) {
             nativeQuery.setParameter(i + 1, tagID[i]);

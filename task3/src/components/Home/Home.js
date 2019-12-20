@@ -164,7 +164,6 @@ class Home extends React.Component {
                 nameOrDescription = token;
             }
         }
-
     };
 
 

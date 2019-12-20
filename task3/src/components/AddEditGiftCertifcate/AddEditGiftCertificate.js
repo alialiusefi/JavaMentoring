@@ -10,7 +10,6 @@ class AddEditGiftCertificate extends React.Component {
         super(props);
         this.state = {
             tags:[
-
             ],
             suggestions : [
             ]
@@ -103,7 +102,7 @@ class AddEditGiftCertificate extends React.Component {
         newTags.splice(newPos, 0, tag);
 
         this.setState({ tags: newTags });
-    }
+    };
 
     handleInputChange = (event) => {
         //call api to search and change state of suggestions
@@ -112,19 +111,5 @@ class AddEditGiftCertificate extends React.Component {
 
 }
 
-/*// прокидываем в props функцию для инициализации формы
-function mapDispatchToProps(dispatch){
-    return {
-        initializePost: function (certificate){
-            dispatch(initialize('certificate',certificate));
-        }
-    }
-}
-/!*!// прокидываем в props объект для инициализаци формы
-function mapStateToProps(state, ownProps){
-    const id = ownProps.params.id;
-    return {
-        post: state.posts[id]
-    }
-}*!/*/
+
 export default (AddEditGiftCertificate);
