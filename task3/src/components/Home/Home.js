@@ -64,12 +64,18 @@ class Home extends React.Component {
 
     componentDidMount() {
         const now = new Date();
-        const decodedToken = jwt_decode(localStorage.getItem('accessToken'));
-        if (!(decodedToken.exp < now.getTime() / 1000)) {
-            this.setState({isLoggedIn: true});
-            this.setState({username: decodedToken.sub});
-            this.setState({user_id: decodedToken.user_id});
-            this.setState({user_role: decodedToken.role});
+        const accessToken = localStorage.getItem('accessToken');
+        let decodedToken;
+        if (accessToken != null) {
+            decodedToken = jwt_decode(accessToken);
+        }
+        if (decodedToken != null) {
+            if (!(decodedToken.exp < now.getTime() / 1000)) {
+                this.setState({isLoggedIn: true});
+                this.setState({username: decodedToken.sub});
+                this.setState({user_id: decodedToken.user_id});
+                this.setState({user_role: decodedToken.role});
+            }
         }
         const lang = localStorage.getItem("locale");
         this.props.setActiveLanguage(lang);
@@ -164,6 +170,45 @@ class Home extends React.Component {
                 nameOrDescription = token;
             }
         }
+        console.log(tagsToSearch);
+        let URL = GETALLCERTIFICATES_URL.replace("PAGE_NUMBER", this.state.pageNumber)
+            .replace("PAGE_SIZE", this.state.pageSize);
+        if (nameOrDescription != null) {
+            URL += "&" + "giftCertificateName=" + nameOrDescription;
+            URL += "&" + "giftCertificateDesc=" + nameOrDescription;
+        }
+        if (tagsToSearch.length !== 0) {
+            URL += "&" + "tagName=";
+            for (var i = 0; i < tagsToSearch.length; i++) {
+                if (i === tagsToSearch.length - 1) {
+                    URL += tagsToSearch[i];
+                    continue;
+                }
+                URL += tagsToSearch[i] + ","
+            }
+        }
+        console.log(URL);
+        fetch(URL,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(response => {
+            const json = response.json();
+            if (!response.ok) {
+                return Promise.reject(json);
+            }
+            return json;
+        }).then(json => {
+            this.setState({giftCertificates: json.results});
+            this.setState({pageCount: json.totalResults});
+            console.log(this.state.giftCertificates);
+            return json;
+        }).catch(error => {
+            console.log(error);
+        });
+
     };
 
 

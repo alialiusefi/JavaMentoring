@@ -1,7 +1,10 @@
 package com.epam.esm.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
+@JsonIgnoreProperties({"id"})
 public class PageDTO extends DTO {
 
     private List<? extends DTO> results;
