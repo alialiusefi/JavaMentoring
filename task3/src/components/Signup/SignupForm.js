@@ -1,6 +1,6 @@
 import React from 'react';
 import {Field, reduxForm} from 'redux-form';
-import {Link} from "react-router-dom";
+import {Link, Prompt} from "react-router-dom";
 import {Translate} from "react-localize-redux"
 
 
@@ -68,6 +68,7 @@ let SignupForm = props => {
                         </Link>
                     </div>
                 </div>
+                <Prompt when={!pristine} message="Are you sure?"/>
             </form>
         </div>
     )

@@ -16,6 +16,8 @@ import Pagination from "react-js-pagination";
 import Signup from "../Signup/Signup";
 import jwt_decode from 'jwt-decode';
 import AddEditGiftCertificate from "../AddEditGiftCertifcate/AddEditGiftCertificate";
+import NotFound from "../NotFound/NotFound";
+import DefaultComponent from "../DefaultComponent/NotFound";
 
 const options = [
     {value: 'ALL', label: 'All GiftCertificates'},
@@ -88,6 +90,7 @@ class Home extends React.Component {
                         location={this.props.location.pathname} role={this.state.user_role}
                         handleLogOut={this.handleLogOut}/>
                 <Switch>
+
                     <Route path="/login">
                         <Login handleLogIn={this.handleLogIn}/>
                     </Route>
@@ -150,8 +153,8 @@ class Home extends React.Component {
                             </div>
                         </div>
                     </Route>
-                    {/*<Route component={NotFound} path="/not_found"/>
-                    <Route component={NotFoundRedirect}/>*/}
+                    <Route path="/" component={DefaultComponent}/>
+                    <Route path='*' exact={true} component={NotFound} />
                 </Switch>
                 <Footer/>
             </div>

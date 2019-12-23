@@ -76,6 +76,10 @@
     "buyquestion": [
       "Are you sure you want to buy this certificate?",
       "Вы уверены?"
+    ],
+    "unsavedchanges" : [
+      "You have unsaved changes",
+      "У вас есть несохраненные изменения"
     ]
   }
 }
