@@ -22,11 +22,11 @@ public class AddOrderDTO extends DTO {
     public static final RoundingMode ROUNDING_MODE = RoundingMode.DOWN;
 
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    /*@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime timestamp;
-
+*/
     @Valid
     private List<@Positive @NotNull Long> giftCertificates;
 
@@ -37,18 +37,18 @@ public class AddOrderDTO extends DTO {
     public AddOrderDTO(Long id,
                        @NotNull LocalDateTime timestamp, @Valid List<Long> giftCertificatesOrdered) {
         super(id);
-        this.timestamp = timestamp;
+        /*this.timestamp = timestamp;*/
         this.giftCertificates = giftCertificatesOrdered;
     }
 
-    public LocalDateTime getTimestamp() {
+   /* public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
-
+*/
     public List<Long> getGiftCertificates() {
         return giftCertificates;
     }
@@ -64,20 +64,20 @@ public class AddOrderDTO extends DTO {
         if (!super.equals(o)) return false;
         AddOrderDTO orderDTO = (AddOrderDTO) o;
         return
-                Objects.equals(timestamp, orderDTO.timestamp) &&
+                /*Objects.equals(timestamp, orderDTO.timestamp) &&*/
                         Objects.equals(giftCertificates, orderDTO.giftCertificates);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), timestamp, giftCertificates);
+        return Objects.hash(super.hashCode()/*, timestamp*/, giftCertificates);
     }
 
     @Override
     public String toString() {
         return "OrderDTO{" +
                 ", orderCost=" +
-                ", timestamp=" + timestamp +
+              /*  ", timestamp=" + timestamp +*/
                 ", giftCertificatesOrdered=" + giftCertificates +
                 ", id=" + id +
                 '}';
