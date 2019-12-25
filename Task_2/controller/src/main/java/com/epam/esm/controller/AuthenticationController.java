@@ -13,11 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -45,7 +41,7 @@ public class AuthenticationController {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(dto.getUsername(),
                 dto.getPassword());
         authenticationManager.authenticate(token);
-            final UserDetails userDetails = userDetailsService.loadUserByUsername(dto.getUsername());
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(dto.getUsername());
         final String accessToken = jwtTokenProvider.generateAccessToken(userDetails);
         final String refreshToken = jwtTokenProvider.generateRefreshToken(userDetails);
         HttpHeaders headers = new HttpHeaders();

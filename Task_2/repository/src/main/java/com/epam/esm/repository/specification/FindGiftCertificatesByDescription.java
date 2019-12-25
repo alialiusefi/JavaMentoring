@@ -7,7 +7,6 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 
 public class FindGiftCertificatesByDescription implements NativeSQLFindSpecification<GiftCertificate> {
-//todo: fix sql brackets
 
     private static final String SQL_CLAUSE = "select giftcertificates.id,giftcertificates.name" +
             ",giftcertificates.description,giftcertificates.price" +
@@ -16,7 +15,7 @@ public class FindGiftCertificatesByDescription implements NativeSQLFindSpecifica
             "from giftcertificates " +
             "where (public.consists(?,giftcertificates.description) and giftcertificates.isforsale = true ";
 
-    private static final String CONJ_SQL_CLAUSE = " and public.consists(?,giftcertificates.description) ";
+    private static final String CONJ_SQL_CLAUSE = " or public.consists(?,giftcertificates.description) ";
 
     private String description;
 
