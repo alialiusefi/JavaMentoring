@@ -3,8 +3,9 @@ import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
 import Login from '../Login/Login'
 import "./Home.css";
+
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Redirect, Route, Switch, withRouter} from "react-router-dom";
+import {Route, Switch, withRouter} from "react-router-dom";
 import {renderToStaticMarkup} from "react-dom/server";
 import {Translate, withLocalize} from "react-localize-redux";
 import globalTranslations from "../../translations/global.json";
@@ -18,6 +19,8 @@ import jwt_decode from 'jwt-decode';
 import AddEditGiftCertificate from "../AddEditGiftCertifcate/AddEditGiftCertificate";
 import NotFound from "../NotFound/NotFound";
 import DefaultComponent from "../DefaultComponent/NotFound";
+import Alert from 'react-s-alert';
+import {PrivateRoute} from "../PrivateRoute/PrivateRoute";
 
 const options = [
     {value: 'ALL', label: 'All GiftCertificates'},
@@ -27,7 +30,6 @@ const options = [
 const GETALLCERTIFICATES_URL = "http://localhost:8080/api/v1/giftcertificates?page=PAGE_NUMBER&size=PAGE_SIZE&sortByDate=-1";
 const GETALLUSERORDERS_URL = "http://localhost:8080/api/v2/users/USER_ID/orders?page=PAGE_NUMBER&size=PAGE_SIZE";
 const GETALLGIFTCARDSBYTAGID = "http://localhost:8080/api/v1/giftcertificates?page=PAGE_NUMBER&size=PAGE_SIZE&tagID=TAG_ID_HERE";
-const NotFoundRedirect = () => <Redirect to='/not_found'/>;
 const BUY_CERTIFICATE_URL = "http://localhost:8080/api/v2/users/USER_ID/orders";
 const EnglishInit = () => [
     {name: "EN", code: "en"},
@@ -45,6 +47,7 @@ class Home extends React.Component {
         });
         this.props.addTranslation(globalTranslations);
         this.state = {
+            isRendering: false,
             giftCertificates: [],
             pageCount: null,
             pageSize: 5,
@@ -88,22 +91,35 @@ class Home extends React.Component {
             <div>
                 <Header isLoggedIn={this.state.isLoggedIn} username={this.state.username}
                         location={this.props.location.pathname} role={this.state.user_role}
-                        handleLogOut={this.handleLogOut}/>
+                        handleLogOut={() => {
+                            localStorage.removeItem("accessToken");
+                            localStorage.removeItem("refreshToken");
+                            this.setState({
+                                    isLoggedIn: false,
+                                    user_role: null,
+                                    username: null,
+                                    user_id: null
+                                }, this.props.history.push("login")
+                            );
+                        }}/>
                 <Switch>
-
                     <Route path="/login">
                         <Login handleLogIn={this.handleLogIn}/>
                     </Route>
                     <Route path="/signup">
                         <Signup handleSignup={this.handleSignup}/>
                     </Route>
-                    <Route path="/add">
-                        <AddEditGiftCertificate handleAddCertificate={this.handleAddCertificate}/>
-                    </Route>
-                    <Route path="/edit">
-                        <AddEditGiftCertificate certificate={this.state.selectedGiftCertificate}
-                                                handleUpdateCertificate={this.handleUpdateCertificate}/>
-                    </Route>
+                    <PrivateRoute userRole={this.state.user_role}
+                                  requiredRole={"ADMIN"}
+                                  path="/add" component={AddEditGiftCertificate}
+                                  handleAddCertificate={this.handleAddCertificate}>
+                    </PrivateRoute>
+                    <PrivateRoute userRole={this.state.user_role}
+                                  requiredRole={"ADMIN"}
+                                  path="/edit" component={AddEditGiftCertificate}
+                                  certificate={this.state.selectedGiftCertificate}
+                                  handleUpdateCertificate={this.handleUpdateCertificate}>
+                    </PrivateRoute>
                     <Route path="/giftcertificates">
                         <div className="container text-center">
                             <div className="text h3">
@@ -154,9 +170,10 @@ class Home extends React.Component {
                         </div>
                     </Route>
                     <Route path="/" component={DefaultComponent}/>
-                    <Route path='*' exact={true} component={NotFound} />
+                    <Route path='*' exact={true} component={NotFound}/>
                 </Switch>
                 <Footer/>
+                <Alert stack={{limit: 3}} position={"top"}/>
             </div>
         );
     }
@@ -167,7 +184,7 @@ class Home extends React.Component {
         const accessToken = localStorage.getItem("accessToken");
         const refreshToken = localStorage.getItem("refreshToken");
         if (accessToken == null || refreshToken == null) {
-            alert("unauthorized");
+            Alert.error(<Translate id="alerts.notloggedin"/>);
             return;
         }
         document.cookie = "accessToken=" + accessToken;
@@ -185,15 +202,22 @@ class Home extends React.Component {
                 body: JSON.stringify(data)
             }).then(response => {
             if (!response.ok) {
+                const json = response.json();
+                const errors = json.errors;
+                Alert.error(errors);
                 return Promise.reject(response.json());
             }
         }).catch(error => {
             console.log(error);
+            Alert.error(error.message);
         });
     };
 
-
     handleSearch = (values) => {
+        if (values.searchField == null || values.searchField.length == 0) {
+            Alert.warning(<Translate id="alerts.searchfieldempty"/>);
+            return;
+        }
         let searchValueTokens = values.searchField.split(" ");
         let tagsToSearch = [];
         let nameOrDescription;
@@ -247,13 +271,12 @@ class Home extends React.Component {
 
     };
 
-
     handleSignup = (login, password) => {
         const URL = SIGNUP_URL;
         const data = {
             username: login,
             password: password
-        }
+        };
         fetch(URL,
             {
                 method: 'POST',
@@ -266,13 +289,14 @@ class Home extends React.Component {
             if (!response.ok) {
                 return Promise.reject(json);
             }
+            Alert.success(<Translate id="alerts.signedup"/>);
             return json;
         }).then(json => {
             return json;
         }).catch(error => {
             console.log(error);
         });
-    }
+    };
 
     setPageSize = (pageSize) => {
         this.setState({pageSize: pageSize});
@@ -290,12 +314,18 @@ class Home extends React.Component {
     handleLogOut = () => {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
-        this.setState({isLoggedIn: false});
-        this.setState({user_role: null});
+        this.setState({
+                isLoggedIn: false,
+                user_role: null,
+                username: null,
+                user_id: null
+            }, this.props.history.push("login")
+        );
+        /*this.setState({user_role: null});
         this.setState({username: null});
         this.setState({user_id: null});
-        this.props.history.push("login");
-    }
+        */
+    };
 
     handleDeleteCertificateModal = (certificate) => {
         const URL = DELETE_CERTIFICATE_URL
@@ -303,7 +333,7 @@ class Home extends React.Component {
         const accessToken = localStorage.getItem("accessToken");
         const refreshToken = localStorage.getItem("refreshToken");
         if (accessToken == null || refreshToken == null) {
-            alert("unauthorized");
+            Alert.error("Test");
             return;
         }
         document.cookie = "accessToken=" + accessToken;
@@ -319,9 +349,12 @@ class Home extends React.Component {
             if (!response.ok) {
                 return Promise.reject(response.json());
             }
+
         }).catch(error => {
+            Alert.error(error.message);
             console.log(error);
         });
+        this.setState({isRendering: this.isRendering});
     };
 
 
@@ -357,6 +390,7 @@ class Home extends React.Component {
                 return json;
             }).catch(error => {
                 console.log(error);
+                Alert.error(error.message);
             });
         } else {
             this.setState({certificateDropDownValue: "MY"});
@@ -370,7 +404,7 @@ class Home extends React.Component {
             const accessToken = localStorage.getItem("accessToken");
             const refreshToken = localStorage.getItem("refreshToken");
             if (accessToken == null || refreshToken == null) {
-                alert("unauthorized");
+                Alert.error("Cannot Authorize!");
                 return;
             }
             document.cookie = "accessToken=" + accessToken;
@@ -401,6 +435,7 @@ class Home extends React.Component {
                 return json;
             }).catch(error => {
                 console.log(error);
+                Alert.error(error.message);
             });
         }
         this.props.history.push("giftcertificates");
@@ -479,24 +514,37 @@ class Home extends React.Component {
                 },
                 body: JSON.stringify(data)
             }).then(response => {
-            const json = response.json();
             if (!response.ok) {
-                return Promise.reject(json);
+                response.json().then(
+                    (json) => {
+                        Alert.error(json.errors[0]);
+                    }
+                );
+            } else {
+                const json = response.json();
+                Alert.success(<Translate id="alerts.loggedIn"/>);
+                return json;
+            }
+        }).then(json => {
+            if (json == null) {
+                Promise.reject(json);
+            } else {
+                if (json.accessToken != null && json.refreshToken != null) {
+                    localStorage.setItem('accessToken', json.accessToken);
+                    localStorage.setItem('refreshToken', json.refreshToken);
+                    const decodedToken = jwt_decode(localStorage.getItem('accessToken'));
+                    this.setState({isLoggedIn: true});
+                    this.setState({username: decodedToken.sub});
+                    this.setState({user_id: decodedToken.user_id});
+                    this.setState({user_role: decodedToken.role});
+                    this.props.history.push("giftcertificates");
+                }
             }
             return json;
-        }).then(json => {
-            localStorage.setItem('accessToken', json.accessToken);
-            localStorage.setItem('refreshToken', json.refreshToken);
-            const decodedToken = jwt_decode(localStorage.getItem('accessToken'));
-            this.setState({isLoggedIn: true});
-            this.setState({username: decodedToken.sub});
-            this.setState({user_id: decodedToken.user_id});
-            this.setState({user_role: decodedToken.role});
-            return json;
         }).catch(error => {
+            Alert.error(error.message);
             console.log(error);
         });
-        this.props.history.push("giftcertificates");
     };
 
     handleUpdateCertificate = (name, description, price, durationTillExpiry, tags, id) => {
@@ -531,6 +579,7 @@ class Home extends React.Component {
             if (!response.ok) {
                 return Promise.reject(json);
             }
+            Alert.success(<Translate id="alerts.editcertificatesuccess"/>);
             return json;
         }).then(json => {
             console.log(json);
@@ -554,7 +603,7 @@ class Home extends React.Component {
         const accessToken = localStorage.getItem("accessToken");
         const refreshToken = localStorage.getItem("refreshToken");
         if (accessToken == null || refreshToken == null) {
-            alert("unauthorized");
+            Alert.error("Cannot Authorize!");
             return;
         }
         document.cookie = "accessToken=" + accessToken;
@@ -574,6 +623,7 @@ class Home extends React.Component {
             if (!response.ok) {
                 return Promise.reject(json);
             }
+            Alert.success(<Translate id="alerts.addcertificatesuccess"/>);
             return json;
         }).then(json => {
             console.log(json);

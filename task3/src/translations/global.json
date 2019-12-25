@@ -77,9 +77,35 @@
       "Are you sure you want to buy this certificate?",
       "Вы уверены?"
     ],
-    "unsavedchanges" : [
+    "unsavedchanges": [
       "You have unsaved changes",
       "У вас есть несохраненные изменения"
+    ]
+  },
+  "alerts": {
+    "addcertificatesuccess": [
+      "Certificate successfully added!",
+      "Сертификат добавлен успешно!"
+    ],
+    "editcertificatesuccess": [
+      "Certificate updated successfully!",
+      "Сертификат успешно обновился!"
+    ],
+    "notloggedin": [
+      "Please Log In",
+      "Пожалуйста, войдите"
+    ],
+    "searchfieldempty": [
+      "Search field cannot be empty!",
+      "Поле поиска не может быть пустым!"
+    ],
+    "signedup": [
+      "Signed Up Successfully!",
+      "Зарегистрирован успешно!"
+    ],
+    "loggedIn": [
+      "Logged In Successfully",
+      "Вы успешно вошли!"
     ]
   }
 }
