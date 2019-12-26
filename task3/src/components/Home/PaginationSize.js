@@ -12,18 +12,22 @@ class PaginationSize extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            paginationSize: 5
-        }
     }
 
     render() {
-        const {paginationSize} = this.state;
         return (
             <div>
-                <Select value={paginationSize}
+                <Select value={options.map((option) => {
+                    if(option.value === this.props.paginationSize) {
+                        return option;
+                    }
+                })}
                         onChange={this.handleChange}
-                        options={options}>
+                        options={options}
+                        isSearchable={false}
+                        isMulti={false}
+                        defaultValue={options[0]}
+                >
                 </Select>
             </div>
         );
@@ -34,4 +38,5 @@ class PaginationSize extends React.Component {
     };
 
 }
+
 export default withLocalize(PaginationSize);

@@ -20,9 +20,12 @@ class SearchMenuForm extends Component {
         {
             if (this.props.role !== null) {
                 return (
-                    <Select value={this.props.certificateDropDownValue}
+                    <Select value={this.props.certificateDropDownValue === "MY" ? options[0] : options[1] }
                             onChange={this.handleChange}
-                            options={options}>
+                            options={options}
+                            isSearchable={false}
+                            isMulti={false}
+                            defaultValue={options[0]}>
                     </Select>);
             } else {
                 return (<div></div>);

@@ -21,6 +21,7 @@ import NotFound from "../NotFound/NotFound";
 import DefaultComponent from "../DefaultComponent/NotFound";
 import Alert from 'react-s-alert';
 import {PrivateRoute} from "../PrivateRoute/PrivateRoute";
+import SocialLogin from "../SocialLogin/SocialLogin";
 
 const options = [
     {value: 'ALL', label: 'All GiftCertificates'},
@@ -154,7 +155,7 @@ class Home extends React.Component {
                             <div className="container-fluid">
                                 <div className="row justify-content-center">
                                     <div className="col-3">
-                                        <PaginationSize handleChangePageSize={this.handleChangePageSize}/>
+                                        <PaginationSize handleChangePageSize={this.handleChangePageSize} paginationSize={this.state.pageSize}/>
                                     </div>
                                     <div className="col-6">
                                         <Pagination activePage={this.state.pageNumber}
@@ -171,6 +172,11 @@ class Home extends React.Component {
                             </div>
                         </div>
                     </Route>
+                    <Route location={this.props.location} path="/sociallogin">
+                        <SocialLogin setTokens={this.setTokens} alertError={(message) => {
+                            Alert.error(message);
+                        }}/>
+                    </Route>
                     <Route path="/" component={DefaultComponent}/>
                     <Route path='*' exact={true} component={NotFound}/>
                 </Switch>
@@ -179,6 +185,24 @@ class Home extends React.Component {
             </div>
         );
     }
+
+    setTokens = (accessToken,refreshToken) => {
+        const now = new Date();
+        let decodedAccessToken;
+        let decodedRefreshToken;
+        decodedAccessToken = jwt_decode(accessToken);
+        decodedRefreshToken = jwt_decode(refreshToken);
+        if (decodedAccessToken != null && decodedRefreshToken != null) {
+            if (!(decodedAccessToken.exp < now.getTime() / 1000)) {
+                this.setState({isLoggedIn: true});
+                this.setState({username: decodedAccessToken.sub});
+                this.setState({user_id: decodedAccessToken.user_id});
+                this.setState({user_role: decodedAccessToken.role});
+                localStorage.setItem("accessToken",accessToken);
+                localStorage.setItem("refreshToken",refreshToken);
+            }
+        }
+    };
 
 
     handleBuyCertificate = (certificate) => {
