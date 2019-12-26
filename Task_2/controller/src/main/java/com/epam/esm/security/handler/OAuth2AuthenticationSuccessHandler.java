@@ -42,37 +42,34 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
         String targetUrl = determineTargetUrl(request, response, authentication);
-
         if (response.isCommitted()) {
             logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
             return;
         }
         clearAuthenticationAttributes(request, response);
-        saveTokensToCookies(response, authentication);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
-    private void saveTokensToCookies(HttpServletResponse response, Authentication authentication) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String accessToken = tokenProvider.generateAccessToken(userDetails);
-        String refreshToken = tokenProvider.generateRefreshToken(userDetails);
-        CookieUtils.addCookie(response, "accessToken", accessToken, 8000);
-        CookieUtils.addCookie(response, "refreshToken", refreshToken, 16000);
-    }
+    /* private void saveTokensToCookies(HttpServletResponse response, Authentication authentication) {
+     *//*             CookieUtils.addCookie(response, "accessToken", accessToken, 8000);
+        CookieUtils.addCookie(response, "refreshToken", refreshToken, 16000);*//*
+    }*/
 
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) {
         Optional<String> redirectUri = CookieUtils.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue);
-
         if (redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get())) {
             throw new BadRequestException("Sorry! We've got an Unauthorized Redirect URI " +
                     "and can't proceed with the authentication");
         }
-
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String accessToken = tokenProvider.generateAccessToken(userDetails);
+        String refreshToken = tokenProvider.generateRefreshToken(userDetails);
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
-        return UriComponentsBuilder.fromUriString(targetUrl)/*
-                .queryParam("token", token).queryParam("refresh", refreshToken)*/
+        return UriComponentsBuilder.fromUriString(targetUrl)
+                .queryParam("accessToken", accessToken)
+                .queryParam("refreshToken", refreshToken)
                 .build().toUriString();
     }
 

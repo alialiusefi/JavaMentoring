@@ -1,13 +1,21 @@
 package com.epam.esm.security.provider;
 
+import com.epam.esm.entity.GithubCustomOAuthUser;
+import com.epam.esm.entity.GoogleCustomOIDAuthUser;
 import com.epam.esm.entity.LocalCustomOAuthUser;
+import com.epam.esm.entity.UserEntity;
 import com.epam.esm.properties.AppProperties;
 import com.epam.esm.security.exception.InvalidJwtAuthenticationException;
 import com.epam.esm.service.CustomUserService;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -45,9 +53,36 @@ public class JwtTokenProvider {
     }
 
     public String generateAccessToken(UserDetails userDetails) {
-        LocalCustomOAuthUser user = (LocalCustomOAuthUser) userDetails;
-        Map<String, Object> attr = user.getAttributes();
-        return doGenerateAccessToken(attr, userDetails.getUsername());
+        if (userDetails instanceof LocalCustomOAuthUser) {
+            LocalCustomOAuthUser user = (LocalCustomOAuthUser) userDetails;
+            Map<String, Object> attr = user.getAttributes();
+            return doGenerateAccessToken(attr, userDetails.getUsername());
+        }
+        if (userDetails instanceof GoogleCustomOIDAuthUser) {
+            GoogleCustomOIDAuthUser user = (GoogleCustomOIDAuthUser) userDetails;
+            UserEntity userEntity = user.getUserEntity();
+            Map<String, Object> claims = getClaims(userEntity);
+            return doGenerateAccessToken(claims, userDetails.getUsername());
+        }
+        if (userDetails instanceof GithubCustomOAuthUser) {
+            GithubCustomOAuthUser user = (GithubCustomOAuthUser) userDetails;
+            UserEntity userEntity = user.getUserEntity();
+            Map<String, Object> claims = getClaims(userEntity);
+            return doGenerateAccessToken(claims, userDetails.getUsername());
+        }
+        throw new UnsupportedOperationException("Incorrect Provider");
+    }
+
+    private Map<String, Object> getClaims(UserEntity userEntity) {
+        Map<String, Object> claims = new HashMap<>();
+        Long userId = userEntity.getId();
+        Object[] authorities = userEntity.getAuthorityList().toArray();
+        GrantedAuthority authority = (GrantedAuthority) authorities[0];
+        String role = authority.getAuthority();
+        claims.put("user_id", userId);
+        claims.put("role", role);
+        claims.put("username", userEntity.getUsername());
+        return claims;
     }
 
     private String doGenerateAccessToken(Map<String, Object> claims, String subject) {
