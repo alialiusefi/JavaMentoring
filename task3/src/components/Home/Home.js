@@ -104,7 +104,9 @@ class Home extends React.Component {
                         }}/>
                 <Switch>
                     <Route path="/login">
-                        <Login handleLogIn={this.handleLogIn}/>
+                        <Login handleLogIn={this.handleLogIn} responseGoogle={(response) => {
+                            console.log(response);
+                        }}/>
                     </Route>
                     <Route path="/signup">
                         <Signup handleSignup={this.handleSignup}/>
@@ -178,6 +180,7 @@ class Home extends React.Component {
         );
     }
 
+
     handleBuyCertificate = (certificate) => {
         const URL = BUY_CERTIFICATE_URL
             .replace("USER_ID", this.state.user_id);
@@ -207,10 +210,12 @@ class Home extends React.Component {
                 Alert.error(errors);
                 return Promise.reject(response.json());
             }
+            Alert.success(<Translate id="alerts.boughtcertificate"/>)
         }).catch(error => {
             console.log(error);
             Alert.error(error.message);
         });
+        this.handleGetAllCertificates("MY", this.state.pageSize, 1);
     };
 
     handleSearch = (values) => {

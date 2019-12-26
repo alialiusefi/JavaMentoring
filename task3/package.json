@@ -16,6 +16,7 @@
     "react-dnd": "^5.0.0",
     "react-dnd-html5-backend": "^3.0.2",
     "react-dom": "^16.12.0",
+    "react-google-login": "^5.0.7",
     "react-js-pagination": "^3.0.2",
     "react-paginate": "^6.3.2",
     "react-redux": "^7.1.3",

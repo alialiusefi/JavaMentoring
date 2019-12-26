@@ -106,6 +106,10 @@
     "loggedIn": [
       "Logged In Successfully",
       "Вы успешно вошли!"
+    ],
+    "boughtcertificate": [
+      "Certificate was bought successfully",
+      "Покупка сертификата прошла успешно"
     ]
   }
 }
