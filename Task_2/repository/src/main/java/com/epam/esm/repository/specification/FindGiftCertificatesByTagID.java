@@ -14,7 +14,7 @@ public class FindGiftCertificatesByTagID
             ",giftcertificates.date_created,giftcertificates.date_modified," +
             "giftcertificates.duration_till_expiry,giftcertificates.isforsale " +
             "from giftcertificates inner join tagged_giftcertificates on giftcertificates.id = gift_certificate_id " +
-            "where (giftcertificates.isforsale = true and (tag_id = ? ";
+            "where (giftcertificates.isforsale = 'true' and (tag_id = ? ";
 
     private static final String CONJ_SQL_CLAUSE = "inner join tagged_giftcertificates on giftcertificates.id = gift_certificate_id " +
             "where tag_id = ?";

@@ -5,29 +5,17 @@ import com.epam.esm.converter.OrderConverter;
 import com.epam.esm.dto.AddOrderDTO;
 import com.epam.esm.dto.OrderDTO;
 import com.epam.esm.dto.PageDTO;
-import com.epam.esm.entity.Authority;
-import com.epam.esm.entity.CustomOAuthUser;
-import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.entity.Order;
-import com.epam.esm.entity.UserEntity;
-import com.epam.esm.entity.UserStatus;
+import com.epam.esm.entity.*;
 import com.epam.esm.exception.OAuth2AuthenticationProcessingException;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.repository.OrderRepository;
 import com.epam.esm.repository.UserRepository;
-import com.epam.esm.repository.specification.CountFindAllUserOrders;
-import com.epam.esm.repository.specification.FindAllOrders;
-import com.epam.esm.repository.specification.FindAllOrdersByUserID;
-import com.epam.esm.repository.specification.FindGiftCertificateByID;
-import com.epam.esm.repository.specification.FindOrderByID;
-import com.epam.esm.repository.specification.FindUserByUserID;
-import com.epam.esm.repository.specification.FindUserOrderByOrderID;
+import com.epam.esm.repository.specification.*;
 import com.epam.esm.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import sun.jvm.hotspot.debugger.Page;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -138,11 +126,14 @@ public class OrderServiceImpl implements OrderService {
             sum += i.getPrice().doubleValue();
         }
         order.setOrderCost(BigDecimal.valueOf(sum));
-        Order orderAdded = orderRepository.add(order);
         order.setGiftCertificates(giftCertificates);
+        order.setUserEntity(userEntity);
+        Order orderAdded = orderRepository.add(order);
+        /*order.setGiftCertificates(giftCertificates);
         orderAdded = orderRepository.update(orderAdded);
         userEntity.getOrders().add(orderAdded);
         userEntity = userRepository.update(userEntity);
+        */
         return orderConverter.toDTO(orderAdded);
     }
 

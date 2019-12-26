@@ -59,11 +59,12 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     public PageDTO getAllPage(int pageNumber, int pageSize) {
         try {
-            List dto = giftCertificateConverter.toDTOList(
-                    giftCertificateRepo.queryList(new FindAllGiftCertificates(), pageNumber, pageSize));
+            List dto = giftCertificateRepo.queryList(new FindAllGiftCertificates(), pageNumber, pageSize);
+            List<GiftCertificate> handledGiftCertificates = handleGiftCertifcates(dto);
+            List result = giftCertificateConverter.toDTOList(handledGiftCertificates);
             Long totalCount = giftCertificateRepo.queryCount(new CountFindAllGiftCertificates()).orElseThrow(
                     () -> new ResourceNotFoundException("Cannot find amount of results!"));
-            PageDTO pageDTO = new PageDTO(dto, totalCount);
+            PageDTO pageDTO = new PageDTO(result, totalCount);
             return pageDTO;
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException("Didn't find gift certificates");

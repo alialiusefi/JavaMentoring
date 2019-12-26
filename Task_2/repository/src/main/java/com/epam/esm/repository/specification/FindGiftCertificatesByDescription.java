@@ -13,9 +13,10 @@ public class FindGiftCertificatesByDescription implements NativeSQLFindSpecifica
             ",giftcertificates.date_created,giftcertificates.date_modified," +
             "giftcertificates.duration_till_expiry,giftcertificates.isforsale " +
             "from giftcertificates " +
-            "where (public.consists(?,giftcertificates.description) and giftcertificates.isforsale = true ";
+            "where (giftcertificates.isforsale = true and public.consists(?,giftcertificates.description)  ";
 
-    private static final String CONJ_SQL_CLAUSE = " or public.consists(?,giftcertificates.description) ";
+    private static final String CONJ_SQL_CLAUSE = " or public.consists(?,giftcertificates.description) " +
+            "and giftcertificates.isforsale = true ";
 
     private String description;
 
