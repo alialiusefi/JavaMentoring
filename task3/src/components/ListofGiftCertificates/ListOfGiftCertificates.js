@@ -2,6 +2,7 @@ import React from "react";
 import {Translate, withLocalize} from "react-localize-redux";
 import GiftCertificateCard from "../GiftCertificateCard/GiftCertificateCard";
 import ScrollBars from "react-custom-scrollbars";
+import {Route, Switch, withRouter} from "react-router-dom";
 import ModalHeader from "react-bootstrap/ModalHeader";
 import ModalBody from "react-bootstrap/ModalBody";
 import ModalFooter from "react-bootstrap/ModalFooter";
@@ -19,7 +20,8 @@ class ListOfGiftCertificates extends React.Component {
     }
 
     componentDidMount() {
-        this.props.handleGetAllCertificates("ALL");
+        //this.props.handleGetAllCertificates("ALL",this.props.pageSize,this.props.pageNumber);
+        //this.props.history.push("/giftcertificates" + "?" + "page=" + this.props.pageNumber + "&size=" + this.props.pageSize);
     }
 
     render() {
@@ -44,6 +46,7 @@ class ListOfGiftCertificates extends React.Component {
                                                 setSelectedGiftCertificate={this.props.setSelectedGiftCertificate}
                                                 handleDeleteCertificate={this.props.handleDeleteCertificate}
                                                 handleBuyCertificate={this.props.handleBuyCertificate}
+                                                setDropDownValue={this.props.setDropdownValue}
                                             />
                                         </a>
                                 )
@@ -63,6 +66,8 @@ class ListOfGiftCertificates extends React.Component {
                             setSelectedGiftCertificate={this.props.setSelectedGiftCertificate}
                             handleDeleteCertificate={this.props.handleDeleteCertificate}
                             handleBuyCertificate={this.props.handleBuyCertificate}
+                            setDropdownValue={this.props.setDropdownValue}
+
                         />
                     </ModalBody>
                     <ModalFooter>
@@ -75,4 +80,4 @@ class ListOfGiftCertificates extends React.Component {
     }
 }
 
-export default withLocalize(ListOfGiftCertificates);
+export default withLocalize(withRouter(ListOfGiftCertificates));

@@ -86,6 +86,7 @@ class GiftCertificateCard extends React.Component {
                         <div className="container">
                             <div className="row">
                                 <ListOfTags tags={this.props.certificate.tags}
+                                            setDropdownValue={this.props.setDropdownValue}
                                             handleGetCertificatesByTagName={this.props.handleGetCertificatesByTagName}/>
                             </div>
                             <div className="row">

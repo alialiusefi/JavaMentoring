@@ -110,6 +110,10 @@
     "boughtcertificate": [
       "Certificate was bought successfully",
       "Покупка сертификата прошла успешно"
+    ],
+    "tokenerror" : [
+      "Tokens Error while authenticating",
+      "Ошибка токенов при аутентификации"
     ]
   }
 }

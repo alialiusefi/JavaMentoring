@@ -3,7 +3,7 @@ import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
 import Login from '../Login/Login'
 import "./Home.css";
-
+import qs from "query-string"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Route, Switch, withRouter} from "react-router-dom";
 import {renderToStaticMarkup} from "react-dom/server";
@@ -47,20 +47,35 @@ class Home extends React.Component {
             options: {renderToStaticMarkup}
         });
         this.props.addTranslation(globalTranslations);
+        let certificateDropDownValue = "ALL";
+        let pageNumber = qs.parse(this.props.location.search, {ignoreQueryPrefix: true}).page;
+        let pageSize = qs.parse(this.props.location.search, {ignoreQueryPrefix: true}).size;
+        let search = qs.parse(this.props.location.search,{ignoreQueryPrefix: true}).search;
+        if (pageSize == null && pageNumber == null) {
+            pageNumber = 1;
+            pageSize = 5;
+            if(search == null) {
+                search = "";
+            } else {
+                certificateDropDownValue = "SEARCH";
+            }
+        }
         this.state = {
             isRendering: false,
             giftCertificates: [],
             pageCount: null,
-            pageSize: 5,
-            pageNumber: 1,
-            certificateDropDownValue: "ALL",
+            pageSize: pageSize,
+            pageNumber: pageNumber,
+            certificateDropDownValue: certificateDropDownValue,
             isLoggedIn: false,
             username: null,
             user_id: null,
             user_role: null,
             selectedGiftCertificate: null,
-
+            searchField: search,
+            tagID : null
         };
+
         const locale = localStorage.getItem("locale");
         if (locale == null) {
             localStorage.setItem("locale", "en");
@@ -85,6 +100,11 @@ class Home extends React.Component {
         }
         const lang = localStorage.getItem("locale");
         this.props.setActiveLanguage(lang);
+        if(this.state.certificateDropDownValue === "SEARCH") {
+            this.handleSearch(this.state.searchField);
+        } else {
+            this.handleGetAllCertificates(this.state.certificateDropDownValue,this.props.pageSize,this.props.pageNumber);
+        }
     }
 
     render() {
@@ -136,7 +156,7 @@ class Home extends React.Component {
                                                         role={this.state.user_role}/>
                                     </div>
                                     <div className="col">
-                                        <SearchForm onSubmit={this.handleSearch}/>
+                                        <SearchForm initialValues={{searchField : this.state.searchField}} onSubmit={this.handleSearch}/>
                                     </div>
                                 </div>
                             </div>
@@ -150,12 +170,18 @@ class Home extends React.Component {
                                                         setSelectedGiftCertificate={this.setSelectedGiftCertificate}
                                                         handleDeleteCertificate={this.handleDeleteCertificateModal}
                                                         handleBuyCertificate={this.handleBuyCertificate}
+                                                        pageNumber={this.state.pageNumber}
+                                                        pageSize={this.state.pageSize}
+                                                        setDropdownValue={(value) => {
+                                                            this.setState({certificateDropDownValue : value});
+                                                        } }
                                 />
                             </div>
                             <div className="container-fluid">
                                 <div className="row justify-content-center">
                                     <div className="col-3">
-                                        <PaginationSize handleChangePageSize={this.handleChangePageSize} paginationSize={this.state.pageSize}/>
+                                        <PaginationSize handleChangePageSize={this.handleChangePageSize}
+                                                        paginationSize={this.state.pageSize}/>
                                     </div>
                                     <div className="col-6">
                                         <Pagination activePage={this.state.pageNumber}
@@ -186,7 +212,7 @@ class Home extends React.Component {
         );
     }
 
-    setTokens = (accessToken,refreshToken) => {
+    setTokens = (accessToken, refreshToken) => {
         const now = new Date();
         let decodedAccessToken;
         let decodedRefreshToken;
@@ -198,8 +224,8 @@ class Home extends React.Component {
                 this.setState({username: decodedAccessToken.sub});
                 this.setState({user_id: decodedAccessToken.user_id});
                 this.setState({user_role: decodedAccessToken.role});
-                localStorage.setItem("accessToken",accessToken);
-                localStorage.setItem("refreshToken",refreshToken);
+                localStorage.setItem("accessToken", accessToken);
+                localStorage.setItem("refreshToken", refreshToken);
             }
         }
     };
@@ -247,6 +273,7 @@ class Home extends React.Component {
             Alert.warning(<Translate id="alerts.searchfieldempty"/>);
             return;
         }
+        this.setState({searchField : values.searchField});
         let searchValueTokens = values.searchField.split(" ");
         let tagsToSearch = [];
         let nameOrDescription;
@@ -293,6 +320,7 @@ class Home extends React.Component {
             this.setState({giftCertificates: json.results});
             this.setState({pageCount: json.totalResults});
             console.log(this.state.giftCertificates);
+            this.props.history.push("giftcertificates?page=" + this.state.pageNumber + "&size=" + this.state.pageSize + "&search=" + this.state.searchField);
             return json;
         }).catch(error => {
             console.log(error);
@@ -339,6 +367,7 @@ class Home extends React.Component {
         this.setState({selectedGiftCertificate: certificate},
             this.props.history.push("edit"));
     };
+
 
     handleLogOut = () => {
         localStorage.removeItem("accessToken");
@@ -423,6 +452,7 @@ class Home extends React.Component {
                 this.setState({giftCertificates: json.results});
                 this.setState({pageCount: json.totalResults});
                 console.log(this.state.giftCertificates);
+                this.props.history.push("giftcertificates?page=" + this.state.pageNumber + "&size=" + this.state.pageSize);
                 return json;
             }).catch(error => {
                 console.log(error);
@@ -474,13 +504,20 @@ class Home extends React.Component {
                 Alert.error(error.message);
             });
         }
-        this.props.history.push("giftcertificates");
     };
 
     handleGetCertificatesByTagName = (tagID, tagName) => {
+        this.setState({tagID : tagID});
+        const search = qs.parse(this.props.location.search, {ignoreQueryPrefix: true}).search;
+        if(search == null) {
+            this.setState({pageNumber : 1});
+        }
         const URL = GETALLGIFTCARDSBYTAGID.replace("TAG_ID_HERE", tagID)
             .replace("PAGE_NUMBER", this.state.pageNumber)
             .replace("PAGE_SIZE", this.state.pageSize);
+        const searchField = "#{" + tagName + "}";
+        this.setState({searchField: searchField});
+        this.setState({certificateDropDownValue : "TAG"});
         fetch(URL,
             {
                 method: 'GET',
@@ -497,6 +534,7 @@ class Home extends React.Component {
             this.setState({giftCertificates: json.results});
             this.setState({pageCount: json.totalResults});
             console.log(this.state.giftCertificates);
+            this.props.history.push("giftcertificates?page=" + this.state.pageNumber + "&size=" + this.state.pageSize + "&search=" + this.state.searchField);
             return json;
         }).catch(error => {
             console.log(error);
@@ -504,12 +542,29 @@ class Home extends React.Component {
     };
 
     handleChangePageSize = (pageSize) => {
+        if(this.state.certificateDropDownValue === "TAG") {
+            this.handleGetCertificatesByTagName(this.state.searchField.substr(2,this.state.searchField.length - 1));
+            return;
+        }
+        if(this.state.certificateDropDownValue === "SEARCH") {
+            this.handleSearch({searchField : this.state.searchField});
+            return;
+        }
         this.setState({pageSize: pageSize},
             this.handleGetAllCertificates(this.state.certificateDropDownValue, pageSize, this.state.pageNumber));
+
     };
 
     handleChangePage = (pageNumber) => {
         this.setState({pageNumber: pageNumber});
+        if(this.state.certificateDropDownValue === "TAG") {
+            this.handleGetCertificatesByTagName(this.state.tagID,this.state.searchField.substr(2,this.state.searchField.length - 1));
+            return;
+        }
+        if(this.state.certificateDropDownValue === "SEARCH") {
+            this.handleSearch({searchField : this.state.searchField});
+            return;
+        }
         this.handleGetAllCertificates(this.state.certificateDropDownValue, this.state.pageSize, pageNumber);
     };
 

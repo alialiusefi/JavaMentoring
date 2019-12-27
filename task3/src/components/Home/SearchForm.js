@@ -11,7 +11,7 @@ class SearchForm extends Component {
                     <label className="pr-2"><Translate id="home.search">
                         Search
                     </Translate>:</label>
-                    <Field name="searchField" component="input" type="text"/>
+                    <Field name="searchField"  value={this.props.initialValues.searchField} component="input" type="text"/>
                     <button className="btn btn-dark">
                         <Translate id="home.search">
                             Search

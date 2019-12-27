@@ -110,6 +110,4 @@ class AddEditGiftCertificate extends React.Component {
 
 
 }
-
-
 export default (AddEditGiftCertificate);

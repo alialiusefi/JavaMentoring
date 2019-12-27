@@ -15,8 +15,11 @@ class ListOfTags extends React.Component {
                     this.props.tags.map(
                         (tag) =>
                             <div className="col-md p-1">
-                                <Button variant="secondary success" size="sm" onClick={() =>
-                                    this.props.handleGetCertificatesByTagName(tag.id,tag.name)}>
+                                <Button variant="secondary success" size="sm" onClick={() => {
+                                    this.props.handleGetCertificatesByTagName(tag.id,tag.name);
+
+                                }
+                                    }>
                                     {tag.name}
                                 </Button>
                             </div>
