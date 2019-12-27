@@ -50,6 +50,23 @@ class GiftCertificateCard extends React.Component {
             }
         };
 
+        const renderDescription = (isModal, description) => {
+            if (isModal) {
+                return (
+                    <p>{description}</p>
+                );
+            } else {
+                if (description.length > 25) {
+                    const smallDescription = description.substr(0, 25);
+                    const finalDescription = smallDescription + "...";
+                    return (
+                        <p>{finalDescription}</p>
+                    );
+                }
+            }
+            return (<p>{description}</p>);
+        };
+
         return (
             <Card>
                 <ListGroup variant="flush">
@@ -72,7 +89,7 @@ class GiftCertificateCard extends React.Component {
                                             handleGetCertificatesByTagName={this.props.handleGetCertificatesByTagName}/>
                             </div>
                             <div className="row">
-                                {this.props.certificate.description}
+                                {renderDescription(this.props.isModal, this.props.certificate.description)}
                             </div>
                         </div>
                     </ListGroup.Item>

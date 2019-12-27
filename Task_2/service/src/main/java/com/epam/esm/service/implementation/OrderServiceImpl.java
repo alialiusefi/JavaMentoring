@@ -108,7 +108,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderDTO add(Long userID, AddOrderDTO dto) {
-        Order order = addOrderConverter.toEntity(dto);//
+        Order order = addOrderConverter.toEntity(dto);
         order.setGiftCertificates(null);
         UserEntity userEntity = userRepository.queryEntity(new FindUserByUserID(userID)).
                 orElseThrow(() -> new ResourceNotFoundException("User with this id was not found"));
@@ -129,11 +129,6 @@ public class OrderServiceImpl implements OrderService {
         order.setGiftCertificates(giftCertificates);
         order.setUserEntity(userEntity);
         Order orderAdded = orderRepository.add(order);
-        /*order.setGiftCertificates(giftCertificates);
-        orderAdded = orderRepository.update(orderAdded);
-        userEntity.getOrders().add(orderAdded);
-        userEntity = userRepository.update(userEntity);
-        */
         return orderConverter.toDTO(orderAdded);
     }
 

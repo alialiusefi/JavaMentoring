@@ -28,6 +28,7 @@ const BuyCertificateModal = (props) => {
             </Button>
             <Modal show={modal} onHide={() => setModal(false)}>
                 <ModalHeader toggle={toggle}><Translate id="modal.buyquestion"/></ModalHeader>
+
                 <ModalFooter>
                     <Button color={'primary'}
                             onClick={() => buyHandler(certificate)}><Translate id="button.buy"/></Button>{' '}

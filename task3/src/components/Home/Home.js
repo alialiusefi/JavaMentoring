@@ -378,12 +378,19 @@ class Home extends React.Component {
             if (!response.ok) {
                 return Promise.reject(response.json());
             }
-
+            this.handleGetAllCertificates(this.state.certificateDropDownValue,
+                this.state.pageSize, this.state.pageNumber);
+            const oldpageNumber = this.state.pageNumber;
+            if (this.state.giftCertificates.length === 1) {
+                this.setState({pageNumber: oldpageNumber - 1});
+                this.handleGetAllCertificates(this.state.certificateDropDownValue,
+                    this.state.pageSize, oldpageNumber - 1);
+            }
         }).catch(error => {
             Alert.error(error.message);
             console.log(error);
         });
-        this.setState({isRendering: this.isRendering});
+
     };
 
 
@@ -503,30 +510,7 @@ class Home extends React.Component {
 
     handleChangePage = (pageNumber) => {
         this.setState({pageNumber: pageNumber});
-        const URL = GETALLCERTIFICATES_URL
-            .replace("PAGE_NUMBER", this.state.pageNumber)
-            .replace("PAGE_SIZE", this.state.pageSize);
-        fetch(URL,
-            {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(response => {
-            const json = response.json();
-            if (!response.ok) {
-                return Promise.reject(json);
-            }
-            return json;
-        }).then(json => {
-            this.setState({giftCertificates: json.results});
-            const pageCount = Math.ceil(json.totalResults / this.state.pageSize);
-            this.setState({pageCount: pageCount});
-            console.log(this.state.giftCertificates);
-            return json;
-        }).catch(error => {
-            console.log(error);
-        });
+        this.handleGetAllCertificates(this.state.certificateDropDownValue, this.state.pageSize, pageNumber);
     };
 
     handleLogIn = (login, password) => {
@@ -587,12 +571,12 @@ class Home extends React.Component {
         };
         const accessToken = localStorage.getItem("accessToken");
         const refreshToken = localStorage.getItem("refreshToken");
-        if (accessToken == null || refreshToken == null) {
-            alert("unauthorized");
-            return;
-        }
         document.cookie = "accessToken=" + accessToken;
         document.cookie = "refreshToken=" + refreshToken;
+        if (accessToken == null || refreshToken == null) {
+            Alert.error(<Translate id="alerts.notloggedin"/>);
+            return;
+        }
         const body = JSON.stringify(data);
         fetch(URL,
             {
@@ -616,7 +600,9 @@ class Home extends React.Component {
         }).catch(error => {
             console.log(error);
         });
-        this.props.history.push("giftcertificates");
+        this.props.history.push("/giftcertificates");
+        this.handleGetAllCertificates(this.state.certificateDropDownValue,
+            this.state.pageSize, this.state.pageNumber);
     };
 
     handleAddCertificate = (name, description, price, durationTillExpiry, tags) => {
