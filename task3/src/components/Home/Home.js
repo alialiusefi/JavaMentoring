@@ -50,15 +50,18 @@ class Home extends React.Component {
         let certificateDropDownValue = "ALL";
         let pageNumber = qs.parse(this.props.location.search, {ignoreQueryPrefix: true}).page;
         let pageSize = qs.parse(this.props.location.search, {ignoreQueryPrefix: true}).size;
-        let search = qs.parse(this.props.location.search,{ignoreQueryPrefix: true}).search;
-        if (pageSize == null && pageNumber == null) {
-            pageNumber = 1;
+        let search = qs.parse(this.props.location.search, {ignoreQueryPrefix: true}).search;
+        if (pageSize == null || !pageSize.toString().match("^\\d*$")) {
             pageSize = 5;
-            if(search == null) {
-                search = "";
-            } else {
-                certificateDropDownValue = "SEARCH";
-            }
+        }
+        if (pageNumber == null ||  !pageSize.toString().match("^\\d*$")) {
+            pageNumber = 1;
+
+        }
+        if (search == null) {
+            search = "";
+        } else {
+            certificateDropDownValue = "SEARCH";
         }
         this.state = {
             isRendering: false,
@@ -73,7 +76,7 @@ class Home extends React.Component {
             user_role: null,
             selectedGiftCertificate: null,
             searchField: search,
-            tagID : null
+            tagID: null
         };
 
         const locale = localStorage.getItem("locale");
@@ -84,30 +87,25 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        const now = new Date();
-        const accessToken = localStorage.getItem('accessToken');
-        let decodedToken;
-        if (accessToken != null) {
-            decodedToken = jwt_decode(accessToken);
-        }
-        if (decodedToken != null) {
-            if (!(decodedToken.exp < now.getTime() / 1000)) {
-                this.setState({isLoggedIn: true});
-                this.setState({username: decodedToken.sub});
-                this.setState({user_id: decodedToken.user_id});
-                this.setState({user_role: decodedToken.role});
-            }
-        }
         const lang = localStorage.getItem("locale");
         this.props.setActiveLanguage(lang);
-        if(this.state.certificateDropDownValue === "SEARCH") {
-            this.handleSearch(this.state.searchField);
-        } else {
-            this.handleGetAllCertificates(this.state.certificateDropDownValue,this.props.pageSize,this.props.pageNumber);
-        }
+        this.handleSetLoginDetails();
     }
 
     render() {
+
+        const renderSearchForm = () => {
+            if (this.state.certificateDropDownValue === "MY") {
+                return;
+            } else {
+                return (<SearchForm initialValues={{searchField: this.state.searchField}}
+                                    onSubmit={this.handleSearch}
+                                    handleGetAllCertificates={this.handleGetAllCertificates}
+                />);
+            }
+        }
+
+
         return (
             <div>
                 <Header isLoggedIn={this.state.isLoggedIn} username={this.state.username}
@@ -124,25 +122,21 @@ class Home extends React.Component {
                             );
                         }}/>
                 <Switch>
+
                     <Route path="/login">
-                        <Login handleLogIn={this.handleLogIn} responseGoogle={(response) => {
-                            console.log(response);
-                        }}/>
+                        <Login handleLogIn={this.handleLogIn}/>
                     </Route>
                     <Route path="/signup">
                         <Signup handleSignup={this.handleSignup}/>
                     </Route>
-                    <PrivateRoute userRole={this.state.user_role}
-                                  requiredRole={"ADMIN"}
-                                  path="/add" component={AddEditGiftCertificate}
-                                  handleAddCertificate={this.handleAddCertificate}>
-                    </PrivateRoute>
-                    <PrivateRoute userRole={this.state.user_role}
-                                  requiredRole={"ADMIN"}
-                                  path="/edit" component={AddEditGiftCertificate}
-                                  certificate={this.state.selectedGiftCertificate}
-                                  handleUpdateCertificate={this.handleUpdateCertificate}>
-                    </PrivateRoute>
+
+
+                    <Route location={this.props.location} path="/sociallogin">
+                        <SocialLogin setTokens={this.setTokens} alertError={(message) => {
+                            Alert.error(message);
+                        }}/>
+                    </Route>
+
                     <Route path="/giftcertificates">
                         <div className="container text-center">
                             <div className="text h3">
@@ -156,7 +150,7 @@ class Home extends React.Component {
                                                         role={this.state.user_role}/>
                                     </div>
                                     <div className="col">
-                                        <SearchForm initialValues={{searchField : this.state.searchField}} onSubmit={this.handleSearch}/>
+                                        {renderSearchForm()}
                                     </div>
                                 </div>
                             </div>
@@ -167,14 +161,17 @@ class Home extends React.Component {
                                                         setPageSize={this.setPageSize}
                                                         setPageNumber={this.setPageNumber}
                                                         role={this.state.user_role}
+                                                        searchField={this.props.searchField}
+                                                        handleSearch={this.handleSearch}
+                                                        certificateDropDownValue={this.state.certificateDropDownValue}
                                                         setSelectedGiftCertificate={this.setSelectedGiftCertificate}
                                                         handleDeleteCertificate={this.handleDeleteCertificateModal}
                                                         handleBuyCertificate={this.handleBuyCertificate}
                                                         pageNumber={this.state.pageNumber}
                                                         pageSize={this.state.pageSize}
                                                         setDropdownValue={(value) => {
-                                                            this.setState({certificateDropDownValue : value});
-                                                        } }
+                                                            this.setState({certificateDropDownValue: value});
+                                                        }}
                                 />
                             </div>
                             <div className="container-fluid">
@@ -197,19 +194,52 @@ class Home extends React.Component {
                                 <br/>
                             </div>
                         </div>
+
                     </Route>
-                    <Route location={this.props.location} path="/sociallogin">
-                        <SocialLogin setTokens={this.setTokens} alertError={(message) => {
-                            Alert.error(message);
-                        }}/>
-                    </Route>
-                    <Route path="/" component={DefaultComponent}/>
-                    <Route path='*' exact={true} component={NotFound}/>
+                    <PrivateRoute userRole={this.state.user_role}
+                                  requiredRole={"ADMIN"}
+                                  path="/add" component={AddEditGiftCertificate}
+                                  handleAddCertificate={this.handleAddCertificate}
+                                  handleSetLoginDetails={this.handleSetLoginDetails}
+                    >
+                    </PrivateRoute>
+                    <PrivateRoute userRole={this.state.user_role}
+                                  requiredRole={"ADMIN"}
+                                  path="/edit" component={AddEditGiftCertificate}
+                                  certificate={this.state.selectedGiftCertificate}
+                                  handleUpdateCertificate={this.handleUpdateCertificate}
+                                  handleSetLoginDetails={this.handleSetLoginDetails}>
+                    </PrivateRoute>
+                    {/*<Route path="/" component={DefaultComponent}/>*/}
+                    <Route component={NotFound}/>
                 </Switch>
                 <Footer/>
                 <Alert stack={{limit: 3}} position={"top"}/>
             </div>
         );
+    }
+
+    handleSetLoginDetails = (redirect) => {
+        const now = new Date();
+        const accessToken = localStorage.getItem('accessToken');
+        let decodedToken;
+        if (accessToken != null) {
+            decodedToken = jwt_decode(accessToken);
+        } else {
+            if (redirect) {
+                this.props.history.push("/giftcertificates");
+                Alert.error(<Translate id="alerts.notloggedin"/>);
+                this.handleLogOut();
+            }
+        }
+        if (decodedToken != null) {
+            if (!(decodedToken.exp < now.getTime() / 1000)) {
+                this.setState({isLoggedIn: true});
+                this.setState({username: decodedToken.sub});
+                this.setState({user_id: decodedToken.user_id});
+                this.setState({user_role: decodedToken.role});
+            }
+        }
     }
 
     setTokens = (accessToken, refreshToken) => {
@@ -269,17 +299,27 @@ class Home extends React.Component {
     };
 
     handleSearch = (values) => {
-        if (values.searchField == null || values.searchField.length == 0) {
+        let search = "";
+        if (values.searchField == null || values.searchField.length === 0) {
+            if (this.state.searchField == null || this.state.searchField.length === 0) {
+                Alert.warning(<Translate id="alerts.searchfieldempty"/>);
+                return;
+            }
+        } else {
+            this.setState({searchField: values.searchField});
+            search = values.searchField;
+
+        }
+        if (search == null || search.length === 0) {
             Alert.warning(<Translate id="alerts.searchfieldempty"/>);
             return;
         }
-        this.setState({searchField : values.searchField});
-        let searchValueTokens = values.searchField.split(" ");
+        let searchValueTokens = search.split(" ");
         let tagsToSearch = [];
         let nameOrDescription;
         for (var i = 0; i < searchValueTokens.length; i++) {
             let token = searchValueTokens[i];
-            if (token.charAt(0) === "#" && token.charAt(1) === "{"
+            if (token.charAt(0) === "@" && token.charAt(1) === "{"
                 && token.charAt(token.length - 1) === "}") {
                 tagsToSearch.push(token.substr(2, token.length - 3));
             } else {
@@ -304,6 +344,7 @@ class Home extends React.Component {
             }
         }
         console.log(URL);
+        this.setState({certificateDropDownValue: "SEARCH"});
         fetch(URL,
             {
                 method: 'GET',
@@ -342,16 +383,21 @@ class Home extends React.Component {
                 },
                 body: JSON.stringify(data)
             }).then(response => {
-            const json = response.json();
             if (!response.ok) {
-                return Promise.reject(json);
+                response.json().then(
+                    (json) => {
+                        Alert.error(json.errors[0]);
+                    }
+                );
+            } else {
+                this.props.history.push("/login");
+                Alert.success(<Translate id="alerts.signedup"/>);
+                return response.json();
             }
-            Alert.success(<Translate id="alerts.signedup"/>);
-            return json;
         }).then(json => {
             return json;
         }).catch(error => {
-            console.log(error);
+            Alert.error(error.message);
         });
     };
 
@@ -507,17 +553,17 @@ class Home extends React.Component {
     };
 
     handleGetCertificatesByTagName = (tagID, tagName) => {
-        this.setState({tagID : tagID});
+        this.setState({tagID: tagID});
         const search = qs.parse(this.props.location.search, {ignoreQueryPrefix: true}).search;
-        if(search == null) {
-            this.setState({pageNumber : 1});
+        if (search == null) {
+            this.setState({pageNumber: 1});
         }
         const URL = GETALLGIFTCARDSBYTAGID.replace("TAG_ID_HERE", tagID)
             .replace("PAGE_NUMBER", this.state.pageNumber)
             .replace("PAGE_SIZE", this.state.pageSize);
-        const searchField = "#{" + tagName + "}";
+        const searchField = "@{" + tagName + "}";
         this.setState({searchField: searchField});
-        this.setState({certificateDropDownValue : "TAG"});
+        this.setState({certificateDropDownValue: "TAG"});
         fetch(URL,
             {
                 method: 'GET',
@@ -542,12 +588,13 @@ class Home extends React.Component {
     };
 
     handleChangePageSize = (pageSize) => {
-        if(this.state.certificateDropDownValue === "TAG") {
-            this.handleGetCertificatesByTagName(this.state.searchField.substr(2,this.state.searchField.length - 1));
+        if (this.state.certificateDropDownValue === "TAG") {
+            const length = this.state.searchField.length - 1;
+            this.setState({pageSize: pageSize}, this.handleGetCertificatesByTagName(this.state.searchField.substr(2, this.state.searchField.length - 1)));
             return;
         }
-        if(this.state.certificateDropDownValue === "SEARCH") {
-            this.handleSearch({searchField : this.state.searchField});
+        if (this.state.certificateDropDownValue === "SEARCH") {
+            this.setState({pageSize: pageSize}, this.handleSearch({searchField: this.state.searchField}));
             return;
         }
         this.setState({pageSize: pageSize},
@@ -557,15 +604,19 @@ class Home extends React.Component {
 
     handleChangePage = (pageNumber) => {
         this.setState({pageNumber: pageNumber});
-        if(this.state.certificateDropDownValue === "TAG") {
-            this.handleGetCertificatesByTagName(this.state.tagID,this.state.searchField.substr(2,this.state.searchField.length - 1));
+        if (this.state.certificateDropDownValue === "TAG") {
+            this.setState({pageNumber: pageNumber},
+                this.handleGetCertificatesByTagName(this.state.tagID, this.state.searchField.substr(2, this.state.searchField.length - 2)));
             return;
         }
-        if(this.state.certificateDropDownValue === "SEARCH") {
-            this.handleSearch({searchField : this.state.searchField});
+        if (this.state.certificateDropDownValue === "SEARCH") {
+            this.setState({pageNumber: pageNumber},
+                this.handleSearch({searchField: this.state.searchField}));
             return;
         }
-        this.handleGetAllCertificates(this.state.certificateDropDownValue, this.state.pageSize, pageNumber);
+        this.setState({pageNumber: pageNumber},
+            this.handleGetAllCertificates(this.state.certificateDropDownValue, this.state.pageSize, pageNumber));
+
     };
 
     handleLogIn = (login, password) => {

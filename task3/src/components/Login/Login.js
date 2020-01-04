@@ -20,14 +20,10 @@ class Login extends React.Component {
 
     render() {
 
-        const responseGoogle = (response) => {
-            console.log(response);
-        };
-
         return (
             <div className="container">
                 <br/>
-                <div className=" container-fluid">
+                <div className="center container-fluid">
                     <LoginForm onSubmit={this.handleSubmit}/>
                     <br/>
                     <div className="row">
@@ -52,7 +48,6 @@ class Login extends React.Component {
             </div>
         );
     }
-
 
     handleSubmit = (values) =>  {
         this.props.handleLogIn(values.username,values.password);

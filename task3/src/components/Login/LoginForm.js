@@ -33,7 +33,7 @@ const validate = values => {
 let LoginForm = props => {
     const {handleSubmit, pristine, submitting, invalid} = props;
     return (
-        <div className="container-fluid">
+        <div className="justify-content-center container-fluid">
             <form onSubmit={handleSubmit}>
                 <div className="row">
                     <div className="col-5">

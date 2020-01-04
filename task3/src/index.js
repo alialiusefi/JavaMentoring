@@ -23,7 +23,6 @@ const App = props => (
         <LocalizeProvider>
             <BrowserRouter>
                 <Route path="/" component={Home} />
-
             </BrowserRouter>
         </LocalizeProvider>
     </Provider>

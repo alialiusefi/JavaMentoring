@@ -29,14 +29,19 @@ const validate = values => {
     }
     if (!values.price) {
         errors.price = 'Required'
-    } /*else if (!values.price.match("\\d[\\d\\,\\.]+")) {
+    } else if (!(values.price.toString().match("[^a-z ]\\ *([.0-9])*\\d"))) {
         errors.price = 'Incorrect price format'
-    }*/
+    } else if (!(values.price > 0)) {
+        errors.price = 'Price should be more than 0'
+    }
     if (!values.durationTillExpiry) {
         errors.durationTillExpiry = 'Required'
+    } else if (!values.durationTillExpiry.toString().match("^\\d*$")) {
+        errors.durationTillExpiry = 'Incorrect duration format'
     } else if (!(values.durationTillExpiry > 0)) {
         errors.durationTillExpiry = 'duration should be at least 1 day'
     }
+
     return errors;
 }
 

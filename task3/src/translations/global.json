@@ -1,29 +1,77 @@
 {
-  "header" : {
-    "welcome" : ["Welcome","Добро Пожаловать"]
+  "header": {
+    "welcome": [
+      "Welcome",
+      "Добро Пожаловать"
+    ]
   },
-  "home":{
-    "title" : ["GiftCertificates","Подарочные сертификаты"],
-    "loginlogout" : ["Login/Logout","Войти/Выход"],
-    "mygiftcertificates" : ["My GiftCertificates","мои сертификаты"],
-    "allgiftcertificates" : ["All GiftCertificates","все сертификаты"],
-    "search" : ["Search","Пойск"],
-    "addnewgiftcertificates" : ["Add New GiftCertificates","Добавить новые подарочные сертификаты"]
+  "home": {
+    "title": [
+      "GiftCertificates",
+      "Подарочные сертификаты"
+    ],
+    "loginlogout": [
+      "Login/Logout",
+      "Войти/Выход"
+    ],
+    "mygiftcertificates": [
+      "My GiftCertificates",
+      "мои сертификаты"
+    ],
+    "allgiftcertificates": [
+      "All GiftCertificates",
+      "все сертификаты"
+    ],
+    "search": [
+      "Search",
+      "Пойск"
+    ],
+    "addnewgiftcertificates": [
+      "Add New GiftCertificates",
+      "Добавить новые подарочные сертификаты"
+    ]
   },
   "login": {
-    "loginbutton" : ["Log In", "Войти"],
-    "cancelbutton" : ["Cancel", "Выход"],
-    "username" : ["Username","Username"],
-    "password" : ["Password", "Пароль"]
+    "loginbutton": [
+      "Log In",
+      "Войти"
+    ],
+    "cancelbutton": [
+      "Cancel",
+      "Выход"
+    ],
+    "username": [
+      "Username",
+      "Логин"
+    ],
+    "password": [
+      "Password",
+      "Пароль"
+    ]
   },
   "signup": {
-    "signupbutton" : ["Sign Up","зарегистрироваться"]
+    "signupbutton": [
+      "Sign Up",
+      "Зарегистрироваться"
+    ]
   },
-  "giftcertificate" : {
-    "name" : ["Name","Имя"],
-    "description" : ["Description","Описание"],
-    "price" : ["Price","Цена"],
-    "dateofcreation" : ["Date Of Creation", "Дата создания"],
+  "giftcertificate": {
+    "name": [
+      "Name",
+      "Имя"
+    ],
+    "description": [
+      "Description",
+      "Описание"
+    ],
+    "price": [
+      "Price",
+      "Цена"
+    ],
+    "dateofcreation": [
+      "Date Of Creation",
+      "Дата создания"
+    ],
     "dateofmodification": [
       "Date of Modification",
       "Дата модификации"
@@ -62,13 +110,20 @@
       "Delete",
       "Удалить"
     ],
+    "reset": [
+      "Reset",
+      "Сбросить"
+    ],
     "edit": [
       "Edit",
       "Изменить"
     ],
-    "cancel" : ["Cancel","Отмена"]
+    "cancel": [
+      "Cancel",
+      "Отмена"
+    ]
   },
-  "modal" : {
+  "modal": {
     "deletequestion": [
       "Are you sure you want to delete this certificate?",
       "Вы уверены?"
@@ -111,7 +166,7 @@
       "Certificate was bought successfully",
       "Покупка сертификата прошла успешно"
     ],
-    "tokenerror" : [
+    "tokenerror": [
       "Tokens Error while authenticating",
       "Ошибка токенов при аутентификации"
     ]

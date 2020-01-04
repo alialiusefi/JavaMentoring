@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import GiftCertificateForm from "./GiftCertificateForm";
 import {Translate} from "react-localize-redux";
 import './ReactInput.css'
+import jwt_decode from "jwt-decode";
+import Alert from 'react-s-alert';
 
 class AddEditGiftCertificate extends React.Component {
 
@@ -17,6 +19,7 @@ class AddEditGiftCertificate extends React.Component {
     }
 
     componentDidMount() {
+        this.props.handleSetLoginDetails(true);
         if(( this.props.certificate != null && this.props.certificate.tags != null && this.props.certificate.tags.length !== 0)) {
             let reactTags = [];
             this.props.certificate.tags.map((tag) => {
@@ -49,6 +52,7 @@ class AddEditGiftCertificate extends React.Component {
                         handleInputChange={this.handleInputChange}
                     />
                 </div>
+                <Alert stack={{limit: 3}} position={"top"}/>
             </div>
         );
     }
@@ -90,8 +94,13 @@ class AddEditGiftCertificate extends React.Component {
     }
 
     handleAddition = (tag) => {
-        this.setState(state => ({tags: [...state.tags, tag]}));
-        console.log(this.state.tags);
+        if(tag.length < 17 && tag.length > 1) {
+            this.setState(state => ({tags: [...state.tags, tag]}));
+        } else {
+            Alert.warning("Tag size should be from 1 to 16");
+            return;
+        }
+         console.log(this.state.tags);
     }
 
     handleDrag = (tag, currPos, newPos) => {
@@ -103,11 +112,6 @@ class AddEditGiftCertificate extends React.Component {
 
         this.setState({ tags: newTags });
     };
-
-    handleInputChange = (event) => {
-        //call api to search and change state of suggestions
-    }
-
 
 }
 export default (AddEditGiftCertificate);

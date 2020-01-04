@@ -20,8 +20,12 @@ class ListOfGiftCertificates extends React.Component {
     }
 
     componentDidMount() {
-        //this.props.handleGetAllCertificates("ALL",this.props.pageSize,this.props.pageNumber);
-        //this.props.history.push("/giftcertificates" + "?" + "page=" + this.props.pageNumber + "&size=" + this.props.pageSize);
+            if(this.props.searchField != null && this.props.searchField !== "") {
+                this.props.handleSearch({searchField : this.state.searchField});
+            } else {
+                this.props.handleGetAllCertificates(this.props.certificateDropDownValue,this.props.pageSize,this.props.pageNumber);
+            }
+
     }
 
     render() {
@@ -34,11 +38,10 @@ class ListOfGiftCertificates extends React.Component {
                             {
                                 this.props.giftcertificates.map(
                                     (certificate) =>
-                                        <a onClick={() => this.setState({
-                                            modal: true,
-                                            certificate: certificate
-                                        })} className="btn col-md col-lg-6 p-2">
+                                        <div className="btn col-md col-lg-6 p-2">
                                             <GiftCertificateCard
+                                                setStates={this.setStates}
+                                                modal={this.state.modal}
                                                 certificate={certificate}
                                                 handleGetCertificatesByTagName={this.props.handleGetCertificatesByTagName}
                                                 role={this.props.role}
@@ -48,7 +51,7 @@ class ListOfGiftCertificates extends React.Component {
                                                 handleBuyCertificate={this.props.handleBuyCertificate}
                                                 setDropDownValue={this.props.setDropdownValue}
                                             />
-                                        </a>
+                                        </div>
                                 )
                             }
                         </div>
@@ -67,7 +70,6 @@ class ListOfGiftCertificates extends React.Component {
                             handleDeleteCertificate={this.props.handleDeleteCertificate}
                             handleBuyCertificate={this.props.handleBuyCertificate}
                             setDropdownValue={this.props.setDropdownValue}
-
                         />
                     </ModalBody>
                     <ModalFooter>
@@ -78,6 +80,16 @@ class ListOfGiftCertificates extends React.Component {
             </div>
         );
     }
+
+    setStates = (modal,certificate, isModal) => {
+        if(!isModal) {
+            this.setState({
+                modal: true,
+                certificate: certificate
+            });
+        }
+    }
+
 }
 
 export default withLocalize(withRouter(ListOfGiftCertificates));

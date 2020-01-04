@@ -11,12 +11,19 @@ class SearchForm extends Component {
                     <label className="pr-2"><Translate id="home.search">
                         Search
                     </Translate>:</label>
-                    <Field name="searchField"  value={this.props.initialValues.searchField} component="input" type="text"/>
+                    <Field name="searchField" value={this.props.initialValues.searchField} component="input" type="text"/>
+                    &nbsp;
                     <button className="btn btn-dark">
                         <Translate id="home.search">
                             Search
                         </Translate>
                     </button>
+                    &nbsp;
+                    <a /*onClick={()=>this.props.handleGetAllCertificates("ALL",1,5)}*/ href="/giftcertificates" className="btn btn-danger">
+                        <Translate id="button.reset">
+                            Reset
+                        </Translate>
+                    </a>
                 </div>
             </form>
         );
@@ -25,7 +32,8 @@ class SearchForm extends Component {
 
 // Decorate the form component
 SearchForm = reduxForm({
-    form: 'search' // a unique name for this form
+    form: 'search', // a unique name for this form
+    enableReinitialize: 'true'
 })(SearchForm);
 
 export default SearchForm;

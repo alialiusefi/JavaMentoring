@@ -50,9 +50,14 @@ class Header extends React.Component {
                             <Translate id="header.welcome"/> {this.props.isLoggedIn ? this.props.username : 'Guest'}
                         </div>
                         <div className="row">
-                            <div className="col-5">
+                            <div className="col-auto">
                                 <Link className="nav-item" to={"/login"} onClick={this.logOut}>
                                     <Translate id="home.loginlogout"> Login/Logout </Translate>
+                                </Link>
+                            </div>
+                            <div className={"col-auto"}>
+                                <Link className="nav-item" to={"/signup"}>
+                                    <Translate id="signup.signupbutton"/>
                                 </Link>
                             </div>
                         </div>

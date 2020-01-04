@@ -53,24 +53,28 @@ class GiftCertificateCard extends React.Component {
         const renderDescription = (isModal, description) => {
             if (isModal) {
                 return (
-                    <p>{description}</p>
+                    <p className="overflow-auto">{description}</p>
                 );
             } else {
                 if (description.length > 25) {
                     const smallDescription = description.substr(0, 25);
                     const finalDescription = smallDescription + "...";
                     return (
-                        <p>{finalDescription}</p>
+                        <p className="overflow-auto">{finalDescription}</p>
                     );
                 }
             }
-            return (<p>{description}</p>);
+            return (<p className="overflow-auto">{description}</p>);
         };
 
         return (
             <Card>
                 <ListGroup variant="flush">
-                    <ListGroup.Item>
+                    <ListGroup.Item onClick={() => {
+                        if(!this.props.isModal) {
+                            this.props.setStates(this.props.modal,this.props.certificate, this.props.isModal)
+                        }
+                    }}>
                         <div className="container">
                             <div className="row">
                                 <div className="col">
@@ -116,6 +120,7 @@ class GiftCertificateCard extends React.Component {
                     </ListGroup.Item>
                 </ListGroup>
             </Card>
+
         );
     }
 }
