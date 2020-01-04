@@ -28,7 +28,17 @@ class Header extends React.Component {
             homeButtonLink = "/giftcertificates";
         }
 
-
+        const renderSignup = () => {
+            if(!this.props.isLoggedIn) {
+                return(<div className={"col-auto"}>
+                    <Link className="nav-item" to={"/signup"}>
+                        <Translate id="signup.signupbutton"/>
+                    </Link>
+                </div>);
+            } else {
+                return;
+            }
+        }
 
         return (
             <div>
@@ -55,11 +65,7 @@ class Header extends React.Component {
                                     <Translate id="home.loginlogout"> Login/Logout </Translate>
                                 </Link>
                             </div>
-                            <div className={"col-auto"}>
-                                <Link className="nav-item" to={"/signup"}>
-                                    <Translate id="signup.signupbutton"/>
-                                </Link>
-                            </div>
+                            {renderSignup()}
                         </div>
                     </div>
                 </nav>

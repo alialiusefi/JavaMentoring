@@ -18,7 +18,6 @@ import Signup from "../Signup/Signup";
 import jwt_decode from 'jwt-decode';
 import AddEditGiftCertificate from "../AddEditGiftCertifcate/AddEditGiftCertificate";
 import NotFound from "../NotFound/NotFound";
-import DefaultComponent from "../DefaultComponent/NotFound";
 import Alert from 'react-s-alert';
 import {PrivateRoute} from "../PrivateRoute/PrivateRoute";
 import SocialLogin from "../SocialLogin/SocialLogin";
@@ -210,7 +209,9 @@ class Home extends React.Component {
                                   handleUpdateCertificate={this.handleUpdateCertificate}
                                   handleSetLoginDetails={this.handleSetLoginDetails}>
                     </PrivateRoute>
-                    {/*<Route path="/" component={DefaultComponent}/>*/}
+                    <Route path="/">
+                        <h2><center>Home</center></h2>
+                    </Route>
                     <Route component={NotFound}/>
                 </Switch>
                 <Footer/>
@@ -288,7 +289,7 @@ class Home extends React.Component {
                 const json = response.json();
                 const errors = json.errors;
                 Alert.error(errors);
-                return Promise.reject(response.json());
+                return Promise.reject(json);
             }
             Alert.success(<Translate id="alerts.boughtcertificate"/>)
         }).catch(error => {
@@ -507,8 +508,8 @@ class Home extends React.Component {
         } else {
             this.setState({certificateDropDownValue: "MY"});
             let URLWITHID = GETALLUSERORDERS_URL.replace("USER_ID", this.state.user_id)
-                .replace("PAGE_NUMBER", this.state.pageNumber)
-                .replace("PAGE_SIZE", this.state.pageSize);
+                .replace("PAGE_NUMBER", 1)
+                .replace("PAGE_SIZE", 5);
             if (pageSize != null && pageNumber != null) {
                 URLWITHID = GETALLUSERORDERS_URL.replace("USER_ID", this.state.user_id).replace("PAGE_NUMBER", pageNumber)
                     .replace("PAGE_SIZE", pageSize);
@@ -544,6 +545,7 @@ class Home extends React.Component {
                 this.setState({giftCertificates: certificates});
                 this.setState({pageCount: json.totalResults});
                 console.log(this.state.giftCertificates);
+                 //this.props.history.push("giftcertificates?page=" + this.state.pageNumber + "&size=" + this.state.pageSize);
                 return json;
             }).catch(error => {
                 console.log(error);
