@@ -29,8 +29,7 @@ public class CustomUserServiceImpl implements CustomUserService {
     @Transactional
     public UserDetails loadUserByUsername(String username) {
         UserEntity userEntity = userRepository.queryEntity(new FindUserByUserName(username))
-                .orElseThrow(() -> new ResourceNotFoundException("User with this username" +
-                        " was not found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cannot find user!"));
         Long user_id = userEntity.getId();
         Object[] authorities = userEntity.getAuthorityList().toArray();
         GrantedAuthority authority = (GrantedAuthority) authorities[0];
