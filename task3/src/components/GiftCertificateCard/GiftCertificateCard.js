@@ -112,8 +112,8 @@ class GiftCertificateCard extends React.Component {
                                 <div className="col">
                                     {buyButton()}
                                 </div>
-                                <div className="h-5">
-                                    <label>{this.props.certificate.price} BYN</label>
+                                <div className="col overflow-hidden">
+                                    {this.props.certificate.price} BYN
                                 </div>
                             </div>
                         </div>

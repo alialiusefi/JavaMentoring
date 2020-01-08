@@ -3,8 +3,7 @@ import "./Login.css";
 
 import LoginForm from "./LoginForm";
 import '../../api/apiservice'
-import GoogleLogin from "react-google-login";
-import {createPortal} from "react-dom";
+import {Translate} from "react-localize-redux";
 
 
 class Login extends React.Component {
@@ -21,7 +20,8 @@ class Login extends React.Component {
     render() {
 
         return (
-            <div className="container">
+            <div className="container text-center">
+                <h3><Translate id="login.loginbutton">Login</Translate></h3>
                 <br/>
                 <div className="center container-fluid">
                     <LoginForm onSubmit={this.handleSubmit}/>

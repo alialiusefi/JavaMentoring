@@ -69,8 +69,8 @@ class Home extends React.Component {
             isRendering: false,
             giftCertificates: [],
             pageCount: null,
-            pageSize: pageSize,
-            pageNumber: pageNumber,
+            pageSize: parseInt(pageSize),
+            pageNumber: parseInt(pageNumber),
             certificateDropDownValue: certificateDropDownValue,
             isLoggedIn: false,
             username: null,
@@ -191,7 +191,18 @@ class Home extends React.Component {
                                                     pageRangeDisplayed={5}
                                                     onChange={this.handleChangePage}
                                                     itemClass="page-item"
-                                                    linkClass="page-link">
+                                                    linkClass="page-link"
+                                                    initialPage={this.state.pageNumber}
+                                                    /*breakClass={'page-item'}
+                                                    breakLinkClass={'page-link'}
+                                                    containerClass={'pagination'}
+                                                    pageClass={'page-item'}
+                                                    pageLinkClass={'page-link'}
+                                                    previousClass={'page-item'}
+                                                    previousLinkClass={'page-link'}
+                                                    nextClass={'page-item'}
+                                                    nextLinkClass={'page-link'}
+                                                    activeClass={'active'}*/>
                                         </Pagination>
                                     </div>
                                 </div>
@@ -339,7 +350,7 @@ class Home extends React.Component {
             }
         }
         console.log(tagsToSearch);
-        let URL = GETALLCERTIFICATES_URL.replace("PAGE_NUMBER", this.state.pageNumber)
+        let URL = GETALLCERTIFICATES_URL.replace("PAGE_NUMBER", 1)
             .replace("PAGE_SIZE", this.state.pageSize);
         if (nameOrDescription != null) {
             URL += "&" + "giftCertificateName=" + nameOrDescription;
@@ -373,6 +384,7 @@ class Home extends React.Component {
             this.setState({giftCertificates: json.results});
             this.setState({pageCount: json.totalResults});
             console.log(this.state.giftCertificates);
+            this.setState({pageNumber : 1});
             this.props.history.push("giftcertificates?page=" + this.state.pageNumber + "&size=" + this.state.pageSize + "&search=" + this.state.searchField);
             return json;
         }).catch(error => {
@@ -558,7 +570,6 @@ class Home extends React.Component {
                 this.setState({giftCertificates: certificates});
                 this.setState({pageCount: json.totalResults});
                 console.log(this.state.giftCertificates);
-                //this.props.history.push("giftcertificates?page=" + this.state.pageNumber + "&size=" + this.state.pageSize);
                 return json;
             }).catch(error => {
                 console.log(error);
@@ -573,7 +584,7 @@ class Home extends React.Component {
         }
     };
 
-    handleGetCertificatesByTagName = (tagID, tagName) => {
+    handleGetCertificatesByTagName = (tagID, tagName, pageNumber,pageSize) => {
         this.setState({tagID: tagID});
         const search = qs.parse(this.props.location.search, {ignoreQueryPrefix: true}).search;
         if (search == null) {
@@ -588,13 +599,21 @@ class Home extends React.Component {
         const searchField = "@{" + correctTag + "}";
         this.setState({searchField: searchField});
         this.setState({certificateDropDownValue: "TAG"});
+        let newpageNumber = pageNumber;
+        if(newpageNumber == null) {
+            newpageNumber = 1;
+        }
+        let newpageSize = pageSize;
+        if(newpageSize == null) {
+            newpageSize = 5;
+        }
         let URL = GETALLGIFTCARDSBYTAGID.replace("TAG_ID_HERE", tagID)
-            .replace("PAGE_NUMBER", this.state.pageNumber)
-            .replace("PAGE_SIZE", this.state.pageSize);
+            .replace("PAGE_NUMBER", newpageNumber)
+            .replace("PAGE_SIZE", newpageSize);
         if (tagID == null) {
             URL = GETALLGIFTCARDSBYTAGNAME.replace("TAG_NAME", correctTag)
-                .replace("PAGE_NUMBER", this.state.pageNumber)
-                .replace("PAGE_SIZE", this.state.pageSize);
+                .replace("PAGE_NUMBER", newpageNumber)
+                .replace("PAGE_SIZE", newpageSize);
         }
         fetch(URL,
             {
@@ -612,7 +631,7 @@ class Home extends React.Component {
             this.setState({giftCertificates: json.results});
             this.setState({pageCount: json.totalResults});
             console.log(this.state.giftCertificates);
-            this.props.history.push("giftcertificates?page=" + this.state.pageNumber + "&size=" + this.state.pageSize + "&search=" + correctTag);
+            this.props.history.push("giftcertificates?page=" + newpageNumber + "&size=" + newpageSize + "&search=" + searchField);
             return json;
         }).catch(error => {
             console.log(error);
@@ -625,7 +644,7 @@ class Home extends React.Component {
             this.setState({pageSize: pageSize},
                 this.handleGetCertificatesByTagName(null,
                     this.state.searchField.substr(this.state.searchField.toString().indexOf('{') + 1,
-                        this.state.searchField.toString().indexOf('}'))));
+                        this.state.searchField.toString().indexOf('}')),this.state.pageNumber,pageSize));
             return;
         }
         if (this.state.certificateDropDownValue === "SEARCH") {
@@ -643,7 +662,7 @@ class Home extends React.Component {
             this.setState({pageNumber: pageNumber},
                 this.handleGetCertificatesByTagName(null,
                     this.state.searchField.substr(this.state.searchField.toString().indexOf('{') + 1,
-                        this.state.searchField.toString().indexOf('}'))));
+                        this.state.searchField.toString().indexOf('}')),pageNumber,this.state.pageSize));
             return;
         }
         if (this.state.certificateDropDownValue === "SEARCH") {
@@ -733,6 +752,10 @@ class Home extends React.Component {
             console.log(response);
             const json = response.json();
             if (!response.ok) {
+                if(response.status === 404) {
+                    this.props.history.push("/giftcertificates");
+                    Alert.error(<Translate id="alerts.certificatedoesntexist"/>);
+                }
                 return Promise.reject(json);
             }
             Alert.success(<Translate id="alerts.editcertificatesuccess"/>);
@@ -783,6 +806,9 @@ class Home extends React.Component {
                 return Promise.reject(json);
             }
             Alert.success(<Translate id="alerts.addcertificatesuccess"/>);
+            this.props.history.push("/giftcertificates");
+            this.handleGetAllCertificates(this.state.certificateDropDownValue,
+                this.state.pageSize, this.state.pageNumber);
             return json;
         }).then(json => {
             console.log(json);

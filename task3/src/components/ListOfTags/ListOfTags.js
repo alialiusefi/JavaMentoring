@@ -16,7 +16,7 @@ class ListOfTags extends React.Component {
                         (tag) =>
                             <div className="col-md p-1">
                                 <Button variant="secondary success" size="sm" onClick={() => {
-                                    this.props.handleGetCertificatesByTagName(tag.id,tag.name);
+                                    this.props.handleGetCertificatesByTagName(tag.id,tag.name,null);
                                 }
                                     }>
                                     {tag.name}

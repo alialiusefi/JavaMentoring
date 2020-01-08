@@ -24,7 +24,7 @@
     ],
     "search": [
       "Search",
-      "Пойск"
+      "Поиск"
     ],
     "addnewgiftcertificates": [
       "Add New GiftCertificates",
@@ -169,6 +169,10 @@
     "tokenerror": [
       "Tokens Error while authenticating",
       "Ошибка токенов при аутентификации"
+    ],
+    "certificatedoesntexist": [
+      "Certificate doesn't exist!",
+      "Сертификат не существует!"
     ]
   }
 }
