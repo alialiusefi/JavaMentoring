@@ -2,7 +2,7 @@ import React from "react";
 import {Translate, withLocalize} from "react-localize-redux";
 import GiftCertificateCard from "../GiftCertificateCard/GiftCertificateCard";
 import ScrollBars from "react-custom-scrollbars";
-import {Route, Switch, withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import ModalHeader from "react-bootstrap/ModalHeader";
 import ModalBody from "react-bootstrap/ModalBody";
 import ModalFooter from "react-bootstrap/ModalFooter";
@@ -21,9 +21,10 @@ class ListOfGiftCertificates extends React.Component {
 
     componentDidMount() {
             if(this.props.searchField != null && this.props.searchField !== "") {
-                this.props.handleSearch({searchField : this.state.searchField});
+                this.props.handleSearch({searchField: this.props.searchField});
             } else {
-                this.props.handleGetAllCertificates(this.props.certificateDropDownValue,this.props.pageSize,this.props.pageNumber);
+                this.props.handleGetAllCertificates(this.props.certificateDropDownValue,
+                    this.props.pageSize, this.props.pageNumber);
             }
 
     }

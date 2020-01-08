@@ -21,6 +21,8 @@ import NotFound from "../NotFound/NotFound";
 import Alert from 'react-s-alert';
 import {PrivateRoute} from "../PrivateRoute/PrivateRoute";
 import SocialLogin from "../SocialLogin/SocialLogin";
+import * as moment from "moment";
+import "moment/locale/ru";
 
 const options = [
     {value: 'ALL', label: 'All GiftCertificates'},
@@ -30,6 +32,7 @@ const options = [
 const GETALLCERTIFICATES_URL = "http://localhost:8080/api/v1/giftcertificates?page=PAGE_NUMBER&size=PAGE_SIZE&sortByDate=-1";
 const GETALLUSERORDERS_URL = "http://localhost:8080/api/v2/users/USER_ID/orders?page=PAGE_NUMBER&size=PAGE_SIZE";
 const GETALLGIFTCARDSBYTAGID = "http://localhost:8080/api/v1/giftcertificates?page=PAGE_NUMBER&size=PAGE_SIZE&tagID=TAG_ID_HERE";
+const GETALLGIFTCARDSBYTAGNAME = "http://localhost:8080/api/v1/giftcertificates?page=PAGE_NUMBER&size=PAGE_SIZE&tagName=TAG_NAME";
 const BUY_CERTIFICATE_URL = "http://localhost:8080/api/v2/users/USER_ID/orders";
 const EnglishInit = () => [
     {name: "EN", code: "en"},
@@ -53,7 +56,7 @@ class Home extends React.Component {
         if (pageSize == null || !pageSize.toString().match("^\\d*$")) {
             pageSize = 5;
         }
-        if (pageNumber == null ||  !pageSize.toString().match("^\\d*$")) {
+        if (pageNumber == null || !pageNumber.toString().match("^\\d*$")) {
             pageNumber = 1;
 
         }
@@ -83,10 +86,12 @@ class Home extends React.Component {
             localStorage.setItem("locale", "en");
         }
         this.props.setActiveLanguage(locale);
+        moment.locale(locale);
     }
 
     componentDidMount() {
         const lang = localStorage.getItem("locale");
+        moment.locale(lang);
         this.props.setActiveLanguage(lang);
         this.handleSetLoginDetails();
     }
@@ -95,14 +100,14 @@ class Home extends React.Component {
 
         const renderSearchForm = () => {
             if (this.state.certificateDropDownValue === "MY") {
-                return;
+                return (<div/>);
             } else {
                 return (<SearchForm initialValues={{searchField: this.state.searchField}}
                                     onSubmit={this.handleSearch}
                                     handleGetAllCertificates={this.handleGetAllCertificates}
                 />);
             }
-        }
+        };
 
 
         return (
@@ -200,6 +205,7 @@ class Home extends React.Component {
                                   path="/add" component={AddEditGiftCertificate}
                                   handleAddCertificate={this.handleAddCertificate}
                                   handleSetLoginDetails={this.handleSetLoginDetails}
+                                  getTagSuggestions={this.getTagSuggestions}
                     >
                     </PrivateRoute>
                     <PrivateRoute userRole={this.state.user_role}
@@ -207,10 +213,14 @@ class Home extends React.Component {
                                   path="/edit" component={AddEditGiftCertificate}
                                   certificate={this.state.selectedGiftCertificate}
                                   handleUpdateCertificate={this.handleUpdateCertificate}
-                                  handleSetLoginDetails={this.handleSetLoginDetails}>
+                                  handleSetLoginDetails={this.handleSetLoginDetails}
+                                  getTagSuggestions={this.getTagSuggestions}
+                    >
                     </PrivateRoute>
                     <Route path="/">
-                        <h2><center>Home</center></h2>
+                        <h2>
+                            <center>Home</center>
+                        </h2>
                     </Route>
                     <Route component={NotFound}/>
                 </Switch>
@@ -262,6 +272,7 @@ class Home extends React.Component {
     };
 
 
+
     handleBuyCertificate = (certificate) => {
         const URL = BUY_CERTIFICATE_URL
             .replace("USER_ID", this.state.user_id);
@@ -291,12 +302,12 @@ class Home extends React.Component {
                 Alert.error(errors);
                 return Promise.reject(json);
             }
-            Alert.success(<Translate id="alerts.boughtcertificate"/>)
+            Alert.success(<Translate id="alerts.boughtcertificate"/>);
+            this.handleGetAllCertificates("MY", this.state.pageSize, 1);
         }).catch(error => {
             console.log(error);
             Alert.error(error.message);
         });
-        this.handleGetAllCertificates("MY", this.state.pageSize, 1);
     };
 
     handleSearch = (values) => {
@@ -472,7 +483,7 @@ class Home extends React.Component {
 
     handleGetAllCertificates = (filterAllOrMy, pageSize, pageNumber) => {
         let arg = filterAllOrMy;
-        if (!(filterAllOrMy === "ALL" || filterAllOrMy === "MY")) {
+        if (!(filterAllOrMy === "ALL" || filterAllOrMy === "MY" || filterAllOrMy === "SEARCH")) {
             arg = filterAllOrMy.value;
         }
         if (arg === "ALL") {
@@ -505,7 +516,9 @@ class Home extends React.Component {
                 console.log(error);
                 Alert.error(error.message);
             });
-        } else {
+            return;
+        }
+        if (arg === "MY") {
             this.setState({certificateDropDownValue: "MY"});
             let URLWITHID = GETALLUSERORDERS_URL.replace("USER_ID", this.state.user_id)
                 .replace("PAGE_NUMBER", 1)
@@ -545,12 +558,18 @@ class Home extends React.Component {
                 this.setState({giftCertificates: certificates});
                 this.setState({pageCount: json.totalResults});
                 console.log(this.state.giftCertificates);
-                 //this.props.history.push("giftcertificates?page=" + this.state.pageNumber + "&size=" + this.state.pageSize);
+                //this.props.history.push("giftcertificates?page=" + this.state.pageNumber + "&size=" + this.state.pageSize);
                 return json;
             }).catch(error => {
                 console.log(error);
                 Alert.error(error.message);
             });
+        }
+        if (arg === "SEARCH") {
+            this.setState({certificateDropDownValue: "SEARCH"});
+            if (this.state.searchField != null && this.state.searchField !== "") {
+                this.handleSearch({searchField: this.state.searchField});
+            }
         }
     };
 
@@ -560,12 +579,23 @@ class Home extends React.Component {
         if (search == null) {
             this.setState({pageNumber: 1});
         }
-        const URL = GETALLGIFTCARDSBYTAGID.replace("TAG_ID_HERE", tagID)
-            .replace("PAGE_NUMBER", this.state.pageNumber)
-            .replace("PAGE_SIZE", this.state.pageSize);
-        const searchField = "@{" + tagName + "}";
+        let correctTag = "";
+        if (tagName.toString().endsWith("}")) {
+            correctTag = tagName.toString().substr(0, tagName.toString().length - 1);
+        } else {
+            correctTag = tagName;
+        }
+        const searchField = "@{" + correctTag + "}";
         this.setState({searchField: searchField});
         this.setState({certificateDropDownValue: "TAG"});
+        let URL = GETALLGIFTCARDSBYTAGID.replace("TAG_ID_HERE", tagID)
+            .replace("PAGE_NUMBER", this.state.pageNumber)
+            .replace("PAGE_SIZE", this.state.pageSize);
+        if (tagID == null) {
+            URL = GETALLGIFTCARDSBYTAGNAME.replace("TAG_NAME", correctTag)
+                .replace("PAGE_NUMBER", this.state.pageNumber)
+                .replace("PAGE_SIZE", this.state.pageSize);
+        }
         fetch(URL,
             {
                 method: 'GET',
@@ -582,7 +612,7 @@ class Home extends React.Component {
             this.setState({giftCertificates: json.results});
             this.setState({pageCount: json.totalResults});
             console.log(this.state.giftCertificates);
-            this.props.history.push("giftcertificates?page=" + this.state.pageNumber + "&size=" + this.state.pageSize + "&search=" + this.state.searchField);
+            this.props.history.push("giftcertificates?page=" + this.state.pageNumber + "&size=" + this.state.pageSize + "&search=" + correctTag);
             return json;
         }).catch(error => {
             console.log(error);
@@ -592,7 +622,10 @@ class Home extends React.Component {
     handleChangePageSize = (pageSize) => {
         if (this.state.certificateDropDownValue === "TAG") {
             const length = this.state.searchField.length - 1;
-            this.setState({pageSize: pageSize}, this.handleGetCertificatesByTagName(this.state.searchField.substr(2, this.state.searchField.length - 1)));
+            this.setState({pageSize: pageSize},
+                this.handleGetCertificatesByTagName(null,
+                    this.state.searchField.substr(this.state.searchField.toString().indexOf('{') + 1,
+                        this.state.searchField.toString().indexOf('}'))));
             return;
         }
         if (this.state.certificateDropDownValue === "SEARCH") {
@@ -608,7 +641,9 @@ class Home extends React.Component {
         this.setState({pageNumber: pageNumber});
         if (this.state.certificateDropDownValue === "TAG") {
             this.setState({pageNumber: pageNumber},
-                this.handleGetCertificatesByTagName(this.state.tagID, this.state.searchField.substr(2, this.state.searchField.length - 2)));
+                this.handleGetCertificatesByTagName(null,
+                    this.state.searchField.substr(this.state.searchField.toString().indexOf('{') + 1,
+                        this.state.searchField.toString().indexOf('}'))));
             return;
         }
         if (this.state.certificateDropDownValue === "SEARCH") {
@@ -701,6 +736,9 @@ class Home extends React.Component {
                 return Promise.reject(json);
             }
             Alert.success(<Translate id="alerts.editcertificatesuccess"/>);
+            this.props.history.push("/giftcertificates");
+            this.handleGetAllCertificates(this.state.certificateDropDownValue,
+                this.state.pageSize, this.state.pageNumber);
             return json;
         }).then(json => {
             console.log(json);
@@ -708,9 +746,7 @@ class Home extends React.Component {
         }).catch(error => {
             console.log(error);
         });
-        this.props.history.push("/giftcertificates");
-        this.handleGetAllCertificates(this.state.certificateDropDownValue,
-            this.state.pageSize, this.state.pageNumber);
+
     };
 
     handleAddCertificate = (name, description, price, durationTillExpiry, tags) => {

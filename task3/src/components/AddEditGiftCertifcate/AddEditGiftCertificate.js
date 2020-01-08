@@ -3,7 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import GiftCertificateForm from "./GiftCertificateForm";
 import {Translate} from "react-localize-redux";
 import './ReactInput.css'
-import jwt_decode from "jwt-decode";
 import Alert from 'react-s-alert';
 
 class AddEditGiftCertificate extends React.Component {
@@ -11,24 +10,23 @@ class AddEditGiftCertificate extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tags:[
-            ],
-            suggestions : [
-            ]
+            tags: [],
+            suggestions: []
         };
     }
 
     componentDidMount() {
         this.props.handleSetLoginDetails(true);
-        if(( this.props.certificate != null && this.props.certificate.tags != null && this.props.certificate.tags.length !== 0)) {
+        if ((this.props.certificate != null && this.props.certificate.tags != null
+            && this.props.certificate.tags.length !== 0)) {
             let reactTags = [];
             this.props.certificate.tags.map((tag) => {
                 reactTags.push({
-                    id : tag.name,
-                    text : tag.name
+                    id: tag.name,
+                    text: tag.name
                 });
             })
-            this.setState({tags : reactTags});
+            this.setState({tags: reactTags});
         }
     }
 
@@ -57,6 +55,7 @@ class AddEditGiftCertificate extends React.Component {
         );
     }
 
+
     handleSubmit = (values) => {
         console.log(values);
         let arrayTag = [];
@@ -69,6 +68,34 @@ class AddEditGiftCertificate extends React.Component {
             values.price,
             values.durationTillExpiry,
             arrayTag);
+    };
+
+
+    handleInputChange = (input) => {
+        fetch("http://localhost:8080/api/v1/tags/?page=1&size=5&tagName=TAG_NAME".replace("TAG_NAME", input),
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(response => {
+            const json = response.json();
+            if (!response.ok) {
+                return Promise.reject(json);
+            }
+            return json;
+        }).then(json => {
+            console.log(json);
+            let suggestions = [];
+            for (let i = 0; i < json.length; i++) {
+                suggestions.push({id: json[i].id, text: json[i].name});
+            }
+            this.setState({suggestions: suggestions});
+            return json;
+        }).catch(error => {
+            console.log(error);
+        });
+
     };
 
     handleUpdate = (values) => {
@@ -94,13 +121,13 @@ class AddEditGiftCertificate extends React.Component {
     }
 
     handleAddition = (tag) => {
-        if(tag.length < 17 && tag.length > 1) {
+        if (tag.text.length < 17 && tag.text.length > 1) {
             this.setState(state => ({tags: [...state.tags, tag]}));
         } else {
             Alert.warning("Tag size should be from 1 to 16");
             return;
         }
-         console.log(this.state.tags);
+        console.log(this.state.tags);
     }
 
     handleDrag = (tag, currPos, newPos) => {
@@ -110,8 +137,9 @@ class AddEditGiftCertificate extends React.Component {
         newTags.splice(currPos, 1);
         newTags.splice(newPos, 0, tag);
 
-        this.setState({ tags: newTags });
+        this.setState({tags: newTags});
     };
 
 }
+
 export default (AddEditGiftCertificate);

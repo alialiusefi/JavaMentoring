@@ -6,6 +6,7 @@ import ListOfTags from "../ListOfTags/ListOfTags";
 import Button from "react-bootstrap/Button";
 import DeleteCertificateModal from "../DeleteCertificateModal/DeleteCertificateModal";
 import BuyCertificateModal from "../BuyCertificateModal/BuyCertificateModal";
+import moment from "moment";
 
 
 class GiftCertificateCard extends React.Component {
@@ -66,7 +67,6 @@ class GiftCertificateCard extends React.Component {
             }
             return (<p className="overflow-auto">{description}</p>);
         };
-
         return (
             <Card>
                 <ListGroup variant="flush">
@@ -81,7 +81,7 @@ class GiftCertificateCard extends React.Component {
                                     {this.props.certificate.name}
                                 </div>
                                 <div className="col">
-                                    {this.props.certificate.dateOfCreation}
+                                    {moment(this.props.certificate.dateOfCreation).format("LL")}
                                 </div>
                             </div>
                         </div>

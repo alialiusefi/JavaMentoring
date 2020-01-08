@@ -19,7 +19,7 @@ class SearchForm extends Component {
                         </Translate>
                     </button>
                     &nbsp;
-                    <a /*onClick={()=>this.props.handleGetAllCertificates("ALL",1,5)}*/ href="/giftcertificates" className="btn btn-danger">
+                    <a href="/giftcertificates" className="btn btn-danger">
                         <Translate id="button.reset">
                             Reset
                         </Translate>

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Field, reduxForm} from 'redux-form';
-import {Link,Prompt} from "react-router-dom";
+import {Link, Prompt} from "react-router-dom";
 import {Translate} from "react-localize-redux"
 import {WithContext as ReactTags} from 'react-tag-input';
 
@@ -108,8 +108,7 @@ let GiftCertifcateForm = props => {
                         {applyButton(certificate, pristine, submitting, invalid)}
                         {/*{applyButton()}*/}
                     </div>
-
-                    <div className="col">
+                    <div className="col-3">
                         <Link to={"/giftcertificates"}
                               className="btn btn-dark text-white justify-content-center flex-column">
                             <Translate id="login.cancelbutton">
