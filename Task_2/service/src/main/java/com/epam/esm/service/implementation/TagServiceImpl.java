@@ -82,6 +82,23 @@ public class TagServiceImpl implements TagService {
         return tagConverter.toDTOList(Arrays.asList(tagFound));
     }
 
+    @Override
+    public List<TagDTO> getAllByNameConsists(String tagName, Integer pageNumber, Integer pageSize) {
+        List tags = tagRepository.queryList(
+                new FindAllTagsByNameConsists(tagName), pageNumber, pageSize);
+        if (tags.isEmpty()) {
+            return new ArrayList<>();
+        }
+        List<Tag> tagsFound = new ArrayList<>();
+        for (Object i : tags) {
+            Object[] tag = (Object[]) i;
+            Tag tagFound = new Tag.TagBuilder(((Integer) tag[0]).longValue(),
+                    (String) tag[1]).getResult();
+            tagsFound.add(tagFound);
+        }
+        return tagConverter.toDTOList(tagsFound);
+    }
+
     @Transactional
     @Override
     public boolean delete(TagDTO tag) {

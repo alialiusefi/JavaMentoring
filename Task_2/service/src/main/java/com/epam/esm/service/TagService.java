@@ -23,4 +23,6 @@ public interface TagService extends BaseService<TagDTO> {
         throw new UnsupportedOperationException("Patch method not implemented yet!");
     }
 
+    List<TagDTO> getAllByNameConsists(String tagName, Integer pageNumber, Integer pageSize);
+
 }
