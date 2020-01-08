@@ -11,6 +11,7 @@ class Signup extends React.Component {
     render() {
         return (
             <div className="container text-center">
+
                 <h3><Translate id="signup.signupbutton">Sign Up</Translate></h3>
                 <br/>
                     <SignupForm onSubmit={this.handleSubmit}/>

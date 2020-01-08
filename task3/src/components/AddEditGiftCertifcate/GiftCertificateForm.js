@@ -80,6 +80,7 @@ let GiftCertifcateForm = props => {
                         <Field name="description" component={renderField}/>
                     </div>
                 </div>
+                <br/>
                 <div className="row text-center">
                     <div className="col">
                         <label><Translate id="giftcertificate.price"/></label>

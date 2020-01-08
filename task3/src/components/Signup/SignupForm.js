@@ -35,20 +35,6 @@ let SignupForm = props => {
     return (
         <div className="container">
             <form onSubmit={handleSubmit}>
-                {/*<div className="row p-3">
-                    <div className="col-5">
-                        <label><Translate id="login.username"> Username </Translate></label>
-                        <Field name="username" component={renderField}/>
-                    </div>
-                </div>
-                <br/>
-                <div className="row">
-                    <div className="col-5">
-                        <label><Translate id="login.password"> Password </Translate></label>
-                        <Field type="password" name="password" component={renderField}/>
-                    </div>
-                </div>
-                <br/>*/}
                 <div className="row">
                     <div className="col-5">
                         <label><Translate id="login.username"> Username </Translate></label>
@@ -79,7 +65,6 @@ let SignupForm = props => {
                         </Link>
                     </div>
                 </div>
-                <Prompt when={!pristine} message="Are you sure?"/>
             </form>
         </div>
     )
