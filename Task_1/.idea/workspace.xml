@@ -7,8 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7c482e5e-8ec2-4e70-b212-5491b38e18c8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/GiftCertificate.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/repository/src/main/java/com/epam/esm/entity/GiftCertificate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/GiftCertificateServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Task_2/service/src/main/java/com/epam/esm/service/implementation/GiftCertificateServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -510,6 +509,8 @@
       <workItem from="1573385638026" duration="2258000" />
       <workItem from="1576662702427" duration="706000" />
       <workItem from="1576745586075" duration="266000" />
+      <workItem from="1578053924871" duration="391000" />
+      <workItem from="1578054380070" duration="770000" />
     </task>
     <task id="LOCAL-00024" summary="Added method getFieldArray(), Implemented GiftCertificateRepo">
       <created>1569828724460</created>

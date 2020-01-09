@@ -27,6 +27,12 @@ public class FindGiftCertificatesByTagName implements NativeSQLFindSpecification
     }
 
     @Override
+    public String getRemainder() {
+        return " group by giftcertificates.id " +
+                "having count(giftcertificates.id)>= " + tagName.length + " ";
+    }
+
+    @Override
     public Query getQuery(EntityManager em,
                           CriteriaBuilder builder) {
         StringBuilder stringBuilder = new StringBuilder(SQL_CLAUSE);
@@ -34,7 +40,8 @@ public class FindGiftCertificatesByTagName implements NativeSQLFindSpecification
             stringBuilder.append(" or public.consists(?,tag_name)");
         }
         stringBuilder.append(" ) ) group by giftcertificates.id " +
-                "having count(giftcertificates.id)>= " + tagName.length);
+                "having count(giftcertificates.id)>= " + tagName.length + " ");
+        /*stringBuilder.append(" ) ) ");*/
         Query nativeQuery = em.createNativeQuery(stringBuilder.toString());
         for (int i = 0; i < tagName.length; i++) {
             nativeQuery.setParameter(i + 1, tagName[i]);
@@ -52,8 +59,7 @@ public class FindGiftCertificatesByTagName implements NativeSQLFindSpecification
         for (int i = 1; i < tagName.length; i++) {
             stringBuilder.append(" or tag.tag_name = ?");
         }
-        stringBuilder.append(" ) group by giftcertificates.id " +
-                "having count(giftcertificates.id)>= " + tagName.length);
+        stringBuilder.append(" ) ");
         return stringBuilder.toString();
     }
 }

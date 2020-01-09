@@ -40,11 +40,17 @@ public class GiftCertificatesSpecificationConjunction extends FindSpecification<
             stringBuilder.append(i.getSQLClause(true));
         }
         int lastBracket = stringBuilder.lastIndexOf(")");
-        if (!(lastBracket == -1)) {
+        if (lastBracket != -1) {
             stringBuilder.insert(lastBracket + 1, " ) ");
         }
-        String finalQuery = stringBuilder.toString();
-        return finalQuery;
+        try {
+            String remainder = first.getRemainder();
+            int idx_order = stringBuilder.indexOf("order");
+            stringBuilder.insert(idx_order, remainder);
+            return stringBuilder.toString();
+        } catch (UnsupportedOperationException e) {
+            return stringBuilder.toString();
+        }
     }
 
     public List<Object> getParameters() {

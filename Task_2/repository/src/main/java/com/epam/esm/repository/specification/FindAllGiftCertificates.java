@@ -23,10 +23,6 @@ public class FindAllGiftCertificates implements NativeSpecification<GiftCertific
         String finalQuery = SQL_CLAUSE + " ) ";
         Query nativeQuery = entityManager.createNativeQuery(finalQuery);
         return nativeQuery;
-        /*CriteriaQuery<GiftCertificate> criteriaQuery = builder.createQuery(GiftCertificate.class);
-        Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
-        criteriaQuery.select(root).where(builder.isTrue(root.get("isForSale")));
-        return entityManager.createQuery(criteriaQuery);*/
     }
 
     public String getSQLClause(boolean isConjunction) {
