@@ -41,7 +41,6 @@ public class FindGiftCertificatesByTagName implements NativeSQLFindSpecification
         }
         stringBuilder.append(" ) ) group by giftcertificates.id " +
                 "having count(giftcertificates.id)>= " + tagName.length + " ");
-        /*stringBuilder.append(" ) ) ");*/
         Query nativeQuery = em.createNativeQuery(stringBuilder.toString());
         for (int i = 0; i < tagName.length; i++) {
             nativeQuery.setParameter(i + 1, tagName[i]);

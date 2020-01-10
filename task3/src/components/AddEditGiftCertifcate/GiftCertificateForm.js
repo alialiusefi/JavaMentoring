@@ -64,8 +64,8 @@ const applyButton = (certificate, pristine, submitting, invalid) => {
 }
 
 let GiftCertifcateForm = props => {
-    const {handleSubmit, pristine, submitting, invalid, certificate
-    ,tags,suggestions,handleTagDelete,handleTagAdd,handleTagDrag,handleInputChange} = props;
+    const {handleSubmit, pristine, submitting, invalid, certificate,
+        tags,suggestions,handleTagDelete,handleTagAdd,handleTagDrag,handleInputChange} = props;
 
     return (
         <div className="container justify-content-center">
@@ -107,7 +107,6 @@ let GiftCertifcateForm = props => {
                 <div className="row">
                     <div className="col">
                         {applyButton(certificate, pristine, submitting, invalid)}
-                        {/*{applyButton()}*/}
                     </div>
                     <div className="col-3">
                         <Link to={"/giftcertificates"}

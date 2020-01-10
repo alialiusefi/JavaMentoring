@@ -46,6 +46,9 @@ public class GiftCertificatesSpecificationConjunction extends FindSpecification<
         try {
             String remainder = first.getRemainder();
             int idx_order = stringBuilder.indexOf("order");
+            if(idx_order == -1){
+                return stringBuilder.toString();
+            }
             stringBuilder.insert(idx_order, remainder);
             return stringBuilder.toString();
         } catch (UnsupportedOperationException e) {

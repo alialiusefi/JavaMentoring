@@ -30,6 +30,7 @@ const options = [
 ];
 
 const GETALLCERTIFICATES_URL = "http://localhost:8080/api/v1/giftcertificates?page=PAGE_NUMBER&size=PAGE_SIZE&sortByDate=-1";
+const SEARCHCERTIFICATE = "http://localhost:8080/api/v1/giftcertificates?page=PAGENUM&size=PAGESIZE&sortByDate=-1";
 const GETALLUSERORDERS_URL = "http://localhost:8080/api/v2/users/USER_ID/orders?page=PAGE_NUMBER&size=PAGE_SIZE";
 const GETALLGIFTCARDSBYTAGID = "http://localhost:8080/api/v1/giftcertificates?page=PAGE_NUMBER&size=PAGE_SIZE&tagID=TAG_ID_HERE";
 const GETALLGIFTCARDSBYTAGNAME = "http://localhost:8080/api/v1/giftcertificates?page=PAGE_NUMBER&size=PAGE_SIZE&tagName=TAG_NAME";
@@ -321,7 +322,7 @@ class Home extends React.Component {
         });
     };
 
-    handleSearch = (values) => {
+    handleSearch = (values,pageNumber,pageSize) => {
         let search = "";
         if (values.searchField == null || values.searchField.length === 0) {
             if (this.state.searchField == null || this.state.searchField.length === 0) {
@@ -350,8 +351,15 @@ class Home extends React.Component {
             }
         }
         console.log(tagsToSearch);
-        let URL = GETALLCERTIFICATES_URL.replace("PAGE_NUMBER", 1)
-            .replace("PAGE_SIZE", this.state.pageSize);
+        let newpageNumber = pageNumber;
+        if(newpageNumber == null) {
+            newpageNumber = 1;
+        }
+        let newpageSize = pageSize;
+        if(newpageSize == null) {
+            newpageSize = 5;
+        }
+        let URL = SEARCHCERTIFICATE.replace("PAGENUM", newpageNumber).replace("PAGESIZE", newpageSize);
         if (nameOrDescription != null) {
             URL += "&" + "giftCertificateName=" + nameOrDescription;
             URL += "&" + "giftCertificateDesc=" + nameOrDescription;
@@ -385,7 +393,7 @@ class Home extends React.Component {
             this.setState({pageCount: json.totalResults});
             console.log(this.state.giftCertificates);
             this.setState({pageNumber : 1});
-            this.props.history.push("giftcertificates?page=" + this.state.pageNumber + "&size=" + this.state.pageSize + "&search=" + this.state.searchField);
+            this.props.history.push("giftcertificates?page=" + newpageNumber + "&size=" + newpageSize + "&search=" + this.state.searchField);
             return json;
         }).catch(error => {
             console.log(error);
@@ -416,7 +424,7 @@ class Home extends React.Component {
             } else {
                 this.props.history.push("/login");
                 Alert.success(<Translate id="alerts.signedup"/>);
-                return response.json();
+                return response;
             }
         }).then(json => {
             return json;
@@ -475,7 +483,11 @@ class Home extends React.Component {
                 credentials: 'include'
             }).then(response => {
             if (!response.ok) {
-                return Promise.reject(response.json());
+                if(response.status === 404) {
+                    Alert.error(<Translate id="alerts.certificatedoesntexist"/>);
+                    return;
+                }
+                return Promise.reject(response);
             }
             this.handleGetAllCertificates(this.state.certificateDropDownValue,
                 this.state.pageSize, this.state.pageNumber);
@@ -542,7 +554,6 @@ class Home extends React.Component {
             const accessToken = localStorage.getItem("accessToken");
             const refreshToken = localStorage.getItem("refreshToken");
             if (accessToken == null || refreshToken == null) {
-                Alert.error("Cannot Authorize!");
                 return;
             }
             document.cookie = "accessToken=" + accessToken;
