@@ -12,10 +12,8 @@ public class FindAllTagsByNameConsists implements NativeSpecification<Tag> {
             " tag.tag_name from tag where " +
             " public.consists(?,tag.tag_name)  ";
 
-
     private static final String CONJ_SQL_QUERY = " where " +
             " public.consists(?,tag.tag_name)  ";
-
 
     private String tagName;
 

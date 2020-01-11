@@ -5,6 +5,8 @@ import com.epam.esm.entity.GiftCertificate;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
+import java.util.Arrays;
+import java.util.List;
 
 public class FindGiftCertificatesByTagID
         implements NativeSQLFindSpecification<GiftCertificate> {
@@ -20,23 +22,23 @@ public class FindGiftCertificatesByTagID
             "where tag_id = ?";
 
 
-    private Long[] tagID;
+    private List<Long> tagID;
 
     public FindGiftCertificatesByTagID(Long[] tagID) {
-        this.tagID = tagID;
+        this.tagID = Arrays.asList(tagID);
     }
 
     @Override
     public Query getQuery(EntityManager em,
                           CriteriaBuilder builder) {
         StringBuilder stringBuilder = new StringBuilder(SQL_CLAUSE);
-        for (int i = 1; i < tagID.length; i++) {
+        for (int i = 1; i < tagID.size(); i++) {
             stringBuilder.append(" or tag_id = ?");
         }
         stringBuilder.append(" ) ) ");
         Query nativeQuery = em.createNativeQuery(stringBuilder.toString());
-        for (int i = 0; i < tagID.length; i++) {
-            nativeQuery.setParameter(i + 1, tagID[i]);
+        for (int i = 0; i < tagID.size(); i++) {
+            nativeQuery.setParameter(i + 1, tagID.get(i));
         }
         return nativeQuery;
     }
@@ -48,7 +50,7 @@ public class FindGiftCertificatesByTagID
             query = CONJ_SQL_CLAUSE;
         }
         StringBuilder stringBuilder = new StringBuilder(query);
-        for (int i = 1; i < tagID.length; i++) {
+        for (int i = 1; i < tagID.size(); i++) {
             stringBuilder.append(" or tag_id = ?");
         }
         stringBuilder.append(" ) ");

@@ -78,7 +78,8 @@ public class TagServiceImpl implements TagService {
         UserEntity userEntity = userRepository.queryEntity(new FindUserByUserID(userID))
                 .orElseThrow(() -> new ResourceNotFoundException("User with this id doesnt exists!"));
         List tags = tagRepository.queryList(
-                new FindMostUsedTagOfMostExpensiveUserOrders(userEntity.getId()), 1, 1);
+                new FindMostUsedTagOfMostExpensiveUserOrders(userEntity.getId()), 1,
+                1);
         if (tags.isEmpty()) {
             return new ArrayList<>();
         }
@@ -90,7 +91,8 @@ public class TagServiceImpl implements TagService {
     @Override
     public List<TagDTO> getAllByNameConsists(String tagName, Integer pageNumber, Integer pageSize) {
         List tags = tagRepository.queryList(
-                new FindAllTagsByNameConsists(tagName), pageNumber, pageSize);
+                new FindAllTagsByNameConsists(tagName),
+                pageNumber, pageSize);
         if (tags.isEmpty()) {
             return new ArrayList<>();
         }

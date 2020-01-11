@@ -92,6 +92,19 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         }
     }
 
+
+    @Override
+    public List<GiftCertificateDTO> getAll(int pageNumber, int pageSize) {
+        try {
+            List dto = giftCertificateRepo.queryList(new FindAllGiftCertificates(), pageNumber, pageSize);
+            List<GiftCertificate> handledGiftCertificates = handleGiftCertifcates(dto);
+            List result = giftCertificateConverter.toDTOList(handledGiftCertificates);
+            return result;
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException("Didn't find gift certificates");
+        }
+    }
+
     @Transactional
     @Override
     public GiftCertificateDTO add(GiftCertificateDTO certificateDTO) {
