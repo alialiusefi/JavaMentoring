@@ -42,6 +42,7 @@ public final class GiftCertificate extends AbstractEntity {
     @Column(name = "isForSale", nullable = false)
     private boolean isForSale;
 
+
     @ManyToMany
     @JoinTable(name = "tagged_giftcertificates", inverseJoinColumns =
             {@JoinColumn(name = "tag_id")},

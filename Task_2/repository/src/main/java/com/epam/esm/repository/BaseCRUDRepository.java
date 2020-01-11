@@ -1,6 +1,7 @@
 package com.epam.esm.repository;
 
 import com.epam.esm.entity.AbstractEntity;
+import com.epam.esm.repository.specification.CountSpecification;
 import com.epam.esm.repository.specification.Specification;
 
 import javax.persistence.EntityManager;
@@ -38,6 +39,19 @@ public abstract class BaseCRUDRepository<T extends AbstractEntity> implements CR
             return Optional.empty();
         }
     }
+
+    @Override
+    public Optional queryCount(CountSpecification specification) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        Query query = specification.getQuery(entityManager, builder);
+        try {
+            Long entity = ((Number) query.getSingleResult()).longValue();
+            return Optional.of(entity);
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
+    }
+
 
     @Override
     public List<T> queryList(Specification<T> specification, Integer pageNumber, Integer pageSize) {

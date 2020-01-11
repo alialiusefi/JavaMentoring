@@ -2,6 +2,7 @@ package com.epam.esm.controller;
 
 import com.epam.esm.dto.AddOrderDTO;
 import com.epam.esm.dto.OrderDTO;
+import com.epam.esm.dto.PageDTO;
 import com.epam.esm.dto.TagDTO;
 import com.epam.esm.dto.UserDTO;
 import com.epam.esm.entity.LocalCustomOAuthUser;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import sun.jvm.hotspot.debugger.Page;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -82,12 +84,12 @@ public class UserController {
     }
 
     @GetMapping("/{userID}/orders")
-    public List<OrderDTO> getOrdersByUserID(@PathVariable Long userID,
-                                            @RequestParam(defaultValue = "${app.pagedefault.defaultPageNumber}") Integer page,
-                                            @RequestParam(defaultValue = "${app.pagedefault.defaultPageSize}") Integer size) {
+    public PageDTO getOrdersByUserID(@PathVariable Long userID,
+                                     @RequestParam(defaultValue = "${app.pagedefault.defaultPageNumber}") Integer page,
+                                     @RequestParam(defaultValue = "${app.pagedefault.defaultPageSize}") Integer size) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         LocalCustomOAuthUser customOAuthUser = (LocalCustomOAuthUser) authentication.getPrincipal();
-        return orderService.getOrdersByUserID(customOAuthUser, userID, page, size);
+        return orderService.getOrdersByUserIDPage(customOAuthUser, userID, page, size);
     }
 
     @GetMapping("/{userID}/orders/{orderID}")

@@ -1,0 +1,214 @@
+{
+  "header": {
+    "welcome": [
+      "Welcome",
+      "Добро Пожаловать"
+    ]
+  },
+  "home": {
+    "title": [
+      "GiftCertificates",
+      "Подарочные сертификаты"
+    ],
+    "loginlogout": [
+      "Login/Logout",
+      "Войти/Выход"
+    ],
+    "mygiftcertificates": [
+      "My GiftCertificates",
+      "мои сертификаты"
+    ],
+    "allgiftcertificates": [
+      "All GiftCertificates",
+      "все сертификаты"
+    ],
+    "search": [
+      "Search",
+      "Поиск"
+    ],
+    "addnewgiftcertificates": [
+      "Add New GiftCertificates",
+      "Добавить новые подарочные сертификаты"
+    ]
+  },
+  "login": {
+    "loginbutton": [
+      "Log In",
+      "Войти"
+    ],
+    "cancelbutton": [
+      "Cancel",
+      "Выход"
+    ],
+    "username": [
+      "Username",
+      "Логин"
+    ],
+    "password": [
+      "Password",
+      "Пароль"
+    ]
+  },
+  "signup": {
+    "signupbutton": [
+      "Sign Up",
+      "Зарегистрироваться"
+    ],
+    "show": [
+      "Show Password",
+      "Показать пароль"
+    ],
+    "hide": [
+      "Hide Password",
+      "скрыть пароль"
+    ]
+  },
+  "giftcertificate": {
+    "name": [
+      "Name",
+      "Имя"
+    ],
+    "description": [
+      "Description",
+      "Описание"
+    ],
+    "price": [
+      "Price",
+      "Цена"
+    ],
+    "dateofcreation": [
+      "Date Of Creation",
+      "Дата создания"
+    ],
+    "dateofmodification": [
+      "Date of Modification",
+      "Дата модификации"
+    ],
+    "duration": [
+      "Duration",
+      "длительность"
+    ]
+  },
+  "tags": {
+    "tags": [
+      "Tags",
+      "Теги"
+    ]
+  },
+  "addeditgiftcertificate": {
+    "title": [
+      "Add/Edit Gift Certificate",
+      "Изменеие/Добавление сертификат"
+    ],
+    "add": [
+      "Add Certificate",
+      "Добавить Сертификат"
+    ],
+    "edit": [
+      "Edit Certificate",
+      "Изменить Сертификат"
+    ],
+    "required": [
+      "Required",
+      "необходимы"
+    ],
+    "onetofiftyone": [
+      "Minimum be 1 characters or more and less than 51 characters",
+      "Минимум 1 символ или более и менее 51 символа"
+    ],
+    "onetotwohundredfiftysix": [
+      "Minimum be 1 characters or more and less than 256 characters",
+      "Минимум 1 символ или более и менее 256 символов"
+    ],
+    "incorrectdurationformat": [
+      "Incorrect duration format",
+      "Неправильная формат продолжительности"
+    ],
+    "incorrectpriceformat": [
+      "Incorrect price format",
+      "Неверный формат цены"
+    ],
+    "morethanzero": [
+      "More than zero",
+      "больше нуля"
+    ],
+    "addnewtag": [
+      "Add new tag",
+      "Добавить тег"
+    ]
+  },
+  "button": {
+    "buy": [
+      "Buy",
+      "Купить"
+    ],
+    "delete": [
+      "Delete",
+      "Удалить"
+    ],
+    "reset": [
+      "Reset",
+      "Сбросить"
+    ],
+    "edit": [
+      "Edit",
+      "Изменить"
+    ],
+    "cancel": [
+      "Cancel",
+      "Отмена"
+    ]
+  },
+  "modal": {
+    "deletequestion": [
+      "Are you sure you want to delete this certificate?",
+      "Вы уверены?"
+    ],
+    "buyquestion": [
+      "Are you sure you want to buy this certificate?",
+      "Вы уверены?"
+    ],
+    "unsavedchanges": [
+      "You have unsaved changes",
+      "У вас есть несохраненные изменения"
+    ]
+  },
+  "alerts": {
+    "addcertificatesuccess": [
+      "Certificate successfully added!",
+      "Сертификат добавлен успешно!"
+    ],
+    "editcertificatesuccess": [
+      "Certificate updated successfully!",
+      "Сертификат успешно обновился!"
+    ],
+    "notloggedin": [
+      "Please Log In",
+      "Пожалуйста, войдите"
+    ],
+    "searchfieldempty": [
+      "Search field cannot be empty!",
+      "Поле поиска не может быть пустым!"
+    ],
+    "signedup": [
+      "Signed Up Successfully!",
+      "Зарегистрирован успешно!"
+    ],
+    "loggedIn": [
+      "Logged In Successfully",
+      "Вы успешно вошли!"
+    ],
+    "boughtcertificate": [
+      "Certificate was bought successfully",
+      "Покупка сертификата прошла успешно"
+    ],
+    "tokenerror": [
+      "Tokens Error while authenticating",
+      "Ошибка токенов при аутентификации"
+    ],
+    "certificatedoesntexist": [
+      "Certificate doesn't exist!",
+      "Сертификат не существует!"
+    ]
+  }
+}

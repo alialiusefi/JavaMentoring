@@ -37,8 +37,11 @@ public class TagController {
     }
 
     @GetMapping()
-    public List<TagDTO> getAllTags(@RequestParam(defaultValue = "${app.pagedefault.defaultPageNumber}") Integer page,
+    public List<TagDTO> getAllTags(@RequestParam(required = false) String tagName, @RequestParam(defaultValue = "${app.pagedefault.defaultPageNumber}") Integer page,
                                    @RequestParam(defaultValue = "${app.pagedefault.defaultPageSize}") Integer size) {
+        if (tagName != null) {
+            return tagService.getAllByNameConsists(tagName, page, size);
+        }
         return tagService.getAll(page, size);
     }
 

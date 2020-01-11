@@ -8,7 +8,12 @@ import com.epam.esm.exception.BadRequestException;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.TagRepository;
 import com.epam.esm.repository.UserRepository;
-import com.epam.esm.repository.specification.*;
+import com.epam.esm.repository.specification.FindAllTags;
+import com.epam.esm.repository.specification.FindAllTagsByNameConsists;
+import com.epam.esm.repository.specification.FindMostUsedTagOfMostExpensiveUserOrders;
+import com.epam.esm.repository.specification.FindTagByID;
+import com.epam.esm.repository.specification.FindTagByName;
+import com.epam.esm.repository.specification.FindUserByUserID;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -73,13 +78,32 @@ public class TagServiceImpl implements TagService {
         UserEntity userEntity = userRepository.queryEntity(new FindUserByUserID(userID))
                 .orElseThrow(() -> new ResourceNotFoundException("User with this id doesnt exists!"));
         List tags = tagRepository.queryList(
-                new FindMostUsedTagOfMostExpensiveUserOrders(userEntity.getId()), 1, 1);
+                new FindMostUsedTagOfMostExpensiveUserOrders(userEntity.getId()), 1,
+                1);
         if (tags.isEmpty()) {
             return new ArrayList<>();
         }
         Object[] tag = (Object[]) tags.get(0);
         Tag tagFound = new Tag.TagBuilder(((Integer) tag[0]).longValue(), (String) tag[1]).getResult();
         return tagConverter.toDTOList(Arrays.asList(tagFound));
+    }
+
+    @Override
+    public List<TagDTO> getAllByNameConsists(String tagName, Integer pageNumber, Integer pageSize) {
+        List tags = tagRepository.queryList(
+                new FindAllTagsByNameConsists(tagName),
+                pageNumber, pageSize);
+        if (tags.isEmpty()) {
+            return new ArrayList<>();
+        }
+        List<Tag> tagsFound = new ArrayList<>();
+        for (Object i : tags) {
+            Object[] tag = (Object[]) i;
+            Tag tagFound = new Tag.TagBuilder(((Integer) tag[0]).longValue(),
+                    (String) tag[1]).getResult();
+            tagsFound.add(tagFound);
+        }
+        return tagConverter.toDTOList(tagsFound);
     }
 
     @Transactional

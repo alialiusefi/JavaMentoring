@@ -11,7 +11,8 @@ public abstract class CustomOAuthUser extends DefaultOAuth2User implements UserD
 
     protected UserEntity userEntity;
 
-    public CustomOAuthUser(Collection<? extends GrantedAuthority> authorities, Map<String, Object> attributes, String nameAttributeKey, UserEntity userEntity) {
+    public CustomOAuthUser(Collection<? extends GrantedAuthority> authorities,
+                           Map<String, Object> attributes, String nameAttributeKey, UserEntity userEntity) {
         super(authorities, attributes, nameAttributeKey);
         this.userEntity = userEntity;
     }

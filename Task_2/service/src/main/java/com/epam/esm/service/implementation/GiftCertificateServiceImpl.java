@@ -3,6 +3,7 @@ package com.epam.esm.service.implementation;
 import com.epam.esm.converter.GiftCertificateConverter;
 import com.epam.esm.converter.TagConverter;
 import com.epam.esm.dto.GiftCertificateDTO;
+import com.epam.esm.dto.PageDTO;
 import com.epam.esm.dto.TagDTO;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
@@ -10,11 +11,14 @@ import com.epam.esm.exception.BadRequestException;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.repository.TagRepository;
+import com.epam.esm.repository.specification.CountFindAllGiftCertificates;
+import com.epam.esm.repository.specification.CountGiftCertificatesSpecificationConjunction;
 import com.epam.esm.repository.specification.FindAllGiftCertificates;
 import com.epam.esm.repository.specification.FindGiftCertificateByID;
 import com.epam.esm.repository.specification.FindGiftCertificatesByDescription;
 import com.epam.esm.repository.specification.FindGiftCertificatesByName;
 import com.epam.esm.repository.specification.FindGiftCertificatesByTagID;
+import com.epam.esm.repository.specification.FindGiftCertificatesByTagName;
 import com.epam.esm.repository.specification.FindTagByName;
 import com.epam.esm.repository.specification.FindTagsByCertificateID;
 import com.epam.esm.repository.specification.GiftCertificatesSpecificationConjunction;
@@ -39,7 +43,6 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Deque;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,10 +78,28 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
+    public PageDTO getAllPage(int pageNumber, int pageSize) {
+        try {
+            List dto = giftCertificateRepo.queryList(new FindAllGiftCertificates(), pageNumber, pageSize);
+            List<GiftCertificate> handledGiftCertificates = handleGiftCertifcates(dto);
+            List result = giftCertificateConverter.toDTOList(handledGiftCertificates);
+            Long totalCount = giftCertificateRepo.queryCount(new CountFindAllGiftCertificates()).orElseThrow(
+                    () -> new ResourceNotFoundException("Cannot find amount of results!"));
+            PageDTO pageDTO = new PageDTO(result, totalCount);
+            return pageDTO;
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException("Didn't find gift certificates");
+        }
+    }
+
+
+    @Override
     public List<GiftCertificateDTO> getAll(int pageNumber, int pageSize) {
         try {
-            return giftCertificateConverter.toDTOList(
-                    giftCertificateRepo.queryList(new FindAllGiftCertificates(), pageNumber, pageSize));
+            List dto = giftCertificateRepo.queryList(new FindAllGiftCertificates(), pageNumber, pageSize);
+            List<GiftCertificate> handledGiftCertificates = handleGiftCertifcates(dto);
+            List result = giftCertificateConverter.toDTOList(handledGiftCertificates);
+            return result;
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException("Didn't find gift certificates");
         }
@@ -99,16 +120,20 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         return giftCertificateDTOCreated;
     }
 
+
     @Transactional
     @Override
     public GiftCertificateDTO update(GiftCertificateDTO certificateDTO) {
-        if (getByID(certificateDTO.getId()) == null) {
-            throw new ResourceNotFoundException("Gift Certificate with ID: "
-                    + certificateDTO.getId() + " was not found!");
-        }
+        GiftCertificate giftCertificateFound;
+        giftCertificateFound = giftCertificateRepo.queryEntity(
+                new FindGiftCertificateByID(certificateDTO.getId()))
+                .orElseThrow(() -> new ResourceNotFoundException("Gift Certificate with ID: "
+                        + certificateDTO.getId() + " was not found!"));
         addNewTagsIfTheyDontExist(certificateDTO);
         GiftCertificate certificate = giftCertificateConverter.toEntity(certificateDTO);
+        certificate.setDateOfCreation(giftCertificateFound.getDateOfCreation());
         certificate.setDateOfModification(LocalDate.now());
+        certificate.setForSale(giftCertificateFound.isForSale());
         List<Tag> tagsWithID = getTagsWithID(certificate.getTags());
         certificate.setTags(tagsWithID);
         return giftCertificateConverter.toDTO(giftCertificateRepo.update(certificate));
@@ -251,11 +276,15 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public List<GiftCertificateDTO> getGiftCertificates(Long[] tagID, String name,
-                                                        String desc, Integer sortByDate, Integer sortByName,
-                                                        Integer pageNumber, Integer pageSize) {
-        Deque<NativeSpecification<GiftCertificate>> specifications = new ArrayDeque<>();
+    public PageDTO getGiftCertificatesPage(String[] tagName, Long[] tagID, String name,
+                                           String desc, Integer sortByDate, Integer sortByName,
+                                           Integer pageNumber, Integer pageSize) {
+        ArrayDeque<NativeSpecification<GiftCertificate>> specifications = new ArrayDeque<>();
         List<Object> parameters = new ArrayList<>();
+        if (tagName != null) {
+            specifications.add(new FindGiftCertificatesByTagName(tagName));
+            parameters.addAll(Arrays.asList(tagName));
+        }
         if (tagID != null) {
             specifications.add(new
                     FindGiftCertificatesByTagID(tagID));
@@ -287,11 +316,16 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                 specifications.add(sortGiftCertificatesByName);
             }
         }
+        ArrayDeque<NativeSpecification<GiftCertificate>> specifications2 = specifications.clone();
         GiftCertificatesSpecificationConjunction conjunction = new GiftCertificatesSpecificationConjunction(
                 specifications, parameters);
         List giftCertificates = giftCertificateRepo.queryList(conjunction, pageNumber, pageSize);
         List<GiftCertificate> handledGiftCertificates = handleGiftCertifcates(giftCertificates);
-        return giftCertificateConverter.toDTOList(handledGiftCertificates);
+        List result = giftCertificateConverter.toDTOList(handledGiftCertificates);
+        conjunction.setSpecifications(specifications2);
+        Long totalCount = giftCertificateRepo.queryCount(new CountGiftCertificatesSpecificationConjunction(conjunction))
+                .orElseThrow(() -> new ResourceNotFoundException("Cannot get total count!"));
+        return new PageDTO(result, totalCount);
     }
 
     public List<GiftCertificate> handleGiftCertifcates(List giftcertificates) {

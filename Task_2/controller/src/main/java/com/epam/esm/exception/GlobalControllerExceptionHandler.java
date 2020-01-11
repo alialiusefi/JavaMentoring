@@ -5,6 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -31,10 +32,22 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
                 new APIError(e.getMessage()), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler({BadCredentialsException.class})
+    public ResponseEntity<Object> handleBadCredentialsException(RuntimeException e) {
+        return new ResponseEntity<Object>(
+                new APIError(e.getMessage()), new HttpHeaders(), HttpStatus.UNAUTHORIZED);
+    }
+
     @ExceptionHandler({OAuth2AuthenticationProcessingException.class})
     public ResponseEntity<Object> handleOAuth2AuthenticationProcessingException(RuntimeException e) {
         return new ResponseEntity<Object>(
                 new APIError(e.getMessage()), new HttpHeaders(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<Object> handleResourceNotFound(RuntimeException ex) {
+        return new ResponseEntity<Object>(
+                new APIError(ex.getMessage()), new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({InvalidJwtAuthenticationException.class})
@@ -94,12 +107,7 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
                 apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Object> handleResourceNotFound(RuntimeException ex, WebRequest request) {
-        return handleExceptionInternal(ex, new APIError(ex.getMessage()),
-                new HttpHeaders(), HttpStatus.NOT_FOUND, request);
-    }
+
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BadRequestException.class)

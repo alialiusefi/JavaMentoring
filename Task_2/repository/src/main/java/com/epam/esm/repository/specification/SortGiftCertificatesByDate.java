@@ -12,17 +12,17 @@ public class SortGiftCertificatesByDate extends NativeSQLSortSpecification<GiftC
             ",giftcertificates.description,giftcertificates.price" +
             ",giftcertificates.date_created,giftcertificates.date_modified," +
             "giftcertificates.duration_till_expiry,giftcertificates.isforsale " +
-            "from giftcertificates " +
-            "order by giftcertificates.date_created asc ";
+            "from giftcertificates where giftcertificates.isforsale = true  " +
+            "order by giftcertificates.date_modified asc ";
     private static final String SQL_CLAUSE_DESC = "select giftcertificates.id,giftcertificates.name" +
             ",giftcertificates.description,giftcertificates.price" +
             ",giftcertificates.date_created,giftcertificates.date_modified," +
             "giftcertificates.duration_till_expiry,giftcertificates.isforsale " +
             "from giftcertificates " +
-            "order by giftcertificates.date_created desc ";
+            "where giftcertificates.isforsale = true order by giftcertificates.date_modified desc ";
 
-    private static final String CONJ_SQL_CLAUSE_ASC = "order by giftcertificates.date_created asc ";
-    private static final String CONJ_SQL_CLAUSE_DESC = "order by giftcertificates.date_created desc ";
+    private static final String CONJ_SQL_CLAUSE_ASC = "order by giftcertificates.date_modified asc ";
+    private static final String CONJ_SQL_CLAUSE_DESC = "order by giftcertificates.date_modified desc ";
 
     private int sortOrder;
 

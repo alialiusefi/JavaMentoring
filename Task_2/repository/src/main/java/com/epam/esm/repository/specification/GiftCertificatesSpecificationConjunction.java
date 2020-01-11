@@ -24,17 +24,48 @@ public class GiftCertificatesSpecificationConjunction extends FindSpecification<
         if (specifications.size() == 1) {
             return specifications.poll().getQuery(em, builder);
         }
+        String finalQuery = getFinalQuery(em, builder);
+        Query queryObj = em.createNativeQuery(finalQuery);
+        for (int i = 0; i < parameters.size(); i++) {
+            queryObj.setParameter(i + 1, parameters.get(i));
+        }
+        return queryObj;
+    }
+
+    public String getFinalQuery(EntityManager em, CriteriaBuilder builder) {
         NativeSpecification<GiftCertificate> first = specifications.poll();
         String query = first.getSQLClause(false);
         StringBuilder stringBuilder = new StringBuilder(query);
         for (NativeSpecification i : specifications) {
             stringBuilder.append(i.getSQLClause(true));
         }
-        String finalQuery = stringBuilder.toString();
-        Query queryObj = em.createNativeQuery(finalQuery);
-        for (int i = 0; i < parameters.size(); i++) {
-            queryObj.setParameter(i + 1, parameters.get(i));
+        int lastBracket = stringBuilder.lastIndexOf(")");
+        if (lastBracket != -1) {
+            stringBuilder.insert(lastBracket + 1, " ) ");
         }
-        return queryObj;
+        try {
+            String remainder = first.getRemainder();
+            int idx_order = stringBuilder.indexOf("order");
+            if(idx_order == -1){
+                return stringBuilder.toString();
+            }
+            stringBuilder.insert(idx_order, remainder);
+            return stringBuilder.toString();
+        } catch (UnsupportedOperationException e) {
+            return stringBuilder.toString();
+        }
+    }
+
+    public List<Object> getParameters() {
+        return parameters;
+    }
+
+
+    public Deque<NativeSpecification<GiftCertificate>> getSpecifications() {
+        return specifications;
+    }
+
+    public void setSpecifications(Deque<NativeSpecification<GiftCertificate>> specifications) {
+        this.specifications = specifications;
     }
 }

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -29,6 +30,7 @@ public class UserServiceImpl implements UserService {
     private UserConverter userConverter;
     private BCryptPasswordEncoder passwordEncoder;
     private AuthorityRepository authorityRepository;
+
     @Autowired
     public UserServiceImpl(UserRepository userRepository, UserConverter userConverter,
                            BCryptPasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
@@ -104,6 +106,11 @@ public class UserServiceImpl implements UserService {
         }
         UserEntity user = userConverter.toEntity(dto);
         return userConverter.toDTO(userRepository.update(user));
+    }
+
+    @Override
+    public UserDTO patch(Map<Object, Object> fields, Long id) {
+        throw new UnsupportedOperationException("Unimplemented method!");
     }
 
 
