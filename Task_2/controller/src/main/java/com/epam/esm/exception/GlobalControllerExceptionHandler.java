@@ -48,8 +48,6 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
     public ResponseEntity<Object> handleResourceNotFound(RuntimeException ex) {
         return new ResponseEntity<Object>(
                 new APIError(ex.getMessage()), new HttpHeaders(), HttpStatus.NOT_FOUND);
-        /*return handleExceptionInternal(ex, new APIError(ex.getMessage()),
-                new HttpHeaders(), HttpStatus.NOT_FOUND, request);*/
     }
 
     @ExceptionHandler({InvalidJwtAuthenticationException.class})

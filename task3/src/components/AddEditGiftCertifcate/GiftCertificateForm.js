@@ -18,28 +18,28 @@ const renderField = ({input, label, type, meta: {touched, error, warning}}) => (
 const validate = values => {
     const errors = {};
     if (!values.name) {
-        errors.name = 'Required'
+        errors.name = <Translate id="addeditgiftcertificate.required"/>;
     } else if (!(values.name.length > 0 && values.name.length < 51)) {
-        errors.name = 'Minimum be 1 characters or more and less than 51 characters'
+        errors.name = <Translate id={"addeditgiftcertificate.onetofiftyone"}/>;
     }
     if (!values.description) {
         errors.description = 'Required'
     } else if (!(values.description.length > 0 && values.description.length < 257)) {
-        errors.description = 'Minimum be 1 characters or more and less than 256 characters'
+        errors.description = <Translate id={"addeditgiftcertificate.onetotwohundredfiftysix"}/>;
     }
     if (!values.price) {
-        errors.price = 'Required'
+        errors.price = <Translate id="addeditgiftcertificate.required"/>;
     } else if (!(values.price.toString().match("[^a-z ]\\ *([.0-9])*\\d"))) {
-        errors.price = 'Incorrect price format'
+        errors.price = <Translate id="addeditgiftcertificate.incorrectpriceformat"/>;
     } else if (!(values.price > 0)) {
-        errors.price = 'Price should be more than 0'
+        errors.price = <Translate id="addeditgiftcertificate.morethanzero"/>;
     }
     if (!values.durationTillExpiry) {
-        errors.durationTillExpiry = 'Required'
+        errors.durationTillExpiry = <Translate id="addeditgiftcertificate.required"/>;
     } else if (!values.durationTillExpiry.toString().match("^\\d*$")) {
-        errors.durationTillExpiry = 'Incorrect duration format'
+        errors.durationTillExpiry = <Translate id="addeditgiftcertificate.incorrectdurationformat"/>;
     } else if (!(values.durationTillExpiry > 0)) {
-        errors.durationTillExpiry = 'duration should be at least 1 day'
+        errors.durationTillExpiry = <Translate id="addeditgiftcertificate.morethanzero"/>;
     }
 
     return errors;
@@ -64,8 +64,10 @@ const applyButton = (certificate, pristine, submitting, invalid) => {
 }
 
 let GiftCertifcateForm = props => {
-    const {handleSubmit, pristine, submitting, invalid, certificate,
-        tags,suggestions,handleTagDelete,handleTagAdd,handleTagDrag,handleInputChange} = props;
+    const {
+        handleSubmit, pristine, submitting, invalid, certificate,
+        tags, suggestions, handleTagDelete, handleTagAdd, handleTagDrag, handleInputChange
+    } = props;
 
     return (
         <div className="container justify-content-center">
@@ -95,13 +97,18 @@ let GiftCertifcateForm = props => {
                 <div className="row text-center">
                     <div className="col">
                         <label><Translate id={"tags.tags"}/> :</label>
-                        <ReactTags
-                            tags={tags}
-                        suggestions={suggestions}
-                        handleDelete={handleTagDelete}
-                        handleAddition={handleTagAdd}
-                        handleDrag={handleTagDrag}
-                        handleInputChange={handleInputChange}/>
+                        <Translate>
+                            {({translate}) =>
+                                <ReactTags
+                                    placeholder={translate("addeditgiftcertificate.addnewtag")}
+                                    tags={tags}
+                                    suggestions={suggestions}
+                                    handleDelete={handleTagDelete}
+                                    handleAddition={handleTagAdd}
+                                    handleDrag={handleTagDrag}
+                                    handleInputChange={handleInputChange}/>
+                            }
+                        </Translate>
                     </div>
                 </div>
                 <div className="row">
@@ -123,7 +130,6 @@ let GiftCertifcateForm = props => {
         </div>
     )
 };
-
 
 
 GiftCertifcateForm = reduxForm({

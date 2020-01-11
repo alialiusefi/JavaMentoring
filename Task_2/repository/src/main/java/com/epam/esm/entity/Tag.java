@@ -1,14 +1,11 @@
 package com.epam.esm.entity;
 
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -28,10 +25,7 @@ public class Tag extends AbstractEntity {
     private String name;
 
     @ManyToMany(mappedBy = "tags")
-   /* @JoinTable(name = "tagged_giftcertificates", joinColumns =
-            {@JoinColumn(name = "tag_id")},
-            inverseJoinColumns = {@JoinColumn(name = "gift_certificate_id")})
-   */ private List<GiftCertificate> certificateList;
+    private List<GiftCertificate> certificateList;
 
     private Tag(TagBuilder tagBuilder) {
         this.id = tagBuilder.id;

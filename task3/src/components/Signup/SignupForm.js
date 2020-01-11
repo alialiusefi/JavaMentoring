@@ -31,7 +31,7 @@ const validate = values => {
 }
 
 let SignupForm = props => {
-    const {handleSubmit, pristine, submitting, invalid} = props;
+    const {handleSubmit, pristine, submitting, invalid, type, showhidePass} = props;
     return (
         <div className="container">
             <form onSubmit={handleSubmit}>
@@ -42,8 +42,12 @@ let SignupForm = props => {
                     </div>
                     <div className="col-5">
                         <label><Translate id="login.password"> Password </Translate></label>
-                        <Field type="password" name="password" component={renderField}/>
+                        <Field type={type} name="password" component={renderField}/>
+                        <a className="btn-light" onClick={showhidePass}><Translate id={
+                                type === "password" ? "signup.show" : "signup.hide"
+                        }/></a>
                     </div>
+
                 </div>
                 <br/>
                 <div className="row">

@@ -50,10 +50,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
-    /* private void saveTokensToCookies(HttpServletResponse response, Authentication authentication) {
-     *//*             CookieUtils.addCookie(response, "accessToken", accessToken, 8000);
-        CookieUtils.addCookie(response, "refreshToken", refreshToken, 16000);*//*
-    }*/
 
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) {

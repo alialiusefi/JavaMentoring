@@ -53,6 +53,14 @@
     "signupbutton": [
       "Sign Up",
       "Зарегистрироваться"
+    ],
+    "show": [
+      "Show Password",
+      "Показать пароль"
+    ],
+    "hide": [
+      "Hide Password",
+      "скрыть пароль"
     ]
   },
   "giftcertificate": {
@@ -99,6 +107,34 @@
     "edit": [
       "Edit Certificate",
       "Изменить Сертификат"
+    ],
+    "required": [
+      "Required",
+      "необходимы"
+    ],
+    "onetofiftyone": [
+      "Minimum be 1 characters or more and less than 51 characters",
+      "Минимум 1 символ или более и менее 51 символа"
+    ],
+    "onetotwohundredfiftysix": [
+      "Minimum be 1 characters or more and less than 256 characters",
+      "Минимум 1 символ или более и менее 256 символов"
+    ],
+    "incorrectdurationformat": [
+      "Incorrect duration format",
+      "Неправильная формат продолжительности"
+    ],
+    "incorrectpriceformat": [
+      "Incorrect price format",
+      "Неверный формат цены"
+    ],
+    "morethanzero": [
+      "More than zero",
+      "больше нуля"
+    ],
+    "addnewtag": [
+      "Add new tag",
+      "Добавить тег"
     ]
   },
   "button": {
