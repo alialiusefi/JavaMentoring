@@ -1,11 +1,18 @@
 package com.epam.esm.service;
 
+import com.epam.esm.dto.ImageMetaDataDTO;
+
 import java.io.File;
+import java.io.InputStream;
 
 public interface ImageMetaService {
 
-    File getImageByName(String name);
+    InputStream getImageByName(String name);
 
-    File getRandomImage();
+    InputStream getRandomImage();
+
+    ImageMetaDataDTO uploadImage(File file);
+
+
 
 }

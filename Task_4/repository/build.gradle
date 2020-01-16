@@ -1,4 +1,5 @@
 dependencies {
+
     compile 'org.postgresql:postgresql:42.2.8'
     compile 'org.springframework:spring-jdbc:5.2.0.RELEASE'
     compile 'org.hibernate:hibernate-entitymanager:5.4.2.Final'

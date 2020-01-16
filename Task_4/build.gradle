@@ -1,10 +1,21 @@
 plugins {
     id "org.springframework.boot" version "2.2.0.RELEASE"
+    id 'java'
+
 }
+
 allprojects {
     group = 'com.epam.esm'
     version = '1.0-SNAPSHOT'
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    bootJar {
+        mainClassName = 'com.epam.esm.runner.Application'
+    }
 
+    repositories {
+        mavenCentral()
+    }
 
 }
 
@@ -17,6 +28,8 @@ subprojects {
             url = 'http://repo.maven.apache.org/maven2'
         }
     }
+
+
 
     dependencies {
         compile 'org.springframework:spring-core:5.2.0.RELEASE'
@@ -41,14 +54,6 @@ subprojects {
     }
 
     sourceCompatibility = '1.8'
-
-    publishing {
-        publications {
-            maven(MavenPublication) {
-                from(components.java)
-            }
-        }
-    }
 
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'

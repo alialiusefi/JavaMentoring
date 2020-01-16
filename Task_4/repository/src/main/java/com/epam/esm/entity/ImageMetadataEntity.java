@@ -15,7 +15,7 @@ import java.util.Objects;
 public class ImageMetadataEntity extends AbstractEntity {
 
     @Id
-    @SequenceGenerator(name = "imagemetaSequence", sequenceName = "imagemetas_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "imagemetaSequence", sequenceName = "imagemeta_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imagemetaSequence")
     private Long id;
 
@@ -29,7 +29,6 @@ public class ImageMetadataEntity extends AbstractEntity {
     private LocalDate dateCreated;
 
     public ImageMetadataEntity() {
-
     }
 
     public ImageMetadataEntity(String name, String key, LocalDate dateCreated) {
