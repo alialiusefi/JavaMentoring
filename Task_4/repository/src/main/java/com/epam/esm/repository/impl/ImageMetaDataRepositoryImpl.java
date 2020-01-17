@@ -10,15 +10,11 @@ import javax.persistence.EntityManager;
 
 @Repository
 public class ImageMetaDataRepositoryImpl extends BaseCRUDRepository<ImageMetadataEntity>
-        implements ImageMetaDataRepository
-{
+        implements ImageMetaDataRepository {
     @Autowired
     protected ImageMetaDataRepositoryImpl(EntityManager entityManager) {
         super(entityManager);
     }
-
-
-
 
 
 }

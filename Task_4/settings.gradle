@@ -1,5 +1,6 @@
 rootProject.name = 'Task_4'
-include(':controller')
-include(':service')
-include(':repository')
+include ':repository', ':service', ':controller'
+
+
+
 
