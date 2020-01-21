@@ -14,7 +14,6 @@ import com.epam.esm.repository.specification.CountFindAllImageMetaData;
 import com.epam.esm.repository.specification.FindImageMetaDataByID;
 import com.epam.esm.repository.specification.FindImageMetaDataByName;
 import com.epam.esm.service.ImageMetaService;
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -53,7 +51,7 @@ public class ImageMetaServiceImpl implements ImageMetaService {
             throw new ResourceNotFoundException("Couldn't find image with that name!");
         }
         ImageMetadataEntity entity = optional.get();
-        return getImageFromS3(lowercaseName, yamlConfig.getBucketName(), entity.getKey());
+        return getImageFromS3(yamlConfig.getBucketName(), entity.getKey());
     }
 
     @Override
@@ -65,7 +63,7 @@ public class ImageMetaServiceImpl implements ImageMetaService {
         long result = ThreadLocalRandom.current().nextLong(low, high + 1);
         ImageMetadataEntity entity = imageMetaDataRepository.queryEntity(new FindImageMetaDataByID(result)).
                 orElseThrow(() -> new ResourceNotFoundException("Cannot get random image!"));
-        return getImageFromS3(entity.getName(), yamlConfig.getBucketName(), entity.getKey());
+        return getImageFromS3(yamlConfig.getBucketName(), entity.getKey());
     }
 
     @Transactional
@@ -90,21 +88,13 @@ public class ImageMetaServiceImpl implements ImageMetaService {
         }
     }
 
-    //todo: fix copy to local project file bug
-    private InputStream getImageFromS3(String filename, String bucketName, String key) {
-        //try {
+    private InputStream getImageFromS3(String bucketName, String key) {
+        try {
             S3Object s3Object = s3client.getObject(bucketName, key);
             S3ObjectInputStream stream = s3Object.getObjectContent();
-            //File imageFile = new File(filename + ".png");
-            try {
-                //FileUtils.copyInputStreamToFile(stream, imageFile);
-                return stream;
-            /*} catch (IOException e) {
-                logger.error(e.getMessage(), e);
-            }*/
+            return stream;
         } catch (AmazonS3Exception e) {
             throw new ResourceNotFoundException("Error while getting image from amazon s3", e);
         }
-        //return null;
     }
 }
