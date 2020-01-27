@@ -1,0 +1,11 @@
+plugins {
+    id 'war'
+}
+
+dependencies {
+    compile project(':service')
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.2.0.RELEASE'
+
+}
+

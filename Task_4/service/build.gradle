@@ -1,0 +1,10 @@
+dependencies {
+    compile project(':repository')
+    compile 'org.modelmapper:modelmapper:2.3.2'
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    testCompile 'org.mockito:mockito-all:2.0.2-beta'
+    testCompile 'org.junit.jupiter:junit-jupiter-engine:5.2.0'
+    compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.11.707'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-parent', version: '2.2.2.RELEASE'
+
+}

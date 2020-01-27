@@ -1,0 +1,6 @@
+rootProject.name = 'Task_4'
+include ':repository', ':service', ':controller'
+
+
+
+
