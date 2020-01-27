@@ -1,6 +1,7 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.dto.ImageMetaDataDTO;
+import com.epam.esm.dto.UploadResultDTO;
 import com.epam.esm.exception.BadRequestException;
 import com.epam.esm.service.ImageMetaService;
 import org.apache.commons.io.IOUtils;
@@ -21,11 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.print.attribute.standard.Media;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -71,14 +69,15 @@ public class ImageController {
     }
 
     @PostMapping("/")
-    public List<ImageMetaDataDTO> uploadImage(@RequestParam("file") List<MultipartFile> files) {
-        List<ImageMetaDataDTO> imageMetaDataDTOList = new ArrayList<>();
+    public List<UploadResultDTO> uploadImage(@RequestParam("file") List<MultipartFile> files) {
+        List<UploadResultDTO> uploadResultDTOS = new ArrayList<>();
         for (MultipartFile uploadedFile : files) {
-            if(!MediaType.IMAGE_PNG.toString().equals(uploadedFile.getContentType())){
-                throw new BadRequestException(".png files only are accepted");
+            if (!MediaType.IMAGE_PNG.toString().equals(uploadedFile.getContentType())) {
+                uploadResultDTOS.add(new UploadResultDTO(
+                        new ImageMetaDataDTO(uploadedFile.getName(), null), ".png files only are accepted"
+                ));
+                continue;
             }
-        }
-        for (MultipartFile uploadedFile : files) {
             String path = context.getRealPath("/tmp/");
             File tmpPicsDir = new File(path);
             if (!tmpPicsDir.exists()) {
@@ -88,12 +87,15 @@ public class ImageController {
             File file = new File(path + filename);
             try {
                 uploadedFile.transferTo(file);
-                imageMetaDataDTOList.add(imageMetaService.uploadImage(file));
+                ImageMetaDataDTO dto = imageMetaService.uploadImage(file);
+                uploadResultDTOS.add(new UploadResultDTO(dto, null));
             } catch (IOException e) {
                 logger.debug(e.getMessage(), e);
+            } catch (BadRequestException e) {
+                uploadResultDTOS.add(new UploadResultDTO(new ImageMetaDataDTO(file.getName(), null), e.getMessage()));
             }
         }
-        return imageMetaDataDTOList;
+        return uploadResultDTOS;
     }
 
     private ResponseEntity<byte[]> createResponse(byte[] image) {
