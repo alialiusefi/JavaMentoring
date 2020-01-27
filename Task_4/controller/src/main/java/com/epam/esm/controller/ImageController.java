@@ -71,6 +71,9 @@ public class ImageController {
     @PostMapping("/")
     public List<UploadResultDTO> uploadImage(@RequestParam("file") List<MultipartFile> files) {
         List<UploadResultDTO> uploadResultDTOS = new ArrayList<>();
+        if(files.isEmpty()) {
+            throw new BadRequestException("At least one .png file should be uploaded!");
+        }
         for (MultipartFile uploadedFile : files) {
             if (!MediaType.IMAGE_PNG.toString().equals(uploadedFile.getContentType())) {
                 uploadResultDTOS.add(new UploadResultDTO(
