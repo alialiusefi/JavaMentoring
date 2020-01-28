@@ -1,12 +1,13 @@
 package com.epam.esm.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Objects;
 
-
+@JsonIgnoreProperties(value = {"id"})
 public class TagDTO extends DTO {
 
     private String name;
-
 
     public TagDTO() {
         super();

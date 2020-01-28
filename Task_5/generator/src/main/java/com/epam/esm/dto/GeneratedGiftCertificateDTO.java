@@ -1,13 +1,15 @@
 package com.epam.esm.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-public class GiftCertificateDTO extends DTO {
+@JsonIgnoreProperties(value = {"id"})
+public class GeneratedGiftCertificateDTO extends DTO {
 
     public static final int SCALE = 2;
     public static final RoundingMode ROUNDING_MODE = RoundingMode.DOWN;
@@ -18,27 +20,20 @@ public class GiftCertificateDTO extends DTO {
 
     private BigDecimal price;
 
-
-    private LocalDate dateOfCreation;
-
-
-    private LocalDate dateOfModification;
     private Integer durationTillExpiry;
 
     private List<TagDTO> tags;
 
-    public GiftCertificateDTO() {
+    public GeneratedGiftCertificateDTO() {
         super();
     }
 
-    public GiftCertificateDTO(long id, String name, String description, BigDecimal price, LocalDate dateOfCreation,
-                              LocalDate dateOfModification, Integer durationTillExpiry, List<TagDTO> tags) {
+    public GeneratedGiftCertificateDTO(long id, String name, String description, BigDecimal price,
+                                       Integer durationTillExpiry, List<TagDTO> tags) {
         super(id);
         this.name = name;
         this.description = description;
         this.price = price;
-        this.dateOfCreation = dateOfCreation;
-        this.dateOfModification = dateOfModification;
         this.durationTillExpiry = durationTillExpiry;
         this.tags = tags;
     }
@@ -67,21 +62,6 @@ public class GiftCertificateDTO extends DTO {
         this.price = price.setScale(SCALE, ROUNDING_MODE);
     }
 
-    public LocalDate getDateOfCreation() {
-        return dateOfCreation;
-    }
-
-    public void setDateOfCreation(LocalDate dateOfCreation) {
-        this.dateOfCreation = dateOfCreation;
-    }
-
-    public LocalDate getDateOfModification() {
-        return dateOfModification;
-    }
-
-    public void setDateOfModification(LocalDate dateOfModification) {
-        this.dateOfModification = dateOfModification;
-    }
 
     public int getDurationTillExpiry() {
         return durationTillExpiry;
@@ -104,20 +84,18 @@ public class GiftCertificateDTO extends DTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        GiftCertificateDTO that = (GiftCertificateDTO) o;
+        GeneratedGiftCertificateDTO that = (GeneratedGiftCertificateDTO) o;
         return getDurationTillExpiry() == that.getDurationTillExpiry() &&
                 Objects.equals(getName(), that.getName()) &&
                 Objects.equals(getDescription(), that.getDescription()) &&
                 Objects.equals(getPrice(), that.getPrice()) &&
-                Objects.equals(getDateOfCreation(), that.getDateOfCreation()) &&
-                Objects.equals(getDateOfModification(), that.getDateOfModification()) &&
                 Objects.equals(getTags(), that.getTags());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), getName(), getDescription(),
-                getPrice(), getDateOfCreation(), getDateOfModification(), getDurationTillExpiry(), getTags());
+                getPrice(), getDurationTillExpiry(), getTags());
     }
 
     @Override
@@ -126,8 +104,6 @@ public class GiftCertificateDTO extends DTO {
         sb.append("name='").append(name).append('\'');
         sb.append(", description='").append(description).append('\'');
         sb.append(", price=").append(price);
-        sb.append(", dateOfCreation=").append(dateOfCreation);
-        sb.append(", dateOfModification=").append(dateOfModification);
         sb.append(", durationTillExpiry=").append(durationTillExpiry);
         sb.append(", tagDTOList=").append(tags);
         sb.append('}');

@@ -54,7 +54,7 @@ public class GeneratorManager {
         for (int i = 0; i < amountOfFolders; i++) {
             tasks.add(new JSONFileGeneratorTask(
                     this.allFolderCreated,
-                    validFiles));
+                    validFiles, this.generatorConfig));
 
         }
         this.executorService = Executors.newScheduledThreadPool(amountOfFolders);
