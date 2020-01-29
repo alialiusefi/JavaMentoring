@@ -13,9 +13,10 @@ import java.util.ResourceBundle;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GeneratorManager {
 
@@ -23,11 +24,17 @@ public class GeneratorManager {
     private GeneratorConfig generatorConfig;
     private ExecutorService executorService;
     private Long localSubfolderCount;
+    private AtomicBoolean timeout;
 
     public GeneratorManager(ResourceBundle generatorConfigProperties) {
         this.generatorConfig = new GeneratorConfig(generatorConfigProperties);
         this.allFolderCreated = new LinkedBlockingQueue<>();
         this.localSubfolderCount = this.generatorConfig.getSubfolderCount();
+        this.timeout = new AtomicBoolean(false);
+    }
+
+    public BlockingQueue<File> getAllFolderCreated() {
+        return allFolderCreated;
     }
 
     public void createFolders(String rootPath, long lvl) throws IOException {
@@ -41,12 +48,16 @@ public class GeneratorManager {
             String pathStr = rootPath + File.separator + filename;
             Path path = Paths.get(pathStr);
             Files.createDirectories(path);
-            allFolderCreated.add(path.toFile());
+            System.out.println(Thread.currentThread() + " created folder: " + path.toString());
+            if (!allFolderCreated.contains(path.toFile())) {
+                allFolderCreated.add(path.toFile());
+            }
             this.localSubfolderCount = this.localSubfolderCount - max;
             createFolders(path.toString(), lvl - 1);
         }
 
     }
+
     public void start() {
         List<JSONFileGeneratorTask> tasks = new ArrayList<>();
         int amountOfFolders = allFolderCreated.size();
@@ -59,10 +70,25 @@ public class GeneratorManager {
         }
         this.executorService = Executors.newScheduledThreadPool(amountOfFolders);
         try {
-            this.executorService.invokeAll(tasks, generatorConfig.getTestTime(), TimeUnit.SECONDS);
+            List<Future<Long>> futures = this.executorService.invokeAll(tasks);
+            /*while (true) {
+                boolean isDone = false;
+                for (Future i : futures) {
+                    if (i.isDone()) {
+                        System.out.println("Future " + i + " is done, timing out");
+                        this.timeout.set(true);
+                        isDone = true;
+                        break;
+                    }
+                }
+                if (isDone) {
+                    break;
+                }
+            }*/
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
     }
 
     public GeneratorConfig getGeneratorConfig() {

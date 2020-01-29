@@ -5,16 +5,15 @@ import com.epam.esm.dto.IncorrectFieldNameGiftCertificateDTO;
 import com.epam.esm.dto.TagDTO;
 
 import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GiftCertificateFactory {
 
     public static final int STRING_LENGTH = 10;
+    private static final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     public GeneratedGiftCertificateDTO createValidCertificate() {
         String name = generateString(STRING_LENGTH);
@@ -80,10 +79,13 @@ public class GiftCertificateFactory {
         return dtos;
     }
 
-    private String generateString(int size) {
-        byte[] array = new byte[size];
-        new Random().nextBytes(array);
-        return new String(array, StandardCharsets.UTF_8);
+    private String generateString(int count) {
+        StringBuilder builder = new StringBuilder();
+        while (count-- != 0) {
+            int character = (int) (Math.random() * ALPHA_NUMERIC_STRING.length());
+            builder.append(ALPHA_NUMERIC_STRING.charAt(character));
+        }
+        return builder.toString();
     }
 
     private TagDTO getRandomTag() {
