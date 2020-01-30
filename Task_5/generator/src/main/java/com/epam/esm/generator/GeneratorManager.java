@@ -61,7 +61,7 @@ public class GeneratorManager {
     public void start() {
         List<JSONFileGeneratorTask> tasks = new ArrayList<>();
         int amountOfFolders = allFolderCreated.size();
-        Long validFiles = generatorConfig.getFilesCount() * 16;
+        Long validFiles = generatorConfig.getFilesCount() / 16;
         for (int i = 0; i < amountOfFolders; i++) {
             tasks.add(new JSONFileGeneratorTask(
                     this.allFolderCreated,
@@ -85,8 +85,9 @@ public class GeneratorManager {
                     break;
                 }
             }*/
+            this.executorService.shutdown();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            this.executorService.shutdownNow();
         }
 
     }

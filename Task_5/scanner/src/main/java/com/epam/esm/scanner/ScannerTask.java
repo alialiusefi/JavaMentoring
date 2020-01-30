@@ -1,85 +1,87 @@
 package com.epam.esm.scanner;
 
 import com.epam.esm.config.YAMLConfig;
-import com.epam.esm.dto.GiftCertificateDTO;
+import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.validator.ValidatorTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
 
+@Component
 public class ScannerTask implements Runnable {
 
     static final Logger LOG = LoggerFactory.getLogger(ScannerTask.class);
-    private static final Integer MAX_SIZE = 50;
     private ScannerManager manager;
     private ExecutorService globalPooledExecutors;
-    private BlockingQueue<GiftCertificateDTO> validGiftCertificateDTOSToAddToDB;
     private YAMLConfig config;
+    private GiftCertificateService giftCertificateService;
 
-
-    public ScannerTask(ScannerManager manager, YAMLConfig config) {
+    public ScannerTask(ScannerManager manager, YAMLConfig config, GiftCertificateService giftCertificateService) {
         this.manager = manager;
         this.config = config;
         this.globalPooledExecutors = Executors.newFixedThreadPool(config.getThreadCount());
-        this.validGiftCertificateDTOSToAddToDB = new LinkedBlockingQueue<>(MAX_SIZE);
+        this.giftCertificateService = giftCertificateService;
         LOG.debug("Scanner Task Instantiated");
     }
 
     @Override
     public void run() {
-        LOG.debug("Started Scanner Task!");
+        LOG.debug(Thread.currentThread() + " Started Scanner Task!");
         File[] filesandfolders = new File(config.getScanPath()).listFiles();
         try {
             List<ValidatorTask> validatorTasks = initialScan(filesandfolders);
             globalPooledExecutors.invokeAll(validatorTasks);
             LOG.debug("Invoked Validator Tasks!");
-        } catch (FileNotFoundException | InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             LOG.error(e.getMessage(), e);
         }
 
     }
 
-    /*public void addFilesFromPath(BlockingQueue<File> files, Path path) {
-        File file = path.toFile();
-        if (file.isDirectory()) {
+    public YAMLConfig getConfig() {
+        return config;
+    }
 
-        } else {
-            if (file.isFile() && file.exists() && file.canRead()) {
-                files.add(file);
-            }
-        }
+    public void setConfig(YAMLConfig config) {
+        this.config = config;
+    }
 
-    }*/
-
-    private List<ValidatorTask> initialScan(File[] filesandfolders) throws FileNotFoundException {
+    private List<ValidatorTask> initialScan(File[] filesandfolders) throws IOException {
         LOG.debug("Initial scan started!");
+        if (filesandfolders.length == 0) {
+            LOG.error("Empty directory");
+            throw new IOException("Empty directory");
+        }
         if (filesandfolders != null) {
             PriorityQueue<File> files = new PriorityQueue<>(new FileComparator());
             Collections.addAll(files, filesandfolders);
-            int partSize = getPartSize(files.size(), MAX_SIZE);
-            List<ValidatorTask> validatorTasks = initializeListOfValidators(config.getThreadCount(), partSize);
+            LOG.debug("Amount of initial scan files: " + files.size());
+            int partSize = getPartSize(files.size(), config.getThreadCount());
+            LOG.debug("Part size " + partSize);
+            List<ValidatorTask> validatorTasks = initializeListOfValidators(config.getThreadCount());
             for (int i = 0; i < validatorTasks.size(); i++) {
                 if (!files.isEmpty()) {
                     File file = files.poll();
                     if (file != null) {
+                        LOG.debug("Adding " + file + " to " + validatorTasks.get(i) + "," + "files left to distribute:" + files.size());
                         validatorTasks.get(i).getFilesToValidate().add(file);
                     }
                 } else {
                     break;
                 }
-                if (i == validatorTasks.size() - 1) {
-                    i = 0;
+                if (i == (validatorTasks.size() - 1)) {
+                    i = -1;
                 }
             }
             return validatorTasks;
@@ -87,21 +89,18 @@ public class ScannerTask implements Runnable {
         throw new FileNotFoundException("Error scanning scan directory");
     }
 
-    private Integer getPartSize(Integer listSize, Integer maxSize) {
-        return listSize % maxSize == 0 ? listSize / maxSize : listSize / maxSize + 1;
+    private Integer getPartSize(Integer listSize, Integer threadCount) {
+        return listSize % threadCount == 0 ? listSize / threadCount : listSize / threadCount + 1;
     }
 
-    private List<ValidatorTask> initializeListOfValidators(Integer size, Integer queueSize) {
+    private List<ValidatorTask> initializeListOfValidators(Integer size) {
         List<ValidatorTask> validatorTasks = new LinkedList<>();
         for (int i = 0; i < size; i++) {
-            validatorTasks.add(new ValidatorTask(new LinkedBlockingQueue<>(queueSize), this));
+            validatorTasks.add(new ValidatorTask(this, giftCertificateService));
         }
         return validatorTasks;
     }
 
-    private void addValidCertificateToDTO(GiftCertificateDTO dto) {
-        this.validGiftCertificateDTOSToAddToDB.add(dto);
-    }
 
     private static class FileComparator implements Comparator<File> {
         @Override

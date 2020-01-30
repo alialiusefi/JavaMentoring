@@ -30,7 +30,6 @@ public class JSONFileGeneratorPeriodTask implements Runnable {
 
     @Override
     public void run() {
-        //if (!timeout.get()) {
         System.out.println(Thread.currentThread() + " will now begin populating folder: " + folderToPopulate.getAbsolutePath());
         LinkedList<DTO> giftCertificateDTO = new LinkedList<>();
         long amountOfValidDTOS = validFiles * AMOUNT_OF_DTOS_PER_FILE;
@@ -57,21 +56,28 @@ public class JSONFileGeneratorPeriodTask implements Runnable {
                 }
             }
             stringbuilder.append("]");
-            byte[] strBytes = stringbuilder.toString().getBytes();
-            try (BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
-                outputStream.write(strBytes);
-                try {
-                    outputStream.flush();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            createAndWriteToFile(stringbuilder.toString(), file);
+            System.out.println(Thread.currentThread() + " has written current file: " + file.getAbsolutePath());
+        }
+        for (int i = 0; i < config.getFilesCount(); i++) {
+            String filename = folderToPopulate.getAbsolutePath() + File.separator + UUID.randomUUID() + ".json";
+            File file = new File(filename);
+            createAndWriteToFile("{{{{", file);
+            System.out.println(Thread.currentThread() + " has written current file: " + file.getAbsolutePath());
+        }
+    }
+
+    private void createAndWriteToFile(String str, File file) {
+        byte[] strBytes = str.getBytes();
+        try (BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
+            outputStream.write(strBytes);
+            try {
+                outputStream.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.out.println(Thread.currentThread() + " has written current file: " + file.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        /*} else {
-            return;
-        }*/
     }
 }

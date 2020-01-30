@@ -37,11 +37,6 @@ public class JSONFileGeneratorTask implements Callable<Long> {
             timerService.schedule(() -> {
                 scheduledFuture.cancel(true);
             }, config.getTestTime(), TimeUnit.SECONDS);
-            /*if (timeout.get()) {
-                scheduledFuture.cancel(true);
-                executorService.shutdownNow();
-                return 1l;
-            }*/
         }
         System.out.println(Thread.currentThread() + " JSON File Generator Task finished!");
         return 1l;

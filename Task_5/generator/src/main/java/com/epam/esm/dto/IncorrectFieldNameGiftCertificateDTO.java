@@ -15,7 +15,7 @@ public class IncorrectFieldNameGiftCertificateDTO extends DTO {
 
     private String description;
 
-    private BigDecimal priceDTO;
+    private BigDecimal INCORRECTFIELDNAME;
 
     private Integer durationTillExpiry;
 
@@ -31,7 +31,7 @@ public class IncorrectFieldNameGiftCertificateDTO extends DTO {
         this.name = name;
         this.description = description;
         this.durationTillExpiry = duration;
-        this.priceDTO = price;
+        this.INCORRECTFIELDNAME = price;
         this.tags = tags;
     }
 
@@ -51,12 +51,12 @@ public class IncorrectFieldNameGiftCertificateDTO extends DTO {
         this.description = description;
     }
 
-    public BigDecimal getPriceDTO() {
-        return priceDTO;
+    public BigDecimal getINCORRECTFIELDNAME() {
+        return INCORRECTFIELDNAME;
     }
 
-    public void setPriceDTO(BigDecimal priceDTO) {
-        this.priceDTO = priceDTO.setScale(SCALE, ROUNDING_MODE);
+    public void setINCORRECTFIELDNAME(BigDecimal INCORRECTFIELDNAME) {
+        this.INCORRECTFIELDNAME = INCORRECTFIELDNAME.setScale(SCALE, ROUNDING_MODE);
     }
 
     public int getDurationTillExpiry() {
@@ -84,14 +84,14 @@ public class IncorrectFieldNameGiftCertificateDTO extends DTO {
         return getDurationTillExpiry() == that.getDurationTillExpiry() &&
                 Objects.equals(getName(), that.getName()) &&
                 Objects.equals(getDescription(), that.getDescription()) &&
-                Objects.equals(getPriceDTO(), that.getPrice()) &&
+                Objects.equals(getINCORRECTFIELDNAME(), that.getPrice()) &&
                 Objects.equals(getTags(), that.getTags());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), getName(), getDescription(),
-                getPriceDTO(), getDurationTillExpiry(), getTags());
+                getINCORRECTFIELDNAME(), getDurationTillExpiry(), getTags());
     }
 
     @Override
@@ -99,7 +99,7 @@ public class IncorrectFieldNameGiftCertificateDTO extends DTO {
         final StringBuffer sb = new StringBuffer("GiftCertificateDTO{");
         sb.append("name='").append(name).append('\'');
         sb.append(", description='").append(description).append('\'');
-        sb.append(", price=").append(priceDTO);
+        sb.append(", price=").append(INCORRECTFIELDNAME);
         sb.append(", durationTillExpiry=").append(durationTillExpiry);
         sb.append(", tagDTOList=").append(tags);
         sb.append('}');

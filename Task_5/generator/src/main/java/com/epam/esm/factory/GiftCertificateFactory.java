@@ -34,7 +34,7 @@ public class GiftCertificateFactory {
     public GeneratedGiftCertificateDTO createNonValidBeanCertificate() {
         String name = generateString(STRING_LENGTH);
         String description = generateString(STRING_LENGTH);
-        BigDecimal price = null;
+        BigDecimal price = BigDecimal.valueOf(-0.1111);
         Integer duration = ThreadLocalRandom.current().nextInt(1, 6);
         return new GeneratedGiftCertificateDTO(0, name, description, price, duration, Arrays.asList(getRandomTag(), getRandomTag()));
     }
