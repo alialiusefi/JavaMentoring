@@ -1,6 +1,8 @@
 package com.epam.esm.generator;
 
 import com.epam.esm.config.GeneratorConfig;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.concurrent.BlockingQueue;
@@ -17,6 +19,7 @@ public class JSONFileGeneratorTask implements Callable<Long> {
     private Long validFiles;
     private GeneratorConfig config;
     private ScheduledExecutorService executorService;
+    private Logger LOG = LogManager.getLogger(JSONFileGeneratorTask.class);
 
     public JSONFileGeneratorTask(BlockingQueue<File> folderPaths, Long validFiles, GeneratorConfig config) {
         this.folderPaths = folderPaths;
@@ -28,7 +31,7 @@ public class JSONFileGeneratorTask implements Callable<Long> {
     @Override
     public Long call() throws Exception {
         while (!folderPaths.isEmpty()) {
-            System.out.println(Thread.currentThread() + " has been started!");
+            LOG.debug(Thread.currentThread() + " has been started!");
             File folderToPopulate = folderPaths.poll();
             ScheduledFuture scheduledFuture = executorService.scheduleAtFixedRate(
                     new JSONFileGeneratorPeriodTask(folderToPopulate, validFiles, config),
@@ -36,9 +39,17 @@ public class JSONFileGeneratorTask implements Callable<Long> {
             ScheduledExecutorService timerService = Executors.newScheduledThreadPool(1);
             timerService.schedule(() -> {
                 scheduledFuture.cancel(true);
+                executorService.shutdown();
+                try {
+                    if (!executorService.awaitTermination(config.getTestTime(), TimeUnit.MILLISECONDS)) {
+                        executorService.shutdownNow();
+                    }
+                } catch (InterruptedException e) {
+                    executorService.shutdownNow();
+                }
             }, config.getTestTime(), TimeUnit.SECONDS);
         }
-        System.out.println(Thread.currentThread() + " JSON File Generator Task finished!");
+        LOG.debug(Thread.currentThread() + " JSON File Generator Task finished!");
         return 1l;
     }
 }

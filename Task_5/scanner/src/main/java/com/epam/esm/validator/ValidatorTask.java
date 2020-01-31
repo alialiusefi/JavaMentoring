@@ -111,6 +111,7 @@ public class ValidatorTask implements Callable<Long> {
                 }
             }
         }
+
         return amountOfCertificates;
     }
 

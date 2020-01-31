@@ -8,6 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -32,12 +36,24 @@ public class ScannerManager {
 
     @PostConstruct
     public void init() {
-        LOG.debug("Starting async json file processing");
+        try {
+            LOG.info("STATISTICS: Amount of certificates in db before scanning: " + giftCertificateService.getCountAllGiftCertificates());
+            LOG.info("STATISTICS: Amount of files in giftcertificates before scanning: " + fileCount(Paths.get(config.getScanPath())));
+            LOG.info("STATISTICS: Amount of files in error before scanning: " + fileCount(Paths.get(config.getErrorPath())));
+            LOG.debug("Starting async json file processing");
+        } catch (IOException e) {
+            LOG.error(e.getMessage(), e);
+        }
         ScheduledExecutorService scheduledExecutorService = (ScheduledExecutorService) this.executorService;
         ScannerTask scannerTask = new ScannerTask(this, config, giftCertificateService);
         scheduledExecutorService.scheduleAtFixedRate(scannerTask,
                 0, config.getScanDelay(), TimeUnit.MILLISECONDS);
     }
 
-
+    public long fileCount(Path dir) throws IOException {
+        return Files.walk(dir)
+                .parallel()
+                .filter(p -> !p.toFile().isDirectory())
+                .count();
+    }
 }

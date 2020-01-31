@@ -5,6 +5,8 @@ import com.epam.esm.dto.DTO;
 import com.epam.esm.factory.GiftCertificateFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -21,6 +23,7 @@ public class JSONFileGeneratorPeriodTask implements Runnable {
     private ObjectMapper mapper = new ObjectMapper();
     private Long validFiles;
     private GeneratorConfig config;
+    private Logger LOG = LogManager.getLogger(JSONFileGeneratorPeriodTask.class);
 
     public JSONFileGeneratorPeriodTask(File folderToPopulate, Long validFiles, GeneratorConfig config) {
         this.folderToPopulate = folderToPopulate;
@@ -30,7 +33,8 @@ public class JSONFileGeneratorPeriodTask implements Runnable {
 
     @Override
     public void run() {
-        System.out.println(Thread.currentThread() + " will now begin populating folder: " + folderToPopulate.getAbsolutePath());
+        Long amountOfFilesWritten = 0l;
+        LOG.debug(Thread.currentThread() + " will now begin populating folder: " + folderToPopulate.getAbsolutePath());
         LinkedList<DTO> giftCertificateDTO = new LinkedList<>();
         long amountOfValidDTOS = validFiles * AMOUNT_OF_DTOS_PER_FILE;
         long amountOfInvalidDTOS = config.getFilesCount() * AMOUNT_OF_DTOS_PER_FILE;
@@ -48,7 +52,7 @@ public class JSONFileGeneratorPeriodTask implements Runnable {
                 try {
                     JSONStr = mapper.writeValueAsString(dto);
                 } catch (JsonProcessingException e) {
-                    e.printStackTrace();
+                    LOG.debug(e.getMessage(), e);
                 }
                 stringbuilder.append(JSONStr);
                 if (i != AMOUNT_OF_DTOS_PER_FILE - 1) {
@@ -57,14 +61,18 @@ public class JSONFileGeneratorPeriodTask implements Runnable {
             }
             stringbuilder.append("]");
             createAndWriteToFile(stringbuilder.toString(), file);
-            System.out.println(Thread.currentThread() + " has written current file: " + file.getAbsolutePath());
+            amountOfFilesWritten++;
+            LOG.debug(Thread.currentThread() + " has written current file: " + file.getAbsolutePath());
         }
         for (int i = 0; i < config.getFilesCount(); i++) {
             String filename = folderToPopulate.getAbsolutePath() + File.separator + UUID.randomUUID() + ".json";
             File file = new File(filename);
             createAndWriteToFile("{{{{", file);
-            System.out.println(Thread.currentThread() + " has written current file: " + file.getAbsolutePath());
+            amountOfFilesWritten++;
+            LOG.debug(Thread.currentThread() + " has written current file: " + file.getAbsolutePath());
         }
+        LOG.info("Statistics:" + Thread.currentThread() + "wrote " + amountOfFilesWritten + " of files");
+        LOG.debug(Thread.currentThread() + " generator stopped!");
     }
 
     private void createAndWriteToFile(String str, File file) {
@@ -74,10 +82,12 @@ public class JSONFileGeneratorPeriodTask implements Runnable {
             try {
                 outputStream.flush();
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error(e.getMessage(), e);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error(e.getMessage(), e);
         }
     }
+
+
 }

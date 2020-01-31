@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -37,12 +40,18 @@ public class ScannerTask implements Runnable {
 
     @Override
     public void run() {
-        LOG.debug(Thread.currentThread() + " Started Scanner Task!");
-        File[] filesandfolders = new File(config.getScanPath()).listFiles();
         try {
+
+            LOG.debug(Thread.currentThread() + " Started Scanner Task!");
+            File[] filesandfolders = new File(config.getScanPath()).listFiles();
             List<ValidatorTask> validatorTasks = initialScan(filesandfolders);
             globalPooledExecutors.invokeAll(validatorTasks);
-            LOG.debug("Invoked Validator Tasks!");
+            LOG.info("STATISTICS: Amount of certificates in db after validators invoked: "
+                    + giftCertificateService.getCountAllGiftCertificates());
+            LOG.info("STATISTICS: Amount of files in giftcertificates after validators invoked: "
+                    + fileCount(Paths.get(config.getScanPath())));
+            LOG.info("STATISTICS: Amount of files in error after validators invoked: "
+                    + fileCount(Paths.get(config.getErrorPath())));
         } catch (IOException | InterruptedException e) {
             LOG.error(e.getMessage(), e);
         }
@@ -102,6 +111,7 @@ public class ScannerTask implements Runnable {
     }
 
 
+
     private static class FileComparator implements Comparator<File> {
         @Override
         public int compare(File o1, File o2) {
@@ -121,5 +131,11 @@ public class ScannerTask implements Runnable {
         }
     }
 
+    public long fileCount(Path dir) throws IOException {
+        return Files.walk(dir)
+                .parallel()
+                .filter(p -> !p.toFile().isDirectory())
+                .count();
+    }
 
 }
