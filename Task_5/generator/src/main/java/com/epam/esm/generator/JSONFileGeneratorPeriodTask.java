@@ -71,7 +71,7 @@ public class JSONFileGeneratorPeriodTask implements Runnable {
             amountOfFilesWritten++;
             LOG.debug(Thread.currentThread() + " has written current file: " + file.getAbsolutePath());
         }
-        LOG.info("Statistics:" + Thread.currentThread() + "wrote " + amountOfFilesWritten + " of files");
+        LOG.info("STATISTICS:" + Thread.currentThread() + "wrote " + amountOfFilesWritten + " of files");
         LOG.debug(Thread.currentThread() + " generator stopped!");
     }
 

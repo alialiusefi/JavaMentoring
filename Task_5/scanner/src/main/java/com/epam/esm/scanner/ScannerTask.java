@@ -41,17 +41,19 @@ public class ScannerTask implements Runnable {
     @Override
     public void run() {
         try {
-
             LOG.debug(Thread.currentThread() + " Started Scanner Task!");
             File[] filesandfolders = new File(config.getScanPath()).listFiles();
             List<ValidatorTask> validatorTasks = initialScan(filesandfolders);
+            LOG.info("globalPooledExecutors before invoking validators:" + globalPooledExecutors.toString());
             globalPooledExecutors.invokeAll(validatorTasks);
+            LOG.info("globalPooledExecutors after invoking validators:" + globalPooledExecutors.toString());
             LOG.info("STATISTICS: Amount of certificates in db after validators invoked: "
                     + giftCertificateService.getCountAllGiftCertificates());
             LOG.info("STATISTICS: Amount of files in giftcertificates after validators invoked: "
                     + fileCount(Paths.get(config.getScanPath())));
             LOG.info("STATISTICS: Amount of files in error after validators invoked: "
                     + fileCount(Paths.get(config.getErrorPath())));
+            LOG.debug(Thread.currentThread() + " Ended Scanner Task!");
         } catch (IOException | InterruptedException e) {
             LOG.error(e.getMessage(), e);
         }

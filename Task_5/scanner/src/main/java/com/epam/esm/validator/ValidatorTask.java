@@ -53,11 +53,6 @@ public class ValidatorTask implements Callable<Long> {
         this.service = giftCertificateService;
     }
 
-   /* @Autowired
-    public void setService(GiftCertificateService service) {
-        this.service = service;
-    }*/
-
     public LinkedList<File> getFilesToValidate() {
         return filesToValidate;
     }
@@ -111,7 +106,7 @@ public class ValidatorTask implements Callable<Long> {
                 }
             }
         }
-
+        LOG.debug("Validator Thread : " + Thread.currentThread() + " ended!");
         return amountOfCertificates;
     }
 
@@ -119,7 +114,12 @@ public class ValidatorTask implements Callable<Long> {
         String JSONList;
         try (FileReader fileReader = new FileReader(file)) {
             try (BufferedReader reader = new BufferedReader(fileReader)) {
-                JSONList = reader.readLine();
+                StringBuilder builder = new StringBuilder();
+                String readLine;
+                while ((readLine = reader.readLine()) != null && readLine.length() != 0) {
+                    builder.append(readLine);
+                }
+                JSONList = builder.toString();
             }
         }
         try {
@@ -149,6 +149,8 @@ public class ValidatorTask implements Callable<Long> {
             moveFile(file.getAbsolutePath(), scannerTask.getConfig().getErrorPath() + File.separator + WRONGJSONFORMAT +
                     File.separator + file.getName());
         } catch (IOException e) {
+            LOG.error(e.getMessage(), e);
+        } catch (Exception e) {
             LOG.error(e.getMessage(), e);
         }
         return new ArrayList<>();

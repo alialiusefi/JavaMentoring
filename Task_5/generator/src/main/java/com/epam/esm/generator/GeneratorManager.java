@@ -61,19 +61,21 @@ public class GeneratorManager {
         List<JSONFileGeneratorTask> tasks = new ArrayList<>();
         int amountOfFolders = allFolderCreated.size();
         Long validFiles = generatorConfig.getFilesCount() * 16;
-        Long invalidFiles = generatorConfig.getFilesCount();
+        Long invalidFiles = generatorConfig.getFilesCount() * 4;
         LOG.info("STATISTICS:Expected amount of valid files per folder:" + validFiles);
-        LOG.info("STATISTICS:Expected amount of total valid files:" + validFiles * amountOfFolders * (generatorConfig.getTestTime() /
-                (generatorConfig.getPeriodTime() / 1000)));
-        LOG.info("STATISTICS:Expected amount of total invalid files:" + 4 * invalidFiles * amountOfFolders * (generatorConfig.getTestTime() /
-                (generatorConfig.getPeriodTime() / 1000)));
+        Double periodTime = (double) generatorConfig.getPeriodTime() / 1000;
+        Double totalAmountOfValidFiles = (validFiles * amountOfFolders * (generatorConfig.getTestTime() / periodTime));
+        LOG.info("STATISTICS:Expected amount of total valid files:" + totalAmountOfValidFiles);
+        Double totalAmountOfInvalidFiles = invalidFiles * amountOfFolders * (generatorConfig.getTestTime() / periodTime);
+        LOG.info("STATISTICS:Expected amount of total invalid files:" + totalAmountOfInvalidFiles);
+        LOG.info("STATISTICS:Expected amount of valid certificates that will be generated:" + totalAmountOfValidFiles * 3);
         for (int i = 0; i < amountOfFolders; i++) {
             tasks.add(new JSONFileGeneratorTask(
                     this.allFolderCreated,
                     validFiles, this.generatorConfig));
 
         }
-        this.executorService = Executors.newScheduledThreadPool(amountOfFolders);
+        this.executorService = Executors.newFixedThreadPool(amountOfFolders);
         try {
             List<Future<Long>> futures = this.executorService.invokeAll(tasks);
             this.executorService.shutdown();

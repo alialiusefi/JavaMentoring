@@ -16,6 +16,7 @@ public class GeneratorConfig {
         this.testTime = Long.parseLong(bundle.getString("testTime"));
         this.periodTime = Long.parseLong(bundle.getString("periodTime"));
         this.filesCount = Long.parseLong(bundle.getString("filesCount"));
+
     }
 
     public String getPath() {
