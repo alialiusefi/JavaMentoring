@@ -14,7 +14,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Validation;
-import javax.validation.ValidationException;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.io.BufferedReader;
@@ -57,57 +56,42 @@ public class ValidatorTask implements Callable<Long> {
         return filesToValidate;
     }
 
-    public void setFilesToValidate(LinkedList<File> filesToValidate) {
-        this.filesToValidate = filesToValidate;
-    }
-
-    public ScannerTask getScannerTask() {
-        return scannerTask;
-    }
-
-    public void setScannerTask(ScannerTask scannerTask) {
-        this.scannerTask = scannerTask;
-    }
-
     @Override
     public Long call() throws Exception {
         LOG.debug("Validator Thread : " + Thread.currentThread() + " started!");
-        Long amountOfCertificates = 0L;
         while (!filesToValidate.isEmpty()) {
-            File file = filesToValidate.poll();
-            if (file.isDirectory()) {
-                File[] filesInDirectory = file.listFiles();
-                try {
+            try {
+                File file = filesToValidate.poll();
+                if (file.isDirectory()) {
+                    File[] filesInDirectory = file.listFiles();
                     filesToValidate.addAll(Arrays.asList(filesInDirectory));
-                } catch (Exception e) {
-                    LOG.error(e.getMessage(), e);
-                }
-            } else {
-                LOG.info(Thread.currentThread() + " is now validating file: " + file);
-                List<GiftCertificateDTO> validDtos = getListOfDTOS(file);
-                try {
+                } else {
+                    LOG.info(Thread.currentThread() + " is now validating file: " + file);
+                    List<GiftCertificateDTO> validDtos = getListOfDTOS(file);
                     if (!validDtos.isEmpty()) {
-                        String filepath = file.getAbsolutePath();
-                        LOG.info(filepath + " is valid!");
-                        try {
-                            validDtos.forEach(service::add);
-                            reentrantLock.lock();
-                            LOG.debug(Thread.currentThread() + " is now deleting " + file.getAbsolutePath());
-                            Files.delete(Paths.get(filepath));
-                            reentrantLock.unlock();
-                        } catch (DataIntegrityViolationException r) {
-                            LOG.info(r.getMessage(), r);
-                            moveFile(file.getAbsolutePath(), scannerTask.getConfig().getErrorPath() + File.separator + DBCONSTRAINTVIOLATION +
-                                    File.separator + file.getName());
-                        }
+                        attemptAddCertificatesToDB(validDtos, file);
                     }
-                } catch (IOException e) {
-                    LOG.error(e.getMessage(), e);
                 }
+            } catch (IOException r) {
+                LOG.error(r.getMessage(), r);
             }
         }
         LOG.debug("Validator Thread : " + Thread.currentThread() + " ended!");
-        return amountOfCertificates;
+        return 0l;
+    }
+
+    private void attemptAddCertificatesToDB(List<GiftCertificateDTO> validDtos, File file) throws IOException {
+        try {
+            validDtos.forEach(service::add);
+            reentrantLock.lock();
+            LOG.debug(Thread.currentThread() + " is now deleting " + file.getAbsolutePath());
+            Files.delete(Paths.get(file.getAbsolutePath()));
+            reentrantLock.unlock();
+        } catch (DataIntegrityViolationException r) {
+            LOG.info(r.getMessage(), r);
+            moveFile(file.getAbsolutePath(), scannerTask.getConfig().getErrorPath() + File.separator + DBCONSTRAINTVIOLATION +
+                    File.separator + file.getName());
+        }
     }
 
     private List<GiftCertificateDTO> getListOfDTOS(File file) throws IOException {
@@ -129,17 +113,13 @@ public class ValidatorTask implements Callable<Long> {
             ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
             Validator validator = factory.getValidator();
             for (GiftCertificateDTO i : dtos) {
-                try {
-                    Set set = validator.validate(i);
-                    if (!set.isEmpty()) {
-                        moveFile(file.getAbsolutePath(), scannerTask.getConfig().getErrorPath() + File.separator + WRONGBEAN +
-                                File.separator + file.getName());
-                        return new ArrayList<>();
-                    }
-                    return dtos;
-                } catch (IllegalArgumentException | ValidationException e) {
-                    LOG.error(e.getMessage(), e);
+                Set set = validator.validate(i);
+                if (!set.isEmpty()) {
+                    moveFile(file.getAbsolutePath(), scannerTask.getConfig().getErrorPath() + File.separator + WRONGBEAN +
+                            File.separator + file.getName());
+                    return new ArrayList<>(0);
                 }
+                return dtos;
             }
         } catch (UnrecognizedPropertyException e) {
             moveFile(file.getAbsolutePath(), scannerTask.getConfig().getErrorPath() + File.separator + WRONGFIELDNAMES +
@@ -149,8 +129,6 @@ public class ValidatorTask implements Callable<Long> {
             moveFile(file.getAbsolutePath(), scannerTask.getConfig().getErrorPath() + File.separator + WRONGJSONFORMAT +
                     File.separator + file.getName());
         } catch (IOException e) {
-            LOG.error(e.getMessage(), e);
-        } catch (Exception e) {
             LOG.error(e.getMessage(), e);
         }
         return new ArrayList<>();

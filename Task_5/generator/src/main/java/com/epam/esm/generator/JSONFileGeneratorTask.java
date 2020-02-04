@@ -5,7 +5,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
-import java.time.LocalTime;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
@@ -37,7 +36,6 @@ public class JSONFileGeneratorTask implements Callable<Long> {
             ScheduledFuture scheduledFuture = executorService.scheduleAtFixedRate(
                     new JSONFileGeneratorPeriodTask(folderToPopulate, validFiles, config),
                     0, config.getPeriodTime(), TimeUnit.MILLISECONDS);
-            LocalTime localTimefrom = LocalTime.now();
             ScheduledExecutorService timerService = Executors.newScheduledThreadPool(1);
             timerService.schedule(() -> {
                 scheduledFuture.cancel(true);

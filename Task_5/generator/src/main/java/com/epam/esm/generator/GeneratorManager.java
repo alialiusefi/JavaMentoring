@@ -42,7 +42,7 @@ public class GeneratorManager {
         if (lvl == 0 || this.localSubfolderCount <= 0) {
             return;
         }
-        long max = ThreadLocalRandom.current().nextLong(this.localSubfolderCount) + 1;
+        long max = ThreadLocalRandom.current().nextLong(this.localSubfolderCount + 1) + 1;
         for (int j = 0; j < max; j++) {
             String folderName = String.format(FORMAT, lvl, j);
             String pathStr = rootPath + File.separator + folderName;
@@ -60,20 +60,20 @@ public class GeneratorManager {
     public void start() {
         List<JSONFileGeneratorTask> tasks = new ArrayList<>();
         int amountOfFolders = allFolderCreated.size();
-        Long validFiles = generatorConfig.getFilesCount() * 16;
-        Long invalidFiles = generatorConfig.getFilesCount() * 4;
-        LOG.info("STATISTICS:Expected amount of valid files per folder:" + validFiles);
-        Double periodTime = (double) generatorConfig.getPeriodTime() / 1000;
-        Double totalAmountOfValidFiles = (validFiles * amountOfFolders * (generatorConfig.getTestTime() / periodTime));
-        LOG.info("STATISTICS:Expected amount of total valid files:" + totalAmountOfValidFiles);
-        Double totalAmountOfInvalidFiles = invalidFiles * amountOfFolders * (generatorConfig.getTestTime() / periodTime);
-        LOG.info("STATISTICS:Expected amount of total invalid files:" + totalAmountOfInvalidFiles);
-        LOG.info("STATISTICS:Expected amount of valid certificates that will be generated:" + totalAmountOfValidFiles * 3);
+        Double validFiles = (double) generatorConfig.getFilesCount() * 16;
+        Double invalidFiles = (double) generatorConfig.getFilesCount() * 4;
+        LOG.info("STATISTICS: Expected amount of valid files per folder:" + validFiles);
+        Double periodTimeMS = (double) generatorConfig.getPeriodTime();
+        Double testTimeMS = (double) generatorConfig.getTestTime() * 1000;
+        Double totalAmountOfValidFiles = validFiles * amountOfFolders * (testTimeMS / periodTimeMS);
+        LOG.info("STATISTICS: Expected amount of total valid files:" + totalAmountOfValidFiles);
+        Double totalAmountOfInvalidFiles = invalidFiles * amountOfFolders * (testTimeMS / periodTimeMS);
+        LOG.info("STATISTICS: Expected amount of total invalid files:" + totalAmountOfInvalidFiles);
+        LOG.info("STATISTICS: Expected amount of valid certificates that will be generated:" + totalAmountOfValidFiles * 3);
         for (int i = 0; i < amountOfFolders; i++) {
             tasks.add(new JSONFileGeneratorTask(
                     this.allFolderCreated,
-                    validFiles, this.generatorConfig));
-
+                    Math.round(validFiles), this.generatorConfig));
         }
         this.executorService = Executors.newFixedThreadPool(amountOfFolders);
         try {
