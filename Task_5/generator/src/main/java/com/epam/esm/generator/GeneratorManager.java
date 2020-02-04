@@ -27,7 +27,7 @@ public class GeneratorManager {
     private ExecutorService executorService;
     private Long localSubfolderCount;
     private Logger LOG = LogManager.getLogger(GeneratorManager.class);
-    private static int MAX_AMOUNT_OF_THREADS = 2;
+    private static int MAX_AMOUNT_OF_THREADS = 20;
 
     public GeneratorManager(ResourceBundle generatorConfigProperties) {
         this.generatorConfig = new GeneratorConfig(generatorConfigProperties);
