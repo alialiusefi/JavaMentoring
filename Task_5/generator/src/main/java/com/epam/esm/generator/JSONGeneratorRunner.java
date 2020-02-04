@@ -24,8 +24,11 @@ public class JSONGeneratorRunner {
             LOG.error("Period time cannot be greater than test time!");
             return;
         }
-        manager.createFolders(manager.getGeneratorConfig().getPath(), manager.getGeneratorConfig().getSubfolderCount() / 3);
         manager.getAllFolderCreated().add(new File(manager.getGeneratorConfig().getPath()));
+        if (manager.getGeneratorConfig().getSubfolderCount() < 3) {
+            LOG.info("To have subdirectories subfoldercount should be at least 3");
+        }
+        manager.createFolders(manager.getGeneratorConfig().getPath(), manager.getGeneratorConfig().getSubfolderCount() / 3);
         manager.start();
     }
 

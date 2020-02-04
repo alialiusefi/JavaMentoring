@@ -27,6 +27,7 @@ public class GeneratorManager {
     private ExecutorService executorService;
     private Long localSubfolderCount;
     private Logger LOG = LogManager.getLogger(GeneratorManager.class);
+    private static int MAX_AMOUNT_OF_THREADS = 2;
 
     public GeneratorManager(ResourceBundle generatorConfigProperties) {
         this.generatorConfig = new GeneratorConfig(generatorConfigProperties);
@@ -42,7 +43,7 @@ public class GeneratorManager {
         if (lvl == 0 || this.localSubfolderCount <= 0) {
             return;
         }
-        long max = ThreadLocalRandom.current().nextLong(this.localSubfolderCount + 1) + 1;
+        long max = ThreadLocalRandom.current().nextLong(this.localSubfolderCount + 1);
         for (int j = 0; j < max; j++) {
             String folderName = String.format(FORMAT, lvl, j);
             String pathStr = rootPath + File.separator + folderName;
@@ -70,15 +71,21 @@ public class GeneratorManager {
         Double totalAmountOfInvalidFiles = invalidFiles * amountOfFolders * (testTimeMS / periodTimeMS);
         LOG.info("STATISTICS: Expected amount of total invalid files:" + totalAmountOfInvalidFiles);
         LOG.info("STATISTICS: Expected amount of valid certificates that will be generated:" + totalAmountOfValidFiles * 3);
+        LOG.info("STATISTICS: Expected amount of invalid certificates that will be generated:" + totalAmountOfInvalidFiles * 3);
+
         for (int i = 0; i < amountOfFolders; i++) {
             tasks.add(new JSONFileGeneratorTask(
                     this.allFolderCreated,
                     Math.round(validFiles), this.generatorConfig));
         }
-        this.executorService = Executors.newFixedThreadPool(amountOfFolders);
+        if (amountOfFolders > MAX_AMOUNT_OF_THREADS) {
+            this.executorService = Executors.newFixedThreadPool(MAX_AMOUNT_OF_THREADS);
+        } else {
+            this.executorService = Executors.newFixedThreadPool(amountOfFolders);
+        }
         try {
             List<Future<Long>> futures = this.executorService.invokeAll(tasks);
-            this.executorService.shutdown();
+            //this.executorService.shutdown();
         } catch (InterruptedException e) {
             executorService.shutdownNow();
         }

@@ -31,7 +31,6 @@ public class JSONFileGeneratorTask implements Callable<Long> {
     @Override
     public Long call() throws Exception {
         while (!folderPaths.isEmpty()) {
-            LOG.debug(Thread.currentThread() + " has been started!");
             File folderToPopulate = folderPaths.poll();
             ScheduledFuture scheduledFuture = executorService.scheduleAtFixedRate(
                     new JSONFileGeneratorPeriodTask(folderToPopulate, validFiles, config),
@@ -49,7 +48,6 @@ public class JSONFileGeneratorTask implements Callable<Long> {
                 }
             }, config.getTestTime(), TimeUnit.SECONDS);
         }
-        LOG.debug(Thread.currentThread() + " JSON File Generator Task finished!");
         return 1l;
     }
 }
