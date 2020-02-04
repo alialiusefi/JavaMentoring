@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -64,44 +63,42 @@ public class ScannerTask implements Runnable {
         return config;
     }
 
-    public void setConfig(YAMLConfig config) {
-        this.config = config;
-    }
-
-    private List<ValidatorTask> initialScan(File[] filesandfolders) throws IOException {
+    private List<ValidatorTask> initialScan(File[] filesandfolders) {
         LOG.debug("Initial scan started!");
         if (filesandfolders.length == 0) {
-            LOG.error("Empty directory");
-            throw new IOException("Empty directory");
+            LOG.error("Empty directory - Nothing to scan");
         }
-        if (filesandfolders != null) {
-            PriorityQueue<File> files = new PriorityQueue<>(new FileComparator());
-            Collections.addAll(files, filesandfolders);
-            LOG.debug("Amount of initial scan files: " + files.size());
-            int partSize = getPartSize(files.size(), config.getThreadCount());
-            LOG.debug("Part size " + partSize);
-            List<ValidatorTask> validatorTasks = initializeListOfValidators(config.getThreadCount());
-            for (int i = 0; i < validatorTasks.size(); i++) {
-                if (!files.isEmpty()) {
-                    File file = files.poll();
-                    if (file != null) {
-                        LOG.debug("Adding " + file + " to " + validatorTasks.get(i) + "," + "files left to distribute:" + files.size());
-                        validatorTasks.get(i).getFilesToValidate().add(file);
-                    }
-                } else {
-                    break;
-                }
-                if (i == (validatorTasks.size() - 1)) {
-                    i = -1;
-                }
-            }
-            return validatorTasks;
-        }
-        throw new FileNotFoundException("Error scanning scan directory");
+        PriorityQueue<File> files = new PriorityQueue<>(new FileComparator());
+        Collections.addAll(files, filesandfolders);
+        LOG.debug("Amount of initial scan files: " + files.size());
+        List<ValidatorTask> validatorTasks = initializeListOfValidators(config.getThreadCount());
+        distributeInitialFilesAndFoldersToValidators(validatorTasks, files);
+        return validatorTasks;
     }
 
-    private Integer getPartSize(Integer listSize, Integer threadCount) {
-        return listSize % threadCount == 0 ? listSize / threadCount : listSize / threadCount + 1;
+    /**
+     * The initial files and folders, will be distributed accross all tasks, these tasks will approx. contain equal amount
+     * of workload, were folders are prioritized first then files. The iteration will continue infinitely till the queue is empty.
+     *
+     * @param validatorTasks Tasks that will accepts distributed initial files and folders
+     * @param files          Queue that contains initial files and folders
+     */
+    private void distributeInitialFilesAndFoldersToValidators(List<ValidatorTask> validatorTasks, PriorityQueue<File> files) {
+        for (int i = 0; i < validatorTasks.size(); i++) {
+            if (!files.isEmpty()) {
+                File file = files.poll();
+                if (file != null) {
+                    //LOG.debug("Adding " + file + " to " + validatorTasks.get(i) + "," + "files left to distribute:" + files.size());
+                    ValidatorTask currentTask = validatorTasks.get(i);
+                    currentTask.getFilesToValidate().add(file);
+                }
+            } else {
+                break;
+            }
+            if (i == (validatorTasks.size() - 1)) {
+                i = -1;
+            }
+        }
     }
 
     private List<ValidatorTask> initializeListOfValidators(Integer size) {
@@ -111,8 +108,6 @@ public class ScannerTask implements Runnable {
         }
         return validatorTasks;
     }
-
-
 
     private static class FileComparator implements Comparator<File> {
         @Override
