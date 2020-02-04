@@ -77,8 +77,8 @@ public class ScannerTask implements Runnable {
     }
 
     /**
-     * The initial files and folders, will be distributed accross all tasks, these tasks will approx. contain equal amount
-     * of workload, were folders are prioritized first then files. The iteration will continue infinitely till the queue is empty.
+     * The initial files and folders, will be distributed across all tasks, these tasks will approx. contain equal amount
+     * of workload, where folders are prioritized first when adding then files are added to each task. The iteration will continue infinitely till the queue is empty.
      *
      * @param validatorTasks Tasks that will accepts distributed initial files and folders
      * @param files          Queue that contains initial files and folders
