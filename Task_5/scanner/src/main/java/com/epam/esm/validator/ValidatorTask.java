@@ -24,10 +24,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.locks.ReentrantLock;
@@ -60,42 +60,58 @@ public class ValidatorTask implements Callable<Long> {
     public Long call() throws Exception {
         LOG.debug("Validator Thread : " + Thread.currentThread() + " started!");
         while (!filesToValidate.isEmpty()) {
+            File file = filesToValidate.poll();
             try {
-                File file = filesToValidate.poll();
                 if (file.isDirectory()) {
                     File[] filesInDirectory = file.listFiles();
                     filesToValidate.addAll(Arrays.asList(filesInDirectory));
                 } else {
                     LOG.info(Thread.currentThread() + " is now validating file: " + file);
-                    List<GiftCertificateDTO> validDtos = getListOfDTOS(file);
-                    if (!validDtos.isEmpty()) {
-                        attemptAddCertificatesToDB(validDtos, file);
+                    Optional<List<GiftCertificateDTO>> validDtos = getListOfDTOS(file);
+                    if (validDtos.isPresent()) {
+                        attemptAddCertificatesToDB(validDtos.get(), file);
                     }
                 }
             } catch (IOException r) {
                 LOG.error(r.getMessage(), r);
+            } catch (DataIntegrityViolationException r) {
+                LOG.info(r.getMessage(), r);
+                moveFile(file.getAbsolutePath(), scannerTask.getConfig().getErrorPath() + File.separator + DBCONSTRAINTVIOLATION +
+                        File.separator + file.getName());
             }
         }
         LOG.debug("Validator Thread : " + Thread.currentThread() + " ended!");
         return 0l;
     }
 
-    private void attemptAddCertificatesToDB(List<GiftCertificateDTO> validDtos, File file) throws IOException {
-        try {
-            validDtos.forEach(service::add);
-            reentrantLock.lock();
-            LOG.debug(Thread.currentThread() + " is now deleting " + file.getAbsolutePath());
-            Files.delete(Paths.get(file.getAbsolutePath()));
-            reentrantLock.unlock();
-        } catch (DataIntegrityViolationException r) {
-            LOG.info(r.getMessage(), r);
-            moveFile(file.getAbsolutePath(), scannerTask.getConfig().getErrorPath() + File.separator + DBCONSTRAINTVIOLATION +
-                    File.separator + file.getName());
-        }
+    private void attemptAddCertificatesToDB(List<GiftCertificateDTO> validDtos, File file) throws IOException,
+            DataIntegrityViolationException {
+        validDtos.forEach(service::add);
+        reentrantLock.lock();
+        LOG.debug(Thread.currentThread() + " is now deleting " + file.getAbsolutePath());
+        Files.delete(Paths.get(file.getAbsolutePath()));
+        reentrantLock.unlock();
     }
 
-    private List<GiftCertificateDTO> getListOfDTOS(File file) throws IOException {
-        String JSONList;
+    private Optional<List<GiftCertificateDTO>> getListOfDTOS(File file) throws IOException {
+        String JSONStringList = readFromJSONStringFromFile(file);
+        try {
+            Optional<List<GiftCertificateDTO>> dtos = attemptToParseStringAndValidate(file, JSONStringList);
+            return dtos;
+        } catch (UnrecognizedPropertyException e) {
+            moveFile(file.getAbsolutePath(), scannerTask.getConfig().getErrorPath() + File.separator + WRONGFIELDNAMES +
+                    File.separator + file.getName());
+        } catch (JsonParseException | MismatchedInputException e) {
+            moveFile(file.getAbsolutePath(), scannerTask.getConfig().getErrorPath() + File.separator + WRONGJSONFORMAT +
+                    File.separator + file.getName());
+        } catch (IOException e) {
+            LOG.error(e.getMessage(), e);
+        }
+        return Optional.empty();
+    }
+
+    private String readFromJSONStringFromFile(File file) throws IOException {
+        String JSONListString;
         try (FileReader fileReader = new FileReader(file)) {
             try (BufferedReader reader = new BufferedReader(fileReader)) {
                 StringBuilder builder = new StringBuilder();
@@ -103,35 +119,29 @@ public class ValidatorTask implements Callable<Long> {
                 while ((readLine = reader.readLine()) != null && readLine.length() != 0) {
                     builder.append(readLine);
                 }
-                JSONList = builder.toString();
+                JSONListString = builder.toString();
             }
         }
-        try {
-            List<GiftCertificateDTO> dtos = objectMapper.readValue(JSONList,
-                    new TypeReference<List<GiftCertificateDTO>>() {
-                    });
-            ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-            Validator validator = factory.getValidator();
-            for (GiftCertificateDTO i : dtos) {
-                Set set = validator.validate(i);
-                if (!set.isEmpty()) {
-                    moveFile(file.getAbsolutePath(), scannerTask.getConfig().getErrorPath() + File.separator + WRONGBEAN +
-                            File.separator + file.getName());
-                    return new ArrayList<>(0);
-                }
-                return dtos;
-            }
-        } catch (UnrecognizedPropertyException e) {
-            moveFile(file.getAbsolutePath(), scannerTask.getConfig().getErrorPath() + File.separator + WRONGFIELDNAMES +
-                    File.separator + file.getName());
+        return JSONListString;
+    }
 
-        } catch (JsonParseException | MismatchedInputException e) {
-            moveFile(file.getAbsolutePath(), scannerTask.getConfig().getErrorPath() + File.separator + WRONGJSONFORMAT +
-                    File.separator + file.getName());
-        } catch (IOException e) {
-            LOG.error(e.getMessage(), e);
+    private Optional<List<GiftCertificateDTO>> attemptToParseStringAndValidate(File file, String JSONList)
+            throws IOException {
+        List<GiftCertificateDTO> dtos = objectMapper.readValue(JSONList,
+                new TypeReference<List<GiftCertificateDTO>>() {
+                });
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        for (GiftCertificateDTO i : dtos) {
+            Set set = validator.validate(i);
+            if (!set.isEmpty()) {
+                moveFile(file.getAbsolutePath(), scannerTask.getConfig().getErrorPath() + File.separator + WRONGBEAN +
+                        File.separator + file.getName());
+                return Optional.empty();
+            }
         }
-        return new ArrayList<>();
+        return Optional.of(dtos);
+
     }
 
     private void moveFile(String pathFrom, String pathTo) {
