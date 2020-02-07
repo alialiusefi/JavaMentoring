@@ -58,26 +58,27 @@ public class ValidatorTask implements Callable<Long> {
 
     @Override
     public Long call() throws Exception {
-        LOG.debug("Validator Thread : " + Thread.currentThread() + " started!");
+        LOG.info("Validator Thread : " + Thread.currentThread() + " started!");
         while (!filesToValidate.isEmpty()) {
+            LOG.info("$" + Thread.currentThread() + " has " + filesToValidate.size() + " amount of files to validate");
             File file = filesToValidate.poll();
             try {
                 if (file.isDirectory()) {
                     File[] filesInDirectory = file.listFiles();
                     filesToValidate.addAll(Arrays.asList(filesInDirectory));
                 } else {
-                    LOG.info(Thread.currentThread() + " is now validating file: " + file);
+                    LOG.info("$" + Thread.currentThread() + " is now validating file: " + file);
                     Optional<List<GiftCertificateDTO>> validDtos = getListOfDTOS(file);
                     if (validDtos.isPresent()) {
                         attemptAddCertificatesToDB(validDtos.get(), file);
                     }
                 }
-            } catch (IOException r) {
-                LOG.error(r.getMessage(), r);
             } catch (DataIntegrityViolationException r) {
-                LOG.info(r.getMessage(), r);
+                LOG.debug(r.getMessage(), r);
                 moveFile(file.getAbsolutePath(), scannerTask.getConfig().getErrorPath() + File.separator + DBCONSTRAINTVIOLATION +
                         File.separator + file.getName());
+            } catch (IOException r) {
+                LOG.error(r.getMessage(), r);
             }
         }
         LOG.debug("Validator Thread : " + Thread.currentThread() + " ended!");

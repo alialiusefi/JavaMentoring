@@ -72,7 +72,6 @@ public class GeneratorManager {
         LOG.info("STATISTICS: Expected amount of total invalid files:" + totalAmountOfInvalidFiles);
         LOG.info("STATISTICS: Expected amount of valid certificates that will be generated:" + totalAmountOfValidFiles * 3);
         LOG.info("STATISTICS: Expected amount of invalid certificates that will be generated:" + totalAmountOfInvalidFiles * 3);
-
         for (int i = 0; i < amountOfFolders; i++) {
             tasks.add(new JSONFileGeneratorTask(
                     this.allFolderCreated,

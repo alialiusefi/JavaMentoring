@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.StringJoiner;
 import java.util.UUID;
 
 public class JSONFileGeneratorPeriodTask implements Runnable {
@@ -45,7 +46,7 @@ public class JSONFileGeneratorPeriodTask implements Runnable {
         while (!giftCertificateDTO.isEmpty()) {
             String filename = folderToPopulate.getAbsolutePath() + File.separator + UUID.randomUUID() + ".json";
             File file = new File(filename);
-            StringBuilder stringbuilder = new StringBuilder("[");
+            StringJoiner stringJoiner = new StringJoiner(",", "[", "]");
             for (int i = 0; i < AMOUNT_OF_DTOS_PER_FILE; i++) {
                 DTO dto = giftCertificateDTO.pop();
                 String JSONStr = null;
@@ -54,13 +55,9 @@ public class JSONFileGeneratorPeriodTask implements Runnable {
                 } catch (JsonProcessingException e) {
                     LOG.debug(e.getMessage(), e);
                 }
-                stringbuilder.append(JSONStr);
-                if (i != AMOUNT_OF_DTOS_PER_FILE - 1) {
-                    stringbuilder.append(",");
-                }
+                stringJoiner.add(JSONStr);
             }
-            stringbuilder.append("]");
-            createAndWriteToFile(stringbuilder.toString(), file);
+            createAndWriteToFile(stringJoiner.toString(), file);
             amountOfFilesWritten++;
             LOG.debug(Thread.currentThread() + " has written current file: " + file.getAbsolutePath());
         }
