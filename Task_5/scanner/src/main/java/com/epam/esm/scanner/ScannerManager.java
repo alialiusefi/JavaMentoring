@@ -37,9 +37,11 @@ public class ScannerManager {
     @PostConstruct
     public void init() {
         try {
-            LOG.info("STATISTICS: Amount of certificates in db before scanning: " + giftCertificateService.getCountAllGiftCertificates());
-            LOG.info("STATISTICS: Amount of files in giftcertificates before scanning: " + fileCount(Paths.get(config.getScanPath())));
-            LOG.info("STATISTICS: Amount of files in error before scanning: " + fileCount(Paths.get(config.getErrorPath())));
+            LOG.info("|============STATISTICS============|");
+            LOG.info("|============BEFORE-SCAN===========|");
+            LOG.info("$ Amount of certificates in db before scanning: " + giftCertificateService.getCountAllGiftCertificates());
+            LOG.info("$ Amount of files in /giftcertificates before scanning: " + fileCount(Paths.get(config.getScanPath())));
+            LOG.info("$ Amount of files in /error before scanning: " + fileCount(Paths.get(config.getErrorPath())));
             LOG.debug("Starting async json file processing");
         } catch (IOException e) {
             LOG.error(e.getMessage(), e);
@@ -48,6 +50,8 @@ public class ScannerManager {
         ScannerTask scannerTask = new ScannerTask(this, config, giftCertificateService);
         scheduledExecutorService.scheduleAtFixedRate(scannerTask,
                 0, config.getScanDelay(), TimeUnit.MILLISECONDS);
+        ScheduledExecutorService statisticsAfterScanService = Executors.newScheduledThreadPool(1);
+        //statisticsAfterScanService.scheduleAtFixedRate(() ->{},0,config.get)
     }
 
     public long fileCount(Path dir) throws IOException {
