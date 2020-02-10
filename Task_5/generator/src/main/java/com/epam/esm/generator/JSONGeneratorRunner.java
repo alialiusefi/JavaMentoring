@@ -29,6 +29,7 @@ public class JSONGeneratorRunner {
             LOG.info("To have subdirectories subfoldercount should be at least 3");
         }
         manager.createFolders(manager.getGeneratorConfig().getPath(), manager.getGeneratorConfig().getSubfolderCount() / 3);
+        manager.validateAmountOfSubdirectoriesCreated(manager.getGeneratorConfig().getPath(), manager.getGeneratorConfig().getSubfolderCount() / 3);
         manager.start();
     }
 

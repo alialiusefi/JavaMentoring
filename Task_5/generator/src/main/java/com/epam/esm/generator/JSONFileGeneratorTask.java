@@ -28,19 +28,20 @@ public class JSONFileGeneratorTask implements Callable<Long> {
         this.executorService = Executors.newScheduledThreadPool(1);
     }
 
+
     @Override
     public Long call() throws Exception {
         while (!folderPaths.isEmpty()) {
             File folderToPopulate = folderPaths.poll();
             ScheduledFuture scheduledFuture = executorService.scheduleAtFixedRate(
                     new JSONFileGeneratorPeriodTask(folderToPopulate, validFiles, config),
-                    0, config.getPeriodTime(), TimeUnit.MILLISECONDS);
+                    10, config.getPeriodTime(), TimeUnit.MILLISECONDS);
             ScheduledExecutorService timerService = Executors.newScheduledThreadPool(1);
             timerService.schedule(() -> {
                 scheduledFuture.cancel(true);
                 executorService.shutdown();
                 try {
-                    if (!executorService.awaitTermination(config.getTestTime(), TimeUnit.MILLISECONDS)) {
+                    if (!executorService.awaitTermination(config.getTestTime(), TimeUnit.SECONDS)) {
                         executorService.shutdownNow();
                     }
                 } catch (InterruptedException e) {
