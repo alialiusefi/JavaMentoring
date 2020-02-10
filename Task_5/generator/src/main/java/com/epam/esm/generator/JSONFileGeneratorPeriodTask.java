@@ -22,23 +22,26 @@ public class JSONFileGeneratorPeriodTask implements Runnable {
     private File folderToPopulate;
     private GiftCertificateFactory factory = new GiftCertificateFactory();
     private ObjectMapper mapper = new ObjectMapper();
-    private Long validFiles;
+    private Long validFilesPerFolder;
+    private long invalidFilesPerFolder;
     private GeneratorConfig config;
     private Logger LOG = LogManager.getLogger(JSONFileGeneratorPeriodTask.class);
 
-    public JSONFileGeneratorPeriodTask(File folderToPopulate, Long validFiles, GeneratorConfig config) {
+    public JSONFileGeneratorPeriodTask(File folderToPopulate, Long validFilesPerFolder, GeneratorConfig config, Long invalidFilesPerFolder) {
         this.folderToPopulate = folderToPopulate;
-        this.validFiles = validFiles;
+        this.validFilesPerFolder = validFilesPerFolder;
         this.config = config;
+        this.invalidFilesPerFolder = invalidFilesPerFolder;
     }
+
 
     @Override
     public void run() {
         Long amountOfFilesWritten = 0l;
         LOG.debug(Thread.currentThread() + " will now begin populating folder: " + folderToPopulate.getAbsolutePath());
         LinkedList<DTO> giftCertificateDTO = new LinkedList<>();
-        long amountOfValidDTOS = validFiles * AMOUNT_OF_DTOS_PER_FILE;
-        long amountOfInvalidDTOS = config.getFilesCount() * AMOUNT_OF_DTOS_PER_FILE;
+        long amountOfValidDTOS = validFilesPerFolder * AMOUNT_OF_DTOS_PER_FILE;
+        long amountOfInvalidDTOS = Math.round(this.invalidFilesPerFolder * 0.25 * AMOUNT_OF_DTOS_PER_FILE);
         giftCertificateDTO.addAll(factory.createValidJSONDTO(amountOfValidDTOS));
         giftCertificateDTO.addAll(factory.createIncorrectFieldCertificateDTOS(amountOfInvalidDTOS));
         giftCertificateDTO.addAll(factory.createDBConstraintViolationCertificate(amountOfInvalidDTOS));
@@ -61,7 +64,7 @@ public class JSONFileGeneratorPeriodTask implements Runnable {
             amountOfFilesWritten++;
             LOG.debug(Thread.currentThread() + " has written current file: " + file.getAbsolutePath());
         }
-        for (int i = 0; i < config.getFilesCount(); i++) {
+        for (int i = 0; i < Math.round(this.invalidFilesPerFolder * 0.25); i++) {
             String filename = folderToPopulate.getAbsolutePath() + File.separator + UUID.randomUUID() + ".json";
             File file = new File(filename);
             createAndWriteToFile("{{{{", file);

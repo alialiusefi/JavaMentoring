@@ -16,14 +16,16 @@ public class JSONFileGeneratorTask implements Callable<Long> {
 
 
     private BlockingQueue<File> folderPaths;
-    private Long validFiles;
+    private Long validFilesPerFolder;
     private GeneratorConfig config;
     private ScheduledExecutorService executorService;
     private Logger LOG = LogManager.getLogger(JSONFileGeneratorTask.class);
+    private Long invalidFilesPerFolder;
 
-    public JSONFileGeneratorTask(BlockingQueue<File> folderPaths, Long validFiles, GeneratorConfig config) {
+    public JSONFileGeneratorTask(BlockingQueue<File> folderPaths, Long validFilesPerFolder, Long invalidFilesPerFolder, GeneratorConfig config) {
         this.folderPaths = folderPaths;
-        this.validFiles = validFiles;
+        this.validFilesPerFolder = validFilesPerFolder;
+        this.invalidFilesPerFolder = invalidFilesPerFolder;
         this.config = config;
         this.executorService = Executors.newScheduledThreadPool(1);
     }
@@ -34,7 +36,7 @@ public class JSONFileGeneratorTask implements Callable<Long> {
         while (!folderPaths.isEmpty()) {
             File folderToPopulate = folderPaths.poll();
             ScheduledFuture scheduledFuture = executorService.scheduleAtFixedRate(
-                    new JSONFileGeneratorPeriodTask(folderToPopulate, validFiles, config),
+                    new JSONFileGeneratorPeriodTask(folderToPopulate, validFilesPerFolder, config, invalidFilesPerFolder),
                     10, config.getPeriodTime(), TimeUnit.MILLISECONDS);
             ScheduledExecutorService timerService = Executors.newScheduledThreadPool(1);
             timerService.schedule(() -> {
