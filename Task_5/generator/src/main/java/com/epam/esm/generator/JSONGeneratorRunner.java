@@ -31,6 +31,7 @@ public class JSONGeneratorRunner {
         manager.createFolders(manager.getGeneratorConfig().getPath(), manager.getGeneratorConfig().getSubfolderCount() / 3);
         manager.validateAmountOfSubdirectoriesCreated(manager.getGeneratorConfig().getPath(), manager.getGeneratorConfig().getSubfolderCount() / 3);
         manager.start();
+
     }
 
 

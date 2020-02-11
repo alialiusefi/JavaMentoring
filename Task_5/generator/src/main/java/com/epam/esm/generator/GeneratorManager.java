@@ -84,7 +84,7 @@ public class GeneratorManager {
         List<JSONFileGeneratorTask> tasks = new ArrayList<>();
         int amountOfFolders = allFolderCreated.size();
         Long filesCount = generatorConfig.getFilesCount();
-        Double totalInvalidFiles = (double) generatorConfig.getFilesCount() * 0.25;
+        Double totalInvalidFiles = (double) Math.round(generatorConfig.getFilesCount() * 0.25);
         Double totalValidFiles = filesCount - totalInvalidFiles;
         Long validFilesPerFolder = Math.round(totalValidFiles / amountOfFolders);
         Long invalidFilesPerFolder = Math.round(totalInvalidFiles / amountOfFolders);
@@ -92,7 +92,7 @@ public class GeneratorManager {
         Double testTimeMS = (double) generatorConfig.getTestTime() * 1000;
         Double totalAmountOfValidFilesAfterAllPeriods = totalValidFiles * (testTimeMS / periodTimeMS);
         Double expectedTotalAmountOfInvalidFilesAfterAllPeriods = totalInvalidFiles * (testTimeMS / periodTimeMS);
-        LOG.info("|-----------BEFORE GENERATING CERTIFICATES-----------|" +
+        LOG.info("\n|-----------BEFORE GENERATING CERTIFICATES-----------|" +
                 "\nExpected amount of valid files per folder:" + validFilesPerFolder +
                 "\nExpected amount of invalid files per folder:" + invalidFilesPerFolder +
                 "\nExpected amount of total valid files:" + totalAmountOfValidFilesAfterAllPeriods +

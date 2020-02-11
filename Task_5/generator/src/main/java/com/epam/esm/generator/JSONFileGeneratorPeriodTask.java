@@ -34,14 +34,15 @@ public class JSONFileGeneratorPeriodTask implements Runnable {
         this.invalidFilesPerFolder = invalidFilesPerFolder;
     }
 
-
     @Override
     public void run() {
         Long amountOfFilesWritten = 0l;
         LOG.debug(Thread.currentThread() + " will now begin populating folder: " + folderToPopulate.getAbsolutePath());
         LinkedList<DTO> giftCertificateDTO = new LinkedList<>();
         long amountOfValidDTOS = validFilesPerFolder * AMOUNT_OF_DTOS_PER_FILE;
+        JSONFileGeneratorTask.actualAmountOfValidFiles.getAndAdd(validFilesPerFolder);
         long amountOfInvalidDTOS = Math.round(this.invalidFilesPerFolder * 0.25 * AMOUNT_OF_DTOS_PER_FILE);
+        JSONFileGeneratorTask.actualAmountOfInvalidFiles.getAndAdd(invalidFilesPerFolder);
         giftCertificateDTO.addAll(factory.createValidJSONDTO(amountOfValidDTOS));
         giftCertificateDTO.addAll(factory.createIncorrectFieldCertificateDTOS(amountOfInvalidDTOS));
         giftCertificateDTO.addAll(factory.createDBConstraintViolationCertificate(amountOfInvalidDTOS));

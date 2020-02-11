@@ -11,6 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class JSONFileGeneratorTask implements Callable<Long> {
 
@@ -21,6 +22,8 @@ public class JSONFileGeneratorTask implements Callable<Long> {
     private ScheduledExecutorService executorService;
     private Logger LOG = LogManager.getLogger(JSONFileGeneratorTask.class);
     private Long invalidFilesPerFolder;
+    public static AtomicLong actualAmountOfValidFiles = new AtomicLong(0);
+    public static AtomicLong actualAmountOfInvalidFiles = new AtomicLong(0);
 
     public JSONFileGeneratorTask(BlockingQueue<File> folderPaths, Long validFilesPerFolder, Long invalidFilesPerFolder, GeneratorConfig config) {
         this.folderPaths = folderPaths;
@@ -41,6 +44,12 @@ public class JSONFileGeneratorTask implements Callable<Long> {
             ScheduledExecutorService timerService = Executors.newScheduledThreadPool(1);
             timerService.schedule(() -> {
                 scheduledFuture.cancel(true);
+                LOG.info(
+                        "\n|----------AFTER GENERATION--------|" +
+                                "\nActual amount of total valid files: " + actualAmountOfValidFiles.get() +
+                                "\nActual amount of total invalid files: " + actualAmountOfInvalidFiles.get() +
+                                "\nActual amount of total valid certificates: " + actualAmountOfValidFiles.get() * 3
+                );
                 executorService.shutdown();
                 try {
                     if (!executorService.awaitTermination(config.getTestTime(), TimeUnit.SECONDS)) {
