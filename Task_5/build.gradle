@@ -1,0 +1,62 @@
+plugins {
+    id "org.springframework.boot" version "2.2.0.RELEASE"
+}
+allprojects {
+    group = 'com.epam.esm'
+    version = '1.0-SNAPSHOT'
+
+
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven-publish'
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven {
+            url = 'https://repo.maven.apache.org/maven2'
+        }
+    }
+
+    dependencies {
+        compile 'org.springframework:spring-core:5.2.0.RELEASE'
+        compile 'org.springframework:spring-webmvc:5.2.0.RELEASE'
+        compile 'org.springframework:spring-test:5.2.0.RELEASE'
+        compile 'javax.validation:validation-api:2.0.1.Final'
+        compile 'org.hibernate:hibernate-validator:6.0.17.Final'
+        compile 'org.hibernate:hibernate-validator-annotation-processor:6.0.17.Final'
+        compile 'com.fasterxml.jackson.core:jackson-databind:2.10.0'
+        compile 'com.fasterxml.jackson.core:jackson-core:2.10.0'
+        compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.0'
+        compile 'javax.annotation:javax.annotation-api:1.3.2'
+        compile 'org.hibernate:hibernate-entitymanager:4.3.8.Final'
+        compile 'org.hsqldb:hsqldb:2.3.2'
+        compile 'org.springframework:spring-orm:5.2.0.RELEASE'
+        compile group: 'org.springframework.security', name: 'spring-security-core', version: '5.2.0.RELEASE'
+        compile group: 'com.auth0', name: 'auth0-spring-security-api', version: '1.2.6'
+        compile group: 'org.springframework.security', name: 'spring-security-oauth2-core',
+                version: '5.2.1.RELEASE'
+        compile group: 'org.springframework.security', name: 'spring-security-oauth2-client',
+                version: '5.2.1.RELEASE'
+        compile group: 'org.springframework.social', name: 'spring-social-core', version: '1.1.6.RELEASE'
+        compile group: 'org.springframework.social', name: 'spring-social-security', version: '1.1.6.RELEASE'
+        compile group: 'org.springframework.boot', name: 'spring-boot', version: '2.2.1.RELEASE'
+        compile group: 'org.springframework.boot', name: 'spring-boot-starter-logging', version: '2.1.6.RELEASE'
+
+    }
+
+    sourceCompatibility = '1.8'
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                from(components.java)
+            }
+        }
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+}
