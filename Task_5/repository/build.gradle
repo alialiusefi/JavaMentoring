@@ -1,0 +1,8 @@
+dependencies {
+    compile 'org.postgresql:postgresql:42.2.8'
+    compile 'org.springframework:spring-jdbc:5.2.0.RELEASE'
+    compile 'org.hibernate:hibernate-entitymanager:5.4.2.Final'
+    testCompile 'com.opentable.components:otj-pg-embedded:0.7.1'
+    testCompile 'org.junit.jupiter:junit-jupiter-engine:5.2.0'
+
+}
