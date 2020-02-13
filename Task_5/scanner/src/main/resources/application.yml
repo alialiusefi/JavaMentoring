@@ -1,6 +1,0 @@
-scanner:
-  scanDelay: 100
-  threadCount: 10
-  scanPath: C:\Users\Ali_Al-Iusefi\Desktop\Git\ESM\Task_5\jsoncertificates
-  errorPath: C:\Users\Ali_Al-Iusefi\Desktop\Git\ESM\Task_5\errorjsoncertificates
-

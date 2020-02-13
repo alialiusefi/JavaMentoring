@@ -1,9 +1,0 @@
-{
-  "properties": [
-    {
-      "name": "scanner.SCAN_DELAY",
-      "type": "java.lang.String",
-      "description": "Description for scanner.SCAN_DELAY."
-    }
-  ]
-}
