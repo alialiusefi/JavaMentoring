@@ -1,8 +1,0 @@
-
-rootProject.name = 'gift-certficate-app'
-include(':controller')
-include(':service')
-include(':repository')
-include (':scanner')
-include 'generator'
-
