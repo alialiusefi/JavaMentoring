@@ -4,8 +4,8 @@ create table authors (
 );
 
 create table news (
-    id bigserial primary key ,
-    title varchar(100) not null,
+    id bigserial primary key,
+    content text not null,
     creation_date date default now() not null,
     author_id bigint not null,
     foreign key(author_id) references authors(id) on delete cascade
