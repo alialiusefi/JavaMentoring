@@ -15,6 +15,7 @@ begin
             temp := concat(temp, seperator);
             result := concat(result, temp);
         end loop;
+    result:= rtrim(result,seperator);
     return result;
 end;
 
