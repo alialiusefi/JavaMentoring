@@ -1,0 +1,1 @@
+select * from AUTHORS order by DBMS_RANDOM.RANDOM();
