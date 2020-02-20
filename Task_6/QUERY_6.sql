@@ -1,3 +1,4 @@
+/*todo: fix access to new variable*/
 create or replace trigger authors_trigger
     after insert
     on authors
