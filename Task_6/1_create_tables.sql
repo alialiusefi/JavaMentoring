@@ -11,7 +11,7 @@ create sequence authors_id_seq start with 1;
 
 create table news (
     id NUMBER(19,0) primary key,
-    content varchar(5000) not null,
+    content varchar(500) not null,
     creation_date date default current_date not null,
     author_id NUMBER(19,0) not null,
     foreign key(author_id) references authors(id) on delete cascade
@@ -49,7 +49,7 @@ CREATE TABLE logs (
   id NUMBER(19,0) primary key,
   table_name varchar(64) not null,
   insert_date timestamp not null,
-  description varchar(5000) not null
+  description varchar(500) not null
 );
 
 create sequence logs_id_seq start with 1;
