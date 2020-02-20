@@ -1,16 +1,16 @@
 /*todo: fix access to new variable*/
 create or replace trigger authors_trigger
     after insert
-    on authors
+    on authors referencing new as n
     for each row
 declare
-    id integer := new.ID;
-    name integer := new.NAME;
+    id integer := :n.ID;
+    name varchar2(48) := :n.NAME;
     key_value varchar(1000);
 begin
     if(id is not null ) then
         key_value := concat(key_value,'id:');
-        key_value := concat(key_value,id);
+        key_value := concat(key_value,ID);
         key_value := concat(key_value,';');
     end if;
     if(name is not null ) then
@@ -23,14 +23,14 @@ end;
 
 create or replace trigger comments_trigger
     after insert
-    on COMMENTS
+    on COMMENTS referencing new as n
     for each row
 declare
-    id integer := new.ID;
-    content varchar2(256) := new.CONTENT;
-    AUTHOR_ID number(19) := new.AUTHOR_ID;
-    NEWS_ID number(19) := new.NEWS_ID;
-    CREATION_DATE date := new.CREATION_DATE;
+    id integer := :n.ID;
+    content varchar2(256) := :n.CONTENT;
+    AUTHOR_ID number(19) := :n.AUTHOR_ID;
+    NEWS_ID number(19) := :n.NEWS_ID;
+    CREATION_DATE date := :n.CREATION_DATE;
     key_value varchar(1000);
 begin
     if(id is not null ) then
@@ -61,14 +61,14 @@ end;
 
 create or replace trigger news_trigger
     after insert
-    on NEWS
+    on NEWS referencing new as n
     for each row
 declare
-    id integer := new.ID;
-    content varchar2(256) := new.CONTENT;
-    AUTHOR_ID number(19) := new.AUTHOR_ID;
-    NEWS_ID number(19) := new.ID;
-    CREATION_DATE date := new.CREATION_DATE;
+    id integer := :n.ID;
+    content varchar2(256) := :n.CONTENT;
+    AUTHOR_ID number(19) := :n.AUTHOR_ID;
+    NEWS_ID number(19) := :n.ID;
+    CREATION_DATE date := :n.CREATION_DATE;
     key_value varchar(1000);
 begin
     if(id is not null ) then
@@ -98,11 +98,11 @@ end;
 
 create or replace trigger news_to_tag_trigger
     after insert
-    on NEWS_TO_TAG
+    on NEWS_TO_TAG referencing new as n
     for each row
 declare
-    news_id integer := new.NEWS_ID;
-    tag_id integer := new.TAG_ID;
+    news_id integer := :n.NEWS_ID;
+    tag_id integer := :n.TAG_ID;
     key_value varchar(1000);
 begin
     if(news_id is not null ) then
@@ -120,11 +120,11 @@ end;
 
 create or replace trigger tags_trigger
     after insert
-    on NEWS_TO_TAG
+    on tags referencing new as n
     for each row
 declare
-    id integer := new.id;
-    name integer := new.name;
+    id integer := :n.ID;
+    name integer := :n.NAME;
     key_value varchar(1000);
 begin
     if(id is not null ) then
@@ -140,3 +140,15 @@ begin
     values (logs_id_seq.nextval, 'tags', current_date, key_value);
 end;
 
+/*
+select 'drop trigger ' || owner || '.' || trigger_name || ';' from all_triggers
+*/
+/*
+
+drop trigger C##IDEA.AUTHORS_TRIGGER;
+drop trigger C##IDEA.COMMENTS_TRIGGER;
+drop trigger C##IDEA.NEWS_TRIGGER;
+drop trigger C##IDEA.NEWS_TO_TAG_TRIGGER;
+drop trigger C##IDEA.TAGS_TRIGGER;
+*/
+select 'drop trigger ' || owner || '.' || trigger_name || ';' from all_triggers

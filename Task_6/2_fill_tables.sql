@@ -2,6 +2,8 @@ insert into authors (id, name)
 values (1, 'Roma Shagun');
 insert into authors (id, name)
 values (2, 'Ruslan Senatrev');
+insert into authors (id, name)
+values (3, 'Your mom');
 insert into authors (id,name)
 values (4,'Ali Al-Iusefi1');
 

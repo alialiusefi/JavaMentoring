@@ -11,7 +11,7 @@ create sequence authors_id_seq start with 1;
 
 create table news (
     id NUMBER(19,0) primary key,
-    content varchar(500) not null,
+    content varchar2(4000) not null,
     creation_date date default current_date not null,
     author_id NUMBER(19,0) not null,
     foreign key(author_id) references authors(id) on delete cascade
