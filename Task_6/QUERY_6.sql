@@ -1,4 +1,3 @@
-/*todo: fix access to new variable*/
 create or replace trigger authors_trigger
     after insert
     on authors referencing new as n
@@ -65,11 +64,11 @@ create or replace trigger news_trigger
     for each row
 declare
     id integer := :n.ID;
-    content varchar2(256) := :n.CONTENT;
+    content varchar2(3000) := :n.CONTENT;
     AUTHOR_ID number(19) := :n.AUTHOR_ID;
     NEWS_ID number(19) := :n.ID;
     CREATION_DATE date := :n.CREATION_DATE;
-    key_value varchar(1000);
+    key_value varchar(4000);
 begin
     if(id is not null ) then
         key_value := concat(key_value,'id:');
@@ -140,6 +139,7 @@ begin
     values (logs_id_seq.nextval, 'tags', current_date, key_value);
 end;
 
+create sequence logs_id_seq start with 1;
 /*
 select 'drop trigger ' || owner || '.' || trigger_name || ';' from all_triggers
 */

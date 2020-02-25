@@ -49,7 +49,7 @@ CREATE TABLE logs (
   id NUMBER(19,0) primary key,
   table_name varchar(64) not null,
   insert_date timestamp not null,
-  description varchar(500) not null
+  description varchar2(4000) not null
 );
 
 create sequence logs_id_seq start with 1;

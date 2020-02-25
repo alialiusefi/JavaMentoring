@@ -1,7 +1,7 @@
 create or replace function listTagsByNewsID(newsID in integer, seperator in varchar)
     return varchar
     is
-    result varchar(1000);
+    result varchar(1000) := ' ';
     temp   varchar(1000);
     cursor ds is (select name
                    from tags
@@ -19,4 +19,4 @@ begin
     return result;
 end;
 
-SELECT listTagsByNewsID(1, ',') FROM dual;
+SELECT listTagsByNewsID(4, ',') FROM dual;

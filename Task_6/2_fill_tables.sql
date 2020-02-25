@@ -113,6 +113,23 @@ VALUES (26,
 insert into comments (id, content, author_id, news_id, creation_date)
 values (1, 'Cooment here', 1, 1, current_date);
 
+insert into comments (id, content, author_id, news_id, creation_date)
+values (2, 'Cooment here', 1, 2, current_date);
+
+
+insert into comments (id, content, author_id, news_id, creation_date)
+values (3, 'Cooment here', 1, 3, current_date);
+
+
+insert into comments (id, content, author_id, news_id, creation_date)
+values (4, 'Cooment here', 1, 4, current_date);
+
+insert into comments (id, content, author_id, news_id, creation_date)
+values (5, 'Cooment here', 2, 3, current_date);
+
+insert into comments (id, content, author_id, news_id, creation_date)
+values (6, 'Cooment here', 3, 2, current_date);
+
 insert into tags (id, name)
 values (1, 'tag1');
 insert into tags (id, name)
