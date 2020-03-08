@@ -19,4 +19,4 @@ begin
     return result;
 end;
 
-SELECT listTagsByNewsID(4, ',') FROM dual;
+SELECT listTagsByNewsID(2, '$') FROM dual;

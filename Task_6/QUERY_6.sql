@@ -123,7 +123,7 @@ create or replace trigger tags_trigger
     for each row
 declare
     id integer := :n.ID;
-    name integer := :n.NAME;
+    name varchar2(1000) := :n.NAME;
     key_value varchar(1000);
 begin
     if(id is not null ) then
@@ -139,7 +139,9 @@ begin
     values (logs_id_seq.nextval, 'tags', current_date, key_value);
 end;
 
+/*
 create sequence logs_id_seq start with 1;
+*/
 /*
 select 'drop trigger ' || owner || '.' || trigger_name || ';' from all_triggers
 */
@@ -151,4 +153,6 @@ drop trigger C##IDEA.NEWS_TRIGGER;
 drop trigger C##IDEA.NEWS_TO_TAG_TRIGGER;
 drop trigger C##IDEA.TAGS_TRIGGER;
 */
+/*
 select 'drop trigger ' || owner || '.' || trigger_name || ';' from all_triggers
+*/
