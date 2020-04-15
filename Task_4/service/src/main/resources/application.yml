@@ -1,5 +1,5 @@
 aws:
-  accesskey: AKIA2NINPHQWBGDT4EEO
-  secretkey: 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
-  bucketname: giftcertbucket
+  accesskey: accesskeyhere
+  secretkey: secretkeyhere
+  bucketname: bucketnamehere
 
